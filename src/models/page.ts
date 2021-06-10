@@ -58,7 +58,7 @@ export const PageSchema = (title = '', description = '') => {
         type: 'string',
         pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
         fn: '_.kebabCase(_.deburr(${#ref:/properties/title))',
-        evnent: 'onBlur',
+        event: 'onBlur',
       },
       icon: {
         type: 'string',

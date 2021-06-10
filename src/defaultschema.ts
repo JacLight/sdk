@@ -56,7 +56,7 @@ const siteCollection: CollectionModel = {
 };
 
 const collectionCollection: CollectionModel = {
-    name: 'Collection',
+    name: 'collection',
     title: 'Collection',
     description: 'Collection',
     type: CollectionType.Concrete,

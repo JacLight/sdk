@@ -6,7 +6,7 @@ export interface BaseModel<T> {
   name: string;
   data?: T;
   isnew?: boolean,
-  datatype?: DataType;
+  datatype?: DataType | string;
   audit?: AuditModel;
   workflow?: WorkflowModel;
   permission?: any;
@@ -22,9 +22,18 @@ export interface WorkflowModel {
 export interface AuditModel {
   companypk: string;
   userpk: string;
+  grouppk: string,
   createdate: string;
   modifydate?: string;
 }
+
+export interface AssetModel {
+  share?: boolean;
+  indexing?: boolean;
+  comment?: boolean,
+  versioning?: boolean;
+}
+
 
 const schema_audit = {
   type: 'object',
@@ -85,7 +94,7 @@ export const schema = {
     },
     datatype: {
       type: 'string',
-      enum: DataType
+      enum: '[]'
     },
     isnew: {
       type: 'boolean'
