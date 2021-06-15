@@ -4,16 +4,16 @@ export type PhoneModel = FromSchema<typeof PhoneSchema>;
 export const PhoneSchema = {
     type: 'object',
     properties: {
-        number_: {
+        phone: {
             type: 'string',
         },
         extension: {
             type: 'string',
         },
         typeid: {
-            type: 'integer',
+            type: 'string',
         },
-        primary_: {
+        primary: {
             type: 'string',
             default: 'false',
         },

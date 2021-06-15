@@ -19,7 +19,7 @@ export const CountrySchema = {
         code: {
             type: 'string',
         },
-        idd_: {
+        idd: {
             type: 'string',
         },
         ziprequired: {
