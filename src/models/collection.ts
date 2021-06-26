@@ -1,7 +1,25 @@
 import { JsonSchema } from '../types/jsonschema/jsonSchema';
-import { CollectionType } from '../types/collectiontype';
+import { CollectionType, FormViewSectionType } from '../types';
 
-// Added model to the name to as to diffrentiate it from the collection builder compoment
+
+export interface CollectionUIGroup {
+  title: string, description?: string, items?: { [key: string]: string }[], type?: string
+}
+export interface CollectionUI {
+  type: FormViewSectionType;
+  items?: { [key: string]: string }
+  accordion?: CollectionUIGroup[],
+  stepper?: CollectionUIGroup[],
+  buttons?: {
+    back?: { title: string, handler: () => {} },
+    next?: { title: string, handler: () => {} },
+    skip?: { title: string, handler: () => {} },
+    finish?: { title: string, handler: () => {} },
+  },
+  rules?: {}
+}
+
+
 export interface CollectionModel {
   name: string
   title?: string;
@@ -14,7 +32,7 @@ export interface CollectionModel {
   permission?: {};
   rules?: {};
   validations?: {};
-  uischema?: JsonSchema;
+  uischema?: CollectionUI[];
   schema?: JsonSchema;
 }
 

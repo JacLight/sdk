@@ -1,4 +1,5 @@
 export enum ComponentName {
-    CollectionBuilder,
-    DataTable
+    CollectionBuilder = 'CollectionBuilder',
+    DataTable = 'DataTable',
+    Widget = 'Widget'
 }

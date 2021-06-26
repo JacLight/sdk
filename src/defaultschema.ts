@@ -1,7 +1,7 @@
 import { BaseModel } from "./models/base.model";
-import { CollectionModel, CollectionSchema, CollectionUISchema } from "./models/collection";
-import { PageSchema, PageUISchema } from "./models/page";
-import { SiteSchema, SiteUISchema } from "./models/site";
+import { CollectionModel, CollectionSchema } from "./models/collection";
+import { PageSchema } from "./models/page";
+import { SiteSchema } from "./models/site";
 import { DataType, CollectionType } from "./types";
 
 
@@ -35,7 +35,6 @@ const pageCollection: CollectionModel = {
     permission: {},
     rules: {},
     validations: {},
-    uischema: PageUISchema(),
     schema: PageSchema(),
 };
 
@@ -51,7 +50,6 @@ const siteCollection: CollectionModel = {
     permission: {},
     rules: {},
     validations: {},
-    uischema: SiteUISchema(),
     schema: SiteSchema(),
 };
 
@@ -67,6 +65,5 @@ const collectionCollection: CollectionModel = {
     permission: {},
     rules: {},
     validations: {},
-    uischema: CollectionUISchema(),
     schema: CollectionSchema(),
 };
