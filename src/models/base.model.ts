@@ -1,11 +1,17 @@
-import { DataType } from "../types/datatype";
+import { DataType } from '../types/datatype';
 
+export interface BaseModelDTO<T> {
+  page: number;
+  pagesize: number;
+  total: number;
+  data: BaseModel<T>[];
+}
 export interface BaseModel<T> {
   pk: string;
   sk: string;
   name: string;
   data?: T;
-  isnew?: boolean,
+  isnew?: boolean;
   datatype?: DataType | string;
   audit?: AuditModel;
   workflow?: WorkflowModel;
@@ -22,7 +28,7 @@ export interface WorkflowModel {
 export interface AuditModel {
   companypk: string;
   userpk: string;
-  grouppk: string,
+  grouppk: string;
   createdate: string;
   modifydate?: string;
 }
@@ -30,10 +36,9 @@ export interface AuditModel {
 export interface AssetModel {
   share?: boolean;
   indexing?: boolean;
-  comment?: boolean,
+  comment?: boolean;
   versioning?: boolean;
 }
-
 
 const schema_audit = {
   type: 'object',
@@ -94,15 +99,13 @@ export const schema = {
     },
     datatype: {
       type: 'string',
-      enum: '[]'
+      enum: '[]',
     },
     isnew: {
-      type: 'boolean'
+      type: 'boolean',
     },
     audit: schema_audit,
-    workflow: schema_workflow
+    workflow: schema_workflow,
   },
   required: ['pk', 'sk', 'name'],
 };
-
-

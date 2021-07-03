@@ -170,4 +170,6 @@ export interface JsonSchema7 {
   showInlineError?: boolean;
   dataSource?: string;
   disabled?: boolean;
+  css?: string;
+  styleClass?: string;
 }

@@ -1,7 +1,7 @@
 import { BaseModel } from "./models/base.model";
-import { CollectionModel, CollectionSchema } from "./models/collection";
-import { PageSchema } from "./models/page";
-import { SiteSchema } from "./models/site";
+import { CollectionModel, CollectionRules, CollectionSchema, CollectionUI } from "./models/collection";
+import { PageRules, PageSchema, PageUI } from "./models/page";
+import { SiteSchema, SiteUI } from "./models/site";
 import { DataType, CollectionType } from "./types";
 
 
@@ -33,9 +33,10 @@ const pageCollection: CollectionModel = {
     enableVersioning: true,
     enableIndexing: true,
     permission: {},
-    rules: {},
+    rules: PageRules(),
     validations: {},
     schema: PageSchema(),
+    uischema: PageUI()
 };
 
 const siteCollection: CollectionModel = {
@@ -48,9 +49,10 @@ const siteCollection: CollectionModel = {
     enableVersioning: true,
     enableIndexing: true,
     permission: {},
-    rules: {},
+    rules: PageRules(),
     validations: {},
     schema: SiteSchema(),
+    uischema: SiteUI(),
 };
 
 const collectionCollection: CollectionModel = {
@@ -63,7 +65,8 @@ const collectionCollection: CollectionModel = {
     enableVersioning: true,
     enableIndexing: true,
     permission: {},
-    rules: {},
+    rules: CollectionRules(),
     validations: {},
     schema: CollectionSchema(),
+    uischema: CollectionUI()
 };

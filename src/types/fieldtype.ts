@@ -11,7 +11,7 @@ export enum FieldType {
     code = 'Code',
     uuid = 'UUID',
     color = 'Color',
-    ComputedField = 'Computed Field',
     dataField = 'Data Field',
     static = 'Static',
+    collection = 'collection',
 }

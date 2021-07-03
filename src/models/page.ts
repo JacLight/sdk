@@ -1,3 +1,4 @@
+import { CollectionRule, CollectionUI } from "./collection";
 
 export interface PageModel {
   name: string,
@@ -89,33 +90,14 @@ export const PageSchema = (title = '', description = '') => {
   };
 };
 
-export const PageUISchema = () => {
-  return {
-    type: 'object',
-    properties: {
-      name: {
-        type: 'string',
-        pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
-      },
-      title: {
-        type: 'string',
-      },
-      pagepk: {
-        type: 'string',
-      },
-      pages: {
-        type: 'array',
-      },
-      site_navigation: {
-        type: 'array',
-      },
-      css: {
-        type: 'string',
-      },
-      javascript: {
-        type: 'string',
-      },
-    },
-    required: ['name'],
-  };
+
+
+export const PageUI = (): CollectionUI[] => {
+  return null
 };
+
+
+export const PageRules = (): CollectionRule[] => {
+  return [{ 'name': 'norule' }]
+
+}

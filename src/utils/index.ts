@@ -7,6 +7,11 @@ export const toTitleCase = (str: string) => {
     );
 }
 
+export const toSentenceCase = (str: string) => {
+    const result = str.replace(/([A-Z])/g, " $1");
+    return result.charAt(0).toUpperCase() + result.slice(1);
+}
+
 export const deepCopy = (source: any) => {
     return JSON.parse(JSON.stringify(source));
 }

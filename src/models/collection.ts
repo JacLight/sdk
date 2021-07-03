@@ -19,6 +19,14 @@ export interface CollectionUI {
   rules?: {}
 }
 
+export interface CollectionRule {
+  name: string,
+  condition?: {
+    type?: string,
+    param?: { field?: string, targetField?: string, targetType?: string, targetValue?: string | number, operation?: string }[]
+  }
+  action?: { operation: string, targetField: string, script: string }[]
+}
 
 export interface CollectionModel {
   name: string
@@ -30,7 +38,7 @@ export interface CollectionModel {
   enableVersioning?: boolean;
   enableIndexing?: boolean;
   permission?: {};
-  rules?: {};
+  rules?: CollectionRule[];
   validations?: {};
   uischema?: CollectionUI[];
   schema?: JsonSchema;
@@ -84,33 +92,10 @@ export const CollectionSchema = () => {
   };
 };
 
-export const CollectionUISchema = () => {
-  return {
-    type: 'object',
-    properties: {
-      name: {
-        type: 'string',
-        pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
-      },
-      title: {
-        type: 'string',
-      },
-      page_pk: {
-        type: 'string',
-      },
-      pages: {
-        type: 'array',
-      },
-      site_navigation: {
-        type: 'array',
-      },
-      css: {
-        type: 'string',
-      },
-      javascript: {
-        type: 'string',
-      },
-    },
-    required: ['name'],
-  };
+export const CollectionUI = (): CollectionUI[] => {
+  return null
 };
+
+export const CollectionRules = (): CollectionRule[] => {
+  return [{ 'name': 'norule' }]
+}
