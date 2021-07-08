@@ -26,7 +26,7 @@
   THE SOFTWARE.
 */
 
-export interface JsonSchema7 {
+export interface JsonSchemaCustom {
   $ref?: string;
   /////////////////////////////////////////////////
   // Schema Metadata
@@ -88,8 +88,8 @@ export interface JsonSchema7 {
   /////////////////////////////////////////////////
   // Array Validation
   /////////////////////////////////////////////////
-  additionalItems?: boolean | JsonSchema7;
-  items?: JsonSchema7 | JsonSchema7[];
+  additionalItems?: boolean | JsonSchemaCustom;
+  items?: JsonSchemaCustom | JsonSchemaCustom[];
   maxItems?: number;
   minItems?: number;
   uniqueItems?: boolean;
@@ -100,22 +100,22 @@ export interface JsonSchema7 {
   maxProperties?: number;
   minProperties?: number;
   required?: string[];
-  additionalProperties?: boolean | JsonSchema7;
+  additionalProperties?: boolean | JsonSchemaCustom;
   /**
    * Holds simple JSON Schema definitions for
    * referencing from elsewhere.
    */
-  definitions?: { [key: string]: JsonSchema7 };
+  definitions?: { [key: string]: JsonSchemaCustom };
   /**
    * The keys that can exist on the object with the
    * json schema that should validate their value
    */
-  properties?: { [property: string]: JsonSchema7 };
+  properties?: { [property: string]: JsonSchemaCustom };
   /**
    * The key of this object is a regex for which
    * properties the schema applies to
    */
-  patternProperties?: { [pattern: string]: JsonSchema7 };
+  patternProperties?: { [pattern: string]: JsonSchemaCustom };
   /**
    * If the key is present as a property then the
    * string of properties must also be present.
@@ -123,7 +123,7 @@ export interface JsonSchema7 {
    * also be valid for the object if the key is
    * present.
    */
-  dependencies?: { [key: string]: JsonSchema7 | string[] };
+  dependencies?: { [key: string]: JsonSchemaCustom | string[] };
 
   /////////////////////////////////////////////////
   // Generic
@@ -145,29 +145,31 @@ export interface JsonSchema7 {
   /////////////////////////////////////////////////
   // Combining Schemas
   /////////////////////////////////////////////////
-  allOf?: JsonSchema7[];
-  anyOf?: JsonSchema7[];
-  oneOf?: JsonSchema7[];
+  allOf?: JsonSchemaCustom[];
+  anyOf?: JsonSchemaCustom[];
+  oneOf?: JsonSchemaCustom[];
   /**
    * The entity being validated must not match this schema
    */
-  not?: JsonSchema7;
+  not?: JsonSchemaCustom;
 
   format?: string;
   readOnly?: boolean;
   writeOnly?: boolean;
   examples?: any[];
-  contains?: JsonSchema7;
-  propertyNames?: JsonSchema7;
+  contains?: JsonSchemaCustom;
+  propertyNames?: JsonSchemaCustom;
   const?: any;
-  if?: JsonSchema7;
-  then?: JsonSchema7;
-  else?: JsonSchema7;
+  if?: JsonSchemaCustom;
+  then?: JsonSchemaCustom;
+  else?: JsonSchemaCustom;
   errorMessage?: any;
 
   displayStyle?: string;
+  inputStyle?: string;
   fieldType?: string;
   showInlineError?: boolean;
+  collection?: string;
   dataSource?: string;
   disabled?: boolean;
   css?: string;

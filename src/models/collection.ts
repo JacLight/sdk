@@ -1,4 +1,4 @@
-import { JsonSchema } from '../types/jsonschema/jsonSchema';
+import { JsonSchemaCustom } from '../types/jsonschema/jsonSchemaCustom';
 import { CollectionType, FormViewSectionType } from '../types';
 
 
@@ -41,7 +41,7 @@ export interface CollectionModel {
   rules?: CollectionRule[];
   validations?: {};
   uischema?: CollectionUI[];
-  schema?: JsonSchema;
+  schema?: JsonSchemaCustom;
 }
 
 export const CollectionSchema = () => {

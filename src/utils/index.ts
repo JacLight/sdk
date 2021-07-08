@@ -1,3 +1,5 @@
+var clone = require('clone');
+
 export const toTitleCase = (str: string) => {
     return str.replace(
         /\w\S*/g,
@@ -13,7 +15,8 @@ export const toSentenceCase = (str: string) => {
 }
 
 export const deepCopy = (source: any) => {
-    return JSON.parse(JSON.stringify(source));
+    return clone(source);
+    // return JSON.parse(JSON.stringify(source));
 }
 
 export const isEmpty = (obj: any) => {
