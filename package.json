@@ -31,17 +31,17 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "sdk",
+  "name": "dbsdk",
   "author": "Jac Light",
-  "module": "dist/sdk.esm.js",
+  "module": "dist/dbsdk.esm.js",
   "size-limit": [
     {
-      "path": "dist/sdk.cjs.production.min.js",
-      "limit": "10 KB"
+      "path": "dist/dbsdk.cjs.production.min.js",
+      "limit": "20 KB"
     },
     {
-      "path": "dist/sdk.esm.js",
-      "limit": "10 KB"
+      "path": "dist/dbsdk.esm.js",
+      "limit": "20 KB"
     }
   ],
   "devDependencies": {
