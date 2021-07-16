@@ -164,7 +164,7 @@ export interface JsonSchemaCustom {
   then?: JsonSchemaCustom;
   else?: JsonSchemaCustom;
   errorMessage?: any;
-
+  unique?: boolean;
   displayStyle?: string;
   inputStyle?: string;
   fieldType?: string;

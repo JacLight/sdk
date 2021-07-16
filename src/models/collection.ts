@@ -52,7 +52,8 @@ export const CollectionSchema = () => {
         type: 'string',
         pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
         minLength: 3,
-        maxLength: 100,
+        maxLength: 20,
+        unique: true
       },
       title: {
         type: 'string',
