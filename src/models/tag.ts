@@ -1,19 +1,26 @@
 import { FromSchema } from 'json-schema-to-ts';
-export type TagModel = FromSchema<typeof TagSchema>;
+import { CollectionRule, CollectionUI } from './collection';
 
-export const TagSchema = {
-    type: 'object',
-    properties: {
-        "name": {
-            "type": "string"
+export const TagSchema = () => {
+    return {
+        type: 'object',
+        properties: {
+            name: {
+                type: 'string',
+                minLength: 3,
+                maxLength: 50,
+                unique: true
+            },
         },
-        "assetcount": {
-            "type": "integer",
-            "format": "int32"
-        },
-        "lastpublishdate": {
-            "type": "string",
-            "format": "date-time"
-        }
-    }
-} as const
+    } as const;
+}
+
+const rt = TagSchema();
+export type TagModel = FromSchema<typeof rt>;
+export const TagUI = (): CollectionUI[] => {
+    return null
+};
+
+export const TagRules = (): CollectionRule[] => {
+    return null
+}

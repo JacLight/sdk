@@ -1,105 +1,108 @@
 import { FromSchema } from 'json-schema-to-ts';
-export type NavigationModel = FromSchema<typeof NavigationSchema>;
-export type NavigationItemModel = FromSchema<typeof NavigationItemSchema>;
+import { CollectionRule, CollectionUI } from './collection';
 
-export const NavigationSchema = {
-    type: 'object',
-    properties: {
-        uuid: {
-            type: 'string',
+export const NavigationSchema = () => {
+    return {
+        type: 'object',
+        properties: {
+            name: {
+                type: 'string',
+                pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
+                minLength: 3,
+                maxLength: 50,
+                unique: true
+            },
+            title: {
+                type: 'string',
+            },
+            slug: {
+                type: 'string',
+                pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
+            },
+            description: {
+                type: 'string',
+                inputStyle: 'textarea'
+            },
+            links: {
+                type: 'array',
+                hidden: 'true',
+                items: {
+                    type: 'object',
+                    properties: {
+                        linktype: {
+                            type: 'string',
+                            enum: ['page', 'widget', 'url', 'script']  //use of page filter liket category or tags
+                        },
+                        title: {
+                            type: 'string'
+                        },
+                        slug: {
+                            type: 'string',
+                            pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
+                        },
+                        data: {
+                            type: 'string'
+                        },
+                        image: {
+                            type: 'string'
+                        },
+                        links: {
+                            type: 'array',
+                            items: {
+                                type: 'object'
+                            }
+                        }
+                    }
+                }
+            }
         },
-        sitenavigationid: {
-            type: 'integer',
-        },
-        groupid: {
-            type: 'integer',
-        },
-        companyid: {
-            type: 'integer',
-        },
-        userid: {
-            type: 'integer',
-        },
-        username: {
-            type: 'string',
-        },
-        createdate: {
-            type: 'string',
-            format: 'date-time',
-        },
-        modifieddate: {
-            type: 'string',
-            format: 'date-time',
-        },
-        name: {
-            type: 'string',
-        },
-        type: {
-            type: 'integer',
-            format: 'int32',
-        },
-        auto: {
-            type: 'string',
-            default: 'false',
-        },
-        lastpublishdate: {
-            type: 'string',
-            format: 'date-time',
-        },
-    },
-} as const;
+    } as const;
+}
 
-export const NavigationItemSchema = {
-    type: 'object',
-    properties: {
-        uuid: {
-            type: 'string',
+export const NavigationLinkSchema = () => {
+    return {
+        type: 'object',
+        properties: {
+            linktype: {
+                type: 'string',
+                enum: ['page', 'widget', 'url', 'script']  //use of page filter liket category or tags
+            },
+            title: {
+                type: 'string'
+            },
+            description: {
+                type: 'string'
+            },
+            slug: {
+                type: 'string',
+                pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
+            },
+            data: {
+                type: 'string'
+            },
+            image: {
+                type: 'string'
+            },
+            links: {
+                type: 'array',
+                hidden: 'true',
+                items: {
+                    type: 'object'
+                }
+            }
         },
-        sitenavigationitemid: {
-            type: 'integer',
-        },
-        groupid: {
-            type: 'integer',
-        },
-        companyid: {
-            type: 'integer',
-        },
-        userid: {
-            type: 'integer',
-        },
-        username: {
-            type: 'string',
-        },
-        createdate: {
-            type: 'string',
-            format: 'date-time',
-        },
-        modifieddate: {
-            type: 'string',
-            format: 'date-time',
-        },
-        sitenavigationid: {
-            type: 'integer',
-        },
-        parentsitenavigationitemid: {
-            type: 'integer',
-        },
-        name: {
-            type: 'string',
-        },
-        type: {
-            type: 'string',
-        },
-        typesettings: {
-            type: 'string',
-        },
-        order: {
-            type: 'integer',
-            format: 'int32',
-        },
-        lastpublishdate: {
-            type: 'string',
-            format: 'date-time',
-        },
-    },
-} as const;
+        required: ['title', 'slug'],
+    } as const;
+}
+
+const rtlink = NavigationLinkSchema();
+const rt = NavigationSchema();
+export type NavigationLinkModel = FromSchema<typeof rtlink>;
+export type NavigationModel = FromSchema<typeof rt>;
+export const NavigationUI = (): CollectionUI[] => {
+    return null
+};
+
+export const NavigationRules = (): CollectionRule[] => {
+    return null
+}

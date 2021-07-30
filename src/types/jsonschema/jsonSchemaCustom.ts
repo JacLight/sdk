@@ -89,7 +89,7 @@ export interface JsonSchemaCustom {
   // Array Validation
   /////////////////////////////////////////////////
   additionalItems?: boolean | JsonSchemaCustom;
-  items?: JsonSchemaCustom | JsonSchemaCustom[];
+  items?: string | number | JsonSchemaCustom | JsonSchemaCustom[];
   maxItems?: number;
   minItems?: number;
   uniqueItems?: boolean;

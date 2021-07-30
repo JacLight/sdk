@@ -30,12 +30,7 @@ export const Trigger = {
     properties: {
         triggerId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         ownerType: { type: 'String' },
         ownerId: { type: 'long' },
@@ -59,12 +54,7 @@ export const TriggerEvent = {
     properties: {
         triggerEventId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         ownerType: { type: 'String' },
         ownerId: { type: 'long' },
@@ -86,12 +76,7 @@ export const Alert = {
     properties: {
         alertId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         name: { type: 'String' },
         description: { type: 'String' },
@@ -108,12 +93,7 @@ export const AlertQueue = {
     properties: {
         alertQueueId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         alertId: { type: 'long' },
         uniqueId: { type: 'String' },
@@ -183,12 +163,7 @@ export const ActionCommand = {
     properties: {
         actionCommandId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         name: { type: 'String' },
         description: { type: 'String' },
@@ -204,12 +179,7 @@ export const ActionCommandLog = {
     properties: {
         actionCommandLogId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         keyword: { type: 'String' },
         source: { type: 'String' },
@@ -225,12 +195,7 @@ export const NotificationTemplate = {
     properties: {
         notificationTemplateId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         ownerType: { type: 'String' },
         ownerId: { type: 'long' },
@@ -253,12 +218,7 @@ export const NotificationLog = {
     properties: {
         notificationLogId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         notificationTemplateId: { type: 'long' },
         notificationType: { type: 'String' },
@@ -299,12 +259,7 @@ export const MySchedule = {
     properties: {
         myScheduleId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         ownerType: { type: 'String' },
         ownerId: { type: 'long' },

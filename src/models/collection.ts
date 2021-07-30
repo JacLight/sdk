@@ -33,10 +33,10 @@ export interface CollectionModel {
   title?: string;
   description?: string;
   type?: CollectionType;
-  enableAssetFramework?: boolean;
-  enableWorkflow?: boolean;
+  enablePost: boolean;
   enableVersioning?: boolean;
   enableIndexing?: boolean;
+  enableWorkflow?: boolean;
   permission?: {};
   rules?: CollectionRule[];
   validations?: {};
@@ -64,8 +64,8 @@ export const CollectionSchema = () => {
       enableAssetFramework: {
         type: 'boolean',
       },
-      enableWorkflow: {
-        type: 'boolean',
+      workflow: {
+        type: 'string',
       },
       enableVersioning: {
         type: 'boolean',
@@ -98,5 +98,5 @@ export const CollectionUI = (): CollectionUI[] => {
 };
 
 export const CollectionRules = (): CollectionRule[] => {
-  return [{ 'name': 'norule' }]
+  return null
 }

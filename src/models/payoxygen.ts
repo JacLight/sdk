@@ -3,12 +3,7 @@ export const Bank = {
     properties: {
         bankId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         name: { type: 'String' },
         code: { type: 'String' },
@@ -24,12 +19,7 @@ export const BankAccount = {
     properties: {
         accountId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         bankId: { type: 'long' },
         number: { type: 'String' },
@@ -49,12 +39,7 @@ export const Wallet = {
     properties: {
         walletId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         number: { type: 'String' },
         name: { type: 'String' },
@@ -72,12 +57,7 @@ export const Biller = {
     properties: {
         billderId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         name: { type: 'String' },
         logo: { type: 'String' },
@@ -98,12 +78,7 @@ export const BillerItem = {
     properties: {
         billderItemId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         billerId: { type: 'String' },
         name: { type: 'String' },
@@ -122,12 +97,7 @@ export const Merchant = {
     properties: {
         merchantId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         number: { type: 'String' },
         name: { type: 'String' },
@@ -144,12 +114,7 @@ export const MerchantBrand = {
     properties: {
         merchantId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
     },
 } as const;
 
@@ -158,12 +123,7 @@ export const MerchantBiller = {
     properties: {
         myContactId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         myCountryId: { type: 'long' },
         myGroupId: { type: 'long' },
@@ -189,12 +149,7 @@ export const MerchantUser = {
     properties: {
         mercehantUserId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
     },
 } as const;
 
@@ -203,12 +158,7 @@ export const Card = {
     properties: {
         cardId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         pan: { type: 'String' },
         cardType: { type: 'String' },
@@ -227,12 +177,7 @@ export const CardAllowed = {
     properties: {
         cardId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         pan: { type: 'String' },
         cardType: { type: 'String' },
@@ -251,12 +196,7 @@ export const CardReader = {
     properties: {
         readerId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         serial: { type: 'String' },
         key: { type: 'String' },
@@ -270,12 +210,7 @@ export const CardReaderAllowed = {
     properties: {
         readerId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         serial: { type: 'String' },
         key: { type: 'String' },
@@ -289,12 +224,7 @@ export const CardReaderLog = {
     properties: {
         logId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         transactionNumber: { type: 'String' },
         readerId: { type: 'String' },
@@ -323,12 +253,7 @@ export const Pos = {
     properties: {
         posId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         pan: { type: 'String' },
         cardType: { type: 'String' },
@@ -347,12 +272,7 @@ export const PosAllowed = {
     properties: {
         posId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         pan: { type: 'String' },
         cardType: { type: 'String' },
@@ -371,12 +291,7 @@ export const PosLog = {
     properties: {
         logId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         transactionNumber: { type: 'String' },
         readerId: { type: 'String' },
@@ -405,12 +320,7 @@ export const Transaction = {
     properties: {
         transactionId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         transactionNumber: { type: 'long' },
     },
@@ -421,12 +331,7 @@ export const TransactionItem = {
     properties: {
         transactionItemId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         transactionId: { type: 'long' },
         transactionItemNumber: { type: 'long' },
@@ -482,12 +387,7 @@ export const TransactionResponse = {
     properties: {
         transactionResponseId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         customerdetails: { type: 'long' },
         billdetails: { type: 'long' },
@@ -505,12 +405,7 @@ export const Processor = {
     properties: {
         paymentGatewayId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         name: { type: 'String' },
         gatewayType: { type: 'String' },
@@ -531,12 +426,7 @@ export const PaymentGateway = {
     properties: {
         paymentGatewayId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         name: { type: 'String' },
         gatewayType: { type: 'String' },
@@ -557,12 +447,7 @@ export const PaymentItem = {
     properties: {
         paymentItemId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         orderNumber: { type: 'String' },
         gateway: { type: 'String' },
@@ -578,12 +463,7 @@ export const BlockPayment = {
     properties: {
         merchantId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
     },
 } as const;
 
@@ -592,12 +472,7 @@ export const Fee = {
     properties: {
         feeId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         orderNumber: { type: 'String' },
         gateway: { type: 'String' },
@@ -613,12 +488,7 @@ export const FeeItem = {
     properties: {
         feeItemId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         orderNumber: { type: 'String' },
         gateway: { type: 'String' },
@@ -634,12 +504,7 @@ export const Currency = {
     properties: {
         currencyId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         currencyCode: { type: 'String' },
         currencySymbol: { type: 'String' },
@@ -656,12 +521,7 @@ export const Beneficiary = {
     properties: {
         myContactId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         myCountryId: { type: 'long' },
         myGroupId: { type: 'long' },
@@ -687,12 +547,7 @@ export const Voucher = {
     properties: {
         voucherId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         serial: { type: 'String' },
         code: { type: 'String' },
@@ -714,12 +569,7 @@ export const Button = {
     properties: {
         buttonId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         username: { type: 'long' },
         password: { type: 'long' },
@@ -748,12 +598,7 @@ export const ButtonItem = {
     properties: {
         buttonItemId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         buttonId: { type: 'long' },
         buttonNumber: { type: 'long' },
@@ -780,12 +625,7 @@ export const Workspace = {
     properties: {
         workspaceId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         name: { type: 'String' },
         description: { type: 'String' },
@@ -799,12 +639,7 @@ export const WorkspaceItem = {
     properties: {
         itemId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         workspaceId: { type: 'long' },
         name: { type: 'String' },
@@ -841,12 +676,7 @@ export const MyEvent = {
     properties: {
         myEventId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         ownerType: { type: 'String' },
         ownerId: { type: 'long' },

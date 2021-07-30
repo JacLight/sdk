@@ -3,12 +3,7 @@ export const Popup = {
     properties: {
         popupId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         title: { type: 'String' },
         description: { type: 'String' },
@@ -36,12 +31,7 @@ export const PopupItem = {
     properties: {
         popupItemId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         popupId: { type: 'long' },
         stageId: { type: 'int' },
@@ -96,12 +86,7 @@ export const Visit = {
     properties: {
         visitId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         sessionId: { type: 'String' },
         sourceId: { type: 'String' },
@@ -202,12 +187,7 @@ export const Sms = {
     properties: {
         smsId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         threadId: { type: 'long' },
         toPhones: { type: 'String' },
@@ -234,12 +214,7 @@ export const SmsLog = {
     properties: {
         smsLogId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         smsId: { type: 'long' },
         triggerEventId: { type: 'long' },
@@ -283,12 +258,7 @@ export const SmsResponse = {
     properties: {
         smsOutId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         smsId: { type: 'long' },
         messageId: { type: 'String' },
@@ -301,12 +271,7 @@ export const SmsGateway = {
     properties: {
         gatewayId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         name: { type: 'String' },
         description: { type: 'String' },
@@ -338,12 +303,7 @@ export const Email = {
     properties: {
         emailId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         fromName: { type: 'String' },
         fromAddress: { type: 'String' },
@@ -383,12 +343,7 @@ export const EmailLog = {
     properties: {
         emailLogId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         emailId: { type: 'long' },
         fromAddress: { type: 'String' },
@@ -436,12 +391,7 @@ export const EmailGateway = {
     properties: {
         gatewayId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         name: { type: 'String' },
         serverType: { type: 'String' },
@@ -472,12 +422,7 @@ export const Link = {
     properties: {
         linkId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         emailId: { type: 'long' },
         emailLogId: { type: 'long' },
@@ -497,12 +442,7 @@ export const LinkItem = {
     properties: {
         itemId: { type: 'long' },
 
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
+
 
         linkId: { type: 'long' },
         emailId: { type: 'long' },

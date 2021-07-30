@@ -58,7 +58,7 @@ export const PageSchema = (title = '', description = '') => {
       hidden: {
         type: 'boolean',
       },
-      friendly_url: {
+      slug: {
         type: 'string',
         pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
         fn: '_.kebabCase(_.deburr(${#ref:/properties/title))',
@@ -81,15 +81,11 @@ export const PageSchema = (title = '', description = '') => {
       javascript: {
         type: 'string',
       },
-      publish_date: {
-        type: 'string',
-        format: 'date-time',
-      },
       priority: {
         type: 'integer',
       },
     },
-    required: ['name', 'friendly_url'],
+    required: ['name', 'slug'],
   };
 };
 
@@ -101,6 +97,5 @@ export const PageUI = (): CollectionUI[] => {
 
 
 export const PageRules = (): CollectionRule[] => {
-  return [{ 'name': 'norule' }]
-
+  return null;
 }

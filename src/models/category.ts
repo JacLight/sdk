@@ -1,29 +1,42 @@
-import { FromSchema } from "json-schema-to-ts";
+import { FromSchema } from 'json-schema-to-ts';
+import { CollectionRule, CollectionUI } from './collection';
 
-export const CategorySchema = {
-    type: 'object',
-    properties: {
-        parentcategoryid: {
-            type: 'integer',
+export const CategorySchema = () => {
+    return {
+        type: 'object',
+        properties: {
+            name: {
+                type: 'string',
+                minLength: 3,
+                maxLength: 50,
+            },
+            title: {
+                type: 'string',
+            },
+            description: {
+                type: 'string',
+                inputStyle: 'textarea'
+            },
+            image: {
+                type: 'string',
+            },
+            categories: {
+                type: 'array',
+                hidden: 'true',
+                items: { type: 'object' },
+            },
         },
-        treepath: {
-            type: 'string',
-        },
-        name: {
-            type: 'string',
-        },
-        title: {
-            type: 'string',
-        },
-        description: {
-            type: 'string',
-        },
-        lastpublishdate: {
-            type: 'string',
-            format: 'date-time',
-        },
-    },
-} as const;
+    } as const;
+}
+
+const rt = CategorySchema();
+export type CategoryModel = FromSchema<typeof rt>;
 
 
-export type CategoryModel = FromSchema<typeof CategorySchema>
+export const CategoryUI = (): CollectionUI[] => {
+    return null
+};
+
+export const CategoryRules = (): CollectionRule[] => {
+    return null
+}

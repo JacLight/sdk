@@ -15,97 +15,31 @@ export interface BaseModel<T> {
   datatype?: DataType | string;
   audit?: AuditModel;
   workflow?: WorkflowModel;
+  post?: PostModel;
   permission?: any;
 }
 
+
 export interface WorkflowModel {
-  status?: number;
-  statususer?: number;
-  statusauthorizer?: number;
-  statusdate?: Date;
+  status?: string;
+  user?: string;
+  date?: Date;
+  history?: Omit<WorkflowModel, 'history'>[];
 }
 
 export interface AuditModel {
-  companypk: string;
-  userpk: string;
-  grouppk: string;
+  company: string;
+  user: string;
+  group: string;
   createdate: string;
   modifydate?: string;
+  publishstart?: Date,
+  publishend?: Date
 }
-
-export interface AssetModel {
+export interface PostModel {
   share?: boolean;
   indexing?: boolean;
-  comment?: boolean;
-  versioning?: boolean;
+  comment?: [];
+  rating?: [];
+  version?: string;
 }
-
-const schema_audit = {
-  type: 'object',
-  properties: {
-    companypk: {
-      type: 'string',
-      pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
-    },
-    userpk: {
-      type: 'string',
-      pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
-    },
-    createdate: {
-      type: 'string',
-    },
-    modifydate: {
-      type: 'string',
-    },
-  },
-  required: ['companypk', 'userpk', 'createdate'],
-};
-
-const schema_workflow = {
-  type: 'object',
-  properties: {
-    status: {
-      type: 'string',
-      pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
-    },
-    statususer: {
-      type: 'string',
-      pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
-    },
-    statusauthorizer: {
-      type: 'string',
-    },
-    statusdate: {
-      type: 'string',
-    },
-  },
-  required: ['status', 'statususer'],
-};
-
-export const schema = {
-  type: 'object',
-  properties: {
-    pk: {
-      type: 'string',
-      pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
-    },
-    sk: {
-      type: 'string',
-      pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
-    },
-    name: {
-      type: 'string',
-      pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
-    },
-    datatype: {
-      type: 'string',
-      enum: '[]',
-    },
-    isnew: {
-      type: 'boolean',
-    },
-    audit: schema_audit,
-    workflow: schema_workflow,
-  },
-  required: ['pk', 'sk', 'name'],
-};

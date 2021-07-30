@@ -26,7 +26,7 @@ export const isEmpty = (obj: any) => {
     return true;
 }
 
-export const validURL = (url: string) => {
+export const validUrl = (url: string) => {
     var pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
         '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
         '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address

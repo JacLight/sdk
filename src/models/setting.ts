@@ -1,13 +1,19 @@
 import { FromSchema } from 'json-schema-to-ts';
 
+export type SettingModel = FromSchema<typeof SettingSchema>;
+
 export const SettingSchema = {
     type: 'object',
     properties: {
         type: {
             type: 'string',
         },
+        group: {
+            type: 'string',
+        },
         owner: {
             type: 'string',
+            enum: ['system', 'site', 'widget', 'group', 'uesr']
         },
         setting: {
             type: 'array',
@@ -18,7 +24,7 @@ export const SettingSchema = {
                         type: 'string',
                     },
                     value: {
-                        type: 'string'
+                        type: ['string', 'boolean', 'number']
                     }
                 }
             }
@@ -27,42 +33,11 @@ export const SettingSchema = {
 } as const;
 
 
-export type SettingModel = FromSchema<typeof SettingSchema>;
 
-
-
-
-export const MachineControl = {
-    type: 'object',
-    properties: {
-        machineControlId: { type: 'long' },
-
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
-
-        controlType: { type: 'String' },
-        controlName: { type: 'String' },
-        controlValue: { type: 'String' },
-        controlParam: { type: 'String' },
-    },
-} as const;
-
-export const MachineLog = {
+export const LogSchema = {
     type: 'object',
     properties: {
         machineLogId: { type: 'long' },
-
-        companyId: { type: 'long' },
-        groupId: { type: 'long' },
-        userId: { type: 'long' },
-        createDate: { type: 'Date' },
-        modifyDate: { type: 'Date' },
-        remoteAppId: { type: 'long' },
-
         sourceType: { type: 'String' },
         sourceId: { type: 'long' },
         logType: { type: 'String' },
