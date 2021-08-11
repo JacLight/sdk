@@ -3,8 +3,6 @@ export const StoreSubscription = {
     properties: {
         subscriptionId: { type: 'long' },
 
-
-
         name: { type: 'String' },
         description: { type: 'String' },
         startDate: { type: 'Date' },
@@ -38,8 +36,6 @@ export const StoreSubscriptionRenewal = {
     properties: {
         renewalId: { type: 'long' },
 
-
-
         subscriptionId: { type: 'long' },
         orderItemId: { type: 'long' },
         oldExpiry: { type: 'Date' },
@@ -52,8 +48,6 @@ export const StoreAttribute = {
     type: 'object',
     properties: {
         attributeId: { type: 'long' },
-
-
 
         itemId: { type: 'long' },
         name: { type: 'String' },
@@ -70,8 +64,6 @@ export const StoreAttributeOption = {
     properties: {
         optionId: { type: 'long' },
 
-
-
         attributeId: { type: 'long' },
         itemId: { type: 'long' },
         value: { type: 'String' },
@@ -84,8 +76,6 @@ export const StorePaymentGateway = {
     type: 'object',
     properties: {
         paymentGatewayId: { type: 'long' },
-
-
 
         name: { type: 'String' },
         gatewayType: { type: 'String' },
@@ -106,8 +96,6 @@ export const StorePaymentItem = {
     properties: {
         paymentItemId: { type: 'long' },
 
-
-
         orderNumber: { type: 'String' },
         paymentGatewayId: { type: 'long' },
         amount: { type: 'double' },
@@ -126,8 +114,6 @@ export const StoreInvoice = {
     type: 'object',
     properties: {
         invoiceId: { type: 'long' },
-
-
 
         customerId: { type: 'long' },
         number: { type: 'String' },
@@ -170,8 +156,6 @@ export const StorePurchase = {
     type: 'object',
     properties: {
         purchaseId: { type: 'long' },
-
-
 
         supplierId: { type: 'long' },
         currency: { type: 'String' },
@@ -216,8 +200,6 @@ export const StoreDelivery = {
     properties: {
         deliveryId: { type: 'long' },
 
-
-
         purchaseId: { type: 'long' },
         supplierId: { type: 'long' },
         receivedBy: { type: 'long' },
@@ -255,8 +237,6 @@ export const StoreCurrency = {
     properties: {
         currencyId: { type: 'long' },
 
-
-
         currencyCode: { type: 'String' },
         currencySymbol: { type: 'String' },
         description: { type: 'String' },
@@ -271,8 +251,6 @@ export const Seo = {
     type: 'object',
     properties: {
         seoId: { type: 'long' },
-
-
 
         ownerId: { type: 'long' },
         ownerType: { type: 'String' },
@@ -412,7 +390,7 @@ export const StoreOrder = {
         forwarded_ip: { type: 'String' },
         user_agent: { type: 'String' },
         accept_language: { type: 'String' },
-    }
+    },
 } as const;
 
 export const StoreOrderItem = {
@@ -457,8 +435,6 @@ export const Voucher = {
     properties: {
         voucherId: { type: 'long' },
 
-
-
         serial: { type: 'String' },
         code: { type: 'String' },
         amount: { type: 'double' },
@@ -499,8 +475,6 @@ export const DeliverySlip = {
     properties: {
         deliverySlipId: { type: 'long' },
 
-
-
         orderId: { type: 'long' },
         orderItemId: { type: 'long' },
         shipDate: { type: 'String' },
@@ -516,8 +490,6 @@ export const CreditSlip = {
     properties: {
         creditSlipId: { type: 'long' },
 
-
-
         orderId: { type: 'long' },
         orderItemId: { type: 'long' },
         voucherId: { type: 'long' },
@@ -531,8 +503,6 @@ export const StoreReturn = {
     properties: {
         returnId: { type: 'long' },
 
-
-
         orderId: { type: 'long' },
         orderItemId: { type: 'long' },
         voucherId: { type: 'long' },
@@ -545,8 +515,6 @@ export const WishList = {
     type: 'object',
     properties: {
         wishListId: { type: 'long' },
-
-
 
         name: { type: 'String' },
         description: { type: 'String' },
@@ -577,8 +545,6 @@ export const Tax = {
     properties: {
         taxId: { type: 'long' },
 
-
-
         name: { type: 'String' },
         rate: { type: 'double' },
         status: { type: 'String' },
@@ -589,8 +555,6 @@ export const TaxRule = {
     type: 'object',
     properties: {
         taxRuleId: { type: 'long' },
-
-
 
         taxId: { type: 'long' },
         rate: { type: 'double' },
@@ -604,8 +568,6 @@ export const SupplierOrder = {
     type: 'object',
     properties: {
         supplierOrderId: { type: 'long' },
-
-
 
         supplierId: { type: 'long' },
         deliveryDate: { type: 'Date' },
@@ -652,8 +614,6 @@ export const Brand = {
     properties: {
         brandId: { type: 'long' },
 
-
-
         name: { type: 'String' },
         description: { type: 'String' },
         rating: { type: 'String' },
@@ -668,8 +628,6 @@ export const BrandItem = {
     properties: {
         brandItemId: { type: 'long' },
 
-
-
         brandId: { type: 'long' },
         name: { type: 'String' },
         description: { type: 'String' },
@@ -682,8 +640,6 @@ export const Stock = {
     type: 'object',
     properties: {
         stockId: { type: 'long' },
-
-
 
         warehouseId: { type: 'String' },
         itemId: { type: 'long' },
@@ -702,8 +658,6 @@ export const StockMovement = {
     properties: {
         stockMovementId: { type: 'long' },
 
-
-
         stockId: { type: 'String' },
         orderItemId: { type: 'String' },
         supplyOrderId: { type: 'String' },
@@ -720,8 +674,6 @@ export const StockTransfer = {
     properties: {
         stockTransferId: { type: 'long' },
 
-
-
         stockId: { type: 'long' },
         fromId: { type: 'long' },
         toId: { type: 'long' },
@@ -736,8 +688,6 @@ export const StockReturn = {
     type: 'object',
     properties: {
         stockReturnId: { type: 'long' },
-
-
 
         orderItemId: { type: 'long' },
         warehouseId: { type: 'long' },
@@ -754,8 +704,6 @@ export const Shipping = {
     properties: {
         shipingId: { type: 'long' },
 
-
-
         stockMovementId: { type: 'String' },
         orderItemId: { type: 'String' },
         shipAddressId: { type: 'long' },
@@ -771,8 +719,6 @@ export const Warehouse = {
     type: 'object',
     properties: {
         warehouseId: { type: 'long' },
-
-
 
         name: { type: 'String' },
         type: { type: 'String' },
@@ -802,8 +748,6 @@ export const PointOfSale = {
     properties: {
         posId: { type: 'long' },
 
-
-
         name: { type: 'String' },
         encodig: { type: 'String' },
         pattern: { type: 'String' },
@@ -819,8 +763,6 @@ export const PointOfSaleSession = {
     properties: {
         sessionId: { type: 'long' },
 
-
-
         posId: { type: 'String' },
         startDate: { type: 'String' },
         endTime: { type: 'String' },
@@ -832,8 +774,6 @@ export const BarcodeReader = {
     type: 'object',
     properties: {
         readerId: { type: 'long' },
-
-
 
         name: { type: 'String' },
         encodig: { type: 'String' },
@@ -850,8 +790,6 @@ export const Printer = {
     properties: {
         readerId: { type: 'long' },
 
-
-
         name: { type: 'String' },
         encodig: { type: 'String' },
         pattern: { type: 'String' },
@@ -867,8 +805,6 @@ export const CashBox = {
     properties: {
         readerId: { type: 'long' },
 
-
-
         name: { type: 'String' },
         encodig: { type: 'String' },
         pattern: { type: 'String' },
@@ -879,62 +815,585 @@ export const CashBox = {
     },
 } as const;
 
-export const NotificationTemplate = {
+export const Bank = {
     type: 'object',
     properties: {
-        templateId: { type: 'long' },
+        bankId: { type: 'long' },
 
-
-
-        fromName: { type: 'String' },
-        fromAddress: { type: 'String' },
-        cc: { type: 'String' },
-        bcc: { type: 'String' },
-        title: { type: 'String' },
-        body: { type: 'String' },
-        bodyHtml: { type: 'String' },
+        name: { type: 'String' },
+        code: { type: 'String' },
+        iban: { type: 'String' },
+        swiftcode: { type: 'String' },
+        country: { type: 'String' },
         status: { type: 'String' },
-        notificationType: { type: 'String' },
-        notificationDestination: { type: 'String' },
     },
 } as const;
 
-export const NotificationLog = {
+export const BankAccount = {
+    type: 'object',
+    properties: {
+        accountId: { type: 'long' },
+
+        bankId: { type: 'long' },
+        number: { type: 'String' },
+        name: { type: 'String' },
+        swiftcode: { type: 'String' },
+        type: { type: 'String' },
+        currency: { type: 'String' },
+        status: { type: 'String' },
+        state: { type: 'String' },
+        balanceAvailable: { type: 'double' },
+        balanceCurrent: { type: 'double' },
+    },
+} as const;
+
+export const Wallet = {
+    type: 'object',
+    properties: {
+        walletId: { type: 'long' },
+
+        number: { type: 'String' },
+        name: { type: 'String' },
+        type: { type: 'String' },
+        currency: { type: 'String' },
+        status: { type: 'String' },
+        state: { type: 'String' },
+        balanceAvailable: { type: 'double' },
+        balanceCurrent: { type: 'double' },
+    },
+} as const;
+
+export const Biller = {
+    type: 'object',
+    properties: {
+        billderId: { type: 'long' },
+
+        name: { type: 'String' },
+        logo: { type: 'String' },
+        email: { type: 'String' },
+        website: { type: 'String' },
+        contactName: { type: 'String' },
+        contactEmail: { type: 'String' },
+        contactPhone: { type: 'String' },
+        debitAccount: { type: 'String' },
+        creditAccount: { type: 'String' },
+        category: { type: 'String' },
+        status: { type: 'String' },
+    },
+} as const;
+
+export const BillerItem = {
+    type: 'object',
+    properties: {
+        billderItemId: { type: 'long' },
+
+        billerId: { type: 'String' },
+        name: { type: 'String' },
+        description: { type: 'String' },
+        logo: { type: 'String' },
+        amount: { type: 'String' },
+        type: { type: 'String' },
+        url: { type: 'String' },
+        category: { type: 'String' },
+        status: { type: 'String' },
+    },
+} as const;
+
+export const Merchant = {
+    type: 'object',
+    properties: {
+        merchantId: { type: 'long' },
+
+        number: { type: 'String' },
+        name: { type: 'String' },
+        description: { type: 'String' },
+        status: { type: 'String' },
+        state: { type: 'String' },
+        balanceAvailable: { type: 'double' },
+        balanceCurrent: { type: 'double' },
+    },
+} as const;
+
+export const MerchantBrand = {
+    type: 'object',
+    properties: {
+        merchantId: { type: 'long' },
+    },
+} as const;
+
+export const MerchantBiller = {
+    type: 'object',
+    properties: {
+        myContactId: { type: 'long' },
+
+        myCountryId: { type: 'long' },
+        myGroupId: { type: 'long' },
+        state: { type: 'String' },
+        title: { type: 'String' },
+        postCode: { type: 'String' },
+        email: { type: 'String' },
+        website: { type: 'String' },
+        firstName: { type: 'String' },
+        lastName: { type: 'String' },
+        otherNames: { type: 'String' },
+        company: { type: 'String' },
+        gender: { type: 'String' },
+        dateOfBirth: { type: 'Date' },
+        contactType: { type: 'String' },
+        phone: { type: 'String' },
+        status: { type: 'String' },
+    },
+} as const;
+
+export const MerchantUser = {
+    type: 'object',
+    properties: {
+        mercehantUserId: { type: 'long' },
+    },
+} as const;
+
+export const Card = {
+    type: 'object',
+    properties: {
+        cardId: { type: 'long' },
+
+        pan: { type: 'String' },
+        cardType: { type: 'String' },
+        expiry: { type: 'long' },
+        pinOffset: { type: 'String' },
+        accountNo: { type: 'String' },
+        customerName: { type: 'String' },
+        branch: { type: 'String' },
+        cardState: { type: 'String' },
+        cartStatus: { type: 'String' },
+    },
+} as const;
+
+export const CardAllowed = {
+    type: 'object',
+    properties: {
+        cardId: { type: 'long' },
+
+        pan: { type: 'String' },
+        cardType: { type: 'String' },
+        expiry: { type: 'long' },
+        pinOffset: { type: 'String' },
+        accountNo: { type: 'String' },
+        customerName: { type: 'String' },
+        branch: { type: 'String' },
+        cardState: { type: 'String' },
+        cartStatus: { type: 'String' },
+    },
+} as const;
+
+export const CardReader = {
+    type: 'object',
+    properties: {
+        readerId: { type: 'long' },
+
+        serial: { type: 'String' },
+        key: { type: 'String' },
+        threshold: { type: 'String' },
+        status: { type: 'String' },
+    },
+} as const;
+
+export const CardReaderAllowed = {
+    type: 'object',
+    properties: {
+        readerId: { type: 'long' },
+
+        serial: { type: 'String' },
+        key: { type: 'String' },
+        threshold: { type: 'String' },
+        status: { type: 'String' },
+    },
+} as const;
+
+export const CardReaderLog = {
     type: 'object',
     properties: {
         logId: { type: 'long' },
 
+        transactionNumber: { type: 'String' },
+        readerId: { type: 'String' },
+        cardType: { type: 'String' },
+        pan: { type: 'String' },
+        expiry: { type: 'long' },
+        pin: { type: 'String' },
+        name: { type: 'String' },
+        cvv: { type: 'String' },
+        accountType: { type: 'String' },
+        amount: { type: 'String' },
+        transactionType: { type: 'String' },
+        raw: { type: 'String' },
+        uf1: { type: 'String' },
+        uf2: { type: 'String' },
+        uf3: { type: 'String' },
+        uf4: { type: 'String' },
+        uf5: { type: 'String' },
+        transactionState: { type: 'String' },
+        transactionStatus: { type: 'String' },
+    },
+} as const;
 
+export const Pos = {
+    type: 'object',
+    properties: {
+        posId: { type: 'long' },
 
-        itemId: { type: 'long' },
-        templateId: { type: 'long' },
-        notificationType: { type: 'String' },
-        notificationDestination: { type: 'String' },
-        fromName: { type: 'String' },
-        fromAddress: { type: 'String' },
-        toAddress: { type: 'String' },
-        toName: { type: 'String' },
-        cc: { type: 'String' },
-        bcc: { type: 'String' },
-        title: { type: 'String' },
-        body: { type: 'String' },
-        bodyHtml: { type: 'String' },
-        attachFile: { type: 'String' },
-        firstTry: { type: 'Date' },
-        lastTry: { type: 'Date' },
-        nextTry: { type: 'Date' },
-        tryCount: { type: 'Long' },
+        pan: { type: 'String' },
+        cardType: { type: 'String' },
+        expiry: { type: 'long' },
+        pinOffset: { type: 'String' },
+        accountNo: { type: 'String' },
+        customerName: { type: 'String' },
+        branch: { type: 'String' },
+        cardState: { type: 'String' },
+        cartStatus: { type: 'String' },
+    },
+} as const;
+
+export const PosAllowed = {
+    type: 'object',
+    properties: {
+        posId: { type: 'long' },
+
+        pan: { type: 'String' },
+        cardType: { type: 'String' },
+        expiry: { type: 'long' },
+        pinOffset: { type: 'String' },
+        accountNo: { type: 'String' },
+        customerName: { type: 'String' },
+        branch: { type: 'String' },
+        cardState: { type: 'String' },
+        cartStatus: { type: 'String' },
+    },
+} as const;
+
+export const PosLog = {
+    type: 'object',
+    properties: {
+        logId: { type: 'long' },
+
+        transactionNumber: { type: 'String' },
+        readerId: { type: 'String' },
+        cardType: { type: 'String' },
+        pan: { type: 'String' },
+        expiry: { type: 'long' },
+        pin: { type: 'String' },
+        name: { type: 'String' },
+        cvv: { type: 'String' },
+        accountType: { type: 'String' },
+        amount: { type: 'String' },
+        transactionType: { type: 'String' },
+        raw: { type: 'String' },
+        uf1: { type: 'String' },
+        uf2: { type: 'String' },
+        uf3: { type: 'String' },
+        uf4: { type: 'String' },
+        uf5: { type: 'String' },
+        transactionState: { type: 'String' },
+        transactionStatus: { type: 'String' },
+    },
+} as const;
+
+export const Transaction = {
+    type: 'object',
+    properties: {
+        transactionId: { type: 'long' },
+
+        transactionNumber: { type: 'long' },
+    },
+} as const;
+
+export const TransactionItem = {
+    type: 'object',
+    properties: {
+        transactionItemId: { type: 'long' },
+
+        transactionId: { type: 'long' },
+        transactionItemNumber: { type: 'long' },
+        transaction: { type: 'long' },
+        message: { type: 'long' },
+        code: { type: 'long' },
+        text: { type: 'long' },
+        refTransID: { type: 'long' },
+        splitTenderId: { type: 'long' },
+        submitTimeUTC: { type: 'long' },
+        submitTimeLocal: { type: 'long' },
+        transactionType: { type: 'long' },
+        transactionStatus: { type: 'long' },
+        responseCode: { type: 'long' },
+        responseReasonCode: { type: 'long' },
+        responseReasonDescription: { type: 'long' },
+        AVSResponse: { type: 'long' },
+        cardCodeResponse: { type: 'long' },
+        CAVVResponse: { type: 'long' },
+        FDSFilterAction: { type: 'long' },
+        FDSFilters: { type: 'long' },
+        batch: { type: 'long' },
+        order: { type: 'long' },
+        invoiceNumber: { type: 'long' },
+        description: { type: 'long' },
+        purchaseOrderNumber: { type: 'long' },
+        requestedAmount: { type: 'long' },
+        authAmount: { type: 'long' },
+        settleAmount: { type: 'long' },
+        tax: { type: 'long' },
+        shipping: { type: 'long' },
+        duty: { type: 'long' },
+        creditCard: { type: 'long' },
+        cardNumber: { type: 'long' },
+        cardType: { type: 'long' },
+        bankAccount: { type: 'long' },
+        routingNumber: { type: 'long' },
+        accountNumber: { type: 'long' },
+        nameOnAccount: { type: 'long' },
+        echeckType: { type: 'long' },
+        customer: { type: 'long' },
+        billTo: { type: 'long' },
+        shipTo: { type: 'long' },
+        recurringBilling: { type: 'long' },
+        customerIP: { type: 'long' },
+        merchant: { type: 'long' },
+        issuer: { type: 'long' },
+    },
+} as const;
+
+export const TransactionResponse = {
+    type: 'object',
+    properties: {
+        transactionResponseId: { type: 'long' },
+
+        customerdetails: { type: 'long' },
+        billdetails: { type: 'long' },
+        shipdetails: { type: 'long' },
+        carddetails: { type: 'long' },
+        bankdetails: { type: 'long' },
+        paymentdetails: { type: 'long' },
+        transactiondetails: { type: 'long' },
+        buttondetails: { type: 'long' },
+    },
+} as const;
+
+export const Processor = {
+    type: 'object',
+    properties: {
+        paymentGatewayId: { type: 'long' },
+
+        name: { type: 'String' },
+        gatewayType: { type: 'String' },
+        Description: { type: 'String' },
+        userName: { type: 'String' },
+        password: { type: 'String' },
+        param1: { type: 'String' },
+        param2: { type: 'String' },
+        param3: { type: 'String' },
+        param4: { type: 'String' },
         status: { type: 'String' },
+        displayPosition: { type: 'long' },
+    },
+} as const;
+
+export const PaymentGateway = {
+    type: 'object',
+    properties: {
+        paymentGatewayId: { type: 'long' },
+
+        name: { type: 'String' },
+        gatewayType: { type: 'String' },
+        Description: { type: 'String' },
+        userName: { type: 'String' },
+        password: { type: 'String' },
+        param1: { type: 'String' },
+        param2: { type: 'String' },
+        param3: { type: 'String' },
+        param4: { type: 'String' },
+        status: { type: 'String' },
+        displayPosition: { type: 'long' },
+    },
+} as const;
+
+export const PaymentItem = {
+    type: 'object',
+    properties: {
+        paymentItemId: { type: 'long' },
+
+        orderNumber: { type: 'String' },
+        gateway: { type: 'String' },
+        amount: { type: 'double' },
+        tnxref: { type: 'String' },
+        remarks: { type: 'String' },
+        status: { type: 'String' },
+    },
+} as const;
+
+export const BlockPayment = {
+    type: 'object',
+    properties: {
+        merchantId: { type: 'long' },
+    },
+} as const;
+
+export const Fee = {
+    type: 'object',
+    properties: {
+        feeId: { type: 'long' },
+
+        orderNumber: { type: 'String' },
+        gateway: { type: 'String' },
+        amount: { type: 'double' },
+        tnxref: { type: 'String' },
+        remarks: { type: 'String' },
+        status: { type: 'String' },
+    },
+} as const;
+
+export const FeeItem = {
+    type: 'object',
+    properties: {
+        feeItemId: { type: 'long' },
+
+        orderNumber: { type: 'String' },
+        gateway: { type: 'String' },
+        amount: { type: 'double' },
+        tnxref: { type: 'String' },
+        remarks: { type: 'String' },
+        status: { type: 'String' },
+    },
+} as const;
+
+export const Currency = {
+    type: 'object',
+    properties: {
+        currencyId: { type: 'long' },
+
+        currencyCode: { type: 'String' },
+        currencySymbol: { type: 'String' },
+        description: { type: 'String' },
+        currencyRate: { type: 'double' },
+        decimalFormat: { type: 'String' },
+        dollarValue: { type: 'double' },
+        status: { type: 'String' },
+    },
+} as const;
+
+export const Beneficiary = {
+    type: 'object',
+    properties: {
+        myContactId: { type: 'long' },
+
+        myCountryId: { type: 'long' },
+        myGroupId: { type: 'long' },
         state: { type: 'String' },
-        uniqueId: { type: 'String' },
-        delivered: { type: 'boolean' },
-        bounced: { type: 'boolean' },
-        bounceType: { type: 'String' },
-        clicked: { type: 'boolean' },
-        client: { type: 'String' },
-        opened: { type: 'boolean' },
-        share: { type: 'boolean' },
-        spam: { type: 'boolean' },
+        title: { type: 'String' },
+        postCode: { type: 'String' },
+        email: { type: 'String' },
+        website: { type: 'String' },
+        firstName: { type: 'String' },
+        lastName: { type: 'String' },
+        otherNames: { type: 'String' },
+        company: { type: 'String' },
+        gender: { type: 'String' },
+        dateOfBirth: { type: 'Date' },
+        contactType: { type: 'String' },
+        phone: { type: 'String' },
+        status: { type: 'String' },
+    },
+} as const;
+
+
+export const Button = {
+    type: 'object',
+    properties: {
+        buttonId: { type: 'long' },
+
+        username: { type: 'long' },
+        password: { type: 'long' },
+        signature: { type: 'long' },
+        amount: { type: 'long' },
+        ack: { type: 'long' },
+        correlationId: { type: 'long' },
+        currency: { type: 'long' },
+        returnUrl: { type: 'long' },
+        buttonType: { type: 'long' },
+        test: { type: 'long' },
+        cancelUrl: { type: 'long' },
+        token: { type: 'long' },
+        cmd: { type: 'long' },
+        METHOD: { type: 'long' },
+        BUTTONCODE: { type: 'long' },
+        BUTTONIMAGE: { type: 'long' },
+        BUTTONIMAGEURL: { type: 'long' },
+        BUYNOWTEXT: { type: 'long' },
+        SUBSCRIBETEXT: { type: 'long' },
+    },
+} as const;
+
+export const ButtonItem = {
+    type: 'object',
+    properties: {
+        buttonItemId: { type: 'long' },
+
+        buttonId: { type: 'long' },
+        buttonNumber: { type: 'long' },
+        username: { type: 'long' },
+        password: { type: 'long' },
+        signature: { type: 'long' },
+        amount: { type: 'long' },
+        ack: { type: 'long' },
+        correlationId: { type: 'long' },
+        currency: { type: 'long' },
+        returnUrl: { type: 'long' },
+        buttonType: { type: 'long' },
+        cancelUrl: { type: 'long' },
+        token: { type: 'long' },
+        cmd: { type: 'long' },
+        build: { type: 'long' },
+        version: { type: 'long' },
+        timestamp: { type: 'long' },
+    },
+} as const;
+
+export const Workspace = {
+    type: 'object',
+    properties: {
+        workspaceId: { type: 'long' },
+
+        name: { type: 'String' },
+        description: { type: 'String' },
+        style: { type: 'String' },
+        position: { type: 'String' },
+    },
+} as const;
+
+export const WorkspaceItem = {
+    type: 'object',
+    properties: {
+        itemId: { type: 'long' },
+
+        workspaceId: { type: 'long' },
+        name: { type: 'String' },
+        description: { type: 'String' },
+        type: { type: 'String' },
+        data: { type: 'String' },
+        style: { type: 'String' },
+    },
+} as const;
+
+export const MyEvent = {
+    type: 'object',
+    properties: {
+        myEventId: { type: 'long' },
+        ownerType: { type: 'String' },
+        ownerId: { type: 'long' },
+        eventName: { type: 'String' },
+        eventType: { type: 'String' },
+        startTime: { type: 'Date' },
+        endTime: { type: 'Date' },
+        eventStatus: { type: 'String' },
+        description: { type: 'String' },
         remarks: { type: 'String' },
     },
 } as const;

@@ -1,21 +1,25 @@
 import { FromSchema } from 'json-schema-to-ts';
-export type PhoneModel = FromSchema<typeof PhoneSchema>;
 
-export const PhoneSchema = {
-    type: 'object',
-    properties: {
-        phone: {
-            type: 'string',
+export const PhoneSchema = () => {
+    return {
+        type: 'object',
+        properties: {
+            phone: {
+                type: 'string',
+            },
+            extension: {
+                type: 'string',
+            },
+            typeid: {
+                type: 'string',
+            },
+            primary: {
+                type: 'string',
+                default: 'false',
+            },
         },
-        extension: {
-            type: 'string',
-        },
-        typeid: {
-            type: 'string',
-        },
-        primary: {
-            type: 'string',
-            default: 'false',
-        },
-    },
-} as const;
+    } as const;
+}
+
+const dd = PhoneSchema();
+export type PhoneModel = FromSchema<typeof dd>;

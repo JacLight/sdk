@@ -1,6 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 
-export const PostSchema = () => {
+export const MessageTemplateSchema = () => {
     return {
         type: 'object',
         properties: {
@@ -11,25 +11,32 @@ export const PostSchema = () => {
                 maxLength: 50,
                 unique: true
             },
+            from: {
+                type: 'string',
+            },
+            to: {
+                type: 'string',
+            },
             title: {
                 type: 'string',
             },
-            slug: {
-                type: 'string',
-                pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
-            },
-            content: {
+            email: {
                 type: 'string',
                 fieldType: "Rich Text Editor",
                 displayStyle: "full"
             },
-            image: {
+            emailtext: {
                 type: 'string',
-                fieldType: "Upload",
+                inputStyle: "textarea",
+            },
+            sms: {
+                type: 'string',
+                inputStyle: "textarea",
+                maxLength: 150,
             },
         },
     } as const
-};
+}
 
-const ps = PostSchema();
-export type PostModel = FromSchema<typeof ps>;
+const dd = MessageTemplateSchema();
+export type MessageTemplateModel = FromSchema<typeof dd>;

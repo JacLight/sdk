@@ -1,11 +1,15 @@
 import { CategoryRules, CategorySchema, CategoryUI } from "./models/category";
 import { NavigationRules, NavigationSchema, NavigationUI } from "./models/navigation";
 import { TagRules, TagSchema, TagUI } from "./models/tag";
-import { BaseModel } from "./models/base.model";
+import { BaseModel, WorkflowDefinationSchema } from "./models/base.model";
 import { CollectionModel, CollectionRules, CollectionSchema, CollectionUI } from "./models/collection";
 import { PageRules, PageSchema, PageUI } from "./models/page";
 import { SiteSchema, SiteUI } from "./models/site";
 import { DataType, CollectionType } from "./types";
+import { UserGroupModel, UserModel, UserRoleModel } from "@models/user";
+import { SettingModel } from "@models/setting";
+import { PermissionModel } from "@models/permission";
+import { CommentSchema, MessageTemplateSchema, PasswordPolicySchema, PermissionSchema, PostSchema, SettingSchema, UserGroupSchema, UserRoleSchema, UserSchema } from "./models";
 
 
 export const getConcreteCollection = (datatype: DataType | string) => {
@@ -19,6 +23,16 @@ export const getConcreteCollections = () => {
     concreteCollections.set(DataType.collection, createConcreteCollection(DataType.collection, collectionCollection));
     concreteCollections.set(DataType.category, createConcreteCollection(DataType.category, categoryCollection));
     concreteCollections.set(DataType.navigation, createConcreteCollection(DataType.navigation, navigationCollection));
+    concreteCollections.set(DataType.messagetemplate, createConcreteCollection(DataType.messagetemplate, messageTemplateCollection));
+    concreteCollections.set(DataType.post, createConcreteCollection(DataType.post, postCollection));
+    concreteCollections.set(DataType.comment, createConcreteCollection(DataType.comment, commentCollection));
+    concreteCollections.set(DataType.workflow, createConcreteCollection(DataType.workflow, workflowCollection));
+    concreteCollections.set(DataType.user, createConcreteCollection(DataType.user, userCollection));
+    concreteCollections.set(DataType.userrole, createConcreteCollection(DataType.userrole, userRoleCollection));
+    concreteCollections.set(DataType.setting, createConcreteCollection(DataType.setting, settingCollection));
+    concreteCollections.set(DataType.permission, createConcreteCollection(DataType.permission, permissionCollection));
+    concreteCollections.set(DataType.usergroup, createConcreteCollection(DataType.usergroup, userGroupCollection));
+    concreteCollections.set(DataType.passwordpolicy, createConcreteCollection(DataType.passwordpolicy, passwordPolicyCollection));
     concreteCollections.set(DataType.tag, createConcreteCollection(DataType.tag, tagCollection));
     return concreteCollections
 };
@@ -38,7 +52,7 @@ const pageCollection: CollectionModel = {
     title: 'Page',
     description: 'Page',
     type: CollectionType.Concrete,
-    enableAssetFramework: true,
+    enablePost: true,
     enableWorkflow: true,
     enableVersioning: true,
     enableIndexing: true,
@@ -54,7 +68,7 @@ const siteCollection: CollectionModel = {
     title: 'Site',
     description: 'Site',
     type: CollectionType.Concrete,
-    enableAssetFramework: true,
+    enablePost: true,
     enableWorkflow: true,
     enableVersioning: true,
     enableIndexing: true,
@@ -70,7 +84,7 @@ const collectionCollection: CollectionModel = {
     title: 'Collection',
     description: 'Collection',
     type: CollectionType.Concrete,
-    enableAssetFramework: true,
+    enablePost: true,
     enableWorkflow: true,
     enableVersioning: true,
     enableIndexing: true,
@@ -86,7 +100,7 @@ const categoryCollection: CollectionModel = {
     title: 'Category',
     description: 'Category',
     type: CollectionType.Concrete,
-    enableAssetFramework: true,
+    enablePost: true,
     enableWorkflow: true,
     enableVersioning: true,
     enableIndexing: true,
@@ -102,14 +116,14 @@ const navigationCollection: CollectionModel = {
     title: 'Navigation',
     description: 'Navigation',
     type: CollectionType.Concrete,
-    enableAssetFramework: true,
+    enablePost: true,
     enableWorkflow: true,
     enableVersioning: true,
     enableIndexing: true,
     permission: {},
     rules: NavigationRules(),
     validations: {},
-    schema: NavigationSchema(),
+    schema: NavigationSchema() as any,
     uischema: NavigationUI()
 };
 
@@ -118,7 +132,7 @@ const tagCollection: CollectionModel = {
     title: 'Tag',
     description: 'Tag',
     type: CollectionType.Concrete,
-    enableAssetFramework: true,
+    enablePost: true,
     enableWorkflow: true,
     enableVersioning: true,
     enableIndexing: true,
@@ -128,3 +142,280 @@ const tagCollection: CollectionModel = {
     schema: TagSchema(),
     uischema: TagUI()
 };
+
+
+const messageTemplateCollection: CollectionModel = {
+    name: 'messageemplate',
+    title: 'MessageTemplate',
+    description: 'MessageTemplate',
+    type: CollectionType.Concrete,
+    enablePost: true,
+    enableWorkflow: true,
+    enableVersioning: true,
+    enableIndexing: true,
+    permission: {},
+    rules: {} as any,
+    validations: {},
+    schema: MessageTemplateSchema(),
+    uischema: {} as any
+};
+
+const userCollection: CollectionModel = {
+    name: 'user',
+    title: 'User',
+    description: 'User',
+    type: CollectionType.Concrete,
+    enablePost: true,
+    enableWorkflow: true,
+    enableVersioning: true,
+    enableIndexing: true,
+    permission: {},
+    rules: {} as any,
+    validations: {},
+    schema: UserSchema(),
+    uischema: {} as any
+};
+
+const userGroupCollection: CollectionModel = {
+    name: 'usergroup',
+    title: 'User Group',
+    description: 'User Group',
+    type: CollectionType.Concrete,
+    enablePost: true,
+    enableWorkflow: true,
+    enableVersioning: true,
+    enableIndexing: true,
+    permission: {},
+    rules: {} as any,
+    validations: {},
+    schema: UserGroupSchema(),
+    uischema: {} as any
+};
+
+const settingCollection: CollectionModel = {
+    name: 'setting',
+    title: 'Setting',
+    description: 'Setting',
+    type: CollectionType.Concrete,
+    enablePost: true,
+    enableWorkflow: true,
+    enableVersioning: true,
+    enableIndexing: true,
+    permission: {},
+    rules: {} as any,
+    validations: {},
+    schema: SettingSchema() as any,
+    uischema: {} as any
+};
+
+
+const permissionCollection: CollectionModel = {
+    name: 'permission',
+    title: 'Permission',
+    description: 'Permission',
+    type: CollectionType.Concrete,
+    enablePost: true,
+    enableWorkflow: true,
+    enableVersioning: true,
+    enableIndexing: true,
+    permission: {},
+    rules: {} as any,
+    validations: {},
+    schema: PermissionSchema(),
+    uischema: {} as any
+};
+
+
+const userRoleCollection: CollectionModel = {
+    name: 'userrole',
+    title: 'User Role',
+    description: 'User Role',
+    type: CollectionType.Concrete,
+    enablePost: true,
+    enableWorkflow: true,
+    enableVersioning: true,
+    enableIndexing: true,
+    permission: {},
+    rules: {} as any,
+    validations: {},
+    schema: UserRoleSchema(),
+    uischema: {} as any
+};
+
+const postCollection: CollectionModel = {
+    name: 'post',
+    title: 'Post',
+    description: 'Post',
+    type: CollectionType.Concrete,
+    enablePost: true,
+    enableWorkflow: true,
+    enableVersioning: true,
+    enableIndexing: true,
+    permission: {},
+    rules: {} as any,
+    validations: {},
+    schema: PostSchema(),
+    uischema: {} as any
+};
+
+
+const workflowCollection: CollectionModel = {
+    name: 'workflow',
+    title: 'Workflow',
+    description: 'Workflow',
+    type: CollectionType.Concrete,
+    enablePost: true,
+    enableWorkflow: true,
+    enableVersioning: true,
+    enableIndexing: true,
+    permission: {},
+    rules: {} as any,
+    validations: {},
+    schema: WorkflowDefinationSchema(),
+    uischema: {} as any
+};
+
+const commentCollection: CollectionModel = {
+    name: 'comment',
+    title: 'Comment',
+    description: 'Comment',
+    type: CollectionType.Concrete,
+    enablePost: true,
+    enableWorkflow: true,
+    enableVersioning: true,
+    enableIndexing: true,
+    permission: {},
+    rules: {} as any,
+    validations: {},
+    schema: CommentSchema(),
+    uischema: {} as any
+};
+
+const passwordPolicyCollection: CollectionModel = {
+    name: 'passwordpolicy',
+    title: 'PasswordPolicy',
+    description: 'PasswordPolicy',
+    type: CollectionType.Concrete,
+    enablePost: true,
+    enableWorkflow: true,
+    enableVersioning: true,
+    enableIndexing: true,
+    permission: {},
+    rules: {} as any,
+    validations: {},
+    schema: PasswordPolicySchema(),
+    uischema: {} as any
+};
+
+// Guest, User, Owner, Publisher, Reviewer, PowerUser, Administrator
+const createRole = (name: string, description: string, permissions: string[], users: string[], groups: string[]) => {
+    return { name, description, permissions, users, groups }
+}
+export const roles: UserRoleModel[] = [];
+roles.push(createRole('Administrator', 'Administrators are super users who can do anything.', [], [], []))
+roles.push(createRole('PowerUser', 'PowerUser users who can view data across the company, cannot change permissions', [], [], []))
+roles.push(createRole('Owner', 'This is an implied role with respect to the objects users create. This role is automatically assigned.', [], [], []))
+roles.push(createRole('Publisher', 'This is an autogenerated role from the workflow definition.', [], [], []))
+roles.push(createRole('Reviewer', 'Administrators are super users who can do anything.', [], [], []))
+roles.push(createRole('User', 'Authenticated users should be assigned this role. This role is automatically assigned.', [], [], []))
+roles.push(createRole('Guest', 'Unauthenticated users always have this role. This role is automatically assigned.', [], [], []))
+
+
+
+const createUser = (firstname: string, lastname: string, email: string, password: string, groups: string[]) => {
+    return { firstname, lastname, email, password, groups }
+}
+export const users: UserModel[] = [];
+users.push(createUser('imzee', 'jac', 'imzee@local.com', 'aaaaaa', ['Admin']))
+users.push(createUser('admin', 'user', 'admin@local.com', 'aaaaaa', ['Admin']))
+users.push(createUser('visitor', 'user', 'visitor@local.com', 'guest', ['Agent']))
+users.push(createUser('Help', 'user', 'helpuser@local.com', 'guest', ['Guest']))
+
+
+const createGroup = (name: string, description: string, roles: string[]) => {
+    return { name, description, roles }
+}
+export const groups: UserGroupModel[] = [];
+groups.push(createGroup('Guest', 'Unauthenticated users', ['Guest']))
+groups.push(createGroup('Agent', 'Help Desk User Group', ['Reviewer', 'Publisher']))
+groups.push(createGroup('Customer', 'Site users, authenticated users', ['User']))
+groups.push(createGroup('Admin', 'Site Administrator', ['Administrator']))
+
+const createPermission = (resourcetype: "component" | "collection" | "route", resourceid: string, view: boolean, add: boolean, configure: boolean, remove: boolean): PermissionModel => {
+    return { resourcetype, resourceid, allow: { view, configure, add, remove }, deny: {} }
+}
+const adminPermissions: PermissionModel = { ownertype: "role", ownerid: "Administrator", permissions: [] };
+adminPermissions.permissions.push(createPermission('component', 'site', true, true, true, true))
+adminPermissions.permissions.push(createPermission('component', 'collection', true, true, true, true))
+
+const powerPermissions: PermissionModel = { ownertype: "role", ownerid: "PowerUser", permissions: [] };
+powerPermissions.permissions.push(createPermission('component', 'site', true, true, true, true))
+powerPermissions.permissions.push(createPermission('component', 'collection', true, true, true, true))
+
+const reviewerPermissions: PermissionModel = { ownertype: "role", ownerid: "Reviewer", permissions: [] };
+reviewerPermissions.permissions.push(createPermission('component', 'site', true, true, false, false))
+reviewerPermissions.permissions.push(createPermission('component', 'collection', true, true, false, false))
+
+const publisherPermissions: PermissionModel = { ownertype: "role", ownerid: "Publisher", permissions: [] };
+publisherPermissions.permissions.push(createPermission('component', 'site', true, true, true, false))
+publisherPermissions.permissions.push(createPermission('component', 'collection', true, true, true, false))
+
+const userPermissions: PermissionModel = { ownertype: "role", ownerid: "User", permissions: [] };
+userPermissions.permissions.push(createPermission('component', 'site', true, false, false, false))
+userPermissions.permissions.push(createPermission('component', 'collection', true, false, false, false))
+
+const guestPermissions: PermissionModel = { ownertype: "role", ownerid: "Guest", permissions: [] };
+guestPermissions.permissions.push(createPermission('component', 'site', true, false, false, false))
+guestPermissions.permissions.push(createPermission('component', 'collection', true, false, false, false))
+
+export const permissions = {
+    Administrator: adminPermissions,
+    PowerUser: powerPermissions,
+    Reviewer: reviewerPermissions,
+    Publisher: publisherPermissions,
+    User: userPermissions,
+    Guest: guestPermissions,
+}
+
+
+export const baseSettings: SettingModel = { name: 'BaseSettings', ownertype: "System", ownerid: "", resources: [] as any };
+const addSetting = (resourcetype: "component" | "collection" | "route", resourceid: string, property: string, value: boolean | number | string) => {
+    const resource: any = baseSettings.resources.find((item: any) => (item.resourcetype === resourcetype && item.resourceid === resourceid));
+    if (!resource) {
+        baseSettings.resources.push({ resourcetype, resourceid, settings: [{ property, value }] })
+        return;
+    }
+
+    if (!resource.settings) {
+        resource['settings'] = [{ property, value }];
+        return;
+    }
+
+    const propValue = resource.settings.find((item: any) => item.property === property);
+    if (propValue) {
+        propValue.value = value;
+    } else {
+        resource['settings'].push({ property, value })
+    }
+}
+addSetting('component', 'dataform', 'width', 600)
+addSetting('component', 'dataform', 'height', 800)
+addSetting('component', 'table', 'pagesize', 100)
+addSetting('component', 'table', 'autoscroll', true)
+addSetting('component', 'table', 'show', true)
+addSetting('component', 'table', 'pagerstyle', 'auto')
+addSetting('component', 'emailserver', 'type', '')
+addSetting('component', 'emailserver', 'url', '')
+addSetting('component', 'emailserver', 'password', '')
+addSetting('component', 'emailserver', 'username', '')
+addSetting('component', 'emailserver', 'username', '')
+addSetting('component', 'emailtemplate', 'order', '')
+addSetting('component', 'emailtemplate', 'ticket', '')
+addSetting('component', 'emailtemplate', 'signup', '')
+addSetting('component', 'emailtemplate', 'passwordreset', '')
+addSetting('component', 'smstemplate', 'order', '')
+addSetting('component', 'smstemplate', 'signup', '')
+addSetting('component', 'smstemplate', 'ticket', '')
+addSetting('component', 'smstemplate', 'passwordreset', '')
+addSetting('component', 'site', 'name', 'Websitemint')
+addSetting('component', 'site', 'domain', 'localhost')

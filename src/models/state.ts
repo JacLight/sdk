@@ -1,21 +1,24 @@
-
 import { FromSchema } from 'json-schema-to-ts';
-export type CountryState = FromSchema<typeof CountryStateSchema>;
 
-export const CountryStateSchema = {
-    type: 'object',
-    properties: {
-        "countryid": {
-            "type": "integer",
+export const CountryStateSchema = () => {
+    return {
+        type: 'object',
+        properties: {
+            countryid: {
+                type: 'integer',
+            },
+            code: {
+                type: 'string',
+            },
+            name: {
+                type: 'string',
+            },
+            phonecode: {
+                type: 'string',
+            },
         },
-        "code": {
-            "type": "string"
-        },
-        "name": {
-            "type": "string"
-        },
-        phonecode: {
-            "type": "string"
-        }
-    }
-} as const
+    } as const;
+}
+
+const dd = CountryStateSchema();
+export type CountryStateModel = FromSchema<typeof dd>;

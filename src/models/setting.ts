@@ -1,48 +1,68 @@
 import { FromSchema } from 'json-schema-to-ts';
 
-export type SettingModel = FromSchema<typeof SettingSchema>;
-
-export const SettingSchema = {
-    type: 'object',
-    properties: {
-        type: {
-            type: 'string',
-        },
-        group: {
-            type: 'string',
-        },
-        owner: {
-            type: 'string',
-            enum: ['system', 'site', 'widget', 'group', 'uesr']
-        },
-        setting: {
-            type: 'array',
-            items: {
-                "type": "object",
-                "properties": {
-                    target: {
-                        type: 'string',
-                    },
-                    value: {
-                        type: ['string', 'boolean', 'number']
+export const SettingSchema = () => {
+    return {
+        type: 'object',
+        properties: {
+            name: {
+                type: 'string',
+                pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
+            },
+            ownertype: {
+                type: 'string' // System, Role, Group, User
+            },
+            ownerid: {
+                type: 'string'
+            },
+            resources: {
+                type: 'array',
+                items: {
+                    type: 'object',
+                    properties: {
+                        resourcetype: {
+                            type: 'string' //components - page, table, upload 
+                        },
+                        resourceid: {
+                            type: 'string'
+                        },
+                        settings: {
+                            type: 'array',
+                            layout: 'horizontal',
+                            items: {
+                                type: 'object',
+                                layout: 'horizontal',
+                                properties: { //property - width, pos, color, etc
+                                    property: {
+                                        type: 'string',
+                                    },
+                                    value: {
+                                        type: 'string',
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
-        }
-    },
-} as const;
+        },
+    } as const;
+}
 
+export const LogSchema = () => {
+    return {
+        type: 'object',
+        properties: {
+            sourceType: { type: 'string' },
+            source: { type: 'string' },
+            logType: { type: 'string' },
+            logMessage: { type: 'string' },
+            status: { type: 'string' },
+        },
+    } as const;
+}
 
+const ush = LogSchema();
+const usgh = SettingSchema();
 
-export const LogSchema = {
-    type: 'object',
-    properties: {
-        machineLogId: { type: 'long' },
-        sourceType: { type: 'String' },
-        sourceId: { type: 'long' },
-        logType: { type: 'String' },
-        logMessage: { type: 'String' },
-        remarks: { type: 'String' },
-        status: { type: 'String' },
-    },
-} as const;
+export type SettingModel = FromSchema<typeof usgh>;
+export type LogModel = FromSchema<typeof ush>;

@@ -61,7 +61,7 @@ export const PageSchema = (title = '', description = '') => {
       slug: {
         type: 'string',
         pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
-        fn: '_.kebabCase(_.deburr(${#ref:/properties/title))',
+        fn: 'return a.name.replace(/\\n/g, "")',
         event: 'onBlur',
       },
       icon: {

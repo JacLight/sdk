@@ -1,3 +1,4 @@
+import { FromSchema } from "json-schema-to-ts";
 import { CollectionRule, CollectionUI } from "./collection";
 import { PageModel } from "./page";
 
@@ -12,11 +13,9 @@ export interface Site {
   pages?: PageModel[];
 }
 
-export const SiteSchema = (title = '', description = '') => {
+export const SiteSchema = () => {
   return {
     type: 'object',
-    title: title,
-    description: description,
     properties: {
       name: {
         type: 'string',
@@ -36,19 +35,14 @@ export const SiteSchema = (title = '', description = '') => {
       hidden: {
         type: 'string',
       },
-      friendly_url: {
+      slug: {
         type: 'string',
       },
       icon: {
         type: 'string',
       },
-      theme_pk: {
+      theme: {
         type: 'string',
-        enum: ['Item 1', 'Item 2'],
-      },
-      color_scheme_id: {
-        type: 'string',
-        enum: ['Item 1', 'Item 2'],
       },
       css: {
         type: 'string',
@@ -56,17 +50,13 @@ export const SiteSchema = (title = '', description = '') => {
       javascript: {
         type: 'string',
       },
-      publish_date: {
-        type: 'string',
-        format: 'date-time',
-      },
-      priority: {
-        type: 'integer',
-      },
     },
-    required: ['name'],
-  };
+  } as const
 };
+
+
+const dd = SiteSchema();
+export type SiteModel = FromSchema<typeof dd>
 
 export const SiteUI = (): CollectionUI[] => {
   return null
