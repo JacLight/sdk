@@ -6,36 +6,7 @@ import { CollectionModel, CollectionRules, CollectionSchema, CollectionUI } from
 import { PageRules, PageSchema, PageUI } from "./models/page";
 import { SiteSchema, SiteUI } from "./models/site";
 import { DataType, CollectionType } from "./types";
-import { UserGroupModel, UserModel, UserRoleModel } from "@models/user";
-import { SettingModel } from "@models/setting";
-import { PermissionModel } from "@models/permission";
-import { CommentSchema, MessageTemplateSchema, PasswordPolicySchema, PermissionSchema, PostSchema, SettingSchema, UserGroupSchema, UserRoleSchema, UserSchema } from "./models";
-
-
-export const getConcreteCollection = (datatype: DataType | string) => {
-    return getConcreteCollections().get(datatype)
-};
-
-export const getConcreteCollections = () => {
-    const concreteCollections = new Map<String, BaseModel<any>>()
-    concreteCollections.set(DataType.page, createConcreteCollection(DataType.page, pageCollection));
-    concreteCollections.set(DataType.site, createConcreteCollection(DataType.site, siteCollection));
-    concreteCollections.set(DataType.collection, createConcreteCollection(DataType.collection, collectionCollection));
-    concreteCollections.set(DataType.category, createConcreteCollection(DataType.category, categoryCollection));
-    concreteCollections.set(DataType.navigation, createConcreteCollection(DataType.navigation, navigationCollection));
-    concreteCollections.set(DataType.messagetemplate, createConcreteCollection(DataType.messagetemplate, messageTemplateCollection));
-    concreteCollections.set(DataType.post, createConcreteCollection(DataType.post, postCollection));
-    concreteCollections.set(DataType.comment, createConcreteCollection(DataType.comment, commentCollection));
-    concreteCollections.set(DataType.workflow, createConcreteCollection(DataType.workflow, workflowCollection));
-    concreteCollections.set(DataType.user, createConcreteCollection(DataType.user, userCollection));
-    concreteCollections.set(DataType.userrole, createConcreteCollection(DataType.userrole, userRoleCollection));
-    concreteCollections.set(DataType.setting, createConcreteCollection(DataType.setting, settingCollection));
-    concreteCollections.set(DataType.permission, createConcreteCollection(DataType.permission, permissionCollection));
-    concreteCollections.set(DataType.usergroup, createConcreteCollection(DataType.usergroup, userGroupCollection));
-    concreteCollections.set(DataType.passwordpolicy, createConcreteCollection(DataType.passwordpolicy, passwordPolicyCollection));
-    concreteCollections.set(DataType.tag, createConcreteCollection(DataType.tag, tagCollection));
-    return concreteCollections
-};
+import { UserGroupModel, UserModel, UserRoleModel, SettingModel, PermissionModel, CommentSchema, MintflowSchema, MessageTemplateSchema, PasswordPolicySchema, CollectionViewSchema, PermissionSchema, PostSchema, SettingSchema, UserGroupSchema, UserRoleSchema, UserSchema } from "./models";
 
 const createConcreteCollection = (dataType: DataType, data: any): BaseModel<any> => {
     return {
@@ -46,6 +17,39 @@ const createConcreteCollection = (dataType: DataType, data: any): BaseModel<any>
         datatype: dataType,
     }
 }
+
+const collectionCollection: CollectionModel = {
+    name: 'collection',
+    title: 'Collection',
+    description: 'Collection',
+    type: CollectionType.Concrete,
+    enablePost: true,
+    enableWorkflow: true,
+    enableVersioning: true,
+    enableIndexing: true,
+    permission: {},
+    rules: CollectionRules(),
+    validations: {},
+    schema: CollectionSchema(),
+    uischema: CollectionUI()
+};
+
+const collectionViewCollection: CollectionModel = {
+    name: 'collectionview',
+    title: 'Collection View',
+    description: 'Collection View',
+    type: CollectionType.Concrete,
+    enablePost: true,
+    enableWorkflow: true,
+    enableVersioning: true,
+    enableIndexing: true,
+    permission: {},
+    rules: {} as any,
+    validations: {},
+    schema: CollectionViewSchema(),
+    uischema: {} as any,
+};
+
 
 const pageCollection: CollectionModel = {
     name: 'page',
@@ -77,22 +81,6 @@ const siteCollection: CollectionModel = {
     validations: {},
     schema: SiteSchema(),
     uischema: SiteUI(),
-};
-
-const collectionCollection: CollectionModel = {
-    name: 'collection',
-    title: 'Collection',
-    description: 'Collection',
-    type: CollectionType.Concrete,
-    enablePost: true,
-    enableWorkflow: true,
-    enableVersioning: true,
-    enableIndexing: true,
-    permission: {},
-    rules: CollectionRules(),
-    validations: {},
-    schema: CollectionSchema(),
-    uischema: CollectionUI()
 };
 
 const categoryCollection: CollectionModel = {
@@ -307,6 +295,43 @@ const passwordPolicyCollection: CollectionModel = {
     uischema: {} as any
 };
 
+const mintflowCollection: CollectionModel = {
+    name: 'mintflow',
+    title: 'MintFlow',
+    description: 'MintFlow',
+    type: CollectionType.Concrete,
+    enablePost: true,
+    enableWorkflow: true,
+    enableVersioning: true,
+    enableIndexing: true,
+    permission: {},
+    rules: {} as any,
+    validations: {},
+    schema: MintflowSchema(),
+    uischema: {} as any
+};
+
+export const concreteCollections = new Map<String, BaseModel<any>>()
+concreteCollections.set(DataType.page, createConcreteCollection(DataType.page, pageCollection));
+concreteCollections.set(DataType.site, createConcreteCollection(DataType.site, siteCollection));
+concreteCollections.set(DataType.collection, createConcreteCollection(DataType.collection, collectionCollection));
+concreteCollections.set(DataType.collectionview, createConcreteCollection(DataType.collectionview, collectionViewCollection));
+concreteCollections.set(DataType.category, createConcreteCollection(DataType.category, categoryCollection));
+concreteCollections.set(DataType.navigation, createConcreteCollection(DataType.navigation, navigationCollection));
+concreteCollections.set(DataType.messagetemplate, createConcreteCollection(DataType.messagetemplate, messageTemplateCollection));
+concreteCollections.set(DataType.post, createConcreteCollection(DataType.post, postCollection));
+concreteCollections.set(DataType.comment, createConcreteCollection(DataType.comment, commentCollection));
+concreteCollections.set(DataType.workflow, createConcreteCollection(DataType.workflow, workflowCollection));
+concreteCollections.set(DataType.user, createConcreteCollection(DataType.user, userCollection));
+concreteCollections.set(DataType.userrole, createConcreteCollection(DataType.userrole, userRoleCollection));
+concreteCollections.set(DataType.setting, createConcreteCollection(DataType.setting, settingCollection));
+concreteCollections.set(DataType.permission, createConcreteCollection(DataType.permission, permissionCollection));
+concreteCollections.set(DataType.usergroup, createConcreteCollection(DataType.usergroup, userGroupCollection));
+concreteCollections.set(DataType.passwordpolicy, createConcreteCollection(DataType.passwordpolicy, passwordPolicyCollection));
+concreteCollections.set(DataType.tag, createConcreteCollection(DataType.tag, tagCollection));
+concreteCollections.set(DataType.mintflow, createConcreteCollection(DataType.mintflow, mintflowCollection));
+
+
 // Guest, User, Owner, Publisher, Reviewer, PowerUser, Administrator
 const createRole = (name: string, description: string, permissions: string[], users: string[], groups: string[]) => {
     return { name, description, permissions, users, groups }
@@ -381,8 +406,9 @@ export const permissions = {
 export const baseSettings: SettingModel = { name: 'BaseSettings', ownertype: "System", ownerid: "", resources: [] as any };
 const addSetting = (resourcetype: "component" | "collection" | "route", resourceid: string, property: string, value: boolean | number | string) => {
     const resource: any = baseSettings.resources.find((item: any) => (item.resourcetype === resourcetype && item.resourceid === resourceid));
+    const valueString: string = value as string;
     if (!resource) {
-        baseSettings.resources.push({ resourcetype, resourceid, settings: [{ property, value }] })
+        baseSettings.resources.push({ resourcetype, resourceid, settings: [{ property, valueString }] })
         return;
     }
 

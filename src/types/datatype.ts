@@ -15,5 +15,8 @@ export enum DataType {
     workflow = "workflow",
     usergroup = 'usergroup',
     permission = 'permission',
-    setting = 'setting'
+    setting = 'setting',
+    collectionview = "collectionview",
+    mintflow = "mintflow",
+    mintflownode = "mintflownode"
 }

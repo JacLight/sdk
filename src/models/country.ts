@@ -4,16 +4,13 @@ export const CountrySchema = () => {
     return {
         type: 'object',
         properties: {
-            countryid: {
-                type: 'integer',
-            },
             name: {
                 type: 'string',
             },
-            a2: {
-                type: 'string',
+            state: {
+                type: 'array'
             },
-            a3: {
+            currency: {
                 type: 'string',
             },
             code: {

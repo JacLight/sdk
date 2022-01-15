@@ -25,5 +25,6 @@ export enum ComponentName {
     ABTesting = 'ABTesting',
     AudienceTargeting = 'AudienceTargeting',
     RolePermission = 'RolePermission',
-    MessageTemplate = 'MessageTemplate'
+    MessageTemplate = 'MessageTemplate',
+    CollectionViewBuilder = 'CollectionViewBuilder'
 }
