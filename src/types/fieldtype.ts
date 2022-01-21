@@ -14,4 +14,5 @@ export enum FieldType {
     dataField = 'Data Field',
     static = 'Static',
     collection = 'collection',
+    map = 'map',
 }
