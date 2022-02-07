@@ -174,4 +174,6 @@ export interface JsonSchemaCustom {
   disabled?: boolean;
   css?: string;
   styleClass?: string;
+  hidden?: boolean;
+  layout?: string;
 }
