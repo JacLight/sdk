@@ -1,11 +1,10 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "paths": {
-      "@models/*": ["src/models/*"],
-      "@types/*": ["src/types/*"],
-      "@utils/*": ["src/utils/*"],
-      "@ruleengine/*": ["src/ruleengine/*"]
-    }
+        "paths": {
+            "@models/*": ["src/models/*"],
+            "@types/*": ["src/types/*"],
+            "@utils/*": ["src/utils/*"],
+        }
   }
 }
