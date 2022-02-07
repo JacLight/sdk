@@ -22,7 +22,7 @@ export const CategorySchema = () => {
             },
             categories: {
                 type: 'array',
-                hidden: 'true',
+                hidden: true,
                 items: { type: 'object' },
             },
         },

@@ -1,6 +1,6 @@
 {
   "extends": "./tsconfig.paths.json",
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*"],
   "compilerOptions": {
     "module": "esnext",
     "lib": ["dom", "esnext"],
@@ -8,7 +8,7 @@
     "declaration": true,
     "sourceMap": true,
     "rootDir": "./src",
-    "strict": true,
+    "strict": false,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
@@ -25,13 +25,13 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "allowSyntheticDefaultImports": true,
-    "noImplicitAny": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
     "strictBindCallApply": true,
     "strictFunctionTypes": true,
     "strictNullChecks": false,
     "strictPropertyInitialization": false,
+    "noImplicitAny": false
   },
   "exclude": [
     "node_modules/**/*",
@@ -44,4 +44,3 @@
     "require": ["tsconfig-paths/register"]
   }
 }
-

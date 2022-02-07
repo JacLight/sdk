@@ -25,7 +25,7 @@ export const NavigationSchema = () => {
             },
             links: {
                 type: 'array',
-                hidden: 'true',
+                hidden: true,
                 items: {
                     type: 'object',
                     properties: {
