@@ -19,6 +19,7 @@
     "size": "size-limit",
     "analyze": "size-limit --why"
   },
+  "peerDependencies": {},
   "husky": {
     "hooks": {
       "pre-commit": "tsdx lint"
@@ -53,10 +54,6 @@
   },
   "dependencies": {
     "clone": "^2.1.2",
-    "eventemitter2": "^6.4.5",
-    "hash-it": "^5.0.2",
-    "json-schema-to-ts": "^1.6.5",
-    "jsonpath-plus": "^6.0.1",
-    "lodash.isobjectlike": "^4.0.0"
+    "json-schema-to-ts": "^1.6.5"
   }
 }
