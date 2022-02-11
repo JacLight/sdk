@@ -176,4 +176,6 @@ export interface JsonSchemaCustom {
   styleClass?: string;
   hidden?: boolean;
   layout?: string;
+  displaySize?: string;
+  clickToShow?: boolean;
 }
