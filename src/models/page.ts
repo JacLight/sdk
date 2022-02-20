@@ -28,6 +28,7 @@ export interface PageSection {
   class?: string;
   css?: string;
   content?: any;
+  elements?: any[]
 }
 
 export const PageSchema = (title = '', description = '') => {

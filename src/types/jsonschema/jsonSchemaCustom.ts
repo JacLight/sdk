@@ -159,6 +159,7 @@ export interface JsonSchemaCustom {
   examples?: any[];
   contains?: JsonSchemaCustom;
   propertyNames?: JsonSchemaCustom;
+  name?: string;
   const?: any;
   if?: JsonSchemaCustom;
   then?: JsonSchemaCustom;

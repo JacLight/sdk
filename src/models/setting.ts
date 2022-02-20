@@ -14,35 +14,15 @@ export const SettingSchema = () => {
             ownerid: {
                 type: 'string'
             },
-            resources: {
-                type: 'array',
-                items: {
-                    type: 'object',
-                    properties: {
-                        resourcetype: {
-                            type: 'string' //components - page, table, upload 
-                        },
-                        resourceid: {
-                            type: 'string'
-                        },
-                        settings: {
-                            type: 'array',
-                            layout: 'horizontal',
-                            items: {
-                                type: 'object',
-                                layout: 'horizontal',
-                                properties: { //property - width, pos, color, etc
-                                    property: {
-                                        type: 'string',
-                                    },
-                                    value: {
-                                        type: 'string',
-                                    }
-                                }
-                            }
-                        }
+            '^setting_': {
+                type: 'object',
+                displayStyle: 'card',
+                properties: {
+                    '^property_': {
+                        type: 'string',
                     }
                 }
+
             }
         },
     } as const;

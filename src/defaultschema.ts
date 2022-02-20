@@ -7,6 +7,7 @@ import { PageRules, PageSchema, PageUI } from "./models/page";
 import { SiteSchema, SiteUI } from "./models/site";
 import { DataType, CollectionType } from "./types";
 import { UserGroupModel, UserModel, UserRoleModel, SettingModel, PermissionModel, CommentSchema, MintflowSchema, MessageTemplateSchema, PasswordPolicySchema, CollectionViewSchema, PermissionSchema, PostSchema, SettingSchema, UserGroupSchema, UserRoleSchema, UserSchema } from "./models";
+import { toTitleCase } from "./utils";
 
 const createConcreteCollection = (dataType: DataType, data: any): BaseModel<any> => {
     return {
@@ -403,26 +404,14 @@ export const permissions = {
 }
 
 
-export const baseSettings: SettingModel = { name: 'BaseSettings', ownertype: "System", ownerid: "", resources: [] as any };
+export const baseSettings: SettingModel = { name: 'BaseSettings', ownertype: "System", ownerid: "" };
 const addSetting = (resourcetype: "component" | "collection" | "route", resourceid: string, property: string, value: boolean | number | string) => {
-    const resource: any = baseSettings.resources.find((item: any) => (item.resourcetype === resourcetype && item.resourceid === resourceid));
+    const settingKey = `setting_${resourcetype}_${resourceid}`;
+    const thisSetting: any = baseSettings[settingKey] || { 'title': toTitleCase(resourceid.replaceAll('_', ' ')) }
+
     const valueString: string = value as string;
-    if (!resource) {
-        baseSettings.resources.push({ resourcetype, resourceid, settings: [{ property, valueString }] })
-        return;
-    }
-
-    if (!resource.settings) {
-        resource['settings'] = [{ property, value }];
-        return;
-    }
-
-    const propValue = resource.settings.find((item: any) => item.property === property);
-    if (propValue) {
-        propValue.value = value;
-    } else {
-        resource['settings'].push({ property, value })
-    }
+    thisSetting[`property_${property}`] = valueString;
+    baseSettings[settingKey] = thisSetting;
 }
 addSetting('component', 'dataform', 'width', 600)
 addSetting('component', 'dataform', 'height', 800)
@@ -430,18 +419,20 @@ addSetting('component', 'table', 'pagesize', 100)
 addSetting('component', 'table', 'autoscroll', true)
 addSetting('component', 'table', 'show', true)
 addSetting('component', 'table', 'pagerstyle', 'auto')
-addSetting('component', 'emailserver', 'type', '')
-addSetting('component', 'emailserver', 'url', '')
-addSetting('component', 'emailserver', 'password', '')
-addSetting('component', 'emailserver', 'username', '')
-addSetting('component', 'emailserver', 'username', '')
-addSetting('component', 'emailtemplate', 'order', '')
-addSetting('component', 'emailtemplate', 'ticket', '')
-addSetting('component', 'emailtemplate', 'signup', '')
-addSetting('component', 'emailtemplate', 'passwordreset', '')
-addSetting('component', 'smstemplate', 'order', '')
-addSetting('component', 'smstemplate', 'signup', '')
-addSetting('component', 'smstemplate', 'ticket', '')
-addSetting('component', 'smstemplate', 'passwordreset', '')
+addSetting('component', 'email_server', 'type', '')
+addSetting('component', 'email_server', 'url', '')
+addSetting('component', 'email_server', 'password', '')
+addSetting('component', 'email_server', 'username', '')
+addSetting('component', 'email_server', 'username', '')
+addSetting('component', 'email_template', 'order', '')
+addSetting('component', 'email_template', 'ticket', '')
+addSetting('component', 'email_template', 'signup', '')
+addSetting('component', 'email_template', 'passwordreset', '')
+addSetting('component', 'sms_template', 'order', '')
+addSetting('component', 'sms_template', 'signup', '')
+addSetting('component', 'sms_template', 'ticket', '')
+addSetting('component', 'sms_template', 'passwordreset', '')
 addSetting('component', 'site', 'name', 'Websitemint')
 addSetting('component', 'site', 'domain', 'localhost')
+
+console.log(baseSettings)
