@@ -1,5 +1,3 @@
-var clone = require('clone');
-
 export const toTitleCase = (str: string) => {
     return str.replace(
         /\w\S*/g,
@@ -15,8 +13,7 @@ export const toSentenceCase = (str: string) => {
 }
 
 export const deepCopy = (source: any) => {
-    return clone(source);
-    // return JSON.parse(JSON.stringify(source));
+    return JSON.parse(JSON.stringify(source));
 }
 
 export const isEmpty = (obj: any) => {
@@ -34,4 +31,13 @@ export const validUrl = (url: string) => {
         '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
         '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
     return !!pattern.test(url);
+}
+
+export function getRandomString(length = 20) {
+    var randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var result = '';
+    for (var i = 0; i < length; i++) {
+        result += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
+    }
+    return result;
 }
