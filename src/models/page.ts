@@ -7,15 +7,16 @@ export interface PageModel {
   keywords?: string;
   robots?: string;
   hidden?: string;
-  friendly_url?: string;
-  icon?: string;
-  theme_pk?: string;
-  color_scheme_id?: string;
+  slug?: string;
+  iconUrl?: string;
+  theme?: string;
+  color?: string;
   css?: string;
   javascript?: string;
   priority?: number;
-  publish_date?: Date;
+  publishDate?: Date;
   sections?: PageSection[];
+  links?: string[];
 }
 
 export interface PageSection {
@@ -27,7 +28,10 @@ export interface PageSection {
   rowSpan: number;
   class?: string;
   css?: string;
+  javascript?: string;
+  links?: string[];
   content?: any;
+  data?: {};
   elements?: any[]
 }
 
@@ -65,19 +69,23 @@ export const PageSchema = (title = '', description = '') => {
         fn: 'return a.name.replace(/\\n/g, "")',
         event: 'onBlur',
       },
-      icon: {
+      iconUrl: {
         type: 'string',
       },
-      theme_pk: {
+      theme: {
         type: 'string',
-        enum: ['Item 1', 'Item 2'],
       },
-      color_scheme_id: {
+      color: {
         type: 'string',
-        enum: ['Item 1', 'Item 2'],
       },
       css: {
         type: 'string',
+      },
+      links: {
+        type: 'array',
+        items: {
+          type: 'string'
+        }
       },
       javascript: {
         type: 'string',
@@ -89,7 +97,6 @@ export const PageSchema = (title = '', description = '') => {
     required: ['name', 'slug'],
   };
 };
-
 
 
 export const PageUI = (): CollectionUI[] => {
