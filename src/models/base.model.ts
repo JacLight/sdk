@@ -94,7 +94,6 @@ export const PostExtraSchema = () => {
 const pes = PostExtraSchema();
 export type PostExtraModel = FromSchema<typeof pes>;
 
-
 export const WorkflowSchema = () => {
   return {
     type: 'object',
@@ -117,7 +116,7 @@ export const WorkflowSchema = () => {
       },
       nextstate: {
         type: 'string',
-      }
+      },
     },
   } as const;
 };
@@ -141,23 +140,23 @@ export const WorkflowDefinationSchema = () => {
           type: 'object',
           properties: {
             actortype: {
-              type: 'string' //user group role 
+              type: 'string', //user group role
             },
             actorid: {
-              type: 'string'
+              type: 'string',
             },
             state: {
-              type: 'string'
+              type: 'string',
             },
             action: {
-              type: 'string'
+              type: 'string',
             },
             notification: {
-              type: 'string'  //message template id
+              type: 'string', //message template id
             },
-          }
-        }
-      }
+          },
+        },
+      },
     },
   } as const;
 };

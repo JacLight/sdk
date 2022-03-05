@@ -1,14 +1,14 @@
-import { FromSchema } from "json-schema-to-ts";
+import { FromSchema } from 'json-schema-to-ts';
 
 export const PermissionSchema = () => {
   return {
     type: 'object',
     properties: {
       ownertype: {
-        type: 'string' //role, user, group 
+        type: 'string', //role, user, group
       },
       ownerid: {
-        type: 'string'
+        type: 'string',
       },
       permissions: {
         type: 'array',
@@ -17,10 +17,10 @@ export const PermissionSchema = () => {
           type: 'object',
           properties: {
             resourcetype: {
-              type: 'string' //Component, Content
+              type: 'string', //Component, Content
             },
             resourceid: {
-              type: 'string'
+              type: 'string',
             },
             allow: {
               type: 'object',
@@ -29,30 +29,30 @@ export const PermissionSchema = () => {
               layout: 'horizontal',
               properties: {
                 read: {
-                  type: 'boolean'
+                  type: 'boolean',
                 },
                 create: {
-                  type: 'boolean'
+                  type: 'boolean',
                 },
                 delete: {
-                  type: 'boolean'
+                  type: 'boolean',
                 },
                 update: {
-                  type: 'boolean'
+                  type: 'boolean',
                 },
                 view: {
-                  type: 'boolean'
+                  type: 'boolean',
                 },
                 configure: {
-                  type: 'boolean'
+                  type: 'boolean',
                 },
                 add: {
-                  type: 'boolean'
+                  type: 'boolean',
                 },
                 remove: {
-                  type: 'boolean'
+                  type: 'boolean',
                 },
-              }
+              },
             },
             deny: {
               type: 'object',
@@ -61,42 +61,40 @@ export const PermissionSchema = () => {
               layout: 'horizontal',
               properties: {
                 read: {
-                  type: 'boolean'
+                  type: 'boolean',
                 },
                 create: {
-                  type: 'boolean'
+                  type: 'boolean',
                 },
                 delete: {
-                  type: 'boolean'
+                  type: 'boolean',
                 },
                 update: {
-                  type: 'boolean'
+                  type: 'boolean',
                 },
                 view: {
-                  type: 'boolean'
+                  type: 'boolean',
                 },
                 configure: {
-                  type: 'boolean'
+                  type: 'boolean',
                 },
                 add: {
-                  type: 'boolean'
+                  type: 'boolean',
                 },
                 remove: {
-                  type: 'boolean'
+                  type: 'boolean',
                 },
-              }
+              },
             },
-          }
-        }
-      }
-    }
+          },
+        },
+      },
+    },
   } as const;
-}
+};
 
 const pes = PermissionSchema();
 export type PermissionModel = FromSchema<typeof pes>;
-
-
 
 // Action on Collection - Read, Create, Delete, Update
 // Action on Compoent - View, Configure, Add, Remove, Update

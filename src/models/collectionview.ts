@@ -9,7 +9,7 @@ export const CollectionViewSchema = () => {
         pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
         minLength: 3,
         maxLength: 50,
-        unique: true
+        unique: true,
       },
       title: {
         type: 'string',
@@ -23,7 +23,7 @@ export const CollectionViewSchema = () => {
         type: 'array',
       },
     },
-  } as const
+  } as const;
 };
 
 const ps = CollectionViewSchema();

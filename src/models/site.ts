@@ -1,6 +1,6 @@
-import { FromSchema } from "json-schema-to-ts";
-import { CollectionRule, CollectionUI } from "./collection";
-import { PageModel } from "./page";
+import { FromSchema } from 'json-schema-to-ts';
+import { CollectionRule, CollectionUI } from './collection';
+import { PageModel } from './page';
 
 export interface Site {
   title?: string;
@@ -51,17 +51,16 @@ export const SiteSchema = () => {
         type: 'string',
       },
     },
-  } as const
+  } as const;
 };
 
-
 const dd = SiteSchema();
-export type SiteModel = FromSchema<typeof dd>
+export type SiteModel = FromSchema<typeof dd>;
 
 export const SiteUI = (): CollectionUI[] => {
-  return null
+  return null;
 };
 
 export const SiteRules = (): CollectionRule[] => {
-  return [{ 'name': 'norule' }]
-}
+  return [{ name: 'norule' }];
+};

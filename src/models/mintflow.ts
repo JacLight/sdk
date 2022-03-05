@@ -19,10 +19,10 @@ export const MintflowSchema = () => {
       },
       nodes: {
         type: 'array',
-        itemss: {
-          type: 'object'
+        items: {
+          type: 'object',
         },
-        hidden: 'true',
+        hidden: true,
       },
     },
   } as const;
