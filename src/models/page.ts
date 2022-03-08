@@ -1,5 +1,6 @@
 import { CollectionRule, CollectionUI } from './collection';
 import { FromSchema } from 'json-schema-to-ts';
+import { FormViewSectionType } from '../types';
 
 export const PageSchema = (title = '', description = '') => {
   return {
@@ -45,22 +46,35 @@ export const PageSchema = (title = '', description = '') => {
       theme: {
         type: 'string',
       },
+      childEditing: {
+        type: 'string',
+        enum: ['append', 'editable', 'locked'],
+        default: 'append',
+      },
       color: {
         type: 'string',
       },
       links: {
         type: 'array',
+        layout: 'horizontal',
         items: {
-          type: 'string', //this is css or java links in the head section
+          type: 'object', //this is css or java links in the head section
+          properties: {
+            link: {
+              type: 'string'
+            }
+          }
         },
       },
       css: {
         type: 'string',
-        inputStyle: 'textarea'
+        fieldType: 'Code',
+        inputStyle: 'css',
       },
       javascript: {
         type: 'string',
-        inputStyle: 'textarea'
+        fieldType: 'Code',
+        inputStyle: 'javascript',
       },
       priority: {
         type: 'integer',
@@ -70,7 +84,31 @@ export const PageSchema = (title = '', description = '') => {
         hidden: true,
         items: PageSectionSchema(),
       },
-      settings: PageSettingSchema(),
+      breakpoints: {
+        type: 'array',
+        layout: 'horizontal',
+        arrange: false,
+        items: {
+          type: 'object',
+          properties: {
+            high: { type: 'number', displaySize: 'small' },
+            low: { type: 'number', displaySize: 'small' },
+            columns: { type: 'number', displaySize: 'small' },
+          },
+        },
+      },
+      maxWidth: {
+        type: 'number',
+      },
+      maxHeight: {
+        type: 'number',
+      },
+      minWidth: {
+        type: 'number',
+      },
+      minHeight: {
+        type: 'number',
+      },
     },
     required: ['name', 'slug'],
   } as const;
@@ -109,11 +147,13 @@ export const PageSectionSchema = () => {
       },
       css: {
         type: 'string',
-        inputStyle: 'textarea',
+        fieldType: 'Code',
+        inputStyle: 'css',
       },
       javascript: {
         type: 'string',
-        inputStyle: 'textarea',
+        fieldType: 'Code',
+        inputStyle: 'javascript',
       },
       content: {
         type: 'string',
@@ -154,57 +194,91 @@ export const PageSectionSchema = () => {
   } as const;
 };
 
-export const PageSettingSchema = () => {
-  return {
-    type: 'object',
-    displayStyle: 'inline',
-    properties: {
-      childEditing: {
-        type: 'string',
-        enum: ['append', 'editable', 'locked'],
-        default: 'append',
-      },
-      breakpoints: {
-        type: 'array',
-        layout: 'horizontal',
-        arrange: false,
-        items: {
-          type: 'object',
-          properties: {
-            high: { type: 'number', displaySize: 'small' },
-            low: { type: 'number', displaySize: 'small' },
-            columns: { type: 'number', displaySize: 'small' },
-          },
-        },
-      },
-      maxWidth: {
-        type: 'number',
-      },
-      maxHeight: {
-        type: 'number',
-      },
-      minWidth: {
-        type: 'number',
-      },
-      minHeight: {
-        type: 'number',
-      },
-    },
-  } as const;
-};
-
 export const PageUI = (): CollectionUI[] => {
-  return null;
+  return [
+    {
+      type: FormViewSectionType.sectiontab,
+      tab: [
+        {
+          title: 'SEO & Info',
+          items: [
+            {
+              '0': '/properties/parent'
+            },
+            {
+              '0': '/properties/name',
+              '1': '/properties/slug'
+            },
+            {
+              '0': '/properties/title'
+            },
+            {
+              '0': '/properties/description'
+            },
+            {
+              '0': '/properties/keywords'
+            },
+            {
+              '0': '/properties/robots'
+            },
+            {
+              '0': '/properties/childEditing',
+            },
+            {
+              '0': '/properties/hidden'
+            },
+            {
+              '0': '/properties/iconUrl'
+            }
+          ]
+        },
+        {
+          title: 'Look & Feel',
+          items: [
+            {
+              '0': '/properties/theme'
+            },
+            {
+              '0': '/properties/color'
+            },
+            {
+              '0': '/properties/links'
+            },
+            {
+              '0': '/properties/css'
+            },
+            {
+              '0': '/properties/javascript'
+            },
+          ]
+        },
+        {
+          title: 'Breakpoints',
+          items: [
+            {
+              '0': '/properties/minWidth',
+              '1': '/properties/maxWidth'
+            },
+            {
+              '0': '/properties/minHeight',
+              '1': '/properties/maxHeight'
+            },
+            {
+              '0': '/properties/breakpoints',
+            },
+          ]
+        }
+      ]
+    },
+  ]
 };
 
 export const PageRules = (): CollectionRule[] => {
   return null;
 };
 
-const pageSettings = PageSettingSchema();
 const pageSectionSchema = PageSectionSchema();
 const pageSchema = PageSchema();
 
-export type PageSettingModel = FromSchema<typeof pageSettings>;
 export type PageSectionModel = FromSchema<typeof pageSectionSchema>;
 export type PageModel = FromSchema<typeof pageSchema>;

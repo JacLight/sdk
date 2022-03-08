@@ -20,7 +20,6 @@ import {
   UserModel,
   UserRoleModel,
   PageModel,
-  PageSettingModel,
   SettingModel,
   PermissionModel,
   CommentSchema,
@@ -657,7 +656,10 @@ addSetting('component', 'sms_template', 'passwordreset', '');
 addSetting('component', 'site', 'name', 'Websitemint');
 addSetting('component', 'site', 'domain', 'localhost');
 
-const rootPageSetting: PageSettingModel = {
+export const rootPage: PageModel = {
+  name: 'rootpage',
+  slug: 'rootpage',
+  title: 'Root Page',
   childEditing: 'append',
   breakpoints: [
     { high: 480, low: 0, columns: 1 },
@@ -666,11 +668,4 @@ const rootPageSetting: PageSettingModel = {
     { high: 1200, low: 996, columns: 8 },
     { high: 10000, low: 1200, columns: 12 },
   ],
-};
-
-export const rootPage: PageModel = {
-  name: 'rootpage',
-  slug: 'rootpage',
-  title: 'Root Page',
-  settings: rootPageSetting,
 };
