@@ -1,6 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { DataType } from '../types/datatype';
 import { PermissionModel } from './permission';
+import { DataType, FieldType } from '../types';
 
 export interface BaseModelDTO<T> {
   page: number;
@@ -16,32 +16,21 @@ export interface BaseModel<T> {
   data?: T;
   isnew?: boolean;
   datatype?: DataType | string;
-  audit?: AuditModel;
-  workflow?: WorkflowDefinitionModel;
-  workflowhistory?: WorkflowModel[];
-  postExtra?: PostExtraModel;
+  audit?: AuditSubModel;
+  workflow?: WorkflowDefinitionSubModel;
+  workflowhistory?: WorkflowSubModel[];
+  post?: PostSubModel;
+  style?: StyleSubModel;
   permissions?: PermissionModel[];
   version?: string;
 }
 
-export const AuditSchema = () => {
+export const AuditSubSchema = () => {
   return {
     type: 'object',
     properties: {
-      user: {
+      author: {
         type: 'string',
-        disabled: 'true',
-      },
-      createdate: {
-        type: 'string',
-        format: 'date-time',
-        fn: ' return new Date().toGMTString()',
-        disabled: 'true',
-      },
-      modifydate: {
-        type: 'string',
-        format: 'date-time',
-        fn: ' return new Date().toGMTString()',
         disabled: 'true',
       },
       publishstart: {
@@ -52,49 +41,92 @@ export const AuditSchema = () => {
         type: 'string',
         format: 'date-time',
       },
+      createdate: {
+        type: 'string',
+        format: 'date-time',
+        disabled: 'true',
+      },
+      modifydate: {
+        type: 'string',
+        format: 'date-time',
+        disabled: 'true',
+      },
     },
   } as const;
 };
+const ash = AuditSubSchema();
+export type AuditSubModel = FromSchema<typeof ash>;
 
-const ash = AuditSchema();
-export type AuditModel = FromSchema<typeof ash>;
-
-export const PostExtraSchema = () => {
+export const PostSubSchema = () => {
   return {
     type: 'object',
     properties: {
-      share: {
+      title: {
+        type: 'string',
+      },
+      slug: {
+        type: 'string',
+        pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
+      },
+      preview: {
+        type: 'string',
+        inputStyle: 'textarea'
+      },
+      allowShare: {
         type: 'boolean',
         default: true,
       },
-      indexing: {
+      allowComment: {
         type: 'boolean',
         default: true,
       },
-      comment: {
+      allowRating: {
         type: 'boolean',
         default: true,
       },
-      rating: {
+      showRelated: {
         type: 'boolean',
         default: true,
       },
       categories: {
-        type: 'array',
-        items: { type: 'string' },
+        type: 'string',
+        inputStyle: 'chip',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.category,
+          field: 'name',
+        }
       },
       tags: {
+        type: 'string',
+        inputStyle: 'chip',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.tag,
+          field: 'name',
+        }
+      },
+      images: {
         type: 'array',
-        items: { type: 'string' },
+        items: {
+          type: 'string'
+        }
+      },
+      pages: {
+        type: 'array',
+        items: {
+          type: 'string'
+        }
       },
     },
   } as const;
 };
+const pes = PostSubSchema();
+export type PostSubModel = FromSchema<typeof pes>;
 
-const pes = PostExtraSchema();
-export type PostExtraModel = FromSchema<typeof pes>;
-
-export const WorkflowSchema = () => {
+export const WorkflowSubSchema = () => {
   return {
     type: 'object',
     properties: {
@@ -120,11 +152,10 @@ export const WorkflowSchema = () => {
     },
   } as const;
 };
+const wsh = WorkflowSubSchema();
+export type WorkflowSubModel = FromSchema<typeof wsh>;
 
-const wsh = WorkflowSchema();
-export type WorkflowModel = FromSchema<typeof wsh>;
-
-export const WorkflowDefinationSchema = () => {
+export const WorkflowDefinationSubSchema = () => {
   return {
     type: 'object',
     properties: {
@@ -161,5 +192,42 @@ export const WorkflowDefinationSchema = () => {
   } as const;
 };
 
-const wfd = WorkflowDefinationSchema();
-export type WorkflowDefinitionModel = FromSchema<typeof wfd>;
+const wfd = WorkflowDefinationSubSchema();
+export type WorkflowDefinitionSubModel = FromSchema<typeof wfd>;
+
+
+export const StyleSubSchema = () => {
+  return {
+    type: 'object',
+    properties: {
+      classes: {
+        type: 'string',
+        enum: ['']
+      },
+      css: {
+        type: 'string',
+        fieldType: 'Code',
+        inputStyle: 'css',
+      },
+      javascript: {
+        type: 'string',
+        fieldType: 'Code',
+        inputStyle: 'javascript',
+      },
+      styleLinks: {
+        type: 'array',
+        items: {
+          type: 'string'
+        }
+      },
+      scriptLinks: {
+        type: 'array',
+        items: {
+          type: 'string'
+        }
+      },
+    },
+  } as const;
+};
+const wce = StyleSubSchema();
+export type StyleSubModel = FromSchema<typeof wce>;

@@ -1,6 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 
-export const PostSchema = () => {
+export const WCBasicSchema = () => {
   return {
     type: 'object',
     properties: {
@@ -10,26 +10,19 @@ export const PostSchema = () => {
         minLength: 3,
         maxLength: 50,
         unique: true,
+        disabled: true
       },
-      title: {
+      description: {
         type: 'string',
-      },
-      slug: {
-        type: 'string',
-        pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
+        inputStyle: 'richtext',
       },
       content: {
         type: 'string',
-        fieldType: 'Rich Text Editor',
-        displayStyle: 'full',
-      },
-      image: {
-        type: 'string',
-        fieldType: 'Upload',
+        inputStyle: 'richtext',
       },
     },
   } as const;
 };
 
-const ps = PostSchema();
-export type PostModel = FromSchema<typeof ps>;
+const wc = WCBasicSchema();
+export type WCBasicModel = FromSchema<typeof wc>;

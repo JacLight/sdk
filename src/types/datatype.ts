@@ -3,7 +3,6 @@ export enum DataType {
   page = 'page',
   category = 'category',
   tag = 'tag',
-  post = 'post',
   comment = 'comment',
   site = 'site',
   navigation = 'navigation',

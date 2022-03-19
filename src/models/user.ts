@@ -135,6 +135,10 @@ export const UserGroupSchema = () => {
       passwordpolicy: {
         type: 'string',
       },
+      users: {
+        type: 'array',
+        items: { type: 'string' },
+      },
       roles: {
         type: 'array',
         items: { type: 'string' },

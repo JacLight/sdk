@@ -14,7 +14,6 @@ export * from './navigation';
 export * from './page';
 export * from './passwordpolicy';
 export * from './permission';
-export * from './post';
 export * from './phone';
 export * from './setting';
 export * from './site';

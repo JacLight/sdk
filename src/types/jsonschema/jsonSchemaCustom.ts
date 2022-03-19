@@ -161,6 +161,7 @@ export interface JsonSchemaCustom {
   propertyNames?: JsonSchemaCustom;
   name?: string;
   const?: any;
+  url?: string;
   if?: JsonSchemaCustom;
   then?: JsonSchemaCustom;
   else?: JsonSchemaCustom;

@@ -68,13 +68,16 @@ export const CollectionSchema = () => {
       description: {
         type: 'string',
       },
-      enableAssetFramework: {
-        type: 'boolean',
-      },
       workflow: {
         type: 'string',
       },
       enableVersioning: {
+        type: 'boolean',
+      },
+      enableIndexing: {
+        type: 'boolean',
+      },
+      enableWorkflow: {
         type: 'boolean',
       },
       permission: {

@@ -1,108 +1,42 @@
+import { PermissionTypeContent, PermissionTypeComponent, FieldType } from '../types';
 import { FromSchema } from 'json-schema-to-ts';
+
 
 export const PermissionSchema = () => {
   return {
     type: 'object',
     properties: {
-      ownertype: {
-        type: 'string', //role, user, group
-      },
-      ownerid: {
-        type: 'string',
-      },
-      permissions: {
-        type: 'array',
-        layout: 'vertical',
-        items: {
-          type: 'object',
-          properties: {
-            resourcetype: {
-              type: 'string', //Component, Content
+      'role': {
+        type: 'object',
+        properties: {
+          content: {
+            type: 'array',
+            dataSource: {
+              source: 'json',
+              json: Object.values(PermissionTypeContent)
             },
-            resourceid: {
-              type: 'string',
-            },
-            allow: {
-              type: 'object',
-              title: 'Allow',
-              displayStyle: 'card',
-              layout: 'horizontal',
-              properties: {
-                read: {
-                  type: 'boolean',
-                },
-                create: {
-                  type: 'boolean',
-                },
-                delete: {
-                  type: 'boolean',
-                },
-                update: {
-                  type: 'boolean',
-                },
-                view: {
-                  type: 'boolean',
-                },
-                configure: {
-                  type: 'boolean',
-                },
-                add: {
-                  type: 'boolean',
-                },
-                remove: {
-                  type: 'boolean',
-                },
-              },
-            },
-            deny: {
-              type: 'object',
-              title: 'Deny',
-              displayStyle: 'card',
-              layout: 'horizontal',
-              properties: {
-                read: {
-                  type: 'boolean',
-                },
-                create: {
-                  type: 'boolean',
-                },
-                delete: {
-                  type: 'boolean',
-                },
-                update: {
-                  type: 'boolean',
-                },
-                view: {
-                  type: 'boolean',
-                },
-                configure: {
-                  type: 'boolean',
-                },
-                add: {
-                  type: 'boolean',
-                },
-                remove: {
-                  type: 'boolean',
-                },
-              },
-            },
+            fieldType: FieldType.selectionmultiple,
+            items: {
+              type: 'string'
+            }
           },
-        },
-      },
-    },
-  } as const;
-};
+          component: {
+            type: 'array',
+            dataSource: {
+              source: 'json',
+              json: Object.values(PermissionTypeComponent)
+            },
+            fieldType: FieldType.selectionmultiple,
+            items: {
+              type: 'string'
+            }
+          }
+        }
+      }
+    }
+  } as const
+}
+
 
 const pes = PermissionSchema();
 export type PermissionModel = FromSchema<typeof pes>;
-
-// Action on Collection - Read, Create, Delete, Update
-// Action on Compoent - View, Configure, Add, Remove, Update
-// Where - ControlPanel, Website, Mobile
-// Actor  - Role, Group, User
-// Subject - Collection, Component, API
-
-// Default Groups
-
-// Default Roles
-// Guest, User, Owner, Publisher, Reviewer, PowerUser, Administrator

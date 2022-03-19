@@ -1,6 +1,6 @@
 import { CollectionRule, CollectionUI } from './collection';
 import { FromSchema } from 'json-schema-to-ts';
-import { FormViewSectionType } from '../types';
+import { DataType, FieldType, FormViewSectionType } from '../types';
 
 export const PageSchema = (title = '', description = '') => {
   return {
@@ -17,6 +17,12 @@ export const PageSchema = (title = '', description = '') => {
       },
       parent: {
         type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.page,
+          field: 'name',
+        },
       },
       title: {
         type: 'string',
@@ -36,7 +42,7 @@ export const PageSchema = (title = '', description = '') => {
       slug: {
         type: 'string',
         pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
-        fn: 'return a.name.replace(/\\n/g, "")',
+        // fn: 'return a.name.replace(/\\n/g, "")',
         event: 'onBlur',
         unique: true,
       },
@@ -53,28 +59,6 @@ export const PageSchema = (title = '', description = '') => {
       },
       color: {
         type: 'string',
-      },
-      links: {
-        type: 'array',
-        layout: 'horizontal',
-        items: {
-          type: 'object', //this is css or java links in the head section
-          properties: {
-            link: {
-              type: 'string'
-            }
-          }
-        },
-      },
-      css: {
-        type: 'string',
-        fieldType: 'Code',
-        inputStyle: 'css',
-      },
-      javascript: {
-        type: 'string',
-        fieldType: 'Code',
-        inputStyle: 'javascript',
       },
       priority: {
         type: 'integer',
@@ -127,9 +111,6 @@ export const PageSectionSchema = () => {
         maxLength: 50,
         unique: true,
       },
-      type: {
-        type: 'string',
-      },
       startRow: {
         type: 'number',
       },
@@ -142,52 +123,57 @@ export const PageSectionSchema = () => {
       rowSpan: {
         type: 'number',
       },
-      class: {
-        type: 'string',
-      },
-      css: {
-        type: 'string',
-        fieldType: 'Code',
-        inputStyle: 'css',
-      },
-      javascript: {
-        type: 'string',
-        fieldType: 'Code',
-        inputStyle: 'javascript',
-      },
       content: {
+        type: 'string'
+      },
+      viewTemplate: {
         type: 'string',
-        hidden: true,
       },
-      links: {
+      defaultView: {
+        type: 'string',
+        enum: ['list', 'card', 'detail', 'table']
+      },
+      manualSelection: {
+        type: 'boolean',
+      },
+      selections: {
         type: 'array',
-        items: {
-          type: 'string', //this is css or java links in the head section
+        title: 'Selections',
+        fieldType: FieldType.collection,
+        inputStyle: 'picker',
+        dataSource: {
+          source: 'collection',
+          collection: DataType.collection,
         },
-      },
-      elements: {
-        hidden: true,
-        type: 'array',
         items: {
           type: 'object',
           properties: {
-            component: {
-              type: 'string',
-              pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
+            id: {
+              type: 'string'
             },
-            props: {
-              type: 'object',
-              properties: {
-                '^setting_': {
-                  type: 'string',
-                },
-              },
+            datatype: {
+              type: 'string'
             },
-            data: {
-              type: 'object',
+            name: {
+              type: 'string'
             },
-          },
-        },
+            description: {
+              type: 'string'
+            }
+          }
+        }
+      },
+      dataTypes: {
+        type: 'array'
+      },
+      tags: {
+        type: 'array'
+      },
+      categories: {
+        type: 'array'
+      },
+      sort: {
+        type: 'string'
       },
     },
     required: ['id'],
