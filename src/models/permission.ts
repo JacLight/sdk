@@ -1,42 +1,50 @@
-import { PermissionTypeContent, PermissionTypeComponent, FieldType } from '../types';
+import { PermissionTypeContent, PermissionTypeComponent, FieldType, RoleType } from '../types';
 import { FromSchema } from 'json-schema-to-ts';
 
 
-export const PermissionSchema = () => {
+export const PermissionEntrySchema = () => {
   return {
     type: 'object',
     properties: {
-      'role': {
-        type: 'object',
-        properties: {
-          content: {
-            type: 'array',
-            dataSource: {
-              source: 'json',
-              json: Object.values(PermissionTypeContent)
-            },
-            fieldType: FieldType.selectionmultiple,
-            items: {
-              type: 'string'
-            }
-          },
-          component: {
-            type: 'array',
-            dataSource: {
-              source: 'json',
-              json: Object.values(PermissionTypeComponent)
-            },
-            fieldType: FieldType.selectionmultiple,
-            items: {
-              type: 'string'
-            }
-          }
-        }
-      }
-    }
+      role: {
+        type: 'string',
+        enum: [...Object.values(RoleType)],
+        disabled: true,
+        hideLabel: true,
+      },
+      content: {
+        type: 'string',
+        hideLabel: true,
+        fieldType: FieldType.selectionmultiple,
+        inputStyle: 'chip',
+        dataSource: {
+          source: 'json',
+          json: Object.values(PermissionTypeContent)
+        },
+      },
+      component: {
+        type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        inputStyle: 'chip',
+        dataSource: {
+          source: 'json',
+          json: Object.values(PermissionTypeComponent)
+        },
+      },
+    },
+  } as const;
+};
+
+export const PermissionSchema = () => {
+  return {
+    type: 'array',
+    readonly: true,
+    items: PermissionEntrySchema(),
   } as const
 }
 
 
-const pes = PermissionSchema();
-export type PermissionModel = FromSchema<typeof pes>;
+const ps = PermissionSchema();
+const pes = PermissionEntrySchema();
+export type PermissionModel = FromSchema<typeof ps>;
+export type PermissionEntryModel = FromSchema<typeof pes>;

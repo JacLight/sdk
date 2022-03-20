@@ -72,7 +72,7 @@ const collectionViewCollection: CollectionModel = {
   enableVersioning: true,
   enableIndexing: true,
   permission: {},
-  rules: {} as any,
+  rules: [],
   validations: {},
   schema: CollectionViewSchema(),
   uischema: {} as any,
@@ -168,7 +168,7 @@ const messageTemplateCollection: CollectionModel = {
   enableVersioning: true,
   enableIndexing: true,
   permission: {},
-  rules: {} as any,
+  rules: [],
   validations: {},
   schema: MessageTemplateSchema(),
   uischema: {} as any,
@@ -184,7 +184,7 @@ const userCollection: CollectionModel = {
   enableVersioning: true,
   enableIndexing: true,
   permission: {},
-  rules: {} as any,
+  rules: [],
   validations: {},
   schema: UserSchema(),
   uischema: {} as any,
@@ -200,7 +200,7 @@ const userGroupCollection: CollectionModel = {
   enableVersioning: true,
   enableIndexing: true,
   permission: {},
-  rules: {} as any,
+  rules: [],
   validations: {},
   schema: UserGroupSchema(),
   uischema: {} as any,
@@ -216,7 +216,7 @@ const settingCollection: CollectionModel = {
   enableVersioning: true,
   enableIndexing: true,
   permission: {},
-  rules: {} as any,
+  rules: [],
   validations: {},
   schema: SettingSchema() as any,
   uischema: {} as any,
@@ -232,7 +232,7 @@ const userRoleCollection: CollectionModel = {
   enableVersioning: true,
   enableIndexing: true,
   permission: {},
-  rules: {} as any,
+  rules: [],
   validations: {},
   schema: UserRoleSchema(),
   uischema: {} as any,
@@ -248,7 +248,7 @@ const workflowCollection: CollectionModel = {
   enableVersioning: true,
   enableIndexing: true,
   permission: {},
-  rules: {} as any,
+  rules: [],
   validations: {},
   schema: WorkflowDefinationSubSchema(),
   uischema: {} as any,
@@ -264,7 +264,7 @@ const commentCollection: CollectionModel = {
   enableVersioning: true,
   enableIndexing: true,
   permission: {},
-  rules: {} as any,
+  rules: [],
   validations: {},
   schema: CommentSchema(),
   uischema: {} as any,
@@ -280,7 +280,7 @@ const passwordPolicyCollection: CollectionModel = {
   enableVersioning: true,
   enableIndexing: true,
   permission: {},
-  rules: {} as any,
+  rules: [],
   validations: {},
   schema: PasswordPolicySchema(),
   uischema: {} as any,
@@ -296,7 +296,7 @@ const mintflowCollection: CollectionModel = {
   enableVersioning: true,
   enableIndexing: true,
   permission: {},
-  rules: {} as any,
+  rules: [],
   validations: {},
   schema: MintflowSchema(),
   uischema: {} as any,
@@ -402,25 +402,17 @@ groups.push(createGroup('Admin', 'Omin Administrator', [RoleType.RootAdmin]));
 
 
 export const baseSettings: SettingModel = {
-  name: 'BaseSettings',
-  ownertype: 'System',
-  ownerid: '',
+  name: 'BaseSettings', ownertype: 'System', ownerid: '',
 };
-const addSetting = (
-  resourcetype: 'component' | 'collection' | 'route',
-  resourceid: string,
-  property: string,
-  value: boolean | number | string
-) => {
+const addSetting = (resourcetype: 'component' | 'collection' | 'route', resourceid: string, property: string, value: boolean | number | string) => {
   const settingKey = `setting_${resourcetype}_${resourceid}`;
-  const thisSetting: any = baseSettings[settingKey] || {
-    title: toTitleCase(resourceid.replaceAll('_', ' ')),
-  };
+  const thisSetting: any = baseSettings[settingKey] || { title: toTitleCase(resourceid.replaceAll('_', ' ')) };
 
   const valueString: string = value as string;
   thisSetting[`property_${property}`] = valueString;
   baseSettings[settingKey] = thisSetting;
 };
+
 addSetting('component', 'dataform', 'width', 600);
 addSetting('component', 'dataform', 'height', 800);
 addSetting('component', 'table', 'pagesize', 100);

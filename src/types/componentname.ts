@@ -27,4 +27,5 @@ export enum ComponentName {
   RolePermission = 'RolePermission',
   MessageTemplate = 'MessageTemplate',
   CollectionViewBuilder = 'CollectionViewBuilder',
+  AppBuilder = 'AppBuilder'
 }

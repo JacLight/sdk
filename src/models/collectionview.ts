@@ -18,9 +18,10 @@ export const CollectionViewSchema = () => {
       description: {
         type: 'string',
       },
-      columns: { type: 'array' },
+      columns: { type: 'array', hidden: true, },
       filters: {
         type: 'array',
+        hidden: true,
       },
     },
   } as const;

@@ -27,6 +27,7 @@ export const CommentSchema = () => {
       comments: {
         type: 'array',
         items: { type: 'object' },
+        hidden: true,
       },
     },
   } as const;

@@ -260,7 +260,7 @@ export const PageUI = (): CollectionUI[] => {
 };
 
 export const PageRules = (): CollectionRule[] => {
-  return null;
+  return [];
 };
 
 const pageSectionSchema = PageSectionSchema();

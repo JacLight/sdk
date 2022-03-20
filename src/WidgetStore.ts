@@ -6,16 +6,16 @@ export type WidgetType = {
 
 class WidgetStore {
   public widgetList: WidgetType[] = [];
-  public addWidget = (name: string) => { console.log(name) };
+  public addWidget = (widget: WidgetType) => {
+    const index = this.widgetList.findIndex(oldWidget => oldWidget.name === widget.name)
+    if (index >= 0) {
+      this.widgetList[index] = widget;
+    } else {
+      this.widgetList.push(widget)
+    }
+  };
   public FindByName = (name: string) => {
     return this.widgetList.indexOf(this.widgetList.find((item) => item.name === name));
-  };
-
-  public register = (addFn: (name: string) => any) => {
-    this.addWidget = addFn;
-  };
-  public unregister = () => {
-    this.addWidget = undefined;
   };
 }
 

@@ -37,5 +37,5 @@ export const CategoryUI = (): CollectionUI[] => {
 };
 
 export const CategoryRules = (): CollectionRule[] => {
-  return null;
+  return [];
 };

@@ -82,16 +82,20 @@ export const CollectionSchema = () => {
       },
       permission: {
         type: 'object',
+        hidden: true,
         properties: {},
       },
       elements: {
+        hidden: true,
         type: 'array',
       },
       rules: {
+        hidden: true,
         type: 'object',
         properties: {},
       },
       validations: {
+        hidden: true,
         type: 'object',
         properties: {},
       },
@@ -108,5 +112,5 @@ export const CollectionUI = (): CollectionUI[] => {
 };
 
 export const CollectionRules = (): CollectionRule[] => {
-  return null;
+  return [];
 };

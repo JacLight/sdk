@@ -203,5 +203,5 @@ export const NavigationUI = (): CollectionUI[] => {
   return null;
 };
 export const NavigationRules = (): CollectionRule[] => {
-  return null;
+  return [];
 };

@@ -22,5 +22,5 @@ export const TagUI = (): CollectionUI[] => {
 };
 
 export const TagRules = (): CollectionRule[] => {
-  return null;
+  return [];
 };
