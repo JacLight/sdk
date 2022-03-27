@@ -1,7 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { PermissionModel } from './permission';
 import { DataType, FieldType } from '../types';
-
 export interface BaseModelDTO<T> {
   page: number;
   pagesize: number;
@@ -21,8 +20,8 @@ export interface BaseModel<T> {
   workflowhistory?: WorkflowSubModel[];
   post?: PostSubModel;
   style?: StyleSubModel;
-  permissions?: PermissionModel[];
-  version?: string;
+  permissions?: PermissionModel;
+  version: number;
 }
 
 export const AuditSubSchema = () => {
@@ -213,6 +212,12 @@ export const StyleSubSchema = () => {
         type: 'string',
         fieldType: 'Code',
         inputStyle: 'javascript',
+      },
+      theme: {
+        type: 'string',
+      },
+      color: {
+        type: 'string',
       },
       styleLinks: {
         type: 'array',

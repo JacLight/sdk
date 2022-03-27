@@ -49,16 +49,10 @@ export const PageSchema = (title = '', description = '') => {
       iconUrl: {
         type: 'string',
       },
-      theme: {
-        type: 'string',
-      },
       childEditing: {
         type: 'string',
         enum: ['append', 'editable', 'locked'],
         default: 'append',
-      },
-      color: {
-        type: 'string',
       },
       priority: {
         type: 'integer',
@@ -110,28 +104,41 @@ export const PageSectionSchema = () => {
         minLength: 3,
         maxLength: 50,
         unique: true,
+        hidden: true,
       },
       startRow: {
         type: 'number',
+        hidden: true,
       },
       startCol: {
         type: 'number',
+        hidden: true,
       },
       colSpan: {
         type: 'number',
+        hidden: true,
       },
       rowSpan: {
         type: 'number',
+        hidden: true,
       },
       content: {
-        type: 'string'
+        type: 'string',
+        hidden: true,
       },
       viewTemplate: {
         type: 'string',
+        enum: ['basic', 'picture', 'blog']
       },
       defaultView: {
         type: 'string',
         enum: ['list', 'card', 'detail', 'table']
+      },
+      views: {
+        type: 'string',
+        enum: ['list', 'card', 'detail', 'table'],
+        inputStyle: 'chip',
+        fieldType: FieldType.selectionmultiple,
       },
       manualSelection: {
         type: 'boolean',
@@ -164,16 +171,34 @@ export const PageSectionSchema = () => {
         }
       },
       dataTypes: {
-        type: 'array'
-      },
-      tags: {
-        type: 'array'
+        type: 'string',
+        inputStyle: 'chip',
+        fieldType: FieldType.selectionmultiple,
+        enum: Object.values(DataType)
       },
       categories: {
-        type: 'array'
+        type: 'string',
+        inputStyle: 'chip',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.category,
+          field: 'name',
+        }
+      },
+      tags: {
+        type: 'string',
+        inputStyle: 'chip',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.tag,
+          field: 'name',
+        }
       },
       sort: {
-        type: 'string'
+        type: 'string',
+        enum: ['Auto', 'Title Asc', 'Title Desc', 'Name Asc', 'Name Desc', 'Published Asc', 'Published Desc', 'Created Asc', 'Created Desc', 'Modified Asc', 'Modified Desc']
       },
     },
     required: ['id'],
@@ -216,26 +241,6 @@ export const PageUI = (): CollectionUI[] => {
             {
               '0': '/properties/iconUrl'
             }
-          ]
-        },
-        {
-          title: 'Look & Feel',
-          items: [
-            {
-              '0': '/properties/theme'
-            },
-            {
-              '0': '/properties/color'
-            },
-            {
-              '0': '/properties/links'
-            },
-            {
-              '0': '/properties/css'
-            },
-            {
-              '0': '/properties/javascript'
-            },
           ]
         },
         {
