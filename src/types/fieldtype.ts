@@ -13,6 +13,9 @@ export enum FieldType {
   color = 'Color',
   dataField = 'Data Field',
   static = 'Static',
-  collection = 'collection',
-  map = 'map',
+  collection = 'Collection',
+  map = 'Map',
+  derivedField = 'Derived Field',
+  lookupField = 'Lookup Field',
+  linkedSelect = 'Linked Selection'
 }

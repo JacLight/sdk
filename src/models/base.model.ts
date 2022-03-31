@@ -164,6 +164,9 @@ export const WorkflowDefinationSubSchema = () => {
       description: {
         type: 'string',
       },
+      sla: {
+        type: 'string',
+      },
       states: {
         type: 'array',
         items: {
@@ -176,6 +179,9 @@ export const WorkflowDefinationSubSchema = () => {
               type: 'string',
             },
             state: {
+              type: 'string', //start, ongoing end
+            },
+            name: {
               type: 'string',
             },
             action: {
@@ -203,18 +209,23 @@ export const StyleSubSchema = () => {
         type: 'string',
         enum: ['']
       },
+      template: {
+        type: 'string',
+      },
+      theme: {
+        type: 'string',
+      },
       css: {
         type: 'string',
         fieldType: 'Code',
         inputStyle: 'css',
+        collapsible: true
       },
       javascript: {
         type: 'string',
         fieldType: 'Code',
+        collapsible: true,
         inputStyle: 'javascript',
-      },
-      theme: {
-        type: 'string',
       },
       color: {
         type: 'string',

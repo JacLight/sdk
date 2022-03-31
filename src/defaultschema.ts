@@ -24,7 +24,6 @@ import {
   MintflowSchema,
   MessageTemplateSchema,
   PasswordPolicySchema,
-  CollectionViewSchema,
   SettingSchema,
   UserGroupSchema,
   UserRoleSchema,
@@ -43,6 +42,7 @@ const createConcreteCollection = (
     name: dataType,
     data: data,
     datatype: dataType,
+    version: 0
   };
 };
 
@@ -60,22 +60,6 @@ const collectionCollection: CollectionModel = {
   validations: {},
   schema: CollectionSchema(),
   uischema: CollectionUI(),
-};
-
-const collectionViewCollection: CollectionModel = {
-  name: 'collectionview',
-  title: 'Collection View',
-  description: 'Collection View',
-  type: CollectionType.Concrete,
-  enablePost: true,
-  enableWorkflow: true,
-  enableVersioning: true,
-  enableIndexing: true,
-  permission: {},
-  rules: [],
-  validations: {},
-  schema: CollectionViewSchema(),
-  uischema: {} as any,
 };
 
 const pageCollection: CollectionModel = {
@@ -316,8 +300,12 @@ concreteCollections.set(
   createConcreteCollection(DataType.collection, collectionCollection)
 );
 concreteCollections.set(
+  DataType.collectionform,
+  createConcreteCollection(DataType.collectionform, collectionCollection)
+);
+concreteCollections.set(
   DataType.collectionview,
-  createConcreteCollection(DataType.collectionview, collectionViewCollection)
+  createConcreteCollection(DataType.collectionview, collectionCollection)
 );
 concreteCollections.set(
   DataType.category,
@@ -406,7 +394,7 @@ export const baseSettings: SettingModel = {
 };
 const addSetting = (resourcetype: 'component' | 'collection' | 'route', resourceid: string, property: string, value: boolean | number | string) => {
   const settingKey = `setting_${resourcetype}_${resourceid}`;
-  const thisSetting: any = baseSettings[settingKey] || { title: toTitleCase(resourceid.replaceAll('_', ' ')) };
+  const thisSetting: any = baseSettings[settingKey] || { title: toTitleCase(resourceid?.replace(/_/g, ' ')) };
 
   const valueString: string = value as string;
   thisSetting[`property_${property}`] = valueString;

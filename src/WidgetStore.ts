@@ -2,6 +2,8 @@ export type WidgetType = {
   component: any;
   name: string;
   icon: any;
+  props?: any;
+  hide?: boolean;
 };
 
 class WidgetStore {

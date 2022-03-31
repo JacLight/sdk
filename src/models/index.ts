@@ -17,7 +17,6 @@ export * from './permission';
 export * from './phone';
 export * from './setting';
 export * from './site';
-export * from './collectionview';
 export * from './storefront';
 export * from './tag';
 export * from './user';
