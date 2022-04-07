@@ -20,5 +20,6 @@ export enum ComponentName {
   Function = 'Function',
   RolePermission = 'RolePermission',
   MessageTemplate = 'MessageTemplate',
+  Language = 'Language',
   ActivityFeed = 'ActivityFeed',
 }

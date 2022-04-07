@@ -29,7 +29,7 @@ import {
   UserRoleSchema,
   UserSchema,
 } from './models';
-import { toTitleCase } from './utils';
+import { deepCopy, toTitleCase } from './utils';
 import { RoleType } from './types';
 
 const createConcreteCollection = (
@@ -61,6 +61,16 @@ const collectionCollection: CollectionModel = {
   schema: CollectionSchema(),
   uischema: CollectionUI(),
 };
+
+const collectionCollectionForm = deepCopy(collectionCollection)
+collectionCollectionForm.name = 'collectionform'
+collectionCollectionForm.title = 'collectionform'
+collectionCollectionForm.description = 'collectionform'
+
+const collectionCollectionView = deepCopy(collectionCollection)
+collectionCollectionForm.name = 'collectionview'
+collectionCollectionForm.title = 'collectionview'
+collectionCollectionForm.description = 'collectionview'
 
 const pageCollection: CollectionModel = {
   name: 'page',
@@ -301,11 +311,11 @@ concreteCollections.set(
 );
 concreteCollections.set(
   DataType.collectionform,
-  createConcreteCollection(DataType.collectionform, collectionCollection)
+  createConcreteCollection(DataType.collectionform, collectionCollectionForm)
 );
 concreteCollections.set(
   DataType.collectionview,
-  createConcreteCollection(DataType.collectionview, collectionCollection)
+  createConcreteCollection(DataType.collectionview, collectionCollectionView)
 );
 concreteCollections.set(
   DataType.category,
