@@ -1,41 +1,12 @@
-import { CategoryRules, CategorySchema, CategoryUI } from './models/category';
-import {
-  NavigationRules,
-  NavigationSchema,
-  NavigationUI,
-} from './models/navigation';
-import { TagRules, TagSchema, TagUI } from './models/tag';
-import { BaseModel, WorkflowDefinationSubSchema } from './models/base.model';
-import {
-  CollectionModel,
-  CollectionRules,
-  CollectionSchema,
-  CollectionUI,
-} from './models/collection';
-import { PageRules, PageSchema, PageUI } from './models/page';
-import { SiteSchema, SiteUI } from './models/site';
 import { DataType, CollectionType } from './types';
-import {
-  UserGroupModel,
-  UserModel,
-  PageModel,
-  SettingModel,
-  CommentSchema,
-  MintflowSchema,
-  MessageTemplateSchema,
-  PasswordPolicySchema,
-  SettingSchema,
-  UserGroupSchema,
-  UserRoleSchema,
-  UserSchema,
-} from './models';
+import * as models from './models';
 import { deepCopy, toTitleCase } from './utils';
 import { RoleType } from './types';
 
 const createConcreteCollection = (
   dataType: DataType,
   data: any
-): BaseModel<any> => {
+): models.BaseModel<any> => {
   return {
     pk: dataType,
     sk: dataType,
@@ -46,7 +17,8 @@ const createConcreteCollection = (
   };
 };
 
-const collectionCollection: CollectionModel = {
+
+const collectionCollection: models.CollectionModel = {
   name: 'collection',
   title: 'Collection',
   description: 'Collection',
@@ -56,11 +28,15 @@ const collectionCollection: CollectionModel = {
   enableVersioning: true,
   enableIndexing: true,
   permission: {},
-  rules: CollectionRules(),
+  rules: models.CollectionRules(),
   validations: {},
-  schema: CollectionSchema(),
-  uischema: CollectionUI(),
+  schema: models.CollectionSchema(),
+  uischema: models.CollectionUI(),
 };
+
+Object.values(models).forEach(tmodel =>
+  console.log(tmodel)
+)
 
 const collectionCollectionForm = deepCopy(collectionCollection)
 collectionCollectionForm.name = 'collectionform'
@@ -72,7 +48,7 @@ collectionCollectionForm.name = 'collectionview'
 collectionCollectionForm.title = 'collectionview'
 collectionCollectionForm.description = 'collectionview'
 
-const pageCollection: CollectionModel = {
+const pageCollection: models.CollectionModel = {
   name: 'page',
   title: 'Page',
   description: 'Page',
@@ -82,13 +58,13 @@ const pageCollection: CollectionModel = {
   enableVersioning: true,
   enableIndexing: true,
   permission: {},
-  rules: PageRules(),
+  rules: models.PageRules(),
   validations: {},
-  schema: PageSchema(),
-  uischema: PageUI(),
+  schema: models.PageSchema(),
+  uischema: models.PageUI(),
 };
 
-const siteCollection: CollectionModel = {
+const siteCollection: models.CollectionModel = {
   name: 'site',
   title: 'Site',
   description: 'Site',
@@ -98,13 +74,13 @@ const siteCollection: CollectionModel = {
   enableVersioning: true,
   enableIndexing: true,
   permission: {},
-  rules: PageRules(),
+  rules: models.PageRules(),
   validations: {},
-  schema: SiteSchema(),
-  uischema: SiteUI(),
+  schema: models.SiteSchema(),
+  uischema: models.SiteUI(),
 };
 
-const categoryCollection: CollectionModel = {
+const categoryCollection: models.CollectionModel = {
   name: 'category',
   title: 'Category',
   description: 'Category',
@@ -114,13 +90,13 @@ const categoryCollection: CollectionModel = {
   enableVersioning: true,
   enableIndexing: true,
   permission: {},
-  rules: CategoryRules(),
+  rules: models.CategoryRules(),
   validations: {},
-  schema: CategorySchema(),
-  uischema: CategoryUI(),
+  schema: models.CategorySchema(),
+  uischema: models.CategoryUI(),
 };
 
-const navigationCollection: CollectionModel = {
+const navigationCollection: models.CollectionModel = {
   name: 'navigation',
   title: 'Navigation',
   description: 'Navigation',
@@ -130,13 +106,13 @@ const navigationCollection: CollectionModel = {
   enableVersioning: true,
   enableIndexing: true,
   permission: {},
-  rules: NavigationRules(),
+  rules: models.NavigationRules(),
   validations: {},
-  schema: NavigationSchema() as any,
-  uischema: NavigationUI(),
+  schema: models.NavigationSchema() as any,
+  uischema: models.NavigationUI(),
 };
 
-const tagCollection: CollectionModel = {
+const tagCollection: models.CollectionModel = {
   name: 'tag',
   title: 'Tag',
   description: 'Tag',
@@ -146,13 +122,13 @@ const tagCollection: CollectionModel = {
   enableVersioning: true,
   enableIndexing: true,
   permission: {},
-  rules: TagRules(),
+  rules: models.TagRules(),
   validations: {},
-  schema: TagSchema(),
-  uischema: TagUI(),
+  schema: models.TagSchema(),
+  uischema: models.TagUI(),
 };
 
-const messageTemplateCollection: CollectionModel = {
+const messageTemplateCollection: models.CollectionModel = {
   name: 'messageemplate',
   title: 'MessageTemplate',
   description: 'MessageTemplate',
@@ -164,11 +140,11 @@ const messageTemplateCollection: CollectionModel = {
   permission: {},
   rules: [],
   validations: {},
-  schema: MessageTemplateSchema(),
+  schema: models.MessageTemplateSchema(),
   uischema: {} as any,
 };
 
-const userCollection: CollectionModel = {
+const userCollection: models.CollectionModel = {
   name: 'user',
   title: 'User',
   description: 'User',
@@ -180,11 +156,11 @@ const userCollection: CollectionModel = {
   permission: {},
   rules: [],
   validations: {},
-  schema: UserSchema(),
+  schema: models.UserSchema(),
   uischema: {} as any,
 };
 
-const userGroupCollection: CollectionModel = {
+const userGroupCollection: models.CollectionModel = {
   name: 'usergroup',
   title: 'User Group',
   description: 'User Group',
@@ -196,11 +172,11 @@ const userGroupCollection: CollectionModel = {
   permission: {},
   rules: [],
   validations: {},
-  schema: UserGroupSchema(),
+  schema: models.UserGroupSchema(),
   uischema: {} as any,
 };
 
-const settingCollection: CollectionModel = {
+const settingCollection: models.CollectionModel = {
   name: 'setting',
   title: 'Setting',
   description: 'Setting',
@@ -212,11 +188,11 @@ const settingCollection: CollectionModel = {
   permission: {},
   rules: [],
   validations: {},
-  schema: SettingSchema() as any,
+  schema: models.SettingSchema() as any,
   uischema: {} as any,
 };
 
-const userRoleCollection: CollectionModel = {
+const userRoleCollection: models.CollectionModel = {
   name: 'userrole',
   title: 'User Role',
   description: 'User Role',
@@ -228,27 +204,11 @@ const userRoleCollection: CollectionModel = {
   permission: {},
   rules: [],
   validations: {},
-  schema: UserRoleSchema(),
+  schema: models.UserRoleSchema(),
   uischema: {} as any,
 };
 
-const workflowCollection: CollectionModel = {
-  name: 'workflow',
-  title: 'Workflow',
-  description: 'Workflow',
-  type: CollectionType.Concrete,
-  enablePost: true,
-  enableWorkflow: true,
-  enableVersioning: true,
-  enableIndexing: true,
-  permission: {},
-  rules: [],
-  validations: {},
-  schema: WorkflowDefinationSubSchema(),
-  uischema: {} as any,
-};
-
-const commentCollection: CollectionModel = {
+const commentCollection: models.CollectionModel = {
   name: 'comment',
   title: 'Comment',
   description: 'Comment',
@@ -260,11 +220,11 @@ const commentCollection: CollectionModel = {
   permission: {},
   rules: [],
   validations: {},
-  schema: CommentSchema(),
+  schema: models.CommentSchema(),
   uischema: {} as any,
 };
 
-const passwordPolicyCollection: CollectionModel = {
+const passwordPolicyCollection: models.CollectionModel = {
   name: 'passwordpolicy',
   title: 'PasswordPolicy',
   description: 'PasswordPolicy',
@@ -276,11 +236,11 @@ const passwordPolicyCollection: CollectionModel = {
   permission: {},
   rules: [],
   validations: {},
-  schema: PasswordPolicySchema(),
+  schema: models.PasswordPolicySchema(),
   uischema: {} as any,
 };
 
-const mintflowCollection: CollectionModel = {
+const mintflowCollection: models.CollectionModel = {
   name: 'mintflow',
   title: 'MintFlow',
   description: 'MintFlow',
@@ -292,11 +252,11 @@ const mintflowCollection: CollectionModel = {
   permission: {},
   rules: [],
   validations: {},
-  schema: MintflowSchema(),
+  schema: models.MintflowSchema(),
   uischema: {} as any,
 };
 
-export const concreteCollections = new Map<String, BaseModel<any>>();
+export const concreteCollections = new Map<String, models.BaseModel<any>>();
 concreteCollections.set(
   DataType.page,
   createConcreteCollection(DataType.page, pageCollection)
@@ -332,10 +292,6 @@ concreteCollections.set(
 concreteCollections.set(
   DataType.comment,
   createConcreteCollection(DataType.comment, commentCollection)
-);
-concreteCollections.set(
-  DataType.workflow,
-  createConcreteCollection(DataType.workflow, workflowCollection)
 );
 concreteCollections.set(
   DataType.user,
@@ -375,7 +331,7 @@ const createUser = (
 ) => {
   return { firstname, lastname, email, password, groups };
 };
-export const users: UserModel[] = [];
+export const users: models.UserModel[] = [];
 users.push(createUser('imzee', 'jac', 'imzee@local.com', 'aaaaaa', ['Admin']));
 users.push(createUser('admin', 'user', 'admin@local.com', 'aaaaaa', ['Admin']));
 users.push(
@@ -388,7 +344,7 @@ users.push(
 const createGroup = (name: string, description: string, roles: string[]) => {
   return { name, description, roles };
 };
-export const groups: UserGroupModel[] = [];
+export const groups: models.UserGroupModel[] = [];
 groups.push(createGroup('Guest', 'Unauthenticated users', [RoleType.Guest]));
 groups.push(
   createGroup('Agent', 'Help Desk User Group', [RoleType.Reviewer, RoleType.Publisher])
@@ -399,7 +355,7 @@ groups.push(
 groups.push(createGroup('Admin', 'Omin Administrator', [RoleType.RootAdmin]));
 
 
-export const baseSettings: SettingModel = {
+export const baseSettings: models.SettingModel = {
   name: 'BaseSettings', ownertype: 'System', ownerid: '',
 };
 const addSetting = (resourcetype: 'component' | 'collection' | 'route', resourceid: string, property: string, value: boolean | number | string) => {
@@ -433,7 +389,7 @@ addSetting('component', 'sms_template', 'passwordreset', '');
 addSetting('component', 'site', 'name', 'Websitemint');
 addSetting('component', 'site', 'domain', 'localhost');
 
-export const rootPage: PageModel = {
+export const rootPage: models.PageModel = {
   name: 'rootpage',
   slug: 'rootpage',
   title: 'Root Page',

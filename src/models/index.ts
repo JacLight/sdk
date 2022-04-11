@@ -23,3 +23,4 @@ export * from './user';
 export * from './website';
 export * from './mintflow';
 export * from './application';
+export * from './product';

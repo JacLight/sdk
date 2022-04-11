@@ -14,7 +14,7 @@ export const SiteSchema = () => {
       },
       description: {
         type: 'string',
-        inputStyle: 'textarea'
+        inputStyle: 'textarea',
       },
       keywords: {
         type: 'string',
@@ -24,15 +24,15 @@ export const SiteSchema = () => {
       },
       hostname: {
         type: 'string',
-        format: 'hostname'
+        format: 'hostname',
       },
       icon: {
         type: 'string',
-        format: 'uri'
+        format: 'uri',
       },
       logo: {
         type: 'string',
-        format: 'uri'
+        format: 'uri',
       },
       mainNavigation: {
         type: 'string',
@@ -61,15 +61,15 @@ export const SiteSchema = () => {
         description: 'Enable Google reCAPTCHA on contact and comment forms',
         type: 'boolean',
         inputStyle: 'switch',
-        displayStyle: 'card'
+        displayStyle: 'card',
       },
       spamProtectionUser: {
-        description: 'Enable Google reCAPTCHA on login, create account and password recovery pages',
+        description:
+          'Enable Google reCAPTCHA on login, create account and password recovery pages',
         type: 'boolean',
         inputStyle: 'switch',
-        displayStyle: 'card'
-      }
-
+        displayStyle: 'card',
+      },
     },
   } as const;
 };
@@ -88,10 +88,9 @@ export const SocialSchema = (name: string) => {
       apiSecret: {
         type: 'string',
       },
-    }
-  } as const
-}
-
+    },
+  } as const;
+};
 
 export const SiteUI = (): CollectionUI[] => {
   return [
@@ -103,7 +102,7 @@ export const SiteUI = (): CollectionUI[] => {
           items: [
             {
               '0': '/properties/name',
-              '1': '/properties/title'
+              '1': '/properties/title',
             },
             {
               '0': '/properties/mainNavigation',
@@ -113,27 +112,27 @@ export const SiteUI = (): CollectionUI[] => {
               '0': '/properties/description',
             },
             {
-              '0': '/properties/keywords'
+              '0': '/properties/keywords',
             },
             {
-              '0': '/properties/robots'
+              '0': '/properties/robots',
             },
             {
               '0': '/properties/hostname',
             },
             {
-              '0': '/properties/icon'
+              '0': '/properties/icon',
             },
             {
-              '0': '/properties/logo'
+              '0': '/properties/logo',
             },
             {
               '0': '/properties/spamProtectionUser',
             },
             {
               '0': '/properties/spanProtectionComment',
-            }
-          ]
+            },
+          ],
         },
         {
           title: 'Social Links',
@@ -153,11 +152,11 @@ export const SiteUI = (): CollectionUI[] => {
             {
               '0': '/properties/tiktok',
             },
-          ]
-        }
-      ]
+          ],
+        },
+      ],
     },
-  ]
+  ];
 };
 
 const dd = SiteSchema();
