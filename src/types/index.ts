@@ -4,3 +4,6 @@ export * from './jsonschema';
 export * from './collectiontype';
 export * from './componentname';
 export * from './formviewsectiontype';
+export * from './pagesectiontype';
+export * from './permissiontype';
+export * from './roletype';

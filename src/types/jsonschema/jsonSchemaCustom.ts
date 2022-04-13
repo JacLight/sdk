@@ -159,7 +159,9 @@ export interface JsonSchemaCustom {
   examples?: any[];
   contains?: JsonSchemaCustom;
   propertyNames?: JsonSchemaCustom;
+  name?: string;
   const?: any;
+  url?: string;
   if?: JsonSchemaCustom;
   then?: JsonSchemaCustom;
   else?: JsonSchemaCustom;
@@ -176,4 +178,6 @@ export interface JsonSchemaCustom {
   styleClass?: string;
   hidden?: boolean;
   layout?: string;
+  displaySize?: string;
+  clickToShow?: boolean;
 }

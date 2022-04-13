@@ -1,35 +1,42 @@
-import { JsonSchemaCustom } from '../types/jsonschema/jsonSchemaCustom';
 import { CollectionType, FormViewSectionType } from '../types';
 
-
 export interface CollectionUIGroup {
-  title: string, description?: string, items?: { [key: string]: string }[], type?: string
+  title: string;
+  description?: string;
+  items?: { [key: string]: string }[];
+  type?: string;
 }
 export interface CollectionUI {
   type: FormViewSectionType;
-  items?: { [key: string]: string }
-  accordion?: CollectionUIGroup[],
-  stepper?: CollectionUIGroup[],
+  items?: { [key: string]: string };
+  accordion?: CollectionUIGroup[];
+  tab?: CollectionUIGroup[];
   buttons?: {
-    back?: { title: string, handler: () => {} },
-    next?: { title: string, handler: () => {} },
-    skip?: { title: string, handler: () => {} },
-    finish?: { title: string, handler: () => {} },
-  },
-  rules?: {}
+    back?: { title: string; handler: () => {} };
+    next?: { title: string; handler: () => {} };
+    skip?: { title: string; handler: () => {} };
+    finish?: { title: string; handler: () => {} };
+  };
+  rules?: {};
 }
 
 export interface CollectionRule {
-  name: string,
+  name: string;
   condition?: {
-    type?: string,
-    param?: { field?: string, targetField?: string, targetType?: string, targetValue?: string | number, operation?: string }[]
-  }
-  action?: { operation: string, targetField: string, script: string }[]
+    type?: string;
+    param?: {
+      field?: string;
+      targetField?: string;
+      targetType?: string;
+      targetValue?: string | number;
+      operation?: string;
+    }[];
+  };
+  action?: { operation: string; targetField: string; script: string }[];
 }
 
 export interface CollectionModel {
-  name: string
+  name: string;
   title?: string;
   description?: string;
   type?: CollectionType;
@@ -41,7 +48,7 @@ export interface CollectionModel {
   rules?: CollectionRule[];
   validations?: {};
   uischema?: CollectionUI[];
-  schema?: JsonSchemaCustom;
+  schema?: any;
 }
 
 export const CollectionSchema = () => {
@@ -53,7 +60,7 @@ export const CollectionSchema = () => {
         pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
         minLength: 3,
         maxLength: 20,
-        unique: true
+        unique: true,
       },
       title: {
         type: 'string',
@@ -61,27 +68,34 @@ export const CollectionSchema = () => {
       description: {
         type: 'string',
       },
-      enableAssetFramework: {
-        type: 'boolean',
-      },
       workflow: {
         type: 'string',
       },
       enableVersioning: {
         type: 'boolean',
       },
+      enableIndexing: {
+        type: 'boolean',
+      },
+      enableWorkflow: {
+        type: 'boolean',
+      },
       permission: {
         type: 'object',
+        hidden: true,
         properties: {},
       },
       elements: {
+        hidden: true,
         type: 'array',
       },
       rules: {
+        hidden: true,
         type: 'object',
         properties: {},
       },
       validations: {
+        hidden: true,
         type: 'object',
         properties: {},
       },
@@ -94,9 +108,12 @@ export const CollectionSchema = () => {
 };
 
 export const CollectionUI = (): CollectionUI[] => {
-  return null
+  return null;
 };
 
 export const CollectionRules = (): CollectionRule[] => {
-  return null
-}
+  return [];
+};
+
+export const CollectionForm = CollectionSchema;
+export const CollectionView = CollectionSchema;

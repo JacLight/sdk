@@ -1,6 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 
-export const CollectionViewSchema = () => {
+export const ApplicationSchema = () => {
   return {
     type: 'object',
     properties: {
@@ -9,22 +9,25 @@ export const CollectionViewSchema = () => {
         pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
         minLength: 3,
         maxLength: 50,
-        unique: true
+        unique: true,
       },
       title: {
         type: 'string',
       },
-      datatype: { type: 'string' },
       description: {
         type: 'string',
       },
-      columns: { type: 'array' },
-      filters: {
+      navigation: {
         type: 'array',
+        hidden: true,
+      },
+      views: {
+        type: 'string',
+        hidden: true,
       },
     },
-  } as const
+  } as const;
 };
 
-const ps = CollectionViewSchema();
-export type CollectionViewModel = FromSchema<typeof ps>;
+const as = ApplicationSchema();
+export type ApplicationModel = FromSchema<typeof as>;

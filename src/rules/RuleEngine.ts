@@ -1,3 +1,1 @@
-export class RuleEngine {
-
-}
+export class RuleEngine {}

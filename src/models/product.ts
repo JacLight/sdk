@@ -1,25 +1,19 @@
 import { FromSchema } from 'json-schema-to-ts';
 
-export const CountrySchema = () => {
+export const ProductSchema = () => {
   return {
     type: 'object',
     properties: {
-      name: {
+      phone: {
         type: 'string',
       },
-      state: {
-        type: 'array',
-      },
-      currency: {
+      extension: {
         type: 'string',
       },
-      code: {
+      typeid: {
         type: 'string',
       },
-      idd: {
-        type: 'string',
-      },
-      ziprequired: {
+      primary: {
         type: 'string',
         default: 'false',
       },
@@ -27,5 +21,5 @@ export const CountrySchema = () => {
   } as const;
 };
 
-const dd = CountrySchema();
-export type CountryModel = FromSchema<typeof dd>;
+const dd = ProductSchema();
+export type ProductModel = FromSchema<typeof dd>;

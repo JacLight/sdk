@@ -6,14 +6,14 @@ export const CommentSchema = () => {
     properties: {
       comment: {
         type: 'string',
-        default: true,
       },
       user: {
         type: 'string',
-        default: true,
       },
       rating: {
         type: 'number',
+        maximum: 5,
+        minimum: 1,
       },
       voteup: {
         type: 'number',
@@ -22,11 +22,13 @@ export const CommentSchema = () => {
         type: 'number',
       },
       date: {
-        type: 'number',
+        type: 'string',
+        format: 'date-time',
       },
       comments: {
         type: 'array',
         items: { type: 'object' },
+        hidden: true,
       },
     },
   } as const;

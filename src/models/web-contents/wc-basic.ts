@@ -1,6 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 
-export const MintflowSchema = () => {
+export const WCBasicSchema = () => {
   return {
     type: 'object',
     properties: {
@@ -10,23 +10,19 @@ export const MintflowSchema = () => {
         minLength: 3,
         maxLength: 50,
         unique: true,
-      },
-      title: {
-        type: 'string',
+        disabled: true,
       },
       description: {
         type: 'string',
+        inputStyle: 'richtext',
       },
-      nodes: {
-        type: 'array',
-        items: {
-          type: 'object',
-        },
-        hidden: true,
+      content: {
+        type: 'string',
+        inputStyle: 'richtext',
       },
     },
   } as const;
 };
 
-const ps = MintflowSchema();
-export type MintflowModel = FromSchema<typeof ps>;
+const wc = WCBasicSchema();
+export type WCBasicModel = FromSchema<typeof wc>;
