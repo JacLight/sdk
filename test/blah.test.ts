@@ -1,7 +1,7 @@
-import { sum } from '../src';
+import { isEmpty } from '../src';
 
-describe('blah', () => {
+describe('isEmpty', () => {
   it('works', () => {
-    expect(sum(1, 1)).toEqual(2);
+    expect(isEmpty({})).toBe(true);
   });
 });
