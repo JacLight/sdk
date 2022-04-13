@@ -29,8 +29,8 @@ const collectionCollection: models.CollectionModel = {
   permission: {},
   rules: models.CollectionRules(),
   validations: {},
-  schema: models.CollectionSchema(),
-  uischema: models.CollectionUI(),
+  schema: models.CollectionSchema() as any,
+  uischema: models.CollectionUI() as any,
 };
 
 Object.values(models).forEach(tmodel => console.log(tmodel));
@@ -57,8 +57,8 @@ const pageCollection: models.CollectionModel = {
   permission: {},
   rules: models.PageRules(),
   validations: {},
-  schema: models.PageSchema(),
-  uischema: models.PageUI(),
+  schema: models.PageSchema() as any,
+  uischema: models.PageUI() as any,
 };
 
 const siteCollection: models.CollectionModel = {
@@ -73,8 +73,8 @@ const siteCollection: models.CollectionModel = {
   permission: {},
   rules: models.PageRules(),
   validations: {},
-  schema: models.SiteSchema(),
-  uischema: models.SiteUI(),
+  schema: models.SiteSchema() as any,
+  uischema: models.SiteUI() as any,
 };
 
 const categoryCollection: models.CollectionModel = {
@@ -89,8 +89,8 @@ const categoryCollection: models.CollectionModel = {
   permission: {},
   rules: models.CategoryRules(),
   validations: {},
-  schema: models.CategorySchema(),
-  uischema: models.CategoryUI(),
+  schema: models.CategorySchema() as any,
+  uischema: models.CategoryUI() as any,
 };
 
 const navigationCollection: models.CollectionModel = {
@@ -106,7 +106,7 @@ const navigationCollection: models.CollectionModel = {
   rules: models.NavigationRules(),
   validations: {},
   schema: models.NavigationSchema() as any,
-  uischema: models.NavigationUI(),
+  uischema: models.NavigationUI() as any,
 };
 
 const tagCollection: models.CollectionModel = {
@@ -121,8 +121,8 @@ const tagCollection: models.CollectionModel = {
   permission: {},
   rules: models.TagRules(),
   validations: {},
-  schema: models.TagSchema(),
-  uischema: models.TagUI(),
+  schema: models.TagSchema() as any,
+  uischema: models.TagUI() as any,
 };
 
 const messageTemplateCollection: models.CollectionModel = {
@@ -137,7 +137,7 @@ const messageTemplateCollection: models.CollectionModel = {
   permission: {},
   rules: [],
   validations: {},
-  schema: models.MessageTemplateSchema(),
+  schema: models.MessageTemplateSchema() as any,
   uischema: {} as any,
 };
 
@@ -153,7 +153,7 @@ const userCollection: models.CollectionModel = {
   permission: {},
   rules: [],
   validations: {},
-  schema: models.UserSchema(),
+  schema: models.UserSchema() as any,
   uischema: {} as any,
 };
 
@@ -169,7 +169,7 @@ const userGroupCollection: models.CollectionModel = {
   permission: {},
   rules: [],
   validations: {},
-  schema: models.UserGroupSchema(),
+  schema: models.UserGroupSchema() as any,
   uischema: {} as any,
 };
 
@@ -201,7 +201,7 @@ const userRoleCollection: models.CollectionModel = {
   permission: {},
   rules: [],
   validations: {},
-  schema: models.UserRoleSchema(),
+  schema: models.UserRoleSchema() as any,
   uischema: {} as any,
 };
 
@@ -217,7 +217,7 @@ const commentCollection: models.CollectionModel = {
   permission: {},
   rules: [],
   validations: {},
-  schema: models.CommentSchema(),
+  schema: models.CommentSchema() as any,
   uischema: {} as any,
 };
 
@@ -233,7 +233,7 @@ const passwordPolicyCollection: models.CollectionModel = {
   permission: {},
   rules: [],
   validations: {},
-  schema: models.PasswordPolicySchema(),
+  schema: models.PasswordPolicySchema() as any,
   uischema: {} as any,
 };
 
@@ -249,7 +249,7 @@ const mintflowCollection: models.CollectionModel = {
   permission: {},
   rules: [],
   validations: {},
-  schema: models.MintflowSchema(),
+  schema: models.MintflowSchema() as any,
   uischema: {} as any,
 };
 
