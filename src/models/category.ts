@@ -20,11 +20,11 @@ export const CategorySchema = () => {
       image: {
         type: 'string',
       },
-      categories: {
-        type: 'array',
-        hidden: true,
-        items: { type: 'object' },
-      },
+      // categories: {
+      //   type: 'array',
+      //   hidden: true,
+      //   items: { type: 'object' },
+      // },
     },
   } as const;
 };
