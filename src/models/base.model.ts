@@ -69,7 +69,7 @@ export const PostSubSchema = () => {
       },
       preview: {
         type: 'string',
-        inputStyle: 'textarea'
+        inputStyle: 'textarea',
       },
       allowShare: {
         type: 'boolean',
@@ -95,7 +95,7 @@ export const PostSubSchema = () => {
           source: 'collection',
           collection: DataType.category,
           field: 'name',
-        }
+        },
       },
       tags: {
         type: 'string',
@@ -105,19 +105,19 @@ export const PostSubSchema = () => {
           source: 'collection',
           collection: DataType.tag,
           field: 'name',
-        }
+        },
       },
       images: {
         type: 'array',
         items: {
-          type: 'string'
-        }
+          type: 'string',
+        },
       },
       pages: {
         type: 'array',
         items: {
-          type: 'string'
-        }
+          type: 'string',
+        },
       },
     },
   } as const;
@@ -200,14 +200,13 @@ export const WorkflowDefinationSubSchema = () => {
 const wfd = WorkflowDefinationSubSchema();
 export type WorkflowDefinitionSubModel = FromSchema<typeof wfd>;
 
-
 export const StyleSubSchema = () => {
   return {
     type: 'object',
     properties: {
       classes: {
         type: 'string',
-        enum: ['']
+        enum: [''],
       },
       template: {
         type: 'string',
@@ -219,7 +218,7 @@ export const StyleSubSchema = () => {
         type: 'string',
         fieldType: 'Code',
         inputStyle: 'css',
-        collapsible: true
+        collapsible: true,
       },
       javascript: {
         type: 'string',
@@ -233,14 +232,14 @@ export const StyleSubSchema = () => {
       styleLinks: {
         type: 'array',
         items: {
-          type: 'string'
-        }
+          type: 'string',
+        },
       },
       scriptLinks: {
         type: 'array',
         items: {
-          type: 'string'
-        }
+          type: 'string',
+        },
       },
     },
   } as const;

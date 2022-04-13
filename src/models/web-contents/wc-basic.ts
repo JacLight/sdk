@@ -10,7 +10,7 @@ export const WCBasicSchema = () => {
         minLength: 3,
         maxLength: 50,
         unique: true,
-        disabled: true
+        disabled: true,
       },
       description: {
         type: 'string',

@@ -30,8 +30,8 @@ export const TagGroupSchema = () => {
       },
       tags: {
         type: 'array',
-        items: TagSchema()
-      }
+        items: TagSchema(),
+      },
     },
   } as const;
 };
@@ -48,12 +48,12 @@ export const TagSetSchema = () => {
       },
       tags: {
         type: 'array',
-        items: TagSchema()
+        items: TagSchema(),
       },
       tagGroups: {
         type: 'array',
-        items: TagGroupSchema()
-      }
+        items: TagGroupSchema(),
+      },
     },
   } as const;
 };
@@ -61,7 +61,6 @@ export const TagSetSchema = () => {
 const ts = TagSchema();
 const tgs = TagGroupSchema();
 const tss = TagSetSchema();
-
 
 export type TagModel = FromSchema<typeof ts>;
 export type TagGroupModel = FromSchema<typeof tgs>;

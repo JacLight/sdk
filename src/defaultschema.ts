@@ -13,10 +13,9 @@ const createConcreteCollection = (
     name: dataType,
     data: data,
     datatype: dataType,
-    version: 0
+    version: 0,
   };
 };
-
 
 const collectionCollection: models.CollectionModel = {
   name: 'collection',
@@ -34,19 +33,17 @@ const collectionCollection: models.CollectionModel = {
   uischema: models.CollectionUI(),
 };
 
-Object.values(models).forEach(tmodel =>
-  console.log(tmodel)
-)
+Object.values(models).forEach(tmodel => console.log(tmodel));
 
-const collectionCollectionForm = deepCopy(collectionCollection)
-collectionCollectionForm.name = 'collectionform'
-collectionCollectionForm.title = 'collectionform'
-collectionCollectionForm.description = 'collectionform'
+const collectionCollectionForm = deepCopy(collectionCollection);
+collectionCollectionForm.name = 'collectionform';
+collectionCollectionForm.title = 'collectionform';
+collectionCollectionForm.description = 'collectionform';
 
-const collectionCollectionView = deepCopy(collectionCollection)
-collectionCollectionForm.name = 'collectionview'
-collectionCollectionForm.title = 'collectionview'
-collectionCollectionForm.description = 'collectionview'
+const collectionCollectionView = deepCopy(collectionCollection);
+collectionCollectionForm.name = 'collectionview';
+collectionCollectionForm.title = 'collectionview';
+collectionCollectionForm.description = 'collectionview';
 
 const pageCollection: models.CollectionModel = {
   name: 'page',
@@ -347,20 +344,31 @@ const createGroup = (name: string, description: string, roles: string[]) => {
 export const groups: models.UserGroupModel[] = [];
 groups.push(createGroup('Guest', 'Unauthenticated users', [RoleType.Guest]));
 groups.push(
-  createGroup('Agent', 'Help Desk User Group', [RoleType.Reviewer, RoleType.Publisher])
+  createGroup('Agent', 'Help Desk User Group', [
+    RoleType.Reviewer,
+    RoleType.Publisher,
+  ])
 );
 groups.push(
   createGroup('Customer', 'Site users, authenticated users', [RoleType.User])
 );
 groups.push(createGroup('Admin', 'Omin Administrator', [RoleType.RootAdmin]));
 
-
 export const baseSettings: models.SettingModel = {
-  name: 'BaseSettings', ownertype: 'System', ownerid: '',
+  name: 'BaseSettings',
+  ownertype: 'System',
+  ownerid: '',
 };
-const addSetting = (resourcetype: 'component' | 'collection' | 'route', resourceid: string, property: string, value: boolean | number | string) => {
+const addSetting = (
+  resourcetype: 'component' | 'collection' | 'route',
+  resourceid: string,
+  property: string,
+  value: boolean | number | string
+) => {
   const settingKey = `setting_${resourcetype}_${resourceid}`;
-  const thisSetting: any = baseSettings[settingKey] || { title: toTitleCase(resourceid?.replace(/_/g, ' ')) };
+  const thisSetting: any = baseSettings[settingKey] || {
+    title: toTitleCase(resourceid?.replace(/_/g, ' ')),
+  };
 
   const valueString: string = value as string;
   thisSetting[`property_${property}`] = valueString;

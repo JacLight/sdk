@@ -1,6 +1,10 @@
-import { PermissionTypeContent, PermissionTypeComponent, FieldType, RoleType } from '../types';
+import {
+  PermissionTypeContent,
+  PermissionTypeComponent,
+  FieldType,
+  RoleType,
+} from '../types';
 import { FromSchema } from 'json-schema-to-ts';
-
 
 export const PermissionEntrySchema = () => {
   return {
@@ -19,7 +23,7 @@ export const PermissionEntrySchema = () => {
         inputStyle: 'chip',
         dataSource: {
           source: 'json',
-          json: Object.values(PermissionTypeContent)
+          json: Object.values(PermissionTypeContent),
         },
       },
       component: {
@@ -28,7 +32,7 @@ export const PermissionEntrySchema = () => {
         inputStyle: 'chip',
         dataSource: {
           source: 'json',
-          json: Object.values(PermissionTypeComponent)
+          json: Object.values(PermissionTypeComponent),
         },
       },
     },
@@ -40,9 +44,8 @@ export const PermissionSchema = () => {
     type: 'array',
     readonly: true,
     items: PermissionEntrySchema(),
-  } as const
-}
-
+  } as const;
+};
 
 const ps = PermissionSchema();
 const pes = PermissionEntrySchema();

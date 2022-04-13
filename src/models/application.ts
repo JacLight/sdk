@@ -19,11 +19,11 @@ export const ApplicationSchema = () => {
       },
       navigation: {
         type: 'array',
-        hidden: true
+        hidden: true,
       },
       views: {
         type: 'string',
-        hidden: true
+        hidden: true,
       },
     },
   } as const;

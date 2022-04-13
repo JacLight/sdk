@@ -28,7 +28,7 @@ export const NavigationSchema = () => {
       links: {
         type: 'array',
         hidden: true,
-        items: NavigationLinkSchema()
+        items: NavigationLinkSchema(),
       },
     },
   } as const;
@@ -56,17 +56,17 @@ export const NavigationLinkSchema = (): any => {
           source: 'collection',
           field: 'name',
           collection: DataType.page,
-        }
+        },
       },
       url: {
         type: 'string',
         format: 'uri',
-        hidden: true
+        hidden: true,
       },
       widget: {
         type: 'string',
         hidden: true,
-        enum: widgetStore.widgetList.map(widget => widget.name)
+        enum: widgetStore.widgetList.map(widget => widget.name),
       },
       params: {
         type: 'array',
@@ -75,13 +75,13 @@ export const NavigationLinkSchema = (): any => {
           type: 'object',
           properties: {
             name: {
-              type: 'string'
+              type: 'string',
             },
             value: {
-              type: 'string'
-            }
-          }
-        }
+              type: 'string',
+            },
+          },
+        },
       },
       image: {
         type: 'string',

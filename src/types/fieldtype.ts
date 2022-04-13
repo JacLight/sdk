@@ -17,5 +17,5 @@ export enum FieldType {
   map = 'Map',
   derivedField = 'Derived Field',
   lookupField = 'Lookup Field',
-  linkedSelect = 'Linked Selection'
+  linkedSelect = 'Linked Selection',
 }

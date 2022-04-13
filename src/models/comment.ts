@@ -13,7 +13,7 @@ export const CommentSchema = () => {
       rating: {
         type: 'number',
         maximum: 5,
-        minimum: 1
+        minimum: 1,
       },
       voteup: {
         type: 'number',
@@ -23,7 +23,7 @@ export const CommentSchema = () => {
       },
       date: {
         type: 'string',
-        format: 'date-time'
+        format: 'date-time',
       },
       comments: {
         type: 'array',

@@ -115,5 +115,5 @@ export const CollectionRules = (): CollectionRule[] => {
   return [];
 };
 
-export const CollectionForm = CollectionSchema
-export const CollectionView = CollectionSchema
+export const CollectionForm = CollectionSchema;
+export const CollectionView = CollectionSchema;

@@ -128,11 +128,11 @@ export const PageSectionSchema = () => {
       },
       viewTemplate: {
         type: 'string',
-        enum: ['basic', 'picture', 'blog']
+        enum: ['basic', 'picture', 'blog'],
       },
       defaultView: {
         type: 'string',
-        enum: ['list', 'card', 'detail', 'table']
+        enum: ['list', 'card', 'detail', 'table'],
       },
       views: {
         type: 'string',
@@ -156,25 +156,25 @@ export const PageSectionSchema = () => {
           type: 'object',
           properties: {
             id: {
-              type: 'string'
+              type: 'string',
             },
             datatype: {
-              type: 'string'
+              type: 'string',
             },
             name: {
-              type: 'string'
+              type: 'string',
             },
             description: {
-              type: 'string'
-            }
-          }
-        }
+              type: 'string',
+            },
+          },
+        },
       },
       dataTypes: {
         type: 'string',
         inputStyle: 'chip',
         fieldType: FieldType.selectionmultiple,
-        enum: Object.values(DataType)
+        enum: Object.values(DataType),
       },
       categories: {
         type: 'string',
@@ -184,7 +184,7 @@ export const PageSectionSchema = () => {
           source: 'collection',
           collection: DataType.category,
           field: 'name',
-        }
+        },
       },
       tags: {
         type: 'string',
@@ -194,11 +194,23 @@ export const PageSectionSchema = () => {
           source: 'collection',
           collection: DataType.tag,
           field: 'name',
-        }
+        },
       },
       sort: {
         type: 'string',
-        enum: ['Auto', 'Title Asc', 'Title Desc', 'Name Asc', 'Name Desc', 'Published Asc', 'Published Desc', 'Created Asc', 'Created Desc', 'Modified Asc', 'Modified Desc']
+        enum: [
+          'Auto',
+          'Title Asc',
+          'Title Desc',
+          'Name Asc',
+          'Name Desc',
+          'Published Asc',
+          'Published Desc',
+          'Created Asc',
+          'Created Desc',
+          'Modified Asc',
+          'Modified Desc',
+        ],
       },
     },
     required: ['id'],
@@ -214,54 +226,54 @@ export const PageUI = (): CollectionUI[] => {
           title: 'SEO & Info',
           items: [
             {
-              '0': '/properties/parent'
+              '0': '/properties/parent',
             },
             {
               '0': '/properties/name',
-              '1': '/properties/slug'
+              '1': '/properties/slug',
             },
             {
-              '0': '/properties/title'
+              '0': '/properties/title',
             },
             {
-              '0': '/properties/description'
+              '0': '/properties/description',
             },
             {
-              '0': '/properties/keywords'
+              '0': '/properties/keywords',
             },
             {
-              '0': '/properties/robots'
+              '0': '/properties/robots',
             },
             {
               '0': '/properties/childEditing',
             },
             {
-              '0': '/properties/hidden'
+              '0': '/properties/hidden',
             },
             {
-              '0': '/properties/iconUrl'
-            }
-          ]
+              '0': '/properties/iconUrl',
+            },
+          ],
         },
         {
           title: 'Breakpoints',
           items: [
             {
               '0': '/properties/minWidth',
-              '1': '/properties/maxWidth'
+              '1': '/properties/maxWidth',
             },
             {
               '0': '/properties/minHeight',
-              '1': '/properties/maxHeight'
+              '1': '/properties/maxHeight',
             },
             {
               '0': '/properties/breakpoints',
             },
-          ]
-        }
-      ]
+          ],
+        },
+      ],
     },
-  ]
+  ];
 };
 
 export const PageRules = (): CollectionRule[] => {

@@ -9,15 +9,19 @@ export type WidgetType = {
 class WidgetStore {
   public widgetList: WidgetType[] = [];
   public addWidget = (widget: WidgetType) => {
-    const index = this.widgetList.findIndex(oldWidget => oldWidget.name === widget.name)
+    const index = this.widgetList.findIndex(
+      oldWidget => oldWidget.name === widget.name
+    );
     if (index >= 0) {
       this.widgetList[index] = widget;
     } else {
-      this.widgetList.push(widget)
+      this.widgetList.push(widget);
     }
   };
   public FindByName = (name: string) => {
-    return this.widgetList.indexOf(this.widgetList.find((item) => item.name === name));
+    return this.widgetList.indexOf(
+      this.widgetList.find(item => item.name === name)
+    );
   };
 }
 
