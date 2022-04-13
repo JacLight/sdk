@@ -30,7 +30,7 @@ export const AuditSubSchema = () => {
     properties: {
       author: {
         type: 'string',
-        disabled: 'true',
+        disabled: true,
       },
       publishstart: {
         type: 'string',
@@ -43,12 +43,12 @@ export const AuditSubSchema = () => {
       createdate: {
         type: 'string',
         format: 'date-time',
-        disabled: 'true',
+        disabled: true,
       },
       modifydate: {
         type: 'string',
         format: 'date-time',
-        disabled: 'true',
+        disabled: true,
       },
     },
   } as const;
