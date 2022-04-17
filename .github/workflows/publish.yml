@@ -27,6 +27,7 @@ jobs:
           registry-url: https://npm.pkg.github.com/
           always-auth: true
       - run: yarn install
+      - run: git config --global user.email "imolewolede@gmail.com" && git config --global user.name "$GITHUB_ACTOR"
       - run: yarn version --minor
       - run: git push --tags && git push
       - run: yarn publish
