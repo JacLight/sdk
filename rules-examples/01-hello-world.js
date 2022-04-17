@@ -10,7 +10,7 @@
  */
 
 require('colors')
-const { Engine } = require('json-rules-engine')
+const { Engine } = require('../src/rules/types')
 
 async function start () {
   /**
