@@ -17,6 +17,7 @@ const createConcreteCollection = (
   };
 };
 
+
 const collectionCollection: models.CollectionModel = {
   name: 'collection',
   title: 'Collection',
