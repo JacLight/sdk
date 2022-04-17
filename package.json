@@ -32,7 +32,7 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "dbsdk",
+  "name": "@jaclight/dbsdk",
   "author": "Jac Light",
   "module": "dist/dbsdk.esm.js",
   "size-limit": [
@@ -86,10 +86,12 @@
     "lodash.isobjectlike": "^4.0.0"
   },
   "publishConfig": { 
-    "registry":"https://npm.pkg.github.com"
+    "@jaclight:registry": "https://npm.pkg.github.com"
  },
  "repository": {
   "type": "git",
   "url": "https://github.com/JacLight/sdk.git"
 }
 }
+
+
