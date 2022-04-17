@@ -84,5 +84,12 @@
     "json-schema-to-ts": "^1.6.5",
     "jsonpath-plus": "^5.0.7",
     "lodash.isobjectlike": "^4.0.0"
-  }
+  },
+  "publishConfig": { 
+    "registry":"https://npm.pkg.github.com"
+ },
+ "repository": {
+  "type": "git",
+  "url": "https://github.com/JacLight/sdk.git"
+}
 }
