@@ -1,9 +1,10 @@
 {
   "extends": "./tsconfig.paths.json",
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "src/**/*.js"],
   "compilerOptions": {
     "module": "esnext",
     "lib": ["dom", "esnext"],
+    "allowJs": true,
     "importHelpers": true,
     "declaration": true,
     "sourceMap": true,
