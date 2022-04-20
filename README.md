@@ -118,3 +118,4 @@ registry=<https://npm.pkg.github.com/jaclight>
 export NPM_TOKEN=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
 npm config set registry <https://registry.npmjs.org/>
 npm config set registry <https://registry.npmjs.org/>
+//npm.pkg.github.com/:_authToken=${NPM_TOKEN}
