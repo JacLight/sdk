@@ -15,47 +15,17 @@ export interface BaseModel<T> {
   data?: T;
   isnew?: boolean;
   datatype?: DataType | string;
-  audit?: AuditSubModel;
   workflow?: WorkflowDefinitionSubModel;
   workflowhistory?: WorkflowSubModel[];
   post?: PostSubModel;
   style?: StyleSubModel;
   permissions?: PermissionModel;
   version: number;
+  createdate?: Date;
+  modifydate?: Date;
+  author?: string;
+
 }
-
-export const AuditSubSchema = () => {
-  return {
-    type: 'object',
-    properties: {
-      author: {
-        type: 'string',
-        disabled: true,
-      },
-      publishstart: {
-        type: 'string',
-        format: 'date-time',
-      },
-      publishend: {
-        type: 'string',
-        format: 'date-time',
-      },
-      createdate: {
-        type: 'string',
-        format: 'date-time',
-        disabled: true,
-      },
-      modifydate: {
-        type: 'string',
-        format: 'date-time',
-        disabled: true,
-      },
-    },
-  } as const;
-};
-const ash = AuditSubSchema();
-export type AuditSubModel = FromSchema<typeof ash>;
-
 export const PostSubSchema = () => {
   return {
     type: 'object',
@@ -86,6 +56,14 @@ export const PostSubSchema = () => {
       showRelated: {
         type: 'boolean',
         default: true,
+      },
+      publishstart: {
+        type: 'string',
+        format: 'date-time',
+      },
+      publishend: {
+        type: 'string',
+        format: 'date-time',
       },
       categories: {
         type: 'string',

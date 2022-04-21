@@ -108,10 +108,14 @@ We recommend using [np](https://github.com/sindresorhus/np).
  npm config set registry <https://registry.npmjs.org/>
  npm login --registry=<https://npm.pkg.github.com>
 //npm.pkg.github.com/:_authToken=${NPM_TOKEN}
-TOKEN=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
+export NPM_TOKEN=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
 registry=<https://npm.pkg.github.com/jaclight>
 
       - run: |
           echo @jaclight:https://npm.pkg.github.com/ > build/.npmrc
           echo '//npm.pkg.github.com/:_authToken=${NPM_TOKEN}' >> build/.npmrc
-      - run: git config --global user.email "imolewolede@gmail.com" && git config --global user.name "$GITHUB_ACTOR"
+
+export NPM_TOKEN=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
+npm config set registry <https://registry.npmjs.org/>
+npm config set registry <https://registry.npmjs.org/>
+//npm.pkg.github.com/:_authToken=${NPM_TOKEN}
