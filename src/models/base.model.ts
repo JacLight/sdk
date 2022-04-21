@@ -21,9 +21,9 @@ export interface BaseModel<T> {
   style?: StyleSubModel;
   permissions?: PermissionModel;
   version: number;
-  createdate: Date;
-  modifydate: Date;
-  author: string;
+  createdate?: Date;
+  modifydate?: Date;
+  author?: string;
 
 }
 export const PostSubSchema = () => {
