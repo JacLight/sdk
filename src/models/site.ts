@@ -1,6 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { CollectionRule, CollectionUI } from './collection';
 import { DataType, FieldType, FormViewSectionType } from '../types';
+import { ImageSchema } from './image';
 
 export const SiteSchema = () => {
   return {
@@ -26,6 +27,18 @@ export const SiteSchema = () => {
       robots: {
         type: 'string',
       },
+      currency: {
+        type: 'string',
+      },
+      currencies: {
+        type: 'string',
+      },
+      defaulanguage: {
+        type: 'string',
+      },
+      languages: {
+        type: 'string',
+      },
       hostname: {
         type: 'string',
         format: 'hostname',
@@ -34,10 +47,7 @@ export const SiteSchema = () => {
         type: 'string',
         format: 'uri',
       },
-      logo: {
-        type: 'string',
-        format: 'uri',
-      },
+      logo: ImageSchema(),
       mainNavigation: {
         type: 'string',
         fieldType: FieldType.selectionmultiple,
@@ -109,6 +119,14 @@ export const SiteUI = (): CollectionUI[] => {
               '1': '/properties/title',
             },
             {
+              '0': '/properties/currency',
+              '1': '/properties/language',
+            },
+            {
+              '0': '/properties/currencies',
+              '1': '/properties/languages',
+            },
+            {
               '0': '/properties/mainNavigation',
               '1': '/properties/footerNavigation',
             },
@@ -130,12 +148,6 @@ export const SiteUI = (): CollectionUI[] => {
             {
               '0': '/properties/logo',
             },
-            {
-              '0': '/properties/spamProtectionUser',
-            },
-            {
-              '0': '/properties/spanProtectionComment',
-            },
           ],
         },
         {
@@ -155,6 +167,17 @@ export const SiteUI = (): CollectionUI[] => {
             },
             {
               '0': '/properties/tiktok',
+            },
+          ],
+        },
+        {
+          title: 'Spam Protection',
+          items: [
+            {
+              '0': '/properties/spamProtectionUser',
+            },
+            {
+              '0': '/properties/spanProtectionComment',
             },
           ],
         },
