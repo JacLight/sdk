@@ -7,7 +7,7 @@ export enum FieldType {
   selectionsingle = 'Single Selection',
   selectionmultiple = 'Multiple Selection',
   date = 'Date',
-  upload = 'Upload',
+  file = 'File',
   code = 'Code',
   uuid = 'UUID',
   color = 'Color',

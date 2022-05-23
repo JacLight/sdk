@@ -1,6 +1,8 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { CollectionRule, CollectionUI } from './collection';
 import { DataType, FieldType, FormViewSectionType } from '../types';
+import { ImageSchema } from './image';
+import { getCurrencies, getLanguages } from '../data';
 
 export const SiteSchema = () => {
   return {
@@ -26,6 +28,40 @@ export const SiteSchema = () => {
       robots: {
         type: 'string',
       },
+      defaultCurrency: {
+        type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'self',
+          field: 'currencies',
+        },
+      },
+      currencies: {
+        type: 'string',
+        inputStyle: 'chip',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'json',
+          json: getCurrencies()
+        },
+      },
+      defautLanguage: {
+        type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'self',
+          field: 'languages',
+        },
+      },
+      languages: {
+        type: 'string',
+        inputStyle: 'chip',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'json',
+          json: getLanguages()
+        },
+      },
       hostname: {
         type: 'string',
         format: 'hostname',
@@ -34,10 +70,7 @@ export const SiteSchema = () => {
         type: 'string',
         format: 'uri',
       },
-      logo: {
-        type: 'string',
-        format: 'uri',
-      },
+      logo: ImageSchema(),
       mainNavigation: {
         type: 'string',
         fieldType: FieldType.selectionmultiple,
@@ -109,6 +142,14 @@ export const SiteUI = (): CollectionUI[] => {
               '1': '/properties/title',
             },
             {
+              '0': '/properties/currencies',
+              '1': '/properties/languages',
+            },
+            {
+              '0': '/properties/defaultCurrency',
+              '1': '/properties/defautLanguage',
+            },
+            {
               '0': '/properties/mainNavigation',
               '1': '/properties/footerNavigation',
             },
@@ -127,14 +168,13 @@ export const SiteUI = (): CollectionUI[] => {
             {
               '0': '/properties/icon',
             },
+          ],
+        },
+        {
+          title: 'Logo',
+          items: [
             {
               '0': '/properties/logo',
-            },
-            {
-              '0': '/properties/spamProtectionUser',
-            },
-            {
-              '0': '/properties/spanProtectionComment',
             },
           ],
         },
@@ -155,6 +195,17 @@ export const SiteUI = (): CollectionUI[] => {
             },
             {
               '0': '/properties/tiktok',
+            },
+          ],
+        },
+        {
+          title: 'Spam Protection',
+          items: [
+            {
+              '0': '/properties/spamProtectionUser',
+            },
+            {
+              '0': '/properties/spanProtectionComment',
             },
           ],
         },

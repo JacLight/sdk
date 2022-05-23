@@ -6,3 +6,4 @@ export * from './utils';
 export * from './defaultschema';
 export * from './WidgetStore';
 export * from './rules'
+export * from './data'
