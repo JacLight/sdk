@@ -2,6 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { CollectionRule, CollectionUI } from './collection';
 import { DataType, FieldType, FormViewSectionType } from '../types';
 import { ImageSchema } from './image';
+import { getCurrencies, getLanguages } from '../data';
 
 export const SiteSchema = () => {
   return {
@@ -27,17 +28,39 @@ export const SiteSchema = () => {
       robots: {
         type: 'string',
       },
-      currency: {
+      defaultCurrency: {
         type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'self',
+          field: 'currencies',
+        },
       },
       currencies: {
         type: 'string',
+        inputStyle: 'chip',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'json',
+          json: getCurrencies()
+        },
       },
-      defaulanguage: {
+      defautLanguage: {
         type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'self',
+          field: 'languages',
+        },
       },
       languages: {
         type: 'string',
+        inputStyle: 'chip',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'json',
+          json: getLanguages()
+        },
       },
       hostname: {
         type: 'string',
@@ -119,12 +142,12 @@ export const SiteUI = (): CollectionUI[] => {
               '1': '/properties/title',
             },
             {
-              '0': '/properties/currency',
-              '1': '/properties/language',
-            },
-            {
               '0': '/properties/currencies',
               '1': '/properties/languages',
+            },
+            {
+              '0': '/properties/defaultCurrency',
+              '1': '/properties/defautLanguage',
             },
             {
               '0': '/properties/mainNavigation',
@@ -145,6 +168,11 @@ export const SiteUI = (): CollectionUI[] => {
             {
               '0': '/properties/icon',
             },
+          ],
+        },
+        {
+          title: 'Logo',
+          items: [
             {
               '0': '/properties/logo',
             },

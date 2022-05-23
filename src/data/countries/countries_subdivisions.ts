@@ -1,4 +1,4 @@
-export const country_subdivisions = [{ "country": "AD", "code": "AD-07", "name": "Andorra la Vella" },
+export const countries_subdivisions = [{ "country": "AD", "code": "AD-07", "name": "Andorra la Vella" },
 { "country": "AD", "code": "AD-02", "name": "Canillo" },
 { "country": "AD", "code": "AD-03", "name": "Encamp" },
 { "country": "AD", "code": "AD-08", "name": "Escaldes-Engordany" },

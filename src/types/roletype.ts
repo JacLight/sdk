@@ -1,5 +1,5 @@
 import { PermissionModel } from '@models/permission';
-import { UserModel } from '@models/user';
+import { UserModel, UserRoleModel } from '@models/user';
 import { toTitleCase } from '../utils';
 import {
   PermissionTypeComponent,
@@ -97,6 +97,29 @@ export const getPermissionRole = (roleName: RoleItemType) => {
   const addRole: any = getDefaultRolePermission()[roleName];
   return addRole;
 };
+
+export const getDefaultUserRoles = () => {
+  const roles: any = [];
+  Object.values(RoleType).forEach(role => {
+    const rolePermissions: any = getDefaultRolePermission()[role]
+    const compoentPermissions: [] = rolePermissions.component
+    const contentPermissions: [] = rolePermissions.content
+    const newRole: UserRoleModel = {
+      sk: role,
+      data: {
+        name: role,
+        description: role,
+        permissions: {
+          component: compoentPermissions?.join(","),
+          content: contentPermissions?.join(",")
+        }
+      }
+    }
+    roles.push(newRole)
+  })
+  return roles;
+};
+
 
 export const getPermissionRoleEffective = (roleName: RoleItemType) => {
   if (roleName === RoleType.Guest || roleName === RoleType.User) {

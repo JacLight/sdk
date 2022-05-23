@@ -1,4 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
+import { CollectionUI } from './collection';
+import { DataType, FieldType, FormViewSectionType } from '../types';
 
 export const UserSchema = () => {
   return {
@@ -6,21 +8,10 @@ export const UserSchema = () => {
     properties: {
       email: {
         type: 'string',
-      },
-      portrait: {
-        type: 'integer',
-      },
-      language: {
-        type: 'string',
-      },
-      timezone: {
-        type: 'string',
-      },
-      greeting: {
-        type: 'string',
-      },
-      comments: {
-        type: 'string',
+        format: 'email',
+        minLength: 3,
+        maxLength: 150,
+        unique: true,
       },
       firstname: {
         type: 'string',
@@ -33,6 +24,21 @@ export const UserSchema = () => {
       },
       title: {
         type: 'string',
+      },
+      portrait: {
+        type: 'string',
+        fieldType: "Upload",
+      },
+      password: {
+        type: 'string',
+      },
+      passwordreset: {
+        type: 'string',
+        default: 'false',
+      },
+      passwordmodifieddate: {
+        type: 'string',
+        format: 'date-time',
       },
       lockout: {
         type: 'string',
@@ -49,16 +55,14 @@ export const UserSchema = () => {
         type: 'array',
         items: { type: 'object' },
       },
-      password: {
+      language: {
         type: 'string',
       },
-      passwordreset: {
+      timezone: {
         type: 'string',
-        default: 'false',
       },
-      passwordmodifieddate: {
+      greeting: {
         type: 'string',
-        format: 'date-time',
       },
       reminderquestion: {
         type: 'array',
@@ -111,12 +115,24 @@ export const UserSchema = () => {
         type: 'string',
       },
       groups: {
-        type: 'array',
-        items: { type: 'string' },
+        type: 'string',
+        inputStyle: 'chip',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.usergroup,
+          field: 'name',
+        },
       },
       roles: {
-        type: 'array',
-        items: { type: 'string' },
+        type: 'string',
+        inputStyle: 'chip',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.userrole,
+          field: 'name',
+        },
       },
     },
   } as const;
@@ -128,6 +144,10 @@ export const UserGroupSchema = () => {
     properties: {
       name: {
         type: 'string',
+        pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
+        minLength: 3,
+        maxLength: 50,
+        unique: true,
       },
       description: {
         type: 'string',
@@ -136,12 +156,24 @@ export const UserGroupSchema = () => {
         type: 'string',
       },
       users: {
-        type: 'array',
-        items: { type: 'string' },
+        type: 'string',
+        inputStyle: 'chip',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.user,
+          field: 'email',
+        },
       },
       roles: {
-        type: 'array',
-        items: { type: 'string' },
+        type: 'string',
+        inputStyle: 'chip',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.userrole,
+          field: 'name',
+        },
       },
     },
   } as const;
@@ -153,24 +185,93 @@ export const UserRoleSchema = () => {
     properties: {
       name: {
         type: 'string',
+        pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
+        minLength: 3,
+        maxLength: 50,
+        unique: true,
       },
       description: {
         type: 'string',
       },
       permissions: {
-        type: 'array',
-        items: { type: 'string' },
-      },
-      users: {
-        type: 'array',
-        items: { type: 'string' },
-      },
-      groups: {
-        type: 'array',
-        items: { type: 'string' },
+        type: 'object',
+        properties: {
+          component: {
+            type: 'string',
+            inputStyle: 'chip',
+            fieldType: FieldType.selectionmultiple,
+            dataSource: {
+              source: 'collection',
+              collection: DataType.permission,
+              field: 'name',
+            },
+          },
+          content: {
+            type: 'string',
+            inputStyle: 'chip',
+            fieldType: FieldType.selectionmultiple,
+            dataSource: {
+              source: 'collection',
+              collection: DataType.permission,
+              field: 'name',
+            },
+          }
+        }
       },
     },
   } as const;
+};
+
+
+
+export const UserUI = (): CollectionUI[] => {
+  return [
+    {
+      type: FormViewSectionType.sectiontab,
+      tab: [
+        {
+          title: 'User',
+          items: [
+            {
+              '0': '/properties/email',
+              '1': '/properties/password',
+            },
+            {
+              '0': '/properties/firstname',
+              '1': '/properties/lastname',
+            },
+            {
+              '0': '/properties/timezone',
+              '1': '/properties/language',
+            },
+            {
+              '0': '/properties/portrait',
+            },
+
+          ],
+        },
+        {
+          title: 'Address',
+          items: [
+            {
+              '0': '/properties/address',
+            },
+          ],
+        },
+        {
+          title: 'Groups & Roles',
+          items: [
+            {
+              '0': '/properties/groups',
+            },
+            {
+              '0': '/properties/roles',
+            },
+          ],
+        },
+      ],
+    },
+  ];
 };
 
 const ush = UserSchema();

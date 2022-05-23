@@ -19,4 +19,5 @@ export enum DataType {
   collectionform = 'collectionform',
   mintflow = 'mintflow',
   mintflownode = 'mintflownode',
+  post = 'post',
 }

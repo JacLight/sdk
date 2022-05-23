@@ -4,7 +4,11 @@ export const ImageSchema = () => {
     return {
         type: 'object',
         properties: {
-            url: {
+            path: {
+                type: 'string',
+                fieldType: "Upload",
+            },
+            absoluteUrl: {
                 type: 'string',
             },
             alt: {
@@ -21,11 +25,6 @@ export const ImageSchema = () => {
             },
             caption: {
                 type: 'string',
-            },
-            displayStyle: {
-                type: 'string',
-                enum: ['simple', 'card', 'overlay'],
-                default: 'plan'
             },
         },
     } as const;

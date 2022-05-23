@@ -34,8 +34,6 @@ const collectionCollection: models.CollectionModel = {
   uischema: models.CollectionUI() as any,
 };
 
-Object.values(models).forEach(tmodel => console.log(tmodel));
-
 const collectionCollectionForm = deepCopy(collectionCollection);
 collectionCollectionForm.name = 'collectionform';
 collectionCollectionForm.title = 'collectionform';
@@ -155,7 +153,7 @@ const userCollection: models.CollectionModel = {
   rules: [],
   validations: {},
   schema: models.UserSchema() as any,
-  uischema: {} as any,
+  uischema: models.UserUI() as any,
 };
 
 const userGroupCollection: models.CollectionModel = {
@@ -254,6 +252,23 @@ const mintflowCollection: models.CollectionModel = {
   uischema: {} as any,
 };
 
+const postCollection: models.CollectionModel = {
+  name: 'post',
+  title: 'Post',
+  description: 'Post Fillter',
+  type: CollectionType.Concrete,
+  enablePost: true,
+  enableWorkflow: true,
+  enableVersioning: true,
+  enableIndexing: true,
+  permission: {},
+  rules: [],
+  validations: {},
+  schema: models.PostSchema() as any,
+  uischema: {} as any,
+};
+
+
 export const concreteCollections = new Map<String, models.BaseModel<any>>();
 concreteCollections.set(
   DataType.page,
@@ -319,41 +334,45 @@ concreteCollections.set(
   DataType.mintflow,
   createConcreteCollection(DataType.mintflow, mintflowCollection)
 );
+concreteCollections.set(
+  DataType.post,
+  createConcreteCollection(DataType.post, postCollection)
+);
 
 const createUser = (
   firstname: string,
   lastname: string,
   email: string,
   password: string,
-  groups: string[]
+  groups: string
 ) => {
   return { firstname, lastname, email, password, groups };
 };
 export const users: models.UserModel[] = [];
-users.push(createUser('imzee', 'jac', 'imzee@local.com', 'aaaaaa', ['Admin']));
-users.push(createUser('admin', 'user', 'admin@local.com', 'aaaaaa', ['Admin']));
+users.push(createUser('imzee', 'jac', 'imzee@local.com', 'aaaaaa', 'Admin'));
+users.push(createUser('admin', 'user', 'admin@local.com', 'aaaaaa', 'Admin'));
 users.push(
-  createUser('visitor', 'user', 'visitor@local.com', 'guest', ['Agent'])
+  createUser('visitor', 'user', 'visitor@local.com', 'guest', 'Agent')
 );
 users.push(
-  createUser('Help', 'user', 'helpuser@local.com', 'guest', ['Guest'])
+  createUser('Help', 'user', 'helpuser@local.com', 'guest', 'Guest')
 );
 
-const createGroup = (name: string, description: string, roles: string[]) => {
+const createGroup = (name: string, description: string, roles: string) => {
   return { name, description, roles };
 };
 export const groups: models.UserGroupModel[] = [];
-groups.push(createGroup('Guest', 'Unauthenticated users', [RoleType.Guest]));
+groups.push(createGroup('Guest', 'Unauthenticated users', [RoleType.Guest].join(',')));
 groups.push(
   createGroup('Agent', 'Help Desk User Group', [
     RoleType.Reviewer,
     RoleType.Publisher,
-  ])
+  ].join(','))
 );
 groups.push(
-  createGroup('Customer', 'Site users, authenticated users', [RoleType.User])
+  createGroup('Customer', 'Site users, authenticated users', [RoleType.User].join(','))
 );
-groups.push(createGroup('Admin', 'Omin Administrator', [RoleType.RootAdmin]));
+groups.push(createGroup('Admin', 'Omin Administrator', [RoleType.RootAdmin].join(',')));
 
 export const baseSettings: models.SettingModel = {
   name: 'BaseSettings',
