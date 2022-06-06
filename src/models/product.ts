@@ -4,8 +4,12 @@ export const ProductSchema = () => {
   return {
     type: 'object',
     properties: {
-      phone: {
+      name: {
         type: 'string',
+        pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
+        minLength: 3,
+        maxLength: 50,
+        unique: true,
       },
       extension: {
         type: 'string',

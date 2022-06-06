@@ -20,6 +20,10 @@ export const MessageTemplateSchema = () => {
       title: {
         type: 'string',
       },
+      sections: {
+        type: 'array',
+        hidden: true
+      },
       email: {
         type: 'string',
         fieldType: 'Rich Text Editor',

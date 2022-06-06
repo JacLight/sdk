@@ -27,18 +27,15 @@ export const UserSchema = () => {
       },
       portrait: {
         type: 'string',
-        fieldType: "Upload",
+        fieldType: FieldType.file,
       },
       password: {
         type: 'string',
+        inputStyle: 'password'
       },
       passwordreset: {
-        type: 'string',
-        default: 'false',
-      },
-      passwordmodifieddate: {
-        type: 'string',
-        format: 'date-time',
+        type: 'boolean',
+        title: 'Set Password'
       },
       lockout: {
         type: 'string',
@@ -47,9 +44,10 @@ export const UserSchema = () => {
       lockoutdate: {
         type: 'string',
         format: 'date-time',
+        disabled: true
       },
       status: {
-        type: 'number',
+        type: 'string',
       },
       address: {
         type: 'array',
@@ -90,29 +88,32 @@ export const UserSchema = () => {
       openid: {
         type: 'string',
       },
-      logindate: {
-        type: 'string',
-        format: 'date-time',
-      },
-      loginip: {
-        type: 'string',
-      },
       lastlogindate: {
         type: 'string',
         format: 'date-time',
+        disabled: true
       },
       lastloginip: {
         type: 'string',
+        disabled: true
       },
       lastfailedlogindate: {
         type: 'string',
         format: 'date-time',
+        disabled: true
       },
       failedloginattempts: {
         type: 'number',
+        disabled: true
       },
       passwordpolicy: {
         type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.passwordpolicy,
+          field: 'name',
+        },
       },
       groups: {
         type: 'string',
@@ -154,6 +155,12 @@ export const UserGroupSchema = () => {
       },
       passwordpolicy: {
         type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.passwordpolicy,
+          field: 'name',
+        },
       },
       users: {
         type: 'string',
@@ -191,6 +198,9 @@ export const UserRoleSchema = () => {
         unique: true,
       },
       description: {
+        type: 'string',
+      },
+      type: {
         type: 'string',
       },
       permissions: {
@@ -233,7 +243,13 @@ export const UserUI = (): CollectionUI[] => {
           title: 'User',
           items: [
             {
+              '0': '/properties/portrait',
+            },
+            {
               '0': '/properties/email',
+            },
+            {
+              '0': '/properties/passwordreset',
               '1': '/properties/password',
             },
             {
@@ -245,9 +261,13 @@ export const UserUI = (): CollectionUI[] => {
               '1': '/properties/language',
             },
             {
-              '0': '/properties/portrait',
+              '0': '/properties/lastlogindate',
+              '1': '/properties/lastloginip',
             },
-
+            {
+              '0': '/properties/lastfailedlogindate',
+              '1': '/properties/failedloginattempts',
+            },
           ],
         },
         {
