@@ -143,8 +143,8 @@ export const PageSectionSchema = () => {
       manualSelection: {
         type: 'boolean',
       },
-      selections: {
-        type: 'array',
+      selection: {
+        type: 'string',
         title: 'Selections',
         fieldType: FieldType.collection,
         inputStyle: 'picker',
@@ -152,7 +152,7 @@ export const PageSectionSchema = () => {
           source: 'collection',
           collection: DataType.collection,
         },
-        items: {
+        item: {
           type: 'object',
           properties: {
             id: {
@@ -170,13 +170,19 @@ export const PageSectionSchema = () => {
           },
         },
       },
-      dataTypes: {
+      dataType: {
         type: 'string',
         inputStyle: 'chip',
         fieldType: FieldType.selectionmultiple,
         enum: Object.values(DataType),
       },
-      categories: {
+      postTemplate: {
+        type: 'string',
+        inputStyle: 'chip',
+        fieldType: FieldType.selectionmultiple,
+        enum: ['Blog', "Product"]
+      },
+      category: {
         type: 'string',
         inputStyle: 'chip',
         fieldType: FieldType.selectionmultiple,
@@ -186,7 +192,7 @@ export const PageSectionSchema = () => {
           field: 'name',
         },
       },
-      tags: {
+      tag: {
         type: 'string',
         inputStyle: 'chip',
         fieldType: FieldType.selectionmultiple,

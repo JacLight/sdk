@@ -1,5 +1,4 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { PermissionModel } from './permission';
 import { DataType, FieldType } from '../types';
 export interface BaseModelDTO<T> {
   page: number;
@@ -19,11 +18,18 @@ export interface BaseModel<T> {
   workflowhistory?: WorkflowSubModel[];
   post?: PostSubModel;
   style?: StyleSubModel;
-  permissions?: PermissionModel;
   version: number;
   createdate?: Date;
   modifydate?: Date;
   author?: string;
+  requiredRole?: {
+    read?: string[],
+    create?: string[],
+    update?: string[],
+    delete?: string[],
+    review?: string[],
+    approve?: string[],
+  }
 
 }
 export const PostSubSchema = () => {

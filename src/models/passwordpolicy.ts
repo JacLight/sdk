@@ -6,6 +6,10 @@ export const PasswordPolicySchema = () => {
     properties: {
       name: {
         type: 'string',
+        pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
+        minLength: 3,
+        maxLength: 50,
+        unique: true,
       },
       description: {
         type: 'string',
@@ -13,48 +17,41 @@ export const PasswordPolicySchema = () => {
       historyAge: {
         type: 'number',
       },
-      passwordAgeInDay: {
+      passwordAge: {
         type: 'number',
+        description: 'In days'
       },
       maxFailure: {
         type: 'number',
       },
-      resetDelayInMinutes: {
+      resetDelayIn: {
+        type: 'number',
+        description: 'In Minutes'
+      },
+      allowDictionary: {
+        type: 'boolean',
+      },
+      minLenght: {
         type: 'number',
       },
-      syntax: {
-        type: 'object',
-        title: 'syntax',
-        displayStyle: 'card',
-        properties: {
-          enable: {
-            type: 'boolean',
-          },
-          allowDictionary: {
-            type: 'boolean',
-          },
-          minAlphaNumeric: {
-            type: 'number',
-          },
-          minLenght: {
-            type: 'number',
-          },
-          minLowercase: {
-            type: 'number',
-          },
-          minUppercase: {
-            type: 'number',
-          },
-          minNumbers: {
-            type: 'number',
-          },
-          minsSymbols: {
-            type: 'number',
-          },
-          pattern: {
-            type: 'string',
-          },
-        },
+      minLowercase: {
+        type: 'number',
+      },
+      minUppercase: {
+        type: 'number',
+      },
+      minNumbers: {
+        type: 'number',
+      },
+      minSymbols: {
+        type: 'number',
+      },
+      pattern: {
+        type: 'string',
+      },
+      exclude: {
+        type: 'string',
+        description: 'characters not allowed in password'
       },
     },
   } as const;

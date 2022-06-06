@@ -6,6 +6,9 @@ export const WebsiteSchema = () => {
     properties: {
       url: {
         type: 'string',
+        minLength: 3,
+        maxLength: 200,
+        unique: true,
       },
       typeid: {
         type: 'integer',

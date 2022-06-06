@@ -1,5 +1,5 @@
 export const toTitleCase = (str: string) => {
-  return str.replace(/\w\S*/g, function(txt) {
+  return str.replace(/\w\S*/g, function (txt) {
     return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
   });
 };
@@ -28,7 +28,7 @@ export const validUrl = (url: string) => {
     '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
     '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
     '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-      '(\\#[-a-z\\d_]*)?$',
+    '(\\#[-a-z\\d_]*)?$',
     'i'
   ); // fragment locator
   return !!pattern.test(url);
@@ -44,4 +44,13 @@ export function getRandomString(length = 20) {
     );
   }
   return result;
+}
+
+export function removeEmpty(obj: any): any {
+  return Object.entries(obj)
+    .filter(([_, v]) => v != null)
+    .reduce(
+      (acc, [k, v]) => ({ ...acc, [k]: v === Object(v) ? removeEmpty(v) : v }),
+      {}
+    );
 }

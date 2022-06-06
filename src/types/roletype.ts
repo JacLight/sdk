@@ -1,5 +1,4 @@
-import { PermissionModel } from '@models/permission';
-import { UserModel, UserRoleModel } from '@models/user';
+import { BaseModel, PermissionModel, UserRoleModel } from '../models';
 import { toTitleCase } from '../utils';
 import {
   PermissionTypeComponent,
@@ -98,7 +97,7 @@ export const getPermissionRole = (roleName: RoleItemType) => {
   return addRole;
 };
 
-export const getDefaultUserRoles = () => {
+export const getDefaultUserRoles = (): BaseModel<UserRoleModel>[] => {
   const roles: any = [];
   Object.values(RoleType).forEach(role => {
     const rolePermissions: any = getDefaultRolePermission()[role]
@@ -109,6 +108,7 @@ export const getDefaultUserRoles = () => {
       data: {
         name: role,
         description: role,
+        type: 'system',
         permissions: {
           component: compoentPermissions?.join(","),
           content: contentPermissions?.join(",")
@@ -142,6 +142,7 @@ export const getPermissionRoleEffective = (roleName: RoleItemType) => {
 export const getPermissionComponent = () => {
   const permission: PermissionModel = [];
   Object.values(RoleType).forEach((role: any) => {
+    if (role === 'RootAdmin' || role === 'ContentAdmin' || role === 'System') return;
     permission.push({
       role: role,
       component: getPermissionRole(role).component,
@@ -154,6 +155,7 @@ export const getPermissionComponent = () => {
 export const getPermissionContent = () => {
   const permission: PermissionModel = [];
   Object.values(RoleType).forEach((role: any) => {
+    if (role === 'RootAdmin' || role === 'ConfigAdmin' || role === 'System') return;
     permission.push({
       role: role,
       content: getPermissionRole(role).content,
@@ -163,7 +165,7 @@ export const getPermissionContent = () => {
   return permission;
 };
 
-export const hasPermission = (actor: UserModel, resource: string) => {
-  console.log(actor);
-  console.log(resource);
+export const hasPermission = (uid: string, datatype: string, userId: string) => {
+  console.log({ uid, datatype, userId });
 };
+
