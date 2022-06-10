@@ -4,39 +4,32 @@ export const CompanySchema = () => {
   return {
     type: 'object',
     properties: {
-      mvccversion: {
-        type: 'integer',
-      },
-      companyid: {
-        type: 'integer',
-      },
-      accountid: {
-        type: 'integer',
-      },
-      webid: {
+      name: {
         type: 'string',
+        pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
+        minLength: 3,
+        maxLength: 100,
+        unique: true,
       },
-      mx: {
+      database: {
         type: 'string',
-      },
-      homeurl: {
-        type: 'string',
-      },
-      logoid: {
-        type: 'integer',
-      },
-      system: {
-        type: 'string',
-        default: 'false',
+        pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
+        minLength: 3,
+        maxLength: 20,
+        unique: true,
       },
       maxusers: {
-        type: 'integer',
-        format: 'int32',
+        type: 'number',
       },
       active: {
-        type: 'string',
-        default: 'false',
+        type: 'boolean',
       },
+      sites: {
+        type: 'array',
+        items: {
+          type: 'string'
+        }
+      }
     },
   } as const;
 };
