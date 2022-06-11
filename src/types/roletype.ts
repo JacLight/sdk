@@ -16,6 +16,8 @@ export enum RoleType {
   ContentAdmin = 'ContentAdmin',
   ConfigAdmin = 'ConfigAdmin',
   RootAdmin = 'RootAdmin',
+  RootUser = 'RootUser',
+  RootPowerUser = 'RootPowerUser',
 }
 
 export const getDefaultRolePermission = () => {
@@ -29,6 +31,12 @@ export const getDefaultRolePermission = () => {
       content: [PermissionTypeContent.read, PermissionTypeContent.create],
       component: [PermissionTypeComponent.view],
     },
+
+    RootUser: {
+      content: [PermissionTypeContent.read, PermissionTypeContent.create],
+      component: [PermissionTypeComponent.view],
+    },
+
 
     Owner: {
       content: Object.values(PermissionTypeContent),
@@ -67,6 +75,20 @@ export const getDefaultRolePermission = () => {
       ],
     },
 
+    RootPowerUser: {
+      content: [
+        PermissionTypeContent.read,
+        PermissionTypeContent.create,
+        PermissionTypeContent.update,
+        PermissionTypeContent.review,
+        PermissionTypeContent.delete,
+      ],
+      component: [
+        PermissionTypeComponent.view,
+        PermissionTypeComponent.configure,
+      ],
+    },
+
     ContentAdmin: {
       content: Object.values(PermissionTypeContent),
       component: [
@@ -76,15 +98,17 @@ export const getDefaultRolePermission = () => {
     },
 
     ConfigAdmin: {
-      component: Object.values(PermissionTypeContent),
+      component: Object.values(PermissionTypeComponent),
     },
 
     RootAdmin: {
-      component: Object.values(PermissionTypeContent),
+      component: Object.values(PermissionTypeComponent),
+      content: Object.values(PermissionTypeContent),
     },
 
     System: {
-      component: Object.values(PermissionTypeContent),
+      component: Object.values(PermissionTypeComponent),
+      content: Object.values(PermissionTypeContent),
     },
   };
 };
