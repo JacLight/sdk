@@ -16,6 +16,8 @@ export enum RoleType {
   ContentAdmin = 'ContentAdmin',
   ConfigAdmin = 'ConfigAdmin',
   RootAdmin = 'RootAdmin',
+  RootUser = 'RootUser',
+  RootPowerUser = 'RootPowerUser',
 }
 
 export const getDefaultRolePermission = () => {
