@@ -151,15 +151,16 @@ export const getPermissionRoleEffective = (roleName: RoleItemType) => {
   }
   const baseRole: any = getPermission().User;
   const addRole: any = getPermission()[roleName];
-  if (addRole.content)
+  if (addRole.content) {
     baseRole.content = Array.from(
       new Set([...baseRole.content, ...addRole.content])
-    ).join(',');
-  if (addRole.component)
+    );
+  }
+  if (addRole.component) {
     baseRole.component = Array.from(
       new Set([...baseRole.component, ...addRole.component])
-    ).join(',');
-
+    )
+  }
   return baseRole;
 };
 
