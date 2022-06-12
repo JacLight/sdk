@@ -20,7 +20,7 @@ export enum RoleType {
   RootPowerUser = 'RootPowerUser',
 }
 
-export const getDefaultRolePermission = () => {
+export const getPermission = () => {
   return {
     Guest: {
       content: [PermissionTypeContent.read],
@@ -117,14 +117,14 @@ type RoleItemType = keyof typeof RoleType;
 // type RoleItemTypeLess = Exclude<RoleItemType, "RootAdmin" | 'System'>;
 
 export const getPermissionRole = (roleName: RoleItemType) => {
-  const addRole: any = getDefaultRolePermission()[roleName];
+  const addRole: any = getPermission()[roleName];
   return addRole;
 };
 
 export const getDefaultUserRoles = (): BaseModel<UserRoleModel>[] => {
   const roles: any = [];
   Object.values(RoleType).forEach(role => {
-    const rolePermissions: any = getDefaultRolePermission()[role]
+    const rolePermissions: any = getPermission()[role]
     const compoentPermissions: [] = rolePermissions.component
     const contentPermissions: [] = rolePermissions.content
     const newRole: UserRoleModel = {
@@ -147,10 +147,10 @@ export const getDefaultUserRoles = (): BaseModel<UserRoleModel>[] => {
 
 export const getPermissionRoleEffective = (roleName: RoleItemType) => {
   if (roleName === RoleType.Guest || roleName === RoleType.User) {
-    return getDefaultRolePermission()[roleName];
+    return getPermission()[roleName];
   }
-  const baseRole: any = getDefaultRolePermission().User;
-  const addRole: any = getDefaultRolePermission()[roleName];
+  const baseRole: any = getPermission().User;
+  const addRole: any = getPermission()[roleName];
   if (addRole.content)
     baseRole.content = Array.from(
       new Set([...baseRole.content, ...addRole.content])
@@ -161,6 +161,19 @@ export const getPermissionRoleEffective = (roleName: RoleItemType) => {
     ).join(',');
 
   return baseRole;
+};
+
+export const getPermissionEffective = (roleNames: RoleItemType[]) => {
+  let contentPermissions: string[] = [];
+  let componentPermissions: string[] = [];
+
+  roleNames.forEach(role => {
+    const rolePermissions = getPermissionRoleEffective(role);
+    contentPermissions = Array.from(new Set([...contentPermissions, ...rolePermissions.content]))
+    componentPermissions = Array.from(new Set([...componentPermissions, ...rolePermissions.component]))
+  })
+
+  return { content: contentPermissions, component: componentPermissions };
 };
 
 export const getPermissionComponent = () => {
@@ -188,8 +201,3 @@ export const getPermissionContent = () => {
   });
   return permission;
 };
-
-export const hasPermission = (uid: string, datatype: string, userId: string) => {
-  console.log({ uid, datatype, userId });
-};
-
