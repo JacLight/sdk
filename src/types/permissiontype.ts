@@ -2,8 +2,7 @@ export enum PermissionTypeComponent {
   view = 'view',
   configure = 'configure',
   add = 'add',
-  remove = 'remove',
-  all = 'all'
+  remove = 'remove'
 }
 
 export enum PermissionTypeContent {
@@ -12,6 +11,5 @@ export enum PermissionTypeContent {
   update = 'update',
   delete = 'delete',
   review = 'review',
-  approve = 'approve',
-  all = 'all'
+  approve = 'approve'
 }
