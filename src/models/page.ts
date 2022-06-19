@@ -126,19 +126,13 @@ export const PageSectionSchema = () => {
         type: 'string',
         hidden: true,
       },
-      viewTemplate: {
-        type: 'string',
-        enum: ['basic', 'picture', 'blog'],
-      },
-      defaultView: {
+      detailTemplate: {
         type: 'string',
         enum: ['list', 'card', 'detail', 'table'],
       },
-      views: {
+      listTemplate: {
         type: 'string',
         enum: ['list', 'card', 'detail', 'table'],
-        inputStyle: 'chip',
-        fieldType: FieldType.selectionmultiple,
       },
       manualSelection: {
         type: 'boolean',
@@ -176,7 +170,7 @@ export const PageSectionSchema = () => {
         fieldType: FieldType.selectionmultiple,
         enum: Object.values(DataType),
       },
-      postTemplate: {
+      postType: {
         type: 'string',
         inputStyle: 'chip',
         fieldType: FieldType.selectionmultiple,

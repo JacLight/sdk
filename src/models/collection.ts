@@ -32,7 +32,7 @@ export interface CollectionRule {
       operation?: string;
     }[];
   };
-  action?: { operation: string; targetField: string; script: string }[];
+  action?: { operation: string; targetField: string; script?: string }[];
 }
 
 export interface CollectionModel {

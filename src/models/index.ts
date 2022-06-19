@@ -24,3 +24,4 @@ export * from './mintflow';
 export * from './application';
 export * from './product';
 export * from './post';
+export * from './config';

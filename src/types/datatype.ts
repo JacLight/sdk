@@ -21,4 +21,6 @@ export enum DataType {
   mintflownode = 'mintflownode',
   post = 'post',
   postschema = 'postschema',
+  config = 'config',
+  application = 'application',
 }

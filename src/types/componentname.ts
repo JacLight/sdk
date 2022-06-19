@@ -22,4 +22,5 @@ export enum ComponentName {
   MessageTemplate = 'MessageTemplate',
   Language = 'Language',
   ActivityFeed = 'ActivityFeed',
+  Application = 'Application',
 }
