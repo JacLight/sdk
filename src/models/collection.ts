@@ -28,7 +28,7 @@ export interface CollectionRule {
       field?: string;
       targetField?: string;
       targetType?: string;
-      targetValue?: string | number;
+      targetValue?: string | number | boolean;
       operation?: string;
     }[];
   };

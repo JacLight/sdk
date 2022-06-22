@@ -1,6 +1,7 @@
 import { CollectionRule, CollectionUI } from './collection';
 import { FromSchema } from 'json-schema-to-ts';
 import { DataType, FieldType, FormViewSectionType } from '../types';
+import { viewTemplateStore } from '../ViewTemplateStore';
 
 export const PageSchema = (title = '', description = '') => {
   return {
@@ -128,17 +129,17 @@ export const PageSectionSchema = () => {
       },
       detailTemplate: {
         type: 'string',
-        enum: ['list', 'card', 'detail', 'table'],
+        enum: viewTemplateStore.templateList.map(template => template.name)
       },
       listTemplate: {
         type: 'string',
-        enum: ['list', 'card', 'detail', 'table'],
+        enum: viewTemplateStore.templateList.map(template => template.name)
       },
       manualSelection: {
         type: 'boolean',
       },
       selection: {
-        type: 'string',
+        type: 'array',
         title: 'Selections',
         fieldType: FieldType.collection,
         inputStyle: 'picker',
@@ -146,19 +147,16 @@ export const PageSectionSchema = () => {
           source: 'collection',
           collection: DataType.collection,
         },
-        item: {
+        items: {
           type: 'object',
           properties: {
-            id: {
+            uid: {
               type: 'string',
             },
             datatype: {
               type: 'string',
             },
             name: {
-              type: 'string',
-            },
-            description: {
               type: 'string',
             },
           },
@@ -174,7 +172,11 @@ export const PageSectionSchema = () => {
         type: 'string',
         inputStyle: 'chip',
         fieldType: FieldType.selectionmultiple,
-        enum: ['Blog', "Product"]
+        dataSource: {
+          source: 'collection',
+          collection: DataType.postschema,
+          field: 'name',
+        },
       },
       category: {
         type: 'string',
@@ -278,6 +280,53 @@ export const PageUI = (): CollectionUI[] => {
 
 export const PageRules = (): CollectionRule[] => {
   return [];
+};
+
+export const PageSectionRules = (): CollectionRule[] => {
+  return [
+    {
+      name: 'Manual Selection',
+      action: [
+        {
+          operation: 'show',
+          script: '',
+          targetField: '/properties/selection',
+        },
+        {
+          operation: 'hide',
+          script: '',
+          targetField: '/properties/dataType',
+        },
+        {
+          operation: 'hide',
+          script: '',
+          targetField: '/properties/postType',
+        },
+        {
+          operation: 'hide',
+          script: '',
+          targetField: '/properties/category',
+        },
+        {
+          operation: 'hide',
+          script: '',
+          targetField: '/properties/tag',
+        },
+      ],
+      condition: {
+        type: 'and',
+        param: [
+          {
+            targetValue: true,
+            targetType: 'value',
+            targetField: 'Field2',
+            field: '/properties/manualSelection',
+            operation: 'equal',
+          },
+        ],
+      },
+    },
+  ]
 };
 
 const pageSectionSchema = PageSectionSchema();
