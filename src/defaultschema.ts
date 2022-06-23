@@ -300,11 +300,32 @@ const postCollection: models.CollectionModel = {
   uischema: {} as any,
 };
 
+const scriptCollection: models.CollectionModel = {
+  name: 'post',
+  title: 'Post',
+  description: 'Post Fillter',
+  type: CollectionType.Concrete,
+  enablePost: true,
+  enableWorkflow: true,
+  enableVersioning: true,
+  enableIndexing: true,
+  permission: {},
+  rules: [],
+  validations: {},
+  schema: models.ScriptSchema() as any,
+  uischema: {} as any,
+};
+
+
 
 export const concreteCollections = new Map<String, models.BaseModel<any>>();
 concreteCollections.set(
   DataType.page,
   createConcreteCollection(DataType.page, pageCollection)
+);
+concreteCollections.set(
+  DataType.script,
+  createConcreteCollection(DataType.site, scriptCollection)
 );
 concreteCollections.set(
   DataType.site,

@@ -23,4 +23,6 @@ export enum ComponentName {
   Language = 'Language',
   ActivityFeed = 'ActivityFeed',
   Application = 'Application',
+  Config = 'Config',
+  AdvanceTable = 'AdvanceTable'
 }

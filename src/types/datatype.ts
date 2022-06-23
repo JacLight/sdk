@@ -11,6 +11,7 @@ export enum DataType {
   passwordpolicy = 'passwordpolicy',
   user = 'user',
   userrole = 'userrole',
+  script = 'script',
   workflow = 'workflow',
   usergroup = 'usergroup',
   permission = 'permission',
