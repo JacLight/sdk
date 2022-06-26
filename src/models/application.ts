@@ -115,7 +115,6 @@ export const ApplicationRules = (): CollectionRule[] => {
       action: [
         {
           operation: 'show',
-          script: '',
           targetField: '/properties/links/items/properties/collection',
         },
       ],
@@ -137,7 +136,6 @@ export const ApplicationRules = (): CollectionRule[] => {
       action: [
         {
           operation: 'show',
-          script: '',
           targetField: '/properties/links/items/properties/collectionView',
         },
       ],
@@ -159,7 +157,6 @@ export const ApplicationRules = (): CollectionRule[] => {
       action: [
         {
           operation: 'show',
-          script: '',
           targetField: '/properties/links/items/properties/collectionForm',
         },
       ],
@@ -181,7 +178,6 @@ export const ApplicationRules = (): CollectionRule[] => {
       action: [
         {
           operation: 'show',
-          script: '',
           targetField: '/properties/links/items/properties/flow',
         },
       ],
@@ -203,7 +199,6 @@ export const ApplicationRules = (): CollectionRule[] => {
       action: [
         {
           operation: 'show',
-          script: '',
           targetField: '/properties/links/items/properties/page',
         },
       ],
@@ -225,7 +220,6 @@ export const ApplicationRules = (): CollectionRule[] => {
       action: [
         {
           operation: 'show',
-          script: '',
           targetField: '/properties/links/items/properties/component',
         },
       ],

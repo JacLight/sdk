@@ -16,18 +16,6 @@ export const PostSchema = () => {
         type: 'string',
         hidden: true
       },
-      config: {
-        type: 'object',
-        hidden: true
-      },
-      content: {
-        type: 'object',
-        properties: {
-          title: {
-            type: 'string',
-          },
-        }
-      }
     },
   } as const;
 };

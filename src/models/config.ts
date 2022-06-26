@@ -15,7 +15,12 @@ export const ConfigSchema = () => {
       },
       type: {
         type: 'string',
-        options: Object.values(ConfigType)
+        enum: Object.values(ConfigType),
+        disabled: true
+      },
+      provider: {
+        type: 'string',
+        disabled: true
       },
       data: {
         type: 'object',

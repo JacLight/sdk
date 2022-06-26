@@ -138,6 +138,11 @@ export const PageSectionSchema = () => {
       manualSelection: {
         type: 'boolean',
       },
+      dataType: {
+        type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        enum: Object.values(DataType),
+      },
       selection: {
         type: 'array',
         title: 'Selections',
@@ -145,15 +150,15 @@ export const PageSectionSchema = () => {
         inputStyle: 'picker',
         dataSource: {
           source: 'collection',
-          collection: DataType.collection,
+          collection: DataType.post,
         },
         items: {
           type: 'object',
           properties: {
-            uid: {
+            datatype: {
               type: 'string',
             },
-            datatype: {
+            uid: {
               type: 'string',
             },
             name: {
@@ -161,12 +166,6 @@ export const PageSectionSchema = () => {
             },
           },
         },
-      },
-      dataType: {
-        type: 'string',
-        inputStyle: 'chip',
-        fieldType: FieldType.selectionmultiple,
-        enum: Object.values(DataType),
       },
       postType: {
         type: 'string',
@@ -289,28 +288,11 @@ export const PageSectionRules = (): CollectionRule[] => {
       action: [
         {
           operation: 'show',
-          script: '',
           targetField: '/properties/selection',
         },
         {
           operation: 'hide',
-          script: '',
-          targetField: '/properties/dataType',
-        },
-        {
-          operation: 'hide',
-          script: '',
-          targetField: '/properties/postType',
-        },
-        {
-          operation: 'hide',
-          script: '',
-          targetField: '/properties/category',
-        },
-        {
-          operation: 'hide',
-          script: '',
-          targetField: '/properties/tag',
+          targetField: ['/properties/postType', '/properties/category', '/properties/tag']
         },
       ],
       condition: {
@@ -322,6 +304,30 @@ export const PageSectionRules = (): CollectionRule[] => {
             targetField: 'Field2',
             field: '/properties/manualSelection',
             operation: 'equal',
+          },
+        ],
+      },
+    },
+    {
+      name: 'Manual Selection Datatype',
+      action: [
+        {
+          operation: 'setProperty',
+          property: 'collection',
+          targetField: '/properties/selection/dataSource',
+          sourceField: '/properties/dataType',
+          sourceType: 'field',
+        },
+      ],
+      condition: {
+        type: 'and',
+        param: [
+          {
+            targetValue: true,
+            targetType: 'value',
+            targetField: 'Field2',
+            field: '/properties/datatype',
+            operation: 'notEmpty',
           },
         ],
       },

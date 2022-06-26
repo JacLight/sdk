@@ -34,7 +34,7 @@ export const NavigationSchema = () => {
   } as const;
 };
 
-export const NavigationLinkSchema = (): any => {
+export const NavigationLinkSchema = () => {
   return {
     type: 'object',
     properties: {
@@ -87,10 +87,11 @@ export const NavigationLinkSchema = (): any => {
         type: 'string',
       },
       links: {
+        type: 'array',
         hidden: true,
       },
     },
-    required: ['title', 'slug'],
+    required: ['title'],
   } as const;
 };
 
@@ -101,17 +102,14 @@ export const NavigationLinkRules = (): CollectionRule[] => {
       action: [
         {
           operation: 'show',
-          script: '',
           targetField: '/properties/page',
         },
         {
           operation: 'hide',
-          script: '',
           targetField: '/properties/widget',
         },
         {
           operation: 'hide',
-          script: '',
           targetField: '/properties/url',
         },
       ],
@@ -133,17 +131,14 @@ export const NavigationLinkRules = (): CollectionRule[] => {
       action: [
         {
           operation: 'hide',
-          script: '',
           targetField: '/properties/page',
         },
         {
           operation: 'hide',
-          script: '',
           targetField: '/properties/widget',
         },
         {
           operation: 'show',
-          script: '',
           targetField: '/properties/url',
         },
       ],
@@ -165,17 +160,14 @@ export const NavigationLinkRules = (): CollectionRule[] => {
       action: [
         {
           operation: 'hide',
-          script: '',
           targetField: '/properties/page',
         },
         {
           operation: 'show',
-          script: '',
           targetField: '/properties/widget',
         },
         {
           operation: 'hide',
-          script: '',
           targetField: '/properties/url',
         },
       ],
