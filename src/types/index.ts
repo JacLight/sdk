@@ -7,3 +7,5 @@ export * from './formviewsectiontype';
 export * from './pagesectiontype';
 export * from './permissiontype';
 export * from './roletype';
+export * from './configtype';
+export * from './componenttype';

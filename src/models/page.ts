@@ -1,6 +1,7 @@
 import { CollectionRule, CollectionUI } from './collection';
 import { FromSchema } from 'json-schema-to-ts';
 import { DataType, FieldType, FormViewSectionType } from '../types';
+import { viewTemplateStore } from '../ViewTemplateStore';
 
 export const PageSchema = (title = '', description = '') => {
   return {
@@ -126,61 +127,55 @@ export const PageSectionSchema = () => {
         type: 'string',
         hidden: true,
       },
-      viewTemplate: {
+      detailTemplate: {
         type: 'string',
-        enum: ['basic', 'picture', 'blog'],
+        enum: viewTemplateStore.templateList.map(template => template.name)
       },
-      defaultView: {
+      listTemplate: {
         type: 'string',
-        enum: ['list', 'card', 'detail', 'table'],
-      },
-      views: {
-        type: 'string',
-        enum: ['list', 'card', 'detail', 'table'],
-        inputStyle: 'chip',
-        fieldType: FieldType.selectionmultiple,
+        enum: viewTemplateStore.templateList.map(template => template.name)
       },
       manualSelection: {
         type: 'boolean',
       },
-      selection: {
+      dataType: {
         type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        enum: Object.values(DataType),
+      },
+      selection: {
+        type: 'array',
         title: 'Selections',
         fieldType: FieldType.collection,
         inputStyle: 'picker',
         dataSource: {
           source: 'collection',
-          collection: DataType.collection,
+          collection: DataType.post,
         },
-        item: {
+        items: {
           type: 'object',
           properties: {
-            id: {
+            datatype: {
               type: 'string',
             },
-            datatype: {
+            uid: {
               type: 'string',
             },
             name: {
               type: 'string',
             },
-            description: {
-              type: 'string',
-            },
           },
         },
       },
-      dataType: {
+      postType: {
         type: 'string',
         inputStyle: 'chip',
         fieldType: FieldType.selectionmultiple,
-        enum: Object.values(DataType),
-      },
-      postTemplate: {
-        type: 'string',
-        inputStyle: 'chip',
-        fieldType: FieldType.selectionmultiple,
-        enum: ['Blog', "Product"]
+        dataSource: {
+          source: 'collection',
+          collection: DataType.postschema,
+          field: 'name',
+        },
       },
       category: {
         type: 'string',
@@ -284,6 +279,60 @@ export const PageUI = (): CollectionUI[] => {
 
 export const PageRules = (): CollectionRule[] => {
   return [];
+};
+
+export const PageSectionRules = (): CollectionRule[] => {
+  return [
+    {
+      name: 'Manual Selection',
+      action: [
+        {
+          operation: 'show',
+          targetField: '/properties/selection',
+        },
+        {
+          operation: 'hide',
+          targetField: ['/properties/postType', '/properties/category', '/properties/tag']
+        },
+      ],
+      condition: {
+        type: 'and',
+        param: [
+          {
+            targetValue: true,
+            targetType: 'value',
+            targetField: 'Field2',
+            field: '/properties/manualSelection',
+            operation: 'equal',
+          },
+        ],
+      },
+    },
+    {
+      name: 'Manual Selection Datatype',
+      action: [
+        {
+          operation: 'setProperty',
+          property: 'collection',
+          targetField: '/properties/selection/dataSource',
+          sourceField: '/properties/dataType',
+          sourceType: 'field',
+        },
+      ],
+      condition: {
+        type: 'and',
+        param: [
+          {
+            targetValue: true,
+            targetType: 'value',
+            targetField: 'Field2',
+            field: '/properties/datatype',
+            operation: 'notEmpty',
+          },
+        ],
+      },
+    },
+  ]
 };
 
 const pageSectionSchema = PageSectionSchema();

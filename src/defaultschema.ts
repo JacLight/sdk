@@ -17,7 +17,6 @@ const createConcreteCollection = (
   };
 };
 
-
 const collectionCollection: models.CollectionModel = {
   name: 'collection',
   title: 'Collection',
@@ -43,6 +42,22 @@ const collectionCollectionView = deepCopy(collectionCollection);
 collectionCollectionForm.name = 'collectionview';
 collectionCollectionForm.title = 'collectionview';
 collectionCollectionForm.description = 'collectionview';
+
+const applicationCollection: models.CollectionModel = {
+  name: 'application',
+  title: 'Application',
+  description: 'Application',
+  type: CollectionType.Concrete,
+  enablePost: true,
+  enableWorkflow: true,
+  enableVersioning: true,
+  enableIndexing: true,
+  permission: {},
+  rules: models.ApplicationRules(),
+  validations: {},
+  schema: models.ApplicationSchema() as any,
+  uischema: models.ApplicationUI() as any,
+};
 
 const pageCollection: models.CollectionModel = {
   name: 'page',
@@ -75,6 +90,23 @@ const siteCollection: models.CollectionModel = {
   schema: models.SiteSchema() as any,
   uischema: models.SiteUI() as any,
 };
+
+const configCollection: models.CollectionModel = {
+  name: 'config',
+  title: 'Config',
+  description: 'Config',
+  type: CollectionType.Concrete,
+  enablePost: true,
+  enableWorkflow: true,
+  enableVersioning: true,
+  enableIndexing: true,
+  permission: {},
+  rules: models.PageRules(),
+  validations: {},
+  schema: models.ConfigSchema() as any,
+  uischema: models.ConfigUI() as any,
+};
+
 
 const categoryCollection: models.CollectionModel = {
   name: 'category',
@@ -268,11 +300,32 @@ const postCollection: models.CollectionModel = {
   uischema: {} as any,
 };
 
+const scriptCollection: models.CollectionModel = {
+  name: 'post',
+  title: 'Post',
+  description: 'Post Fillter',
+  type: CollectionType.Concrete,
+  enablePost: true,
+  enableWorkflow: true,
+  enableVersioning: true,
+  enableIndexing: true,
+  permission: {},
+  rules: [],
+  validations: {},
+  schema: models.ScriptSchema() as any,
+  uischema: {} as any,
+};
+
+
 
 export const concreteCollections = new Map<String, models.BaseModel<any>>();
 concreteCollections.set(
   DataType.page,
   createConcreteCollection(DataType.page, pageCollection)
+);
+concreteCollections.set(
+  DataType.script,
+  createConcreteCollection(DataType.site, scriptCollection)
 );
 concreteCollections.set(
   DataType.site,
@@ -338,6 +391,18 @@ concreteCollections.set(
   DataType.post,
   createConcreteCollection(DataType.post, postCollection)
 );
+concreteCollections.set(
+  DataType.config,
+  createConcreteCollection(DataType.config, configCollection)
+);
+
+concreteCollections.set(
+  DataType.application,
+  createConcreteCollection(DataType.application, applicationCollection)
+);
+
+
+
 
 const createUser = (
   firstname: string,

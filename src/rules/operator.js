@@ -24,10 +24,10 @@ export default class Operator {
    * @returns {Boolean} - whether the values pass the operator test
    */
   evaluate(factValue, jsonValue) {
-    // console.log(factValue, jsonValue);
-    // console.log(typeof factValue, typeof jsonValue);
-    // console.log("this.cb", this.cb);
-    // console.log("this.cb(factValue, jsonValue)", this.cb(factValue, jsonValue));
+    console.log(factValue, jsonValue);
+    console.log(typeof factValue, typeof jsonValue);
+    console.log("this.cb", this.cb);
+    console.log("this.cb(factValue, jsonValue)", this.cb(factValue, jsonValue));
     return this.factValueValidator(factValue) && this.cb(factValue, jsonValue);
   }
 }

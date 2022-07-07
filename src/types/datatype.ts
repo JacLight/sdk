@@ -11,6 +11,7 @@ export enum DataType {
   passwordpolicy = 'passwordpolicy',
   user = 'user',
   userrole = 'userrole',
+  script = 'script',
   workflow = 'workflow',
   usergroup = 'usergroup',
   permission = 'permission',
@@ -21,4 +22,6 @@ export enum DataType {
   mintflownode = 'mintflownode',
   post = 'post',
   postschema = 'postschema',
+  config = 'config',
+  application = 'application',
 }

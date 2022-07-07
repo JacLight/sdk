@@ -28,11 +28,18 @@ export interface CollectionRule {
       field?: string;
       targetField?: string;
       targetType?: string;
-      targetValue?: string | number;
+      targetValue?: string | number | boolean;
       operation?: string;
     }[];
   };
-  action?: { operation: string; targetField: string; script: string }[];
+  action?: {
+    operation: string;
+    targetField: string | string[];
+    sourceField?: string,
+    sourceType?: string,
+    value?: string,
+    property?: string
+  }[];
 }
 
 export interface CollectionModel {
