@@ -24,4 +24,5 @@ export enum DataType {
   postschema = 'postschema',
   config = 'config',
   application = 'application',
+  ticket = 'ticket',
 }

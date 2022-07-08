@@ -317,6 +317,22 @@ const scriptCollection: models.CollectionModel = {
 };
 
 
+const ticketCollection: models.TicketModel = {
+  name: 'ticket',
+  title: 'Ticket',
+  description: 'Tickets',
+  type: CollectionType.Concrete,
+  enablePost: true,
+  enableWorkflow: true,
+  enableVersioning: true,
+  enableIndexing: true,
+  permission: {},
+  rules: [],
+  validations: {},
+  schema: models.ScriptSchema() as any,
+  uischema: {} as any,
+};
+
 
 export const concreteCollections = new Map<String, models.BaseModel<any>>();
 concreteCollections.set(
@@ -401,7 +417,10 @@ concreteCollections.set(
   createConcreteCollection(DataType.application, applicationCollection)
 );
 
-
+concreteCollections.set(
+  DataType.ticket,
+  createConcreteCollection(DataType.ticket, ticketCollection)
+);
 
 
 const createUser = (

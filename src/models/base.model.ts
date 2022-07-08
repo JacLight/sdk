@@ -151,7 +151,7 @@ export const WorkflowDefinationSubSchema = () => {
       sla: {
         type: 'string',
       },
-      states: {
+      stages: {
         type: 'array',
         items: {
           type: 'object',

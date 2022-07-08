@@ -6,6 +6,7 @@ export const PhoneSchema = () => {
     properties: {
       phone: {
         type: 'string',
+        pattern: '^[-$0-9]*$',
       },
       extension: {
         type: 'string',

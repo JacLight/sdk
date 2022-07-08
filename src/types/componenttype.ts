@@ -5,5 +5,6 @@ export enum ComponentType {
   Collection = 'Collection',
   CollectionView = 'CollectionView',
   CollectionForm = 'CollectionForm',
-  Component = 'Component'
+  Component = 'Component',
+  Ticket = 'Ticket'
 }
