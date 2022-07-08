@@ -14,8 +14,8 @@ export interface BaseModel<T> {
   data?: T;
   isnew?: boolean;
   datatype?: DataType | string;
-  workflow?: WorkflowDefinitionSubModel;
-  workflowhistory?: WorkflowSubModel[];
+  workflow?: string
+  workflowhistory?: [];
   post?: PostSubModel;
   style?: StyleSubModel;
   version: number;
@@ -108,81 +108,6 @@ export const PostSubSchema = () => {
 };
 const pes = PostSubSchema();
 export type PostSubModel = FromSchema<typeof pes>;
-
-export const WorkflowSubSchema = () => {
-  return {
-    type: 'object',
-    properties: {
-      user: {
-        type: 'string',
-      },
-      status: {
-        type: 'string',
-      },
-      date: {
-        type: 'string',
-        format: 'date-time',
-      },
-      state: {
-        type: 'string',
-      },
-      prevstate: {
-        type: 'string',
-      },
-      nextstate: {
-        type: 'string',
-      },
-    },
-  } as const;
-};
-const wsh = WorkflowSubSchema();
-export type WorkflowSubModel = FromSchema<typeof wsh>;
-
-export const WorkflowDefinationSubSchema = () => {
-  return {
-    type: 'object',
-    properties: {
-      name: {
-        type: 'string',
-      },
-      description: {
-        type: 'string',
-      },
-      sla: {
-        type: 'string',
-      },
-      stages: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            actortype: {
-              type: 'string', //user group role
-            },
-            actorid: {
-              type: 'string',
-            },
-            state: {
-              type: 'string', //start, ongoing end
-            },
-            name: {
-              type: 'string',
-            },
-            action: {
-              type: 'string',
-            },
-            notification: {
-              type: 'string', //message template id
-            },
-          },
-        },
-      },
-    },
-  } as const;
-};
-
-const wfd = WorkflowDefinationSubSchema();
-export type WorkflowDefinitionSubModel = FromSchema<typeof wfd>;
 
 export const StyleSubSchema = () => {
   return {

@@ -24,3 +24,4 @@ export * from './product';
 export * from './post';
 export * from './config';
 export * from './script';
+export * from './workflowdefinition';

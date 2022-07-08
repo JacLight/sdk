@@ -12,7 +12,7 @@ export enum DataType {
   user = 'user',
   userrole = 'userrole',
   script = 'script',
-  workflow = 'workflow',
+  workflowdefinition = 'workflowdefinition',
   usergroup = 'usergroup',
   permission = 'permission',
   setting = 'setting',
