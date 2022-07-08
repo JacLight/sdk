@@ -24,5 +24,6 @@ export enum ComponentName {
   ActivityFeed = 'ActivityFeed',
   Application = 'Application',
   Config = 'Config',
-  AdvanceTable = 'AdvanceTable'
+  AdvanceTable = 'AdvanceTable',
+  Tickets = 'Tickets'
 }

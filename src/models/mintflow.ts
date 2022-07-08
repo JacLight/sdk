@@ -1,4 +1,5 @@
 import { FromSchema } from 'json-schema-to-ts';
+import { FieldType } from '../types';
 
 export const MintflowSchema = () => {
   return {
@@ -14,19 +15,69 @@ export const MintflowSchema = () => {
       title: {
         type: 'string',
       },
+      instances: {
+        type: 'number',
+        maximum: 10,
+        minimum: 0
+      },
       description: {
         type: 'string',
       },
       nodes: {
         type: 'array',
-        items: {
-          type: 'object',
-        },
+        items: MintflowNodeSchema(),
         hidden: true,
       },
     },
   } as const;
 };
 
+export const MintflowNodeSchema = () => {
+  return {
+    type: 'object',
+    properties: {
+      info: {
+        type: 'string',
+        fieldType: FieldType.paragraph,
+      },
+      id: {
+        type: 'string',
+        pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
+        minLength: 3,
+        maxLength: 100,
+        disabled: true,
+      },
+      name: {
+        type: 'string',
+        pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
+        minLength: 3,
+        maxLength: 100,
+      },
+      title: {
+        type: 'string',
+        hidden: true,
+      },
+      description: {
+        hidden: true,
+        type: 'string',
+      },
+      targetNodePos: {
+        type: 'string',
+        default: 'Top',
+        enum: ['Top', 'Right', 'Bottom', 'Left'],
+      },
+      sourceNodePos: {
+        type: 'string',
+        default: 'Bottom',
+        enum: ['Top', 'Right', 'Bottom', 'Left'],
+      },
+    },
+    required: ['name'],
+  } as const;
+}
+
 const ps = MintflowSchema();
 export type MintflowModel = FromSchema<typeof ps>;
+
+const ps1 = MintflowNodeSchema();
+export type MintflowNodeModel = FromSchema<typeof ps1>;
