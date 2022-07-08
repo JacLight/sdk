@@ -317,6 +317,24 @@ const scriptCollection: models.CollectionModel = {
 };
 
 
+const worflowDefinitionCollection: models.WorkflowDefinitionModel = {
+  name: 'workflowdefinition',
+  title: 'Workflow Definition',
+  description: 'Workflow Definition',
+  type: CollectionType.Concrete,
+  enablePost: true,
+  enableWorkflow: true,
+  enableVersioning: true,
+  enableIndexing: true,
+  permission: {},
+  rules: [],
+  validations: {},
+  schema: models.ScriptSchema() as any,
+  uischema: {} as any,
+};
+
+
+
 const ticketCollection: models.TicketModel = {
   name: 'ticket',
   title: 'Ticket',
@@ -421,6 +439,12 @@ concreteCollections.set(
   DataType.ticket,
   createConcreteCollection(DataType.ticket, ticketCollection)
 );
+
+concreteCollections.set(
+  DataType.workflowdefinition,
+  createConcreteCollection(DataType.workflowdefinition, worflowDefinitionCollection)
+);
+
 
 
 const createUser = (
