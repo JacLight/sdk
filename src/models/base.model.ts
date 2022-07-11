@@ -14,14 +14,19 @@ export interface BaseModel<T> {
   data?: T;
   isnew?: boolean;
   datatype?: DataType | string;
-  workflow?: string
-  workflowhistory?: [];
+  workflow?: {
+    definition: string,
+    history?: [];
+    stage?: string;
+    status: string
+  },
   post?: PostSubModel;
   style?: StyleSubModel;
   version: number;
   createdate?: Date;
   modifydate?: Date;
   author?: string;
+  subschema?: string,
   requiredRole?: {
     read?: string[],
     create?: string[],

@@ -25,5 +25,8 @@ export enum ComponentName {
   Application = 'Application',
   Config = 'Config',
   AdvanceTable = 'AdvanceTable',
-  Tickets = 'Tickets'
+  Tickets = 'Tickets',
+  Dashboard = 'Dashboard',
+  Chat = 'Chat',
+  DataViz = 'DataViz'
 }
