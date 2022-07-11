@@ -24,7 +24,7 @@ export interface RuleProperties {
 }
 
 
-interface ConditionProperties {
+export interface ConditionProperties {
   fact: string;
   operator: string;
   value: { fact: string } | any;

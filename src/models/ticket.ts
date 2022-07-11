@@ -1,54 +1,5 @@
 import { FromSchema } from 'json-schema-to-ts';
 
-export const TicketTypeSchema = () => {
-  return {
-    type: 'object',
-    properties: {
-      name: {
-        type: 'string',
-        pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
-      },
-      description: {
-        type: 'string',
-      },
-      collection: {
-        type: 'string',
-      },
-      workflow: {
-        type: 'string',
-      },
-      escalation: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            waitFor: {
-              type: 'number'
-            },
-            waitUnit: {
-              type: 'string',
-              enum: ['miniute', 'hour', 'day']
-            },
-            messageTemplate: {
-              type: 'string'
-            },
-            to: {
-              type: 'string'
-            },
-            severity: {
-              type: 'string'
-            }
-          }
-        }
-      },
-      status: { type: 'string' }
-    },
-  } as const;
-};
-
-const dt = TicketTypeSchema();
-export type TicketTypeModel = FromSchema<typeof dt>;
-
 export const TicketSchema = () => {
   return {
     type: 'object',
@@ -61,9 +12,6 @@ export const TicketSchema = () => {
         type: 'string',
       },
       severity: {
-        type: 'string',
-      },
-      resolution: {
         type: 'string',
       },
       fromName: {
@@ -122,7 +70,7 @@ export const TicketSchema = () => {
             assignedTime: { type: 'string' },
           },
         }
-      }
+      },
     },
   } as const;
 };

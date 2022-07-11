@@ -30,6 +30,7 @@ export const WorkflowDefinationSchema = () => {
                         },
                         tickets: {
                             type: 'array',
+                            hidden: true,
                             items: {
                                 type: 'string'
                             }
@@ -42,6 +43,9 @@ export const WorkflowDefinationSchema = () => {
                         },
                         notificationTemplate: {
                             type: 'string', //message template id
+                        },
+                        sla: {
+                            type: 'string',
                         },
                     },
                 },

@@ -1,4 +1,4 @@
-import { CollectionType, FormViewSectionType } from '../types';
+import { CollectionType, DataType, FieldType, FormViewSectionType } from '../types';
 
 export interface CollectionUIGroup {
   title: string;
@@ -68,6 +68,15 @@ export const CollectionSchema = () => {
         minLength: 3,
         maxLength: 20,
         unique: true,
+      },
+      parent: {
+        type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.collection,
+          field: 'name',
+        },
       },
       title: {
         type: 'string',

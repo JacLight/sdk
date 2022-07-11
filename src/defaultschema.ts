@@ -329,7 +329,7 @@ const worflowDefinitionCollection: models.WorkflowDefinitionModel = {
   permission: {},
   rules: [],
   validations: {},
-  schema: models.ScriptSchema() as any,
+  schema: models.WorkflowDefinationSchema() as any,
   uischema: {} as any,
 };
 
@@ -347,7 +347,7 @@ const ticketCollection: models.TicketModel = {
   permission: {},
   rules: [],
   validations: {},
-  schema: models.ScriptSchema() as any,
+  schema: models.TicketSchema() as any,
   uischema: {} as any,
 };
 
@@ -359,7 +359,7 @@ concreteCollections.set(
 );
 concreteCollections.set(
   DataType.script,
-  createConcreteCollection(DataType.site, scriptCollection)
+  createConcreteCollection(DataType.script, scriptCollection)
 );
 concreteCollections.set(
   DataType.site,
