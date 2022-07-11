@@ -173,7 +173,7 @@ export const PageSectionSchema = () => {
         fieldType: FieldType.selectionmultiple,
         dataSource: {
           source: 'collection',
-          collection: DataType.postschema,
+          collection: DataType.subschema,
           field: 'name',
         },
       },
