@@ -1,4 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
+import { registerCollection } from '../../defaultschema';
+import { CollectionUI, CollectionRule } from '../collection';
+import { DataType } from '../../types';
 
 export const AddressSchema = () => {
   return {
@@ -48,3 +51,6 @@ export const AddressSchema = () => {
 
 const dd = AddressSchema();
 export type AddressModel = FromSchema<typeof dd>;
+export const AddressUI = (): CollectionUI[] => { return null };
+export const AddressRules = (): CollectionRule[] => { return null };
+registerCollection('Address', DataType.address, AddressSchema(), AddressUI(), AddressRules(), true)

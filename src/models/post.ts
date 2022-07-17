@@ -1,5 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { CollectionRule, CollectionUI } from './collection';
+import { DataType } from '../types';
+import { registerCollection } from '../defaultschema';
 
 export const PostSchema = () => {
   return {
@@ -23,10 +25,6 @@ export const PostSchema = () => {
 const rt = PostSchema();
 export type PostModel = FromSchema<typeof rt>;
 
-export const PostUI = (): CollectionUI[] => {
-  return null;
-};
-
-export const PostRules = (): CollectionRule[] => {
-  return [];
-};
+export const PostUI = (): CollectionUI[] => { return null };
+export const PostRules = (): CollectionRule[] => { return [] };
+registerCollection('Post', DataType.workflowdefinition, PostSchema(), PostUI(), PostRules())

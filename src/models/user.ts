@@ -1,6 +1,8 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { CollectionUI } from './collection';
+import { registerCollection } from '../defaultschema';
 import { DataType, FieldType, FormViewSectionType } from '../types';
+import { CollectionUI } from './collection';
+
 
 export const UserSchema = () => {
   return {
@@ -13,13 +15,13 @@ export const UserSchema = () => {
         maxLength: 150,
         unique: true,
       },
-      firstname: {
+      firstName: {
         type: 'string',
       },
-      middlename: {
+      middleName: {
         type: 'string',
       },
-      lastname: {
+      lastName: {
         type: 'string',
       },
       title: {
@@ -33,7 +35,7 @@ export const UserSchema = () => {
         type: 'string',
         inputStyle: 'password'
       },
-      passwordreset: {
+      passwordReset: {
         type: 'boolean',
         title: 'Set Password'
       },
@@ -41,7 +43,7 @@ export const UserSchema = () => {
         type: 'string',
         default: 'false',
       },
-      lockoutdate: {
+      lockoutDate: {
         type: 'string',
         format: 'date-time',
         disabled: true
@@ -62,7 +64,7 @@ export const UserSchema = () => {
       greeting: {
         type: 'string',
       },
-      reminderquestion: {
+      reminderQuestion: {
         type: 'array',
         items: {
           type: 'object',
@@ -76,37 +78,37 @@ export const UserSchema = () => {
           },
         },
       },
-      facebookid: {
-        type: 'integer',
-      },
-      googleuserid: {
+      facebook: {
         type: 'string',
       },
-      ldapserverid: {
-        type: 'integer',
-      },
-      openid: {
+      google: {
         type: 'string',
       },
-      lastlogindate: {
+      ldap: {
         type: 'string',
-        format: 'date-time',
-        disabled: true
       },
-      lastloginip: {
+      openId: {
         type: 'string',
-        disabled: true
       },
-      lastfailedlogindate: {
+      lastLoginDate: {
         type: 'string',
         format: 'date-time',
         disabled: true
       },
-      failedloginattempts: {
+      lastLoginIp: {
+        type: 'string',
+        disabled: true
+      },
+      lastFailedLoginDate: {
+        type: 'string',
+        format: 'date-time',
+        disabled: true
+      },
+      failedLoginAttempts: {
         type: 'number',
         disabled: true
       },
-      passwordpolicy: {
+      passwordPolicy: {
         type: 'string',
         fieldType: FieldType.selectionmultiple,
         dataSource: {
@@ -153,7 +155,7 @@ export const UserGroupSchema = () => {
       description: {
         type: 'string',
       },
-      passwordpolicy: {
+      passwordPolicy: {
         type: 'string',
         fieldType: FieldType.selectionmultiple,
         dataSource: {
@@ -249,24 +251,24 @@ export const UserUI = (): CollectionUI[] => {
               '0': '/properties/email',
             },
             {
-              '0': '/properties/passwordreset',
+              '0': '/properties/passwordReset',
               '1': '/properties/password',
             },
             {
-              '0': '/properties/firstname',
-              '1': '/properties/lastname',
+              '0': '/properties/firstName',
+              '1': '/properties/lastName',
             },
             {
               '0': '/properties/timezone',
               '1': '/properties/language',
             },
             {
-              '0': '/properties/lastlogindate',
-              '1': '/properties/lastloginip',
+              '0': '/properties/lastLoginDate',
+              '1': '/properties/lastLoginIp',
             },
             {
-              '0': '/properties/lastfailedlogindate',
-              '1': '/properties/failedloginattempts',
+              '0': '/properties/lastFailedLoginDate',
+              '1': '/properties/failedLoginAttempts',
             },
           ],
         },
@@ -301,3 +303,7 @@ const usrh = UserRoleSchema();
 export type UserModel = FromSchema<typeof ush>;
 export type UserGroupModel = FromSchema<typeof usgh>;
 export type UserRoleModel = FromSchema<typeof usrh>;
+
+registerCollection('User', DataType.user, UserSchema(), UserUI(), null)
+registerCollection('User Group', DataType.usergroup, UserGroupSchema(), null, null)
+registerCollection('User Role', DataType.userrole, UserRoleSchema(), null, null)

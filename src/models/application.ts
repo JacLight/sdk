@@ -1,6 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { CollectionRule, CollectionUI } from './collection';
 import { ComponentType, ComponentName, DataType, FieldType } from '../types';
+import { CollectionRule, CollectionUI } from './collection';
+import { registerCollection } from '../defaultschema';
 
 export const ApplicationSchema = () => {
   return {
@@ -104,9 +105,6 @@ export const ApplicationSchema = () => {
     },
   } as const;
 };
-
-const as = ApplicationSchema();
-export type ApplicationModel = FromSchema<typeof as>;
 
 export const ApplicationRules = (): CollectionRule[] => {
   return [
@@ -239,6 +237,7 @@ export const ApplicationRules = (): CollectionRule[] => {
   ]
 };
 
-export const ApplicationUI = (): CollectionUI[] => {
-  return [];
-};
+const as = ApplicationSchema();
+export type ApplicationModel = FromSchema<typeof as>;
+export const ApplicationUI = (): CollectionUI[] => { return null };
+registerCollection('Application', DataType.application, ApplicationSchema(), ApplicationUI(), ApplicationRules())

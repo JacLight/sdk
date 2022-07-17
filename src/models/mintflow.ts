@@ -1,5 +1,8 @@
 import { FromSchema } from 'json-schema-to-ts';
+import { registerCollection } from '../defaultschema';
 import { FieldType } from '../types';
+import { DataType } from '../types';
+import { CollectionRule, CollectionUI } from './collection';
 
 export const MintflowSchema = () => {
   return {
@@ -81,3 +84,8 @@ export type MintflowModel = FromSchema<typeof ps>;
 
 const ps1 = MintflowNodeSchema();
 export type MintflowNodeModel = FromSchema<typeof ps1>;
+
+export const MintflowUI = (): CollectionUI[] => { return null };
+export const MintflowRules = (): CollectionRule[] => { return [] };
+
+registerCollection('WorkflowDefination', DataType.mintflow, MintflowSchema(), MintflowUI(), MintflowRules())

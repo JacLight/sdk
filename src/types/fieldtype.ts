@@ -18,5 +18,6 @@ export enum FieldType {
   derivedField = 'Derived Field',
   lookupField = 'Lookup Field',
   linkedSelect = 'Linked Selection',
-  button = 'button',
+  button = 'Button',
+  label = 'Label',
 }

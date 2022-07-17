@@ -1,4 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
+import { registerCollection } from '../../defaultschema';
+import { CollectionUI, CollectionRule } from '../collection';
+import { DataType } from '../../types';
 
 export const MessageTemplateSchema = () => {
   return {
@@ -29,7 +32,7 @@ export const MessageTemplateSchema = () => {
         fieldType: 'Rich Text Editor',
         displayStyle: 'full',
       },
-      emailtext: {
+      emailText: {
         type: 'string',
         inputStyle: 'textarea',
       },
@@ -44,3 +47,7 @@ export const MessageTemplateSchema = () => {
 
 const dd = MessageTemplateSchema();
 export type MessageTemplateModel = FromSchema<typeof dd>;
+
+export const MessageTemplateUI = (): CollectionUI[] => { return null };
+export const MessageTemplateRules = (): CollectionRule[] => { return null };
+registerCollection('MessageTemplate', DataType.messagetemplate, MessageTemplateSchema(), MessageTemplateUI(), MessageTemplateRules(), true)
