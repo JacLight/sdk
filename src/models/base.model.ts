@@ -68,11 +68,11 @@ export const PostSubSchema = () => {
         type: 'boolean',
         default: true,
       },
-      publishstart: {
+      publishStart: {
         type: 'string',
         format: 'date-time',
       },
-      publishend: {
+      publishEnd: {
         type: 'string',
         format: 'date-time',
       },

@@ -1,6 +1,8 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { CollectionRule, CollectionUI } from './collection';
+import { registerCollection } from '../defaultschema';
 import { ConfigType } from '../types';
+import { DataType } from '../types';
+import { CollectionRule, CollectionUI } from './collection';
 
 export const ConfigSchema = () => {
   return {
@@ -32,11 +34,6 @@ export const ConfigSchema = () => {
 
 const rt = ConfigSchema();
 export type ConfigModel = FromSchema<typeof rt>;
-
-export const ConfigUI = (): CollectionUI[] => {
-  return null;
-};
-
-export const ConfigRules = (): CollectionRule[] => {
-  return [];
-};
+export const ConfigUI = (): CollectionUI[] => { return null };
+export const ConfigRules = (): CollectionRule[] => { return [] };
+registerCollection('Config', DataType.config, ConfigSchema(), ConfigUI(), ConfigRules())

@@ -1,4 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
+import { registerCollection } from '../defaultschema';
+import { DataType } from '../types';
+import { CollectionRule, CollectionUI } from './collection';
 
 export const SettingSchema = () => {
   return {
@@ -11,10 +14,10 @@ export const SettingSchema = () => {
         maxLength: 50,
         unique: true,
       },
-      ownertype: {
+      ownerType: {
         type: 'string', // System, Role, Group, User
       },
-      ownerid: {
+      ownerId: {
         type: 'string',
       },
       '^setting_': {
@@ -48,3 +51,9 @@ const usgh = SettingSchema();
 
 export type SettingModel = FromSchema<typeof usgh>;
 export type LogModel = FromSchema<typeof ush>;
+
+export const SettingUI = (): CollectionUI[] => { return null };
+export const SettingRules = (): CollectionRule[] => { return [] };
+
+registerCollection('Setting', DataType.setting, SettingSchema(), SettingUI(), SettingRules())
+registerCollection('Log', DataType.log, LogSchema(), null, null)

@@ -1,3 +1,4 @@
+import { registerCollection } from '../defaultschema';
 import { CollectionType, DataType, FieldType, FormViewSectionType } from '../types';
 
 export interface CollectionUIGroup {
@@ -8,7 +9,10 @@ export interface CollectionUIGroup {
 }
 export interface CollectionUI {
   type: FormViewSectionType;
-  items?: { [key: string]: string };
+  default?: boolean;
+  title?: string;
+  collapsible?: boolean;
+  items?: { [key: string]: string }[];
   accordion?: CollectionUIGroup[];
   tab?: CollectionUIGroup[];
   buttons?: {
@@ -49,6 +53,7 @@ export interface CollectionModel {
   type?: CollectionType;
   enablePost: boolean;
   enableVersioning?: boolean;
+  enableSubSchema?: boolean;
   enableIndexing?: boolean;
   enableWorkflow?: boolean;
   permission?: {};
@@ -96,6 +101,9 @@ export const CollectionSchema = () => {
       enableWorkflow: {
         type: 'boolean',
       },
+      enableSubSchema: {
+        type: 'boolean',
+      },
       permission: {
         type: 'object',
         hidden: true,
@@ -123,13 +131,18 @@ export const CollectionSchema = () => {
   };
 };
 
-export const CollectionUI = (): CollectionUI[] => {
-  return null;
-};
 
-export const CollectionRules = (): CollectionRule[] => {
-  return [];
-};
+export const CollectionUI = (): CollectionUI[] => { return null };
+export const CollectionRules = (): CollectionRule[] => { return null };
 
-export const CollectionForm = CollectionSchema;
-export const CollectionView = CollectionSchema;
+export const CollectionFormSchema = CollectionSchema;
+export const CollectionViewSchema = CollectionSchema;
+export const DataViewSchema = CollectionSchema;
+
+registerCollection('CollectionForm', DataType.collectionform, CollectionSchema(), CollectionUI(), CollectionRules())
+registerCollection('CollectionView', DataType.collectionview, CollectionSchema(), CollectionUI(), CollectionRules())
+registerCollection('DataView', DataType.dataview, CollectionSchema(), CollectionUI(), CollectionRules())
+registerCollection('Collection', DataType.collection, CollectionSchema(), CollectionUI(), CollectionRules())
+registerCollection('SubSchema', DataType.subschema, CollectionSchema(), CollectionUI(), CollectionRules())
+
+

@@ -1,5 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
+import { DataType } from '../types';
 import { CollectionRule, CollectionUI } from './collection';
+import { registerCollection } from '../defaultschema';
 
 export const TagSchema = () => {
   return {
@@ -36,40 +38,15 @@ export const TagGroupSchema = () => {
   } as const;
 };
 
-export const TagSetSchema = () => {
-  return {
-    type: 'object',
-    properties: {
-      name: {
-        type: 'string',
-        minLength: 3,
-        maxLength: 50,
-        unique: true,
-      },
-      tags: {
-        type: 'array',
-        items: TagSchema(),
-      },
-      tagGroups: {
-        type: 'array',
-        items: TagGroupSchema(),
-      },
-    },
-  } as const;
-};
 
 const ts = TagSchema();
 const tgs = TagGroupSchema();
-const tss = TagSetSchema();
 
 export type TagModel = FromSchema<typeof ts>;
 export type TagGroupModel = FromSchema<typeof tgs>;
-export type TagSetModel = FromSchema<typeof tss>;
 
-export const TagUI = (): CollectionUI[] => {
-  return null;
-};
+export const TagUI = (): CollectionUI[] => { return null };
+export const TagRules = (): CollectionRule[] => { return [] };
 
-export const TagRules = (): CollectionRule[] => {
-  return [];
-};
+registerCollection('Tag', DataType.tag, TagSchema(), TagUI(), TagRules())
+registerCollection('Tag Group', DataType.taggroup, TagGroupSchema(), TagUI(), TagRules())

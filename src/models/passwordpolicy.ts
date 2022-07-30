@@ -1,4 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
+import { registerCollection } from '../defaultschema';
+import { DataType } from '../types';
+import { CollectionRule, CollectionUI } from './collection';
 
 export const PasswordPolicySchema = () => {
   return {
@@ -59,3 +62,7 @@ export const PasswordPolicySchema = () => {
 
 const pps = PasswordPolicySchema();
 export type PasswordPolicyModel = FromSchema<typeof pps>;
+
+export const PasswordPolicyUI = (): CollectionUI[] => { return null };
+export const PasswordPolicyRules = (): CollectionRule[] => { return [] };
+registerCollection('PasswordPolicy', DataType.passwordpolicy, PasswordPolicySchema(), PasswordPolicyUI(), PasswordPolicyRules())

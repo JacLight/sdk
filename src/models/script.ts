@@ -1,4 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
+import { registerCollection } from '../defaultschema';
+import { DataType } from '../types';
 import { CollectionRule, CollectionUI } from './collection';
 
 export const ScriptSchema = () => {
@@ -33,11 +35,6 @@ export const ScriptSchema = () => {
 
 const rt = ScriptSchema();
 export type ScriptModel = FromSchema<typeof rt>;
-
-export const ScriptUI = (): CollectionUI[] => {
-  return null;
-};
-
-export const ScriptRules = (): CollectionRule[] => {
-  return [];
-};
+export const ScriptUI = (): CollectionUI[] => { return null };
+export const ScriptRules = (): CollectionRule[] => { return [] };
+registerCollection('Script', DataType.script, ScriptSchema(), ScriptUI(), ScriptRules())

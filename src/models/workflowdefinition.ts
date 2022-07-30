@@ -1,6 +1,9 @@
 import { FromSchema } from 'json-schema-to-ts';
+import { registerCollection } from '../defaultschema';
+import { DataType } from '../types';
+import { CollectionRule, CollectionUI } from './collection';
 
-export const WorkflowDefinationSchema = () => {
+export const WorkflowDefinitionSchema = () => {
     return {
         type: 'object',
         properties: {
@@ -19,10 +22,10 @@ export const WorkflowDefinationSchema = () => {
                 items: {
                     type: 'object',
                     properties: {
-                        actortype: {
+                        actorType: {
                             type: 'string', //user group role
                         },
-                        actorid: {
+                        actorId: {
                             type: 'string',
                         },
                         state: {
@@ -54,5 +57,9 @@ export const WorkflowDefinationSchema = () => {
     } as const;
 };
 
-const wfd = WorkflowDefinationSchema();
+export const WorkflowDefinitionUI = (): CollectionUI[] => { return null };
+export const WorkflowDefinitionRules = (): CollectionRule[] => { return null };
+
+const wfd = WorkflowDefinitionSchema();
 export type WorkflowDefinitionModel = FromSchema<typeof wfd>;
+registerCollection('WorkflowDefinition', DataType.workflowdefinition, WorkflowDefinitionSchema(), WorkflowDefinitionUI(), WorkflowDefinitionRules())

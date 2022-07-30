@@ -2,6 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { CollectionRule, CollectionUI } from './collection';
 import { DataType, FieldType } from '../types';
 import { widgetStore } from '../WidgetStore';
+import { registerCollection } from '../defaultschema';
 
 export const NavigationSchema = () => {
   return {
@@ -40,7 +41,7 @@ export const NavigationLinkSchema = () => {
     properties: {
       linkType: {
         type: 'string',
-        enum: ['page', 'widget', 'url'], //use of page filter liket category or tags
+        enum: ['page', 'post', 'widget', 'url'], //use of page filter liket category or tags
       },
       title: {
         type: 'string',
@@ -112,12 +113,69 @@ export const NavigationLinkRules = (): CollectionRule[] => {
           operation: 'hide',
           targetField: '/properties/url',
         },
+        {
+          operation: 'setProperty',
+          property: 'title',
+          targetField: '/properties/page',
+          sourceType: 'value',
+          value: 'Page'
+        },
+        {
+          operation: 'setProperty',
+          property: 'collection',
+          targetField: '/properties/page/dataSource',
+          sourceType: 'value',
+          value: DataType.page
+        },
       ],
       condition: {
         type: 'and',
         param: [
           {
             targetValue: 'page',
+            targetType: 'value',
+            targetField: 'Field2',
+            field: '/properties/linkType',
+            operation: 'equal',
+          },
+        ],
+      },
+    },
+    {
+      name: 'Show Hide Post',
+      action: [
+        {
+          operation: 'show',
+          targetField: '/properties/page',
+        },
+        {
+          operation: 'hide',
+          targetField: '/properties/widget',
+        },
+        {
+          operation: 'hide',
+          targetField: '/properties/url',
+        },
+        {
+          operation: 'setProperty',
+          property: 'title',
+          targetField: '/properties/page',
+          sourceType: 'value',
+          value: 'Post'
+        },
+        {
+          operation: 'setProperty',
+          property: 'collection',
+          targetField: '/properties/page/dataSource',
+          sourceType: 'value',
+          value: DataType.post
+        },
+      ],
+      condition: {
+        type: 'and',
+        param: [
+          {
+            targetValue: 'post',
             targetType: 'value',
             targetField: 'Field2',
             field: '/properties/linkType',
@@ -191,9 +249,6 @@ const rtlink = NavigationLinkSchema();
 const rt = NavigationSchema();
 export type NavigationLinkModel = FromSchema<typeof rtlink>;
 export type NavigationModel = FromSchema<typeof rt>;
-export const NavigationUI = (): CollectionUI[] => {
-  return null;
-};
-export const NavigationRules = (): CollectionRule[] => {
-  return [];
-};
+export const NavigationUI = (): CollectionUI[] => { return null };
+export const NavigationRules = (): CollectionRule[] => { return [] };
+registerCollection('Navigation', DataType.navigation, NavigationSchema(), NavigationUI(), NavigationRules())

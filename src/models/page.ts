@@ -1,7 +1,8 @@
-import { CollectionRule, CollectionUI } from './collection';
 import { FromSchema } from 'json-schema-to-ts';
 import { DataType, FieldType, FormViewSectionType } from '../types';
 import { viewTemplateStore } from '../ViewTemplateStore';
+import { CollectionRule, CollectionUI } from './collection';
+import { registerCollection } from '../defaultschema';
 
 export const PageSchema = (title = '', description = '') => {
   return {
@@ -340,3 +341,5 @@ const pageSchema = PageSchema();
 
 export type PageSectionModel = FromSchema<typeof pageSectionSchema>;
 export type PageModel = FromSchema<typeof pageSchema>;
+
+registerCollection('Page', DataType.page, PageSchema(), PageUI(), PageRules())

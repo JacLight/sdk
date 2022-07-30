@@ -172,7 +172,6 @@ export interface JsonSchemaCustom {
   fieldType?: string;
   showInlineError?: boolean;
   collection?: string;
-  dataSource?: string;
   disabled?: boolean;
   css?: string;
   styleClass?: string;
@@ -180,4 +179,6 @@ export interface JsonSchemaCustom {
   layout?: string;
   displaySize?: string;
   clickToShow?: boolean;
+  dataSource?: string | JsonSchemaCustom;
+  parent?: string | JsonSchemaCustom;
 }

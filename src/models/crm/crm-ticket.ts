@@ -1,4 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
+import { registerCollection } from '../../defaultschema';
+import { CollectionUI, CollectionRule } from '../collection';
+import { DataType } from '../../types';
 
 export const TicketSchema = () => {
   return {
@@ -17,7 +20,7 @@ export const TicketSchema = () => {
       fromName: {
         type: 'string',
       },
-      fromAddress: {
+      fromTicket: {
         type: 'string',
       },
       ticketType: {
@@ -77,3 +80,7 @@ export const TicketSchema = () => {
 
 const tt = TicketSchema();
 export type TicketModel = FromSchema<typeof tt>;
+
+export const TicketUI = (): CollectionUI[] => { return null };
+export const TicketRules = (): CollectionRule[] => { return null };
+registerCollection('Ticket', DataType.ticket, TicketSchema(), TicketUI(), TicketRules(), true)

@@ -1,5 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { CollectionRule, CollectionUI } from './collection';
+import { DataType } from '../types';
+import { registerCollection } from '../defaultschema';
 
 export const CategorySchema = () => {
   return {
@@ -34,10 +36,6 @@ export const CategorySchema = () => {
 const rt = CategorySchema();
 export type CategoryModel = FromSchema<typeof rt>;
 
-export const CategoryUI = (): CollectionUI[] => {
-  return null;
-};
-
-export const CategoryRules = (): CollectionRule[] => {
-  return [];
-};
+export const CategoryUI = (): CollectionUI[] => { return null };
+export const CategoryRules = (): CollectionRule[] => { return [] };
+registerCollection('Category', DataType.category, CategorySchema(), CategoryUI(), CategoryRules())

@@ -1,8 +1,9 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { CollectionRule, CollectionUI } from './collection';
 import { DataType, FieldType, FormViewSectionType } from '../types';
-import { ImageSchema } from './image';
+import { FileInfoSchema } from './fileinfo';
 import { getCurrencies, getLanguages } from '../data';
+import { CollectionRule, CollectionUI } from './collection';
+import { registerCollection } from '../defaultschema';
 
 export const SiteSchema = () => {
   return {
@@ -70,7 +71,7 @@ export const SiteSchema = () => {
         type: 'string',
         format: 'uri',
       },
-      logo: ImageSchema(),
+      logo: FileInfoSchema(),
       mainNavigation: {
         type: 'string',
         fieldType: FieldType.selectionmultiple,
@@ -217,6 +218,5 @@ export const SiteUI = (): CollectionUI[] => {
 const dd = SiteSchema();
 export type SiteModel = FromSchema<typeof dd>;
 
-export const SiteRules = (): CollectionRule[] => {
-  return [{ name: 'norule' }];
-};
+export const SiteRules = (): CollectionRule[] => { return [{ name: 'norule' }] };
+registerCollection('Site', DataType.site, SiteSchema(), SiteUI(), SiteRules())

@@ -1,4 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
+import { registerCollection } from '../defaultschema';
+import { DataType } from '../types';
+import { CollectionRule, CollectionUI } from './collection';
 
 export const CommentSchema = () => {
   return {
@@ -15,10 +18,10 @@ export const CommentSchema = () => {
         maximum: 5,
         minimum: 1,
       },
-      voteup: {
+      voteUp: {
         type: 'number',
       },
-      votedown: {
+      voteDown: {
         type: 'number',
       },
       date: {
@@ -36,3 +39,7 @@ export const CommentSchema = () => {
 
 const cos = CommentSchema();
 export type CommentModel = FromSchema<typeof cos>;
+
+export const CommentUI = (): CollectionUI[] => { return null };
+export const CommentRules = (): CollectionRule[] => { return [] };
+registerCollection('Comment', DataType.comment, CommentSchema(), CommentUI(), CommentRules())

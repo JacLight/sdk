@@ -5,6 +5,9 @@ import {
   RoleType,
 } from '../types';
 import { FromSchema } from 'json-schema-to-ts';
+import { DataType } from '../types';
+import { CollectionRule, CollectionUI } from './collection';
+import { registerCollection } from '../defaultschema';
 
 export const PermissionEntrySchema = () => {
   return {
@@ -51,3 +54,6 @@ const ps = PermissionSchema();
 const pes = PermissionEntrySchema();
 export type PermissionModel = FromSchema<typeof ps>;
 export type PermissionEntryModel = FromSchema<typeof pes>;
+export const PermissionUI = (): CollectionUI[] => { return null };
+export const PermissionRules = (): CollectionRule[] => { return [] };
+registerCollection('Permission', DataType.permission, PermissionSchema(), PermissionUI(), PermissionRules())

@@ -1,4 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
+import { registerCollection } from '../defaultschema';
+import { DataType } from '../types';
+import { CollectionRule, CollectionUI } from './collection';
 
 export const CompanySchema = () => {
   return {
@@ -36,3 +39,7 @@ export const CompanySchema = () => {
 
 const dd = CompanySchema();
 export type CompanyModel = FromSchema<typeof dd>;
+
+export const CompanyUI = (): CollectionUI[] => { return null };
+export const CompanyRules = (): CollectionRule[] => { return [] };
+registerCollection('Company', DataType.company, CompanySchema(), CompanyUI(), CompanyRules())
