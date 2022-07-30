@@ -7,7 +7,7 @@ export const SFInventorySchema = () => {
     return {
         type: 'object',
         properties: {
-            sky: {
+            sku: {
                 type: 'string',
                 pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
                 minLength: 3,
