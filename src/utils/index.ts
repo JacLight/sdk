@@ -14,6 +14,7 @@ export const deepCopy = (source: any) => {
 };
 
 export const isEmpty = (obj: any) => {
+  if (typeof (obj) === 'boolean' || typeof (obj) === 'number') return false;
   if (typeof obj === 'string' && obj.length > 0) return false;
   if (Array.isArray(obj) && obj.length > 0) return false;
   if (obj !== null && typeof obj === 'object' && Object.keys(obj).length > 0)

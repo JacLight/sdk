@@ -17,10 +17,8 @@ const createConcreteCollection = (
   };
 };
 
-
-
 export const concreteCollections = new Map<String, BaseModel<any>>();
-export const registerCollection = (title: string, datatype: DataType, schema: JsonSchemaCustom | any, uischema: CollectionUI[], rules: CollectionRule[], hidden = false) => {
+export const registerCollection = (title: string, datatype: DataType, schema: JsonSchemaCustom | any, uischema: CollectionUI[], rules: CollectionRule[], hidden = false, enableSubSchema = false) => {
   const thisCollection = {
     name: datatype,
     title,
@@ -30,6 +28,7 @@ export const registerCollection = (title: string, datatype: DataType, schema: Js
     enableWorkflow: true,
     enableVersioning: true,
     enableIndexing: true,
+    enableSubSchema,
     permission: {},
     rules: rules,
     validations: {},
@@ -37,10 +36,10 @@ export const registerCollection = (title: string, datatype: DataType, schema: Js
     uischema: uischema,
     hidden
   };
+  console.log(thisCollection)
   concreteCollections.set(datatype, createConcreteCollection(datatype, thisCollection));
 }
 
-console.log(concreteCollections)
 const createUser = (
   firstname: string,
   lastname: string,

@@ -31,6 +31,11 @@ export const MintflowSchema = () => {
         items: MintflowNodeSchema(),
         hidden: true,
       },
+      edges: {
+        type: 'array',
+        items: MintflowNodeSchema(),
+        hidden: true,
+      },
     },
   } as const;
 };

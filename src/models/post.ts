@@ -27,4 +27,4 @@ export type PostModel = FromSchema<typeof rt>;
 
 export const PostUI = (): CollectionUI[] => { return null };
 export const PostRules = (): CollectionRule[] => { return [] };
-registerCollection('Post', DataType.workflowdefinition, PostSchema(), PostUI(), PostRules())
+registerCollection('Post', DataType.post, PostSchema(), PostUI(), PostRules(), false, true);

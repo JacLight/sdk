@@ -49,4 +49,4 @@ export const TagUI = (): CollectionUI[] => { return null };
 export const TagRules = (): CollectionRule[] => { return [] };
 
 registerCollection('Tag', DataType.tag, TagSchema(), TagUI(), TagRules())
-registerCollection('Tag', DataType.taggroup, TagGroupSchema(), TagUI(), TagRules())
+registerCollection('Tag Group', DataType.taggroup, TagGroupSchema(), TagUI(), TagRules())

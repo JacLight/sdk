@@ -41,7 +41,7 @@ export const NavigationLinkSchema = () => {
     properties: {
       linkType: {
         type: 'string',
-        enum: ['page', 'widget', 'url'], //use of page filter liket category or tags
+        enum: ['page', 'post', 'widget', 'url'], //use of page filter liket category or tags
       },
       title: {
         type: 'string',
@@ -113,12 +113,69 @@ export const NavigationLinkRules = (): CollectionRule[] => {
           operation: 'hide',
           targetField: '/properties/url',
         },
+        {
+          operation: 'setProperty',
+          property: 'title',
+          targetField: '/properties/page',
+          sourceType: 'value',
+          value: 'Page'
+        },
+        {
+          operation: 'setProperty',
+          property: 'collection',
+          targetField: '/properties/page/dataSource',
+          sourceType: 'value',
+          value: DataType.page
+        },
       ],
       condition: {
         type: 'and',
         param: [
           {
             targetValue: 'page',
+            targetType: 'value',
+            targetField: 'Field2',
+            field: '/properties/linkType',
+            operation: 'equal',
+          },
+        ],
+      },
+    },
+    {
+      name: 'Show Hide Post',
+      action: [
+        {
+          operation: 'show',
+          targetField: '/properties/page',
+        },
+        {
+          operation: 'hide',
+          targetField: '/properties/widget',
+        },
+        {
+          operation: 'hide',
+          targetField: '/properties/url',
+        },
+        {
+          operation: 'setProperty',
+          property: 'title',
+          targetField: '/properties/page',
+          sourceType: 'value',
+          value: 'Post'
+        },
+        {
+          operation: 'setProperty',
+          property: 'collection',
+          targetField: '/properties/page/dataSource',
+          sourceType: 'value',
+          value: DataType.post
+        },
+      ],
+      condition: {
+        type: 'and',
+        param: [
+          {
+            targetValue: 'post',
             targetType: 'value',
             targetField: 'Field2',
             field: '/properties/linkType',
