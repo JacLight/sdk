@@ -55,3 +55,70 @@ export function removeEmpty(obj: any): any {
       {}
     );
 }
+
+
+export function executeFunctionByName(functionName: string, context: any /*, args */) {
+  var args = Array.prototype.slice.call(arguments, 2);
+  var namespaces = functionName.split('.');
+  var func = namespaces.pop();
+  for (var i = 0; i < namespaces.length; i++) {
+    context = context[namespaces[i]];
+  }
+  return context[func].apply(context, args);
+}
+
+export const getElementByClassName = (className: string) => {
+  return document.querySelector(className) as HTMLElement;
+};
+
+export const randomNumber = (length: number) => {
+  var arr = [];
+  while (arr.length < length) {
+    var r = Math.floor(Math.random() * 100) + 1;
+    if (arr.indexOf(r) === -1) arr.push(r);
+  }
+  return arr.join();
+};
+
+
+export const isArrayString = (str: any) => {
+  if (typeof str !== 'string') return false;
+  return str && str.startsWith('[') && str.endsWith(']');
+};
+
+export const isObjectString = (str: any) => {
+  if (typeof str !== 'string') return false;
+  return str && str.startsWith('{') && str.endsWith('}');
+};
+
+export const isJsonString = (str: any) => {
+  return isArrayString(str) || isObjectString(str);
+};
+
+export const setValue = (obj: any, path: string, value: any) => {
+  const pathArray: any = Array.isArray(path) ? path : path.match(/([^[.\]])+/g)
+
+  pathArray.reduce((acc: any, key: string, i: number) => {
+    if (acc[key] === undefined) acc[key] = {}
+    if (i === pathArray.length - 1) acc[key] = value
+    return acc[key]
+  }, obj)
+}
+
+export const unsetValue = (obj: any, path: string) => {
+  const pathArray: any = Array.isArray(path) ? path : path.match(/([^[.\]])+/g)
+  pathArray.reduce((acc: any, key: string, i: number) => {
+    if (i === pathArray.length - 1) delete acc[key]
+    return acc[key]
+  }, obj)
+}
+
+export const getValue = (obj: any, path: string, defValue: any) => {
+  if (!path) return undefined
+  const pathArray: any = Array.isArray(path) ? path : path.match(/([^[.\]])+/g)
+  const result = pathArray.reduce(
+    (prevObj: any, key: any) => prevObj && prevObj[key],
+    obj
+  )
+  return result === undefined ? defValue : result
+}
