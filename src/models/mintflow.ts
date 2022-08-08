@@ -26,6 +26,10 @@ export const MintflowSchema = () => {
       description: {
         type: 'string',
       },
+      viewport: {
+        type: 'array',
+        hidden: true,
+      },
       nodes: {
         type: 'array',
         items: MintflowNodeSchema(),
@@ -72,12 +76,12 @@ export const MintflowNodeSchema = () => {
       targetNodePos: {
         type: 'string',
         default: 'Top',
-        enum: ['Top', 'Right', 'Bottom', 'Left'],
+        enum: ['', 'Top', 'Right', 'Bottom', 'Left'],
       },
       sourceNodePos: {
         type: 'string',
         default: 'Bottom',
-        enum: ['Top', 'Right', 'Bottom', 'Left'],
+        enum: ['', 'Top', 'Right', 'Bottom', 'Left'],
       },
     },
     required: ['name'],

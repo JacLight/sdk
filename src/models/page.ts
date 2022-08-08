@@ -3,6 +3,7 @@ import { DataType, FieldType, FormViewSectionType } from '../types';
 import { viewTemplateStore } from '../ViewTemplateStore';
 import { CollectionRule, CollectionUI } from './collection';
 import { registerCollection } from '../defaultschema';
+import { isEmpty } from '../utils';
 
 export const PageSchema = (title = '', description = '') => {
   return {
@@ -10,6 +11,12 @@ export const PageSchema = (title = '', description = '') => {
     title: title,
     description: description,
     properties: {
+      site: {
+        type: 'string',
+        minLength: 3,
+        maxLength: 50,
+        hidden: true
+      },
       name: {
         type: 'string',
         pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
@@ -90,7 +97,7 @@ export const PageSchema = (title = '', description = '') => {
         type: 'number',
       },
     },
-    required: ['name', 'slug'],
+    required: ['name', 'slug', 'site'],
   } as const;
 };
 
@@ -130,11 +137,11 @@ export const PageSectionSchema = () => {
       },
       detailTemplate: {
         type: 'string',
-        enum: viewTemplateStore.templateList.map(template => template.name)
+        enum: isEmpty(viewTemplateStore.templateList) ? ['default'] : viewTemplateStore.templateList.map(template => template.name)
       },
       listTemplate: {
         type: 'string',
-        enum: viewTemplateStore.templateList.map(template => template.name)
+        enum: isEmpty(viewTemplateStore.templateList) ? ['default'] : viewTemplateStore.templateList.map(template => template.name)
       },
       manualSelection: {
         type: 'boolean',
