@@ -7,15 +7,16 @@ export const ChatMessageSchema = () => {
     return {
         type: 'object',
         properties: {
+            id: {
+                type: 'string',
+            },
             message: {
                 type: 'string',
             },
             user: {
                 type: 'string',
             },
-            conversation: {
-                type: 'string',
-            },
+            conversation: ChatConversationSchema(),
             status: {
                 type: 'string',
             },
@@ -34,11 +35,17 @@ export const ChatConversationSchema = () => {
     return {
         type: 'object',
         properties: {
+            id: {
+                type: 'string',
+            },
             users: {
                 type: 'array',
                 items: {
                     type: 'string'
                 }
+            },
+            socketId: {
+                type: 'string',
             },
             status: {
                 type: 'string',

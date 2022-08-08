@@ -36,7 +36,6 @@ export const registerCollection = (title: string, datatype: DataType, schema: Js
     uischema: uischema,
     hidden
   };
-  console.log(thisCollection)
   concreteCollections.set(datatype, createConcreteCollection(datatype, thisCollection));
 }
 
@@ -123,6 +122,7 @@ export const rootPage: PageModel = {
   slug: 'rootpage',
   title: 'Root Page',
   childEditing: 'append',
+  site: '',
   breakpoints: [
     { high: 480, low: 0, columns: 1 },
     { high: 768, low: 480, columns: 2 },

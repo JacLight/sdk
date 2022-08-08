@@ -83,4 +83,4 @@ export type TicketModel = FromSchema<typeof tt>;
 
 export const TicketUI = (): CollectionUI[] => { return null };
 export const TicketRules = (): CollectionRule[] => { return null };
-registerCollection('Ticket', DataType.ticket, TicketSchema(), TicketUI(), TicketRules(), true)
+registerCollection('Ticket', DataType.ticket, TicketSchema(), TicketUI(), TicketRules(), true, true)

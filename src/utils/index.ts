@@ -94,31 +94,3 @@ export const isObjectString = (str: any) => {
 export const isJsonString = (str: any) => {
   return isArrayString(str) || isObjectString(str);
 };
-
-export const setValue = (obj: any, path: string, value: any) => {
-  const pathArray: any = Array.isArray(path) ? path : path.match(/([^[.\]])+/g)
-
-  pathArray.reduce((acc: any, key: string, i: number) => {
-    if (acc[key] === undefined) acc[key] = {}
-    if (i === pathArray.length - 1) acc[key] = value
-    return acc[key]
-  }, obj)
-}
-
-export const unsetValue = (obj: any, path: string) => {
-  const pathArray: any = Array.isArray(path) ? path : path.match(/([^[.\]])+/g)
-  pathArray.reduce((acc: any, key: string, i: number) => {
-    if (i === pathArray.length - 1) delete acc[key]
-    return acc[key]
-  }, obj)
-}
-
-export const getValue = (obj: any, path: string, defValue: any) => {
-  if (!path) return undefined
-  const pathArray: any = Array.isArray(path) ? path : path.match(/([^[.\]])+/g)
-  const result = pathArray.reduce(
-    (prevObj: any, key: any) => prevObj && prevObj[key],
-    obj
-  )
-  return result === undefined ? defValue : result
-}

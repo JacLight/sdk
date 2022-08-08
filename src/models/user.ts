@@ -15,6 +15,9 @@ export const UserSchema = () => {
         maxLength: 150,
         unique: true,
       },
+      username: {
+        type: 'string',
+      },
       firstName: {
         type: 'string',
       },
