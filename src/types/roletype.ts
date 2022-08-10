@@ -129,6 +129,7 @@ export const getDefaultUserRoles = (): BaseModel<UserRoleModel>[] => {
     const contentPermissions: [] = rolePermissions.content
     const newRole: UserRoleModel = {
       sk: role,
+      name: role,
       data: {
         name: role,
         description: role,
@@ -164,10 +165,14 @@ export const getPermissionRoleEffective = (roleName: RoleItemType) => {
   return baseRole;
 };
 
+
+//use this method to get the aggregate permissions for a user
 export const getPermissionEffective = (roleNames: RoleItemType[]) => {
   let contentPermissions: string[] = [];
   let componentPermissions: string[] = [];
-
+  if (!roleNames) {
+    roleNames = Object.values(RoleType)
+  }
   roleNames.forEach(role => {
     const rolePermissions = getPermissionRoleEffective(role);
     contentPermissions = Array.from(new Set([...contentPermissions, ...rolePermissions.content]))
@@ -202,3 +207,36 @@ export const getPermissionContent = () => {
   });
   return permission;
 };
+
+export const getRolesWithContentPermission = () => {
+  const premissionRoles: any = {};
+  Object.values(RoleType).forEach((role: any) => {
+    const permission: any = getPermissionRoleEffective(role)
+    permission.content.forEach((item: string) => {
+      if (premissionRoles[item]) {
+        premissionRoles[item].add(role)
+      } else {
+        premissionRoles[item] = new Set([role])
+      }
+    })
+  });
+
+  Object.keys(premissionRoles).forEach(key => premissionRoles[key] = Array.from(premissionRoles[key]))
+  return premissionRoles;
+}
+
+export const getRolesWithComponentPermission = () => {
+  const premissionRoles: any = {};
+  Object.values(RoleType).forEach((role: any) => {
+    const permission: any = getPermissionRoleEffective(role)
+    permission.component.forEach((item: string) => {
+      if (premissionRoles[item]) {
+        premissionRoles[item].add(role)
+      } else {
+        premissionRoles[item] = new Set([role])
+      }
+    })
+  });
+  Object.keys(premissionRoles).forEach(key => premissionRoles[key] = Array.from(premissionRoles[key]))
+  return premissionRoles;
+}

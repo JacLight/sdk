@@ -34,26 +34,6 @@ export const TicketSchema = () => {
       },
       remarks: { type: 'string' },
       status: { type: 'string' },
-      tasks: {
-        type: 'array',
-        hidden: true,
-        items: {
-          properties: {
-            taskType: { type: 'string' },
-            name: { type: 'string' },
-            description: { type: 'string' },
-            status: { type: 'string' },
-            comments: {
-              type: 'object',
-              hidden: true
-            },
-          }
-        }
-      },
-      comments: {
-        type: 'object',
-        hidden: true
-      },
       assignTo: {
         type: 'string'
       },

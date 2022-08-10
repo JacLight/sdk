@@ -11,6 +11,9 @@ export const WorkflowDefinitionSchema = () => {
                 type: 'string',
                 pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
             },
+            title: {
+                type: 'string',
+            },
             description: {
                 type: 'string',
             },
@@ -79,6 +82,10 @@ export const WorkflowDefinitionSchema = () => {
                         sla: {
                             type: 'string',
                         },
+                        items: {
+                            type: 'array',
+                            hidden: true,
+                        },
                         flow: {
                             type: 'string',
                             fieldType: FieldType.selectionmultiple,
@@ -125,8 +132,62 @@ export const WorkflowDefinitionRules = (): CollectionRule[] => {
     ]
 };
 
+export const WorkflowEntrySchema = () => {
+    return {
+        type: 'object',
+        properties: {
+            workflow: {
+                type: 'string',
+            },
+            stage: {
+                type: 'string',
+            },
+            status: {
+                type: 'string',
+            },
+            history: {
+                type: 'array',
+                readonly: true,
+                items: WorkflowTaskSchema()
+            },
+            newTask: {
+                ...WorkflowTaskSchema(),
+                displayStyle: 'card',
+                title: 'New Task'
+            }
+        },
+    } as const;
+};
+
+export const WorkflowTaskSchema = () => {
+    return {
+        type: 'object',
+        properties: {
+            name: {
+                type: 'string',
+            },
+            description: {
+                type: 'string',
+                inputStyle: 'textarea'
+            },
+            state: {
+                type: 'string',
+                enum: ['new', 'pending', 'inprogress', 'blocked', 'done', 'canceled']
+            },
+            eventDate: {
+                type: 'string',
+            },
+            note: {
+                type: 'string',
+            },
+        }
+    } as const;
+};
+
 export const WorkflowDefinitionUI = (): CollectionUI[] => { return null };
 
 const wfd = WorkflowDefinitionSchema();
+const wfe = WorkflowEntrySchema();
 export type WorkflowDefinitionModel = FromSchema<typeof wfd>;
+export type WorkflowEntryModel = FromSchema<typeof wfe>;
 registerCollection('WorkflowDefinition', DataType.workflowdefinition, WorkflowDefinitionSchema(), WorkflowDefinitionUI(), WorkflowDefinitionRules())

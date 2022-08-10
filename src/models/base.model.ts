@@ -1,5 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { DataType, FieldType } from '../types';
+import { CommentModel } from './comment';
+import { WorkflowEntryModel } from './workflowdefinition';
 export interface BaseModelDTO<T> {
   page: number;
   pagesize: number;
@@ -14,12 +16,7 @@ export interface BaseModel<T> {
   data?: T;
   isnew?: boolean;
   datatype?: DataType | string;
-  workflow?: {
-    definition: string,
-    history?: [];
-    stage?: string;
-    status: string
-  },
+  workflow?: WorkflowEntryModel,
   post?: PostSubModel;
   style?: StyleSubModel;
   version: number;
@@ -27,15 +24,8 @@ export interface BaseModel<T> {
   modifydate?: Date;
   author?: string;
   subschema?: string,
-  requiredRole?: {
-    read?: string[],
-    create?: string[],
-    update?: string[],
-    delete?: string[],
-    review?: string[],
-    approve?: string[],
-  }
-
+  requiredRole?: RequiredRoleModel
+  comments?: CommentModel[]
 }
 export const PostSubSchema = () => {
   return {
@@ -160,3 +150,97 @@ export const StyleSubSchema = () => {
 };
 const wce = StyleSubSchema();
 export type StyleSubModel = FromSchema<typeof wce>;
+
+export const RequiredRoleSubSchema = () => {
+  return {
+    type: 'object',
+    properties: {
+      read: {
+        type: 'array',
+        inputStyle: 'chip',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.userrole,
+          field: 'name',
+          id: 'name'
+        },
+        items: {
+          type: 'string',
+        }
+      },
+      create: {
+        type: 'array',
+        inputStyle: 'chip',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.userrole,
+          field: 'name',
+          id: 'name'
+        },
+        items: {
+          type: 'string',
+        }
+      },
+      update: {
+        type: 'array',
+        inputStyle: 'chip',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.userrole,
+          field: 'name',
+          id: 'name'
+        },
+        items: {
+          type: 'string',
+        }
+      },
+      delete: {
+        type: 'array',
+        inputStyle: 'chip',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.userrole,
+          field: 'name',
+          id: 'name'
+        },
+        items: {
+          type: 'string',
+        }
+      },
+      review: {
+        type: 'array',
+        inputStyle: 'chip',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.userrole,
+          field: 'name',
+          id: 'name'
+        },
+        items: {
+          type: 'string',
+        }
+      },
+      approve: {
+        type: 'array',
+        inputStyle: 'chip',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.userrole,
+          field: 'name',
+          id: 'name'
+        },
+        items: {
+          type: 'string',
+        }
+      },
+    },
+  } as const;
+};
+const rrsc = RequiredRoleSubSchema();
+export type RequiredRoleModel = FromSchema<typeof rrsc>;

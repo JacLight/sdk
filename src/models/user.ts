@@ -1,6 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../defaultschema';
-import { DataType, FieldType, FormViewSectionType } from '../types';
+import { DataType, FieldType, FormViewSectionType, PermissionTypeComponent, PermissionTypeContent } from '../types';
 import { CollectionUI } from './collection';
 
 
@@ -212,24 +212,28 @@ export const UserRoleSchema = () => {
         type: 'object',
         properties: {
           component: {
-            type: 'string',
+            type: 'array',
             inputStyle: 'chip',
             fieldType: FieldType.selectionmultiple,
             dataSource: {
-              source: 'collection',
-              collection: DataType.permission,
-              field: 'name',
+              source: 'json',
+              json: Object.values(PermissionTypeComponent).map(value => ({ label: value, value }))
             },
+            items: {
+              type: 'string',
+            }
           },
           content: {
-            type: 'string',
+            type: 'array',
             inputStyle: 'chip',
             fieldType: FieldType.selectionmultiple,
             dataSource: {
-              source: 'collection',
-              collection: DataType.permission,
-              field: 'name',
+              source: 'json',
+              json: Object.values(PermissionTypeContent).map(value => ({ label: value, value }))
             },
+            items: {
+              type: 'string',
+            }
           }
         }
       },
