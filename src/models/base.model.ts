@@ -1,7 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { DataType, FieldType } from '../types';
 import { CommentModel } from './comment';
-import { WorkflowEntryModel } from './workflowdefinition';
+import { WorkflowSubModel } from './workflowdefinition';
 export interface BaseModelDTO<T> {
   page: number;
   pagesize: number;
@@ -16,7 +16,7 @@ export interface BaseModel<T> {
   data?: T;
   isnew?: boolean;
   datatype?: DataType | string;
-  workflow?: WorkflowEntryModel,
+  workflow?: WorkflowSubModel,
   post?: PostSubModel;
   style?: StyleSubModel;
   version: number;
@@ -73,7 +73,8 @@ export const PostSubSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.category,
-          field: 'name',
+          value: 'sk',
+          label: 'name',
         },
       },
       tags: {
@@ -83,7 +84,8 @@ export const PostSubSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.tag,
-          field: 'name',
+          value: 'sk',
+          label: 'name',
         },
       },
       images: {
@@ -162,8 +164,8 @@ export const RequiredRoleSubSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.userrole,
-          field: 'name',
-          id: 'name'
+          value: 'data.name',
+          label: 'name',
         },
         items: {
           type: 'string',
@@ -176,8 +178,8 @@ export const RequiredRoleSubSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.userrole,
-          field: 'name',
-          id: 'name'
+          value: 'data.name',
+          label: 'name',
         },
         items: {
           type: 'string',
@@ -190,8 +192,8 @@ export const RequiredRoleSubSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.userrole,
-          field: 'name',
-          id: 'name'
+          value: 'data.name',
+          label: 'name',
         },
         items: {
           type: 'string',
@@ -204,8 +206,8 @@ export const RequiredRoleSubSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.userrole,
-          field: 'name',
-          id: 'name'
+          value: 'data.name',
+          label: 'name',
         },
         items: {
           type: 'string',
@@ -218,8 +220,8 @@ export const RequiredRoleSubSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.userrole,
-          field: 'name',
-          id: 'name'
+          value: 'data.name',
+          label: 'name',
         },
         items: {
           type: 'string',
@@ -232,8 +234,8 @@ export const RequiredRoleSubSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.userrole,
-          field: 'name',
-          id: 'name'
+          value: 'data.name',
+          label: 'name',
         },
         items: {
           type: 'string',

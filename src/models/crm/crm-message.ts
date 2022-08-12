@@ -19,7 +19,8 @@ export const MessageSchema = () => {
                 fieldType: FieldType.selectionmultiple,
                 dataSource: {
                     source: 'self',
-                    field: 'currencies',
+                    value: 'currencies',
+                    label: 'currencies',
                 },
             },
             type: {

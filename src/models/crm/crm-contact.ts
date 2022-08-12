@@ -16,7 +16,8 @@ export const ContactSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.contact,
-          field: 'name',
+          value: 'sk',
+          label: 'name',
         },
       },
       image: FileInfoSchema(),

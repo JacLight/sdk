@@ -36,7 +36,23 @@ export const registerCollection = (title: string, datatype: DataType, schema: Js
     uischema: uischema,
     hidden
   };
+
   concreteCollections.set(datatype, createConcreteCollection(datatype, thisCollection));
+}
+
+const defaultData = new Map<String, {}>();
+export const defaultDataRegister = {
+  get: (datatype: DataType) => {
+    const data = defaultData.get(datatype);
+    if (data) {
+      return JSON.parse(JSON.stringify(data))
+    }
+    return null;
+  }
+}
+
+export const registerDefaultData = (datatype: DataType, data: any) => {
+  defaultData.set(datatype, data);
 }
 
 const createUser = (

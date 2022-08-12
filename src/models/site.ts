@@ -34,7 +34,8 @@ export const SiteSchema = () => {
         fieldType: FieldType.selectionmultiple,
         dataSource: {
           source: 'self',
-          field: 'currencies',
+          value: 'currencies',
+          label: 'currencies',
         },
       },
       currencies: {
@@ -51,7 +52,8 @@ export const SiteSchema = () => {
         fieldType: FieldType.selectionmultiple,
         dataSource: {
           source: 'self',
-          field: 'languages',
+          value: 'languages',
+          label: 'languages',
         },
       },
       languages: {
@@ -78,7 +80,8 @@ export const SiteSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.navigation,
-          field: 'name',
+          value: 'sk',
+          label: 'name',
         },
       },
       footerNavigation: {
@@ -87,7 +90,8 @@ export const SiteSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.navigation,
-          field: 'name',
+          value: 'sk',
+          label: 'name',
         },
       },
       facebook: SocialSchema('Facebook'),

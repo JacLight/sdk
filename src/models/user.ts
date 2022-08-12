@@ -117,7 +117,8 @@ export const UserSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.passwordpolicy,
-          field: 'name',
+          value: 'sk',
+          label: 'name',
         },
       },
       groups: {
@@ -127,7 +128,8 @@ export const UserSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.usergroup,
-          field: 'name',
+          value: 'sk',
+          label: 'name',
         },
       },
       roles: {
@@ -137,7 +139,8 @@ export const UserSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.userrole,
-          field: 'name',
+          value: 'sk',
+          label: 'name',
         },
       },
     },
@@ -164,7 +167,8 @@ export const UserGroupSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.passwordpolicy,
-          field: 'name',
+          value: 'sk',
+          label: 'name',
         },
       },
       users: {
@@ -174,7 +178,8 @@ export const UserGroupSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.user,
-          field: 'email',
+          value: 'sk',
+          label: 'name',
         },
       },
       roles: {
@@ -184,7 +189,8 @@ export const UserGroupSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.userrole,
-          field: 'name',
+          value: 'sk',
+          label: 'name',
         },
       },
     },

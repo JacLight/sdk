@@ -45,7 +45,8 @@ export const ApplicationSchema = () => {
               dataSource: {
                 source: 'collection',
                 collection: DataType.mintflow,
-                field: 'name',
+                value: 'sk',
+                label: 'name',
               },
             },
             page: {
@@ -54,7 +55,8 @@ export const ApplicationSchema = () => {
               dataSource: {
                 source: 'collection',
                 collection: DataType.page,
-                field: 'name',
+                value: 'sk',
+                label: 'name',
               },
             },
             collection: {
@@ -63,7 +65,8 @@ export const ApplicationSchema = () => {
               dataSource: {
                 source: 'collection',
                 collection: DataType.collection,
-                field: 'name',
+                value: 'sk',
+                label: 'name',
               },
             },
             collectionView: {
@@ -72,7 +75,8 @@ export const ApplicationSchema = () => {
               dataSource: {
                 source: 'collection',
                 collection: DataType.collectionview,
-                field: 'name',
+                value: 'sk',
+                label: 'name',
               },
             },
             collectionForm: {
@@ -81,7 +85,8 @@ export const ApplicationSchema = () => {
               dataSource: {
                 source: 'collection',
                 collection: DataType.collectionform,
-                field: 'name',
+                value: 'sk',
+                label: 'name',
               },
             },
             component: {

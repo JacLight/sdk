@@ -13,7 +13,8 @@ export const SFAttributeSchema = () => {
                 dataSource: {
                     source: 'collection',
                     collection: DataType.sf_attribute,
-                    field: 'name',
+                    value: 'sk',
+                    label: 'name',
                 },
             },
             name: {
