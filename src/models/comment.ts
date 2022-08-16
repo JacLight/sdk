@@ -9,24 +9,30 @@ export const CommentSchema = () => {
     properties: {
       comment: {
         type: 'string',
+        inputStyle: 'textarea'
       },
       user: {
         type: 'string',
+        hidden: true,
       },
       rating: {
         type: 'number',
         maximum: 5,
         minimum: 1,
+        hidden: true,
       },
       voteUp: {
         type: 'number',
+        hidden: true,
       },
       voteDown: {
         type: 'number',
+        hidden: true,
       },
       date: {
         type: 'string',
         format: 'date-time',
+        hidden: true,
       },
       comments: {
         type: 'array',
@@ -36,6 +42,22 @@ export const CommentSchema = () => {
     },
   } as const;
 };
+
+export const CommentListSchema = () => {
+  return {
+    type: 'object',
+    properties: {
+      comments: {
+        type: 'array',
+        readonly: true,
+        items: CommentSchema()
+      },
+      newComment: CommentSchema()
+    }
+  } as const;
+};
+
+
 
 const cos = CommentSchema();
 export type CommentModel = FromSchema<typeof cos>;

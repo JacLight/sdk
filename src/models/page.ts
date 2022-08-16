@@ -30,7 +30,8 @@ export const PageSchema = (title = '', description = '') => {
         dataSource: {
           source: 'collection',
           collection: DataType.page,
-          field: 'name',
+          value: 'sk',
+          label: 'name',
         },
       },
       title: {
@@ -155,7 +156,7 @@ export const PageSectionSchema = () => {
         type: 'array',
         title: 'Selections',
         fieldType: FieldType.collection,
-        inputStyle: 'picker',
+        inputStyle: 'table',
         dataSource: {
           source: 'collection',
           collection: DataType.post,
@@ -182,7 +183,8 @@ export const PageSectionSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.subschema,
-          field: 'name',
+          value: 'sk',
+          label: 'name',
         },
       },
       category: {
@@ -192,7 +194,8 @@ export const PageSectionSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.category,
-          field: 'name',
+          value: 'sk',
+          label: 'name',
         },
       },
       tag: {
@@ -202,7 +205,8 @@ export const PageSectionSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.tag,
-          field: 'name',
+          value: 'sk',
+          label: 'name',
         },
       },
       sort: {

@@ -80,7 +80,8 @@ export const CollectionSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.collection,
-          field: 'name',
+          value: 'sk',
+          label: 'name',
         },
       },
       title: {

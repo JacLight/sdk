@@ -1,7 +1,8 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../defaultschema';
-import { DataType, FieldType, FormViewSectionType } from '../types';
+import { DataType, FieldType, FormViewSectionType, PermissionTypeComponent, PermissionTypeContent } from '../types';
 import { CollectionUI } from './collection';
+import { FileInfoSchema } from './fileinfo';
 
 
 export const UserSchema = () => {
@@ -30,10 +31,7 @@ export const UserSchema = () => {
       title: {
         type: 'string',
       },
-      portrait: {
-        type: 'string',
-        fieldType: FieldType.file,
-      },
+      portrait: FileInfoSchema(),
       password: {
         type: 'string',
         inputStyle: 'password'
@@ -117,7 +115,8 @@ export const UserSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.passwordpolicy,
-          field: 'name',
+          value: 'sk',
+          label: 'name',
         },
       },
       groups: {
@@ -127,7 +126,8 @@ export const UserSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.usergroup,
-          field: 'name',
+          value: 'sk',
+          label: 'name',
         },
       },
       roles: {
@@ -137,7 +137,8 @@ export const UserSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.userrole,
-          field: 'name',
+          value: 'sk',
+          label: 'name',
         },
       },
     },
@@ -164,7 +165,8 @@ export const UserGroupSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.passwordpolicy,
-          field: 'name',
+          value: 'sk',
+          label: 'name',
         },
       },
       users: {
@@ -174,7 +176,8 @@ export const UserGroupSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.user,
-          field: 'email',
+          value: 'sk',
+          label: 'name',
         },
       },
       roles: {
@@ -184,7 +187,8 @@ export const UserGroupSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.userrole,
-          field: 'name',
+          value: 'sk',
+          label: 'name',
         },
       },
     },
@@ -212,24 +216,28 @@ export const UserRoleSchema = () => {
         type: 'object',
         properties: {
           component: {
-            type: 'string',
+            type: 'array',
             inputStyle: 'chip',
             fieldType: FieldType.selectionmultiple,
             dataSource: {
-              source: 'collection',
-              collection: DataType.permission,
-              field: 'name',
+              source: 'json',
+              json: Object.values(PermissionTypeComponent).map(value => ({ label: value, value }))
             },
+            items: {
+              type: 'string',
+            }
           },
           content: {
-            type: 'string',
+            type: 'array',
             inputStyle: 'chip',
             fieldType: FieldType.selectionmultiple,
             dataSource: {
-              source: 'collection',
-              collection: DataType.permission,
-              field: 'name',
+              source: 'json',
+              json: Object.values(PermissionTypeContent).map(value => ({ label: value, value }))
             },
+            items: {
+              type: 'string',
+            }
           }
         }
       },

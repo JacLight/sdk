@@ -21,7 +21,8 @@ export const NotificationSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.messagetemplate,
-          field: 'name',
+          value: 'sk',
+          label: 'name',
         },
       },
       channel: {

@@ -97,4 +97,4 @@ export type MintflowNodeModel = FromSchema<typeof ps1>;
 export const MintflowUI = (): CollectionUI[] => { return null };
 export const MintflowRules = (): CollectionRule[] => { return [] };
 
-registerCollection('WorkflowDefination', DataType.mintflow, MintflowSchema(), MintflowUI(), MintflowRules())
+registerCollection('Mintflow', DataType.mintflow, MintflowSchema(), MintflowUI(), MintflowRules())

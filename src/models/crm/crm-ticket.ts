@@ -1,72 +1,58 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionUI, CollectionRule } from '../collection';
-import { DataType } from '../../types';
+import { DataType, FieldType } from '../../types';
 
 export const TicketSchema = () => {
   return {
     type: 'object',
     properties: {
-      name: {
+      title: {
         type: 'string',
-        pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
       },
+      story: { type: 'string', inputStyle: 'textarea' },
       priority: {
         type: 'string',
       },
       severity: {
         type: 'string',
       },
-      fromName: {
-        type: 'string',
-      },
-      fromTicket: {
-        type: 'string',
-      },
-      ticketType: {
-        type: 'string',
-      },
       channel: {
         type: 'string',
+        enum: ['web', 'phone', 'chat', 'mobile', 'api', 'other']
       },
       stage: {
         type: 'string',
-      },
-      remarks: { type: 'string' },
-      status: { type: 'string' },
-      tasks: {
-        type: 'array',
-        hidden: true,
-        items: {
-          properties: {
-            taskType: { type: 'string' },
-            name: { type: 'string' },
-            description: { type: 'string' },
-            status: { type: 'string' },
-            comments: {
-              type: 'object',
-              hidden: true
-            },
-          }
-        }
-      },
-      comments: {
-        type: 'object',
         hidden: true
       },
+      status: {
+        type: 'string',
+        enum: ['new', 'pending', 'inprogress', 'blocked', 'done', 'canceled']
+      },
       assignTo: {
-        type: 'string'
+        type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.user,
+          value: 'sk',
+          label: 'email',
+        },
       },
       assignBy: {
-        type: 'string'
+        type: 'string',
+        hidden: true
       },
       reportedBy: {
-        type: 'string'
+        type: 'string',
+        disabled: true
       },
       assignments: {
         type: 'array',
+        readonly: true,
         items: {
           type: 'object',
+          layout: 'horizontal',
           properties: {
             assignedBy: { type: 'string' },
             assignedTo: { type: 'string' },
@@ -74,6 +60,7 @@ export const TicketSchema = () => {
           },
         }
       },
+
     },
   } as const;
 };

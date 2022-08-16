@@ -55,7 +55,8 @@ export const NavigationLinkSchema = () => {
         fieldType: FieldType.selectionmultiple,
         dataSource: {
           source: 'collection',
-          field: 'name',
+          value: 'sk',
+          label: 'name',
           collection: DataType.page,
         },
       },

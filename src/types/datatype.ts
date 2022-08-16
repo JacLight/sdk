@@ -1,4 +1,5 @@
 export enum DataType {
+  datafeed = 'datafeed',
   collection = 'collection',
   page = 'page',
   category = 'category',
@@ -15,6 +16,7 @@ export enum DataType {
   userrole = 'userrole',
   script = 'script',
   workflowdefinition = 'workflowdefinition',
+  task = 'task',
   usergroup = 'usergroup',
   permission = 'permission',
   setting = 'setting',

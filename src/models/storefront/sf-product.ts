@@ -122,7 +122,8 @@ export const SFProductSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.sf_product,
-          field: 'name',
+          value: 'sk',
+          label: 'name',
         },
       },
       discount: { type: 'string', hidden: true },
