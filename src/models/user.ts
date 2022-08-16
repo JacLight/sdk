@@ -2,6 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../defaultschema';
 import { DataType, FieldType, FormViewSectionType, PermissionTypeComponent, PermissionTypeContent } from '../types';
 import { CollectionUI } from './collection';
+import { FileInfoSchema } from './fileinfo';
 
 
 export const UserSchema = () => {
@@ -30,10 +31,7 @@ export const UserSchema = () => {
       title: {
         type: 'string',
       },
-      portrait: {
-        type: 'string',
-        fieldType: FieldType.file,
-      },
+      portrait: FileInfoSchema(),
       password: {
         type: 'string',
         inputStyle: 'password'

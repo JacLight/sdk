@@ -43,7 +43,7 @@ export const CommentSchema = () => {
   } as const;
 };
 
-export const CommentEntrySchema = () => {
+export const CommentListSchema = () => {
   return {
     type: 'object',
     properties: {

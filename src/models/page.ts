@@ -156,7 +156,7 @@ export const PageSectionSchema = () => {
         type: 'array',
         title: 'Selections',
         fieldType: FieldType.collection,
-        inputStyle: 'picker',
+        inputStyle: 'table',
         dataSource: {
           source: 'collection',
           collection: DataType.post,

@@ -2,6 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionUI, CollectionRule } from '../collection';
 import { DataType } from '../../types';
+import { UserSchema } from '../user';
 
 export const ChatMessageSchema = () => {
     return {
@@ -13,12 +14,26 @@ export const ChatMessageSchema = () => {
             message: {
                 type: 'string',
             },
-            user: {
+            userId: {
                 type: 'string',
             },
-            conversation: ChatConversationSchema(),
+            user: UserSchema(),
+            conversationId: {
+                type: 'string',
+            },
+            conversation: {
+                type: 'object',
+                properties: {
+                    id: {
+                        type: 'string',
+                    },
+                }
+            },
             status: {
                 type: 'string',
+            },
+            time: {
+                type: 'number',
             },
             type: {
                 type: 'string',
@@ -38,11 +53,19 @@ export const ChatConversationSchema = () => {
             id: {
                 type: 'string',
             },
-            users: {
+            userIds: {
                 type: 'array',
                 items: {
-                    type: 'string'
+                    type: 'string',
                 }
+            },
+            users: {
+                type: 'array',
+                items: UserSchema()
+            },
+            messages: {
+                type: 'array',
+                items: ChatMessageSchema()
             },
             socketId: {
                 type: 'string',
@@ -66,9 +89,7 @@ export const ChatRegisterSchema = () => {
                 type: 'string',
                 fieldType: "Upload",
             },
-            user: {
-                type: 'string',
-            },
+            user: UserSchema(),
             conversation: {
                 type: 'string',
             },

@@ -45,7 +45,11 @@ export const defaultDataRegister = {
   get: (datatype: DataType) => {
     const data = defaultData.get(datatype);
     if (data) {
-      return JSON.parse(JSON.stringify(data))
+      if (typeof data === 'function') {
+        return data()
+      } else {
+        return JSON.parse(JSON.stringify(data))
+      }
     }
     return null;
   }

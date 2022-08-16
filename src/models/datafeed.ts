@@ -3,15 +3,12 @@ import { DataType } from '../types';
 import { CollectionRule, CollectionUI } from './collection';
 import { registerCollection } from '../defaultschema';
 
-export const TrashSchema = () => {
+export const DataFeedSchema = () => {
   return {
     type: 'object',
     properties: {
       name: {
         type: 'string',
-        minLength: 3,
-        maxLength: 50,
-        unique: true,
       },
       resourceType: {
         type: 'string',
@@ -19,18 +16,24 @@ export const TrashSchema = () => {
       resourceId: {
         type: 'string',
       },
-      date: {
+      summary: {
         type: 'string',
       },
-      item: {
+      status: {
+        type: 'string',
+      },
+      eventType: {
+        type: 'string',
+      },
+      eventDate: {
         type: 'string',
       },
     },
   } as const;
 };
 
-const ts = TrashSchema();
-export type TrashModel = FromSchema<typeof ts>;
-export const TrashUI = (): CollectionUI[] => { return null };
-export const TrashRules = (): CollectionRule[] => { return [] };
-registerCollection('Trash', DataType.trash, TrashSchema(), TrashUI(), TrashRules())
+const ts = DataFeedSchema();
+export type DataFeedModel = FromSchema<typeof ts>;
+export const DataFeedUI = (): CollectionUI[] => { return null };
+export const DataFeedRules = (): CollectionRule[] => { return [] };
+registerCollection('DataFeed', DataType.datafeed, DataFeedSchema(), DataFeedUI(), DataFeedRules())
