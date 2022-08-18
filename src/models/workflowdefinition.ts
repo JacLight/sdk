@@ -3,7 +3,6 @@ import { registerCollection, registerDefaultData } from '../defaultschema';
 import { DataType, FieldType } from '../types';
 import { CollectionRule, CollectionUI } from './collection';
 import { TaskSchema } from './task';
-import { v4 as uuidv4 } from 'uuid';
 
 export const WorkflowDefinitionSchema = () => {
     return {
@@ -187,7 +186,7 @@ export const WorkflowSubSchema = () => {
     return {
         type: 'object',
         properties: {
-            id: {
+            workflowId: {
                 type: 'string',
                 title: 'Workflow',
                 fieldType: FieldType.selectionmultiple,
@@ -247,15 +246,15 @@ export const WorkflowStageRules = (): CollectionRule[] => {
 };
 
 const genDefaultData = () => {
-    const todoId = uuidv4();
     return {
-        name: 'newworkflow',
         tasks: [
-            { status: 'new', name: 'Review', description: 'Review new data', stage: todoId },
+            { status: 'new', name: 'Check Stock', description: 'Check if item is in stock', stageId: 0 },
+            { status: 'new', name: 'Prepare Shipping', description: 'Start shipping process', stageId: 0 },
+            { status: 'new', name: 'Process Billing', description: 'Billing needs to take place also', stageId: 0 },
         ],
         stages: [
-            { id: todoId, state: 'start', name: 'To Do' },
-            { id: uuidv4(), state: 'end', name: 'Done' }
+            { id: 0, state: 'start', name: 'To Do' },
+            { id: 1, state: 'end', name: 'Done' }
         ]
     }
 };

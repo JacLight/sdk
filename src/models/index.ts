@@ -20,3 +20,4 @@ export * from './config';
 export * from './script';
 export * from './workflowdefinition';
 export * from './trash';
+export * from './task';
