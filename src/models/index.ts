@@ -21,3 +21,4 @@ export * from './script';
 export * from './workflowdefinition';
 export * from './trash';
 export * from './task';
+export * from './dataviz';

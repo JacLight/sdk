@@ -128,7 +128,7 @@ export const WorkflowStageSchema = () => {
         type: 'object',
         properties: {
             id: {
-                type: 'string',
+                type: ['string', 'number'],
                 fieldType: FieldType.uuid,
                 readonly: true
             },

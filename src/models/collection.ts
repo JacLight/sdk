@@ -138,11 +138,9 @@ export const CollectionRules = (): CollectionRule[] => { return null };
 
 export const CollectionFormSchema = CollectionSchema;
 export const CollectionViewSchema = CollectionSchema;
-export const DataViewSchema = CollectionSchema;
 
 registerCollection('CollectionForm', DataType.collectionform, CollectionSchema(), CollectionUI(), CollectionRules())
 registerCollection('CollectionView', DataType.collectionview, CollectionSchema(), CollectionUI(), CollectionRules())
-registerCollection('DataView', DataType.dataview, CollectionSchema(), CollectionUI(), CollectionRules())
 registerCollection('Collection', DataType.collection, CollectionSchema(), CollectionUI(), CollectionRules())
 registerCollection('SubSchema', DataType.subschema, CollectionSchema(), CollectionUI(), CollectionRules())
 
