@@ -1,5 +1,5 @@
 export * from './sf-attribute';
-export * from './sf-brand';
+export * from './sf-vendor';
 export * from './sf-cart';
 export * from './sf-delivery';
 export * from './sf-giftcard';

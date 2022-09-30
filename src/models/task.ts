@@ -77,20 +77,16 @@ export const TaskRules = (): CollectionRule[] => {
             action: [
                 {
                     operation: 'setProperty',
-                    property: 'collection',
-                    targetField: '/properties/assignTo/dataSource',
+                    targetField: '/properties/assignTo/dataSource/collection',
                     sourceField: '/properties/assignType',
-                    sourceType: 'field',
                 },
             ],
             condition: {
                 type: 'and',
                 param: [
                     {
-                        targetValue: true,
-                        targetType: 'value',
-                        targetField: 'Field2',
-                        field: '/properties/assignType',
+                        value: true,
+                        field1: '/properties/assignType',
                         operation: 'notEmpty',
                     },
                 ],

@@ -76,20 +76,16 @@ export const WorkflowDefinitionRules = (): CollectionRule[] => {
             action: [
                 {
                     operation: 'setProperty',
-                    property: 'collection',
-                    targetField: '/properties/stages/items/properties/assignTo/dataSource',
+                    targetField: '/properties/stages/items/properties/assignTo/dataSource/collection',
                     sourceField: '/properties/stages/items/properties/assignType',
-                    sourceType: 'field',
                 },
             ],
             condition: {
                 type: 'and',
                 param: [
                     {
-                        targetValue: true,
-                        targetType: 'value',
-                        targetField: 'Field2',
-                        field: '/properties/stages/items/properties/assignType',
+                        value: true,
+                        field1: '/properties/stages/items/properties/assignType',
                         operation: 'notEmpty',
                     },
                 ],
@@ -100,20 +96,16 @@ export const WorkflowDefinitionRules = (): CollectionRule[] => {
             action: [
                 {
                     operation: 'setProperty',
-                    property: 'collection',
-                    targetField: '/properties/tasks/items/properties/assignTo/dataSource',
+                    targetField: '/properties/tasks/items/properties/assignTo/dataSource/collection',
                     sourceField: '/properties/tasks/items/properties/assignType',
-                    sourceType: 'field',
                 },
             ],
             condition: {
                 type: 'and',
                 param: [
                     {
-                        targetValue: true,
-                        targetType: 'value',
-                        targetField: 'Field2',
-                        field: '/properties/tasks/items/properties/assignType',
+                        value: true,
+                        field1: '/properties/tasks/items/properties/assignType',
                         operation: 'notEmpty',
                     },
                 ],
@@ -223,20 +215,16 @@ export const WorkflowStageRules = (): CollectionRule[] => {
             action: [
                 {
                     operation: 'setProperty',
-                    property: 'collection',
-                    targetField: '/properties/assignTo/dataSource',
+                    targetField: '/properties/assignTo/dataSource/collection',
                     sourceField: '/properties/assignType',
-                    sourceType: 'field',
                 },
             ],
             condition: {
                 type: 'and',
                 param: [
                     {
-                        targetValue: true,
-                        targetType: 'value',
-                        targetField: 'Field2',
-                        field: '/properties/assignType',
+                        value: true,
+                        field1: '/properties/assignType',
                         operation: 'notEmpty',
                     },
                 ],

@@ -30,5 +30,6 @@ export enum ComponentName {
   Chat = 'Chat',
   DataViz = 'DataViz',
   Customer360 = 'Customer360',
-  ProductHome = 'ProductHome'
+  ProductHome = 'ProductHome',
+  BusinessLocations = 'BusinessLocations'
 }

@@ -2,6 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { CollectionRule, CollectionUI } from './collection';
 import { DataType } from '../types';
 import { registerCollection } from '../defaultschema';
+import { FileInfoSchema } from './fileinfo';
 
 export const CategorySchema = () => {
   return {
@@ -21,9 +22,7 @@ export const CategorySchema = () => {
         type: 'string',
         inputStyle: 'textarea',
       },
-      image: {
-        type: 'string',
-      },
+      image: FileInfoSchema(),
       categories: {
         type: 'array',
         hidden: true,

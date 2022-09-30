@@ -125,10 +125,8 @@ export const ApplicationRules = (): CollectionRule[] => {
         type: 'and',
         param: [
           {
-            targetValue: 'Collection',
-            targetType: 'value',
-            targetField: 'Field2',
-            field: '/properties/links/items/properties/componentType',
+            value: 'Collection',
+            field1: '/properties/links/items/properties/componentType',
             operation: 'equal',
           },
         ],
@@ -146,10 +144,8 @@ export const ApplicationRules = (): CollectionRule[] => {
         type: 'and',
         param: [
           {
-            targetValue: 'CollectionView',
-            targetType: 'value',
-            targetField: 'Field2',
-            field: '/properties/links/items/properties/componentType',
+            value: 'CollectionView',
+            field1: '/properties/links/items/properties/componentType',
             operation: 'equal',
           },
         ],
@@ -167,10 +163,8 @@ export const ApplicationRules = (): CollectionRule[] => {
         type: 'and',
         param: [
           {
-            targetValue: 'CollectionForm',
-            targetType: 'value',
-            targetField: 'Field2',
-            field: '/properties/links/items/properties/componentType',
+            value: 'CollectionForm',
+            field1: '/properties/links/items/properties/componentType',
             operation: 'equal',
           },
         ],
@@ -188,10 +182,8 @@ export const ApplicationRules = (): CollectionRule[] => {
         type: 'and',
         param: [
           {
-            targetValue: 'Flow',
-            targetType: 'value',
-            targetField: 'Field2',
-            field: '/properties/links/items/properties/componentType',
+            value: 'Flow',
+            field1: '/properties/links/items/properties/componentType',
             operation: 'equal',
           },
         ],
@@ -209,10 +201,8 @@ export const ApplicationRules = (): CollectionRule[] => {
         type: 'and',
         param: [
           {
-            targetValue: 'Page',
-            targetType: 'value',
-            targetField: 'Field2',
-            field: '/properties/links/items/properties/componentType',
+            value: 'Page',
+            field1: '/properties/links/items/properties/componentType',
             operation: 'equal',
           },
         ],
@@ -230,10 +220,8 @@ export const ApplicationRules = (): CollectionRule[] => {
         type: 'and',
         param: [
           {
-            targetValue: 'Component',
-            targetType: 'value',
-            targetField: 'Field2',
-            field: '/properties/links/items/properties/componentType',
+            value: 'Component',
+            field1: '/properties/links/items/properties/componentType',
             operation: 'equal',
           },
         ],

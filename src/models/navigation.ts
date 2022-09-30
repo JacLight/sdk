@@ -116,16 +116,12 @@ export const NavigationLinkRules = (): CollectionRule[] => {
         },
         {
           operation: 'setProperty',
-          property: 'title',
-          targetField: '/properties/page',
-          sourceType: 'value',
+          targetField: '/properties/page/title',
           value: 'Page'
         },
         {
           operation: 'setProperty',
-          property: 'collection',
-          targetField: '/properties/page/dataSource',
-          sourceType: 'value',
+          targetField: '/properties/page/dataSource/collection',
           value: DataType.page
         },
       ],
@@ -133,10 +129,8 @@ export const NavigationLinkRules = (): CollectionRule[] => {
         type: 'and',
         param: [
           {
-            targetValue: 'page',
-            targetType: 'value',
-            targetField: 'Field2',
-            field: '/properties/linkType',
+            value: 'page',
+            field1: '/properties/linkType',
             operation: 'equal',
           },
         ],
@@ -159,16 +153,12 @@ export const NavigationLinkRules = (): CollectionRule[] => {
         },
         {
           operation: 'setProperty',
-          property: 'title',
-          targetField: '/properties/page',
-          sourceType: 'value',
+          targetField: '/properties/page/title',
           value: 'Post'
         },
         {
           operation: 'setProperty',
-          property: 'collection',
-          targetField: '/properties/page/dataSource',
-          sourceType: 'value',
+          targetField: '/properties/page/dataSource/collection',
           value: DataType.post
         },
       ],
@@ -176,10 +166,8 @@ export const NavigationLinkRules = (): CollectionRule[] => {
         type: 'and',
         param: [
           {
-            targetValue: 'post',
-            targetType: 'value',
-            targetField: 'Field2',
-            field: '/properties/linkType',
+            value: 'post',
+            field1: '/properties/linkType',
             operation: 'equal',
           },
         ],
@@ -205,10 +193,8 @@ export const NavigationLinkRules = (): CollectionRule[] => {
         type: 'and',
         param: [
           {
-            targetValue: 'url',
-            targetType: 'value',
-            targetField: 'Field2',
-            field: '/properties/linkType',
+            value: 'url',
+            field1: '/properties/linkType',
             operation: 'equal',
           },
         ],
@@ -234,10 +220,8 @@ export const NavigationLinkRules = (): CollectionRule[] => {
         type: 'and',
         param: [
           {
-            targetValue: 'widget',
-            targetType: 'value',
-            targetField: 'Field2',
-            field: '/properties/linkType',
+            value: 'widget',
+            field1: '/properties/linkType',
             operation: 'equal',
           },
         ],

@@ -2,6 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionUI, CollectionRule } from '../collection';
 import { DataType, FieldType, FormViewSectionType } from '../../types';
+import { FileInfoSchema } from '../fileinfo';
 
 export const SFProductSchema = () => {
   return {
@@ -9,10 +10,11 @@ export const SFProductSchema = () => {
     properties: {
       name: {
         type: 'string',
+        label: 'Title'
       },
       sku: {
         type: 'string',
-        pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
+        pattern: '^[a-zA-Z_$0-9\-]*$',
         minLength: 3,
         maxLength: 50,
         unique: true,
@@ -39,20 +41,8 @@ export const SFProductSchema = () => {
       },
       posts: { type: 'object', hidden: true },//  PostSchema(),
       images: {
-        type: 'array',
         hideLabel: true,
-        fieldType: FieldType.file,
-        items: {
-          type: 'object',
-          properties: {
-            path: {
-              type: 'string'
-            },
-            url: {
-              type: 'string'
-            }
-          }
-        }
+        ...FileInfoSchema()
       },
       isbn: {
         type: 'string',
@@ -80,57 +70,111 @@ export const SFProductSchema = () => {
       available: { type: 'boolean' },
       attributes: {
         type: 'array',
-        items: {
-          type: 'string',
-          fieldType: FieldType.selectionmultiple,
-          dataSource: {
-            source: 'collection',
-            collection: DataType.sf_attribute,
-            field: 'options',
-          },
-        }
-      },
-      variations: {
-        type: 'array',
+        hideLabel: true,
+        showIndex: true,
+        layout: 'horizontal',
         items: {
           type: 'object',
           properties: {
-            price: {
-              type: 'number'
+            name: {
+              type: 'string',
+              fieldType: FieldType.selectionmultiple,
+              dataSource: {
+                source: 'collection',
+                collection: DataType.sf_attribute,
+                value: 'name',
+                label: 'name',
+              },
             },
-            stock: { type: 'number' },
-            attributes: {
-              type: 'array',
-              items: {
-                type: 'string',
-              }
-            },
-            images: {
-              type: 'array',
-              items: {
-                fieldType: FieldType.file,
-                type: 'string'
-              }
+            options: {
+              type: 'string',
+              fieldType: FieldType.selectionmultiple,
+              inputStyle: 'chip',
+              dataSource: {
+                source: 'collection',
+                collection: DataType.sf_attribute,
+                filter: { property: 'name', operation: 'equal', value: '{{/properties/attributes/items/properties/name}}' },
+                value: 'options',
+                label: 'options',
+              },
             }
           }
         }
       },
+      variations: {
+        type: 'array',
+        hideLabel: true,
+        showIndex: true,
+        displayStyle: 'card',
+        items: {
+          type: 'object',
+          properties: {
+            sku: {
+              type: 'string',
+              disabled: true
+            },
+            price: {
+              type: 'number'
+            },
+            stock: { type: 'number' },
+            options: {
+              type: 'array',
+              title: 'Options',
+              readonly: true,
+              displayStyle: 'card',
+              layout: 'horizontal',
+              items: {
+                type: 'object',
+                properties: {
+                  name: {
+                    type: 'string',
+                    disabled: true
+                  },
+                  label: {
+                    type: 'string',
+                    disabled: true
+                  },
+                  value: {
+                    type: 'string',
+                    disabled: true
+                  },
+                }
+              }
+            },
+            images: FileInfoSchema(),
+          }
+        }
+      },
       bundle: {
-        type: 'string',
-        inputStyle: 'chip',
-        fieldType: FieldType.selectionmultiple,
+        type: 'array',
+        inputStyle: 'table',
+        hideLabel: true,
         dataSource: {
           source: 'collection',
           collection: DataType.sf_product,
-          value: 'sk',
-          label: 'name',
         },
+        items: {
+          type: 'object',
+          properties: {
+            sk: {
+              type: 'string'
+            },
+            sku: {
+              type: 'string'
+            },
+            name: {
+              type: 'string'
+            }
+          }
+        },
+
       },
       discount: { type: 'string', hidden: true },
       promotion: { type: 'string', hidden: true },
       status: { type: 'string' },
       views: { type: 'number', fieldType: 'label' },
     },
+    required: ['name', 'sku'],
   } as const;
 };
 
@@ -198,11 +242,18 @@ export const SFProductUI = (): CollectionUI[] => {
     {
       type: FormViewSectionType.section2column,
       collapsible: true,
-      title: 'Attributes & Variations',
+      title: 'Attributes',
       items: [
         {
           '0': '/properties/attributes',
         },
+      ]
+    },
+    {
+      type: FormViewSectionType.section2column,
+      collapsible: true,
+      title: 'Variations',
+      items: [
         {
           '0': '/properties/variations',
         },
@@ -226,8 +277,33 @@ export const SFProductUI = (): CollectionUI[] => {
     // }
   ]
 }
+
+export const SFProductRules = (): CollectionRule[] => {
+  return [
+    {
+      name: 'Manual Selection',
+      action: [
+        {
+          operation: 'setProperty',
+          targetField: '/properties/attributes/items/properties/options/dataSource/filterValue',
+          sourceField: '/properties/attributes/items/properties/name',
+        },
+      ],
+      condition: {
+        type: 'and',
+        param: [
+          {
+            value: true,
+            field1: '/properties/attributes/items/properties/name',
+            operation: 'notEmpty',
+          },
+        ],
+      },
+    },
+  ]
+};
+
 const dd = SFProductSchema();
 export type SFProductModel = FromSchema<typeof dd>;
 
-export const SFProductRules = (): CollectionRule[] => { return null };
 registerCollection('Store Product', DataType.sf_product, SFProductSchema(), SFProductUI(), SFProductRules(), false, true)

@@ -46,7 +46,7 @@ export enum DataType {
   chatregister = 'chatregister',
   phone = 'phone',
   sf_attribute = 'sf_attribute',
-  sf_brand = 'sf_brand',
+  sf_vendor = 'sf_vendor',
   sf_delivery = 'sf_delivery',
   sf_giftcard = 'sf_giftcard',
   sf_invoice = 'sf_invoice',
@@ -63,5 +63,6 @@ export enum DataType {
   sf_return = 'sf_return',
   sf_discount = 'sf_discount',
   sf_marketing = 'sf_marketing',
-  sf_inventory = 'sf_inventory'
+  sf_inventory = 'sf_inventory',
+  location = 'location'
 }

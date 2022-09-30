@@ -1,5 +1,6 @@
 "use strict";
 
+import { isEmpty } from "../utils/index";
 import Operator from "./operator";
 
 const Operators = [];
@@ -16,22 +17,10 @@ Operators.push(
 );
 Operators.push(new Operator("endsWith", (a, b) => a && b && a.endsWith(b)));
 Operators.push(
-  new Operator("empty", (a) => {
-    if (Array.isArray(a)) {
-      return a.length <= 0;
-    } else {
-      return a === "";
-    }
-  })
+  new Operator("empty", (a) => isEmpty(a))
 );
 Operators.push(
-  new Operator("notEmpty", (a) => {
-    if (Array.isArray(a)) {
-      return a.length > 0;
-    } else {
-      return a !== "";
-    }
-  })
+  new Operator("notEmpty", (a) =>  !isEmpty(a))
 );
 Operators.push(
   new Operator("contains", (a, b) => a.indexOf(b) > -1, Array.isArray)
