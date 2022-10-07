@@ -65,6 +65,10 @@ export const UserSchema = () => {
       greeting: {
         type: 'string',
       },
+      guestUser: {
+        type: 'boolean',
+        hidden: true
+      },
       reminderQuestion: {
         type: 'array',
         items: {

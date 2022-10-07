@@ -4,7 +4,7 @@ import { CollectionUI, CollectionRule } from '../collection';
 import { DataType } from '../../types';
 
 
-export const SFBrandSchema = () => {
+export const SFVendorSchema = () => {
   return {
     type: 'object',
     properties: {
@@ -16,6 +16,9 @@ export const SFBrandSchema = () => {
       },
       products: {
         type: 'array',
+        item: {
+          type: 'string'
+        }
       },
       image: { type: 'object' }, //ImageSchema(),
       contact: { type: 'object' }, //ContactSchema(),
@@ -26,9 +29,9 @@ export const SFBrandSchema = () => {
   } as const;
 };
 
-const ms = SFBrandSchema();
+const ms = SFVendorSchema();
 export type SFBrandModel = FromSchema<typeof ms>;
 
-export const SFBrandUI = (): CollectionUI[] => { return null };
-export const SFBrandRules = (): CollectionRule[] => { return null };
-registerCollection('Store Brand', DataType.sf_brand, SFBrandSchema(), SFBrandUI(), SFBrandRules(), true)
+export const SFVendorUI = (): CollectionUI[] => { return null };
+export const SFVendorRules = (): CollectionRule[] => { return null };
+registerCollection('Store Vendor', DataType.sf_vendor, SFVendorSchema(), SFVendorUI(), SFVendorRules(), true)

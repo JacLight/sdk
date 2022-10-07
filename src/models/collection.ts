@@ -27,22 +27,21 @@ export interface CollectionUI {
 export interface CollectionRule {
   name: string;
   condition?: {
-    type?: string;
+    type?: string;  //and or
     param?: {
-      field?: string;
-      targetField?: string;
-      targetType?: string;
-      targetValue?: string | number | boolean;
+      field1?: string; //property you want to read or compare
+      field2?: string; //property you want to read or compare
+      compareField?: boolean; // field or value
+      value?: string | number | boolean; // incase you're comparing to a fixed value  set it here
       operation?: string;
     }[];
   };
   action?: {
     operation: string;
-    targetField: string | string[];
-    sourceField?: string,
-    sourceType?: string,
-    value?: string,
-    property?: string
+    targetField?: string | string[]; //property you want to apply actions to
+    sourceField?: string, //property where the value you want to apply will come from
+    valueFromField?: boolean;
+    value?: string, // incase you're set to fixed value put it here
   }[];
 }
 
@@ -138,11 +137,9 @@ export const CollectionRules = (): CollectionRule[] => { return null };
 
 export const CollectionFormSchema = CollectionSchema;
 export const CollectionViewSchema = CollectionSchema;
-export const DataViewSchema = CollectionSchema;
 
 registerCollection('CollectionForm', DataType.collectionform, CollectionSchema(), CollectionUI(), CollectionRules())
 registerCollection('CollectionView', DataType.collectionview, CollectionSchema(), CollectionUI(), CollectionRules())
-registerCollection('DataView', DataType.dataview, CollectionSchema(), CollectionUI(), CollectionRules())
 registerCollection('Collection', DataType.collection, CollectionSchema(), CollectionUI(), CollectionRules())
 registerCollection('SubSchema', DataType.subschema, CollectionSchema(), CollectionUI(), CollectionRules())
 

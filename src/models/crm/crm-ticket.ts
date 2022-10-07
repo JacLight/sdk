@@ -49,7 +49,9 @@ export const TicketSchema = () => {
       },
       assignments: {
         type: 'array',
+        title: 'Assignments',
         readonly: true,
+        collapsible: true,
         items: {
           type: 'object',
           layout: 'horizontal',

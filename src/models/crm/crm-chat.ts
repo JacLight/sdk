@@ -8,35 +8,36 @@ export const ChatMessageSchema = () => {
     return {
         type: 'object',
         properties: {
-            id: {
+            content: {
                 type: 'string',
             },
-            message: {
+            from: {
                 type: 'string',
             },
-            userId: {
+            to: {
                 type: 'string',
             },
-            user: UserSchema(),
-            conversationId: {
-                type: 'string',
-            },
-            conversation: {
-                type: 'object',
-                properties: {
-                    id: {
-                        type: 'string',
-                    },
-                }
+            files: {
+                type: 'array',
             },
             status: {
                 type: 'string',
             },
-            time: {
-                type: 'number',
-            },
             type: {
                 type: 'string',
+            },
+            sentTime: {
+                type: 'number',
+            },
+            deliveredTime: {
+                type: 'number',
+            },
+            readTime: {
+                type: 'number',
+            },
+            user: {
+                ...UserSchema(),
+                hidden: true,
             },
         },
     } as const;
@@ -46,14 +47,23 @@ const cms = ChatMessageSchema();
 export type ChatMessageModel = FromSchema<typeof cms>;
 
 
-export const ChatConversationSchema = () => {
+export const ChatGroupSchema = () => {
     return {
         type: 'object',
         properties: {
-            id: {
+            name: {
                 type: 'string',
             },
-            userIds: {
+            description: {
+                type: 'string',
+            },
+            admins: {
+                type: 'array',
+                items: {
+                    type: 'string',
+                }
+            },
+            emails: {
                 type: 'array',
                 items: {
                     type: 'string',
@@ -63,13 +73,6 @@ export const ChatConversationSchema = () => {
                 type: 'array',
                 items: UserSchema()
             },
-            messages: {
-                type: 'array',
-                items: ChatMessageSchema()
-            },
-            socketId: {
-                type: 'string',
-            },
             status: {
                 type: 'string',
             },
@@ -77,33 +80,11 @@ export const ChatConversationSchema = () => {
     } as const;
 };
 
-const ccs = ChatConversationSchema();
-export type ChatConversationModel = FromSchema<typeof ccs>;
+const ccs = ChatGroupSchema();
+export type ChatGroupModel = FromSchema<typeof ccs>;
 
 
-export const ChatRegisterSchema = () => {
-    return {
-        type: 'object',
-        properties: {
-            socketId: {
-                type: 'string',
-                fieldType: "Upload",
-            },
-            user: UserSchema(),
-            conversation: {
-                type: 'string',
-            },
-            status: {
-                type: 'string',
-            },
-        },
-    } as const;
-};
-
-const crs = ChatRegisterSchema();
-export type ChatRegisterModel = FromSchema<typeof crs>;
 export const ChatUI = (): CollectionUI[] => { return null };
 export const ChatRules = (): CollectionRule[] => { return null };
 registerCollection('Chat Message', DataType.chatmessage, ChatMessageSchema(), ChatUI(), ChatRules(), true)
-registerCollection('Chat Conversation', DataType.chatconversation, ChatConversationSchema(), ChatUI(), ChatRules(), true)
-registerCollection('Chat Register', DataType.chatregister, ChatRegisterSchema(), ChatUI(), ChatRules(), true)
+registerCollection('Chat Group', DataType.chatgroup, ChatGroupSchema(), ChatUI(), ChatRules(), true)

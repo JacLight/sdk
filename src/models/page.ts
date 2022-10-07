@@ -156,7 +156,8 @@ export const PageSectionSchema = () => {
         type: 'array',
         title: 'Selections',
         fieldType: FieldType.collection,
-        inputStyle: 'table',
+        displayStyle: 'table',
+        inputStyle: 'picker',
         dataSource: {
           source: 'collection',
           collection: DataType.post,
@@ -311,10 +312,8 @@ export const PageSectionRules = (): CollectionRule[] => {
         type: 'and',
         param: [
           {
-            targetValue: true,
-            targetType: 'value',
-            targetField: 'Field2',
-            field: '/properties/manualSelection',
+            value: true,
+            field1: '/properties/manualSelection',
             operation: 'equal',
           },
         ],
@@ -325,20 +324,17 @@ export const PageSectionRules = (): CollectionRule[] => {
       action: [
         {
           operation: 'setProperty',
-          property: 'collection',
-          targetField: '/properties/selection/dataSource',
+          targetField: '/properties/selection/dataSource/collection',
           sourceField: '/properties/dataType',
-          sourceType: 'field',
+          valueFromField: true,
         },
       ],
       condition: {
         type: 'and',
         param: [
           {
-            targetValue: true,
-            targetType: 'value',
-            targetField: 'Field2',
-            field: '/properties/datatype',
+            value: true,
+            field1: '/properties/datatype',
             operation: 'notEmpty',
           },
         ],

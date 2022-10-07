@@ -22,7 +22,7 @@ export enum DataType {
   setting = 'setting',
   collectionview = 'collectionview',
   collectionform = 'collectionform',
-  dataview = 'dataview',
+  dataviz = 'dataviz',
   mintflow = 'mintflow',
   mintflownode = 'mintflownode',
   post = 'post',
@@ -42,11 +42,11 @@ export enum DataType {
   address = 'address',
   calllog = 'calllog',
   chatmessage = 'chatmessage',
-  chatconversation = 'chatconversation',
+  chatgroup = 'chatgroup',
   chatregister = 'chatregister',
   phone = 'phone',
   sf_attribute = 'sf_attribute',
-  sf_brand = 'sf_brand',
+  sf_vendor = 'sf_vendor',
   sf_delivery = 'sf_delivery',
   sf_giftcard = 'sf_giftcard',
   sf_invoice = 'sf_invoice',
@@ -63,5 +63,6 @@ export enum DataType {
   sf_return = 'sf_return',
   sf_discount = 'sf_discount',
   sf_marketing = 'sf_marketing',
-  sf_inventory = 'sf_inventory'
+  sf_inventory = 'sf_inventory',
+  location = 'location'
 }

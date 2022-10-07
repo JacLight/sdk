@@ -1,6 +1,7 @@
 import { countries_translations } from './countries_translations';
 import { countries } from './countries';
 import { languages } from './languages';
+import { countries_subdivisions } from './countries_subdivisions';
 
 
 export function search_country(query: { id?: string, alpha2?: string, alpha3?: string }) {
@@ -23,6 +24,22 @@ export function search_country(query: { id?: string, alpha2?: string, alpha3?: s
         // since "filter" returns an array we use pop to get just the data object
     }).pop()
 
+}
+
+export const getCountryRegions = (countryCode: string): { label: string, value: string }[] => {
+    const regions = countries_subdivisions.filter
+        (item => item.country.toLowerCase() === countryCode.toLowerCase()).map
+        (item => ({ label: item.name, value: item.name }))
+    return regions
+}
+
+export const getCountryDropDownOptions = (): { label: string, value: string }[] => {
+    const temp: any = countries;
+    const tempArray = Object.keys(countries).map(key => {
+        const country = temp[key]
+        return { label: country.name, value: key.toLowerCase() }
+    })
+    return tempArray
 }
 
 export const getCurrencies = (): string[] => {

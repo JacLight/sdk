@@ -1,6 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { DataType, FieldType } from '../types';
 import { CommentModel } from './comment';
+import { FileInfoSchema } from './fileinfo';
 import { WorkflowSubModel } from './workflowdefinition';
 export interface BaseModelDTO<T> {
   page: number;
@@ -88,12 +89,7 @@ export const PostSubSchema = () => {
           label: 'name',
         },
       },
-      images: {
-        type: 'array',
-        items: {
-          type: 'string',
-        },
-      },
+      images: FileInfoSchema(),
       pages: {
         type: 'array',
         items: {

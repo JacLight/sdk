@@ -3,7 +3,6 @@ import { registerCollection, registerDefaultData } from '../defaultschema';
 import { DataType, FieldType } from '../types';
 import { CollectionRule, CollectionUI } from './collection';
 import { TaskSchema } from './task';
-import { v4 as uuidv4 } from 'uuid';
 
 export const WorkflowDefinitionSchema = () => {
     return {
@@ -77,20 +76,16 @@ export const WorkflowDefinitionRules = (): CollectionRule[] => {
             action: [
                 {
                     operation: 'setProperty',
-                    property: 'collection',
-                    targetField: '/properties/stages/items/properties/assignTo/dataSource',
+                    targetField: '/properties/stages/items/properties/assignTo/dataSource/collection',
                     sourceField: '/properties/stages/items/properties/assignType',
-                    sourceType: 'field',
                 },
             ],
             condition: {
                 type: 'and',
                 param: [
                     {
-                        targetValue: true,
-                        targetType: 'value',
-                        targetField: 'Field2',
-                        field: '/properties/stages/items/properties/assignType',
+                        value: true,
+                        field1: '/properties/stages/items/properties/assignType',
                         operation: 'notEmpty',
                     },
                 ],
@@ -101,20 +96,16 @@ export const WorkflowDefinitionRules = (): CollectionRule[] => {
             action: [
                 {
                     operation: 'setProperty',
-                    property: 'collection',
-                    targetField: '/properties/tasks/items/properties/assignTo/dataSource',
+                    targetField: '/properties/tasks/items/properties/assignTo/dataSource/collection',
                     sourceField: '/properties/tasks/items/properties/assignType',
-                    sourceType: 'field',
                 },
             ],
             condition: {
                 type: 'and',
                 param: [
                     {
-                        targetValue: true,
-                        targetType: 'value',
-                        targetField: 'Field2',
-                        field: '/properties/tasks/items/properties/assignType',
+                        value: true,
+                        field1: '/properties/tasks/items/properties/assignType',
                         operation: 'notEmpty',
                     },
                 ],
@@ -129,7 +120,7 @@ export const WorkflowStageSchema = () => {
         type: 'object',
         properties: {
             id: {
-                type: 'string',
+                type: ['string', 'number'],
                 fieldType: FieldType.uuid,
                 readonly: true
             },
@@ -187,7 +178,7 @@ export const WorkflowSubSchema = () => {
     return {
         type: 'object',
         properties: {
-            id: {
+            workflowId: {
                 type: 'string',
                 title: 'Workflow',
                 fieldType: FieldType.selectionmultiple,
@@ -224,20 +215,16 @@ export const WorkflowStageRules = (): CollectionRule[] => {
             action: [
                 {
                     operation: 'setProperty',
-                    property: 'collection',
-                    targetField: '/properties/assignTo/dataSource',
+                    targetField: '/properties/assignTo/dataSource/collection',
                     sourceField: '/properties/assignType',
-                    sourceType: 'field',
                 },
             ],
             condition: {
                 type: 'and',
                 param: [
                     {
-                        targetValue: true,
-                        targetType: 'value',
-                        targetField: 'Field2',
-                        field: '/properties/assignType',
+                        value: true,
+                        field1: '/properties/assignType',
                         operation: 'notEmpty',
                     },
                 ],
@@ -247,15 +234,15 @@ export const WorkflowStageRules = (): CollectionRule[] => {
 };
 
 const genDefaultData = () => {
-    const todoId = uuidv4();
     return {
-        name: 'newworkflow',
         tasks: [
-            { status: 'new', name: 'Review', description: 'Review new data', stage: todoId },
+            { status: 'new', name: 'Check Stock', description: 'Check if item is in stock', stageId: 0 },
+            { status: 'new', name: 'Prepare Shipping', description: 'Start shipping process', stageId: 0 },
+            { status: 'new', name: 'Process Billing', description: 'Billing needs to take place also', stageId: 0 },
         ],
         stages: [
-            { id: todoId, state: 'start', name: 'To Do' },
-            { id: uuidv4(), state: 'end', name: 'Done' }
+            { id: 0, state: 'start', name: 'To Do' },
+            { id: 1, state: 'end', name: 'Done' }
         ]
     }
 };

@@ -1,6 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../defaultschema';
-import { DataType } from '../types';
+import { DataType, FieldType } from '../types';
 import { CollectionRule, CollectionUI } from './collection';
 
 export const CommentSchema = () => {
@@ -15,6 +15,11 @@ export const CommentSchema = () => {
         type: 'string',
         hidden: true,
       },
+      time: {
+        type: 'string',
+        format: 'date-time',
+        hidden: true,
+      },
       rating: {
         type: 'number',
         maximum: 5,
@@ -27,11 +32,6 @@ export const CommentSchema = () => {
       },
       voteDown: {
         type: 'number',
-        hidden: true,
-      },
-      date: {
-        type: 'string',
-        format: 'date-time',
         hidden: true,
       },
       comments: {
@@ -50,9 +50,28 @@ export const CommentListSchema = () => {
       comments: {
         type: 'array',
         readonly: true,
-        items: CommentSchema()
+        items: {
+          type: 'object',
+          properties: {
+            comment: {
+              type: 'string',
+              fieldType: FieldType.paragraph
+            },
+            user: {
+              type: 'string',
+              fieldType: FieldType.label
+            },
+            time: {
+              type: 'string',
+              fieldType: FieldType.label
+            },
+          },
+        }
       },
-      newComment: CommentSchema()
+      comment: {
+        type: 'string',
+        inputStyle: 'textarea',
+      },
     }
   } as const;
 };

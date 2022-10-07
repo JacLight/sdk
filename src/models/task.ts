@@ -7,6 +7,16 @@ export const TaskSchema = () => {
     return {
         type: 'object',
         properties: {
+            workflowId: {
+                type: 'string',
+                fieldType: FieldType.selectionmultiple,
+                dataSource: {
+                    source: 'collection',
+                    collection: DataType.workflowdefinition,
+                    value: 'sk',
+                    label: 'name',
+                },
+            },
             status: {
                 type: 'string',
                 enum: ['new', 'pending', 'inprogress', 'blocked', 'done', 'canceled']
@@ -18,8 +28,8 @@ export const TaskSchema = () => {
                 type: 'string',
                 inputStyle: 'textarea'
             },
-            stage: {
-                type: 'string',
+            stageId: {
+                type: 'number',
                 disabled: true,
             },
             eventDate: {
@@ -67,20 +77,16 @@ export const TaskRules = (): CollectionRule[] => {
             action: [
                 {
                     operation: 'setProperty',
-                    property: 'collection',
-                    targetField: '/properties/assignTo/dataSource',
+                    targetField: '/properties/assignTo/dataSource/collection',
                     sourceField: '/properties/assignType',
-                    sourceType: 'field',
                 },
             ],
             condition: {
                 type: 'and',
                 param: [
                     {
-                        targetValue: true,
-                        targetType: 'value',
-                        targetField: 'Field2',
-                        field: '/properties/assignType',
+                        value: true,
+                        field1: '/properties/assignType',
                         operation: 'notEmpty',
                     },
                 ],
