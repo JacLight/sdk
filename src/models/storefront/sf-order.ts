@@ -38,7 +38,7 @@ export const SFOrderSchema = () => {
             status: {
                 type: 'string',
             },
-            affliate: {
+            affiliate: {
                 type: 'string',
             },
             remarks: {

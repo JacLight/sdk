@@ -1,46 +1,32 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { SFAttributeSchema } from './sf-attribute';
 import { registerCollection } from '../../defaultschema';
 import { CollectionUI, CollectionRule } from '../collection';
 import { DataType } from '../../types';
 
 export const SFCartSchema = () => {
     return {
-        type: 'array',
-        items: {
-            properties: {
-                user: {
-                    type: 'string',
-                },
-                status: {
-                    type: 'string',
-                },
-                products: {
-                    type: 'string'
-                },
-                price: {
-                    type: 'string',
-                },
-                source: {
-                    type: 'string',
-                },
-                notification: {
-                    type: 'string',
-                },
-                variant: {
-                    type: 'object',
-                    properties: {
-                        price: {
-                            type: 'number'
-                        },
-                        stock: { type: 'number' },
-                        attributes: {
-                            type: 'array',
-                            items: SFAttributeSchema()
-                        },
-                    }
-                }
+        type: 'object',
+        properties: {
+            status: {
+                type: 'string',
             },
+            source: {
+                type: 'string',
+            },
+            items: {
+                type: 'array',
+                properties: {
+                    product: {
+                        type: 'string'
+                    },
+                    price: {
+                        type: 'number',
+                    },
+                    quantity: {
+                        type: 'number'
+                    },
+                },
+            }
         }
     } as const;
 };

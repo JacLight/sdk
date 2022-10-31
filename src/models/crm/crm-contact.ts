@@ -98,6 +98,31 @@ export const ContactSchema = () => {
 const dd = ContactSchema();
 export type ContactModel = FromSchema<typeof dd>;
 
+
+export const ContactRules = (): CollectionRule[] => {
+  return [
+    {
+      name: 'Manual Selection',
+      action: [
+        {
+          operation: 'script',
+          value: ' schema.properties.address.region.dataSource.json = context.getCountryRegions(data.address.country) ',
+          targetField: '/properties/address/items/region',
+          sourceField: '/properties/address/items/country',
+        },
+      ],
+      condition: {
+        type: 'and',
+        param: [
+          {
+            value: true,
+            field1: '/properties/address/items/country',
+            operation: 'notEmpty',
+          },
+        ],
+      },
+    },
+  ]
+};
 export const ContactUI = (): CollectionUI[] => { return null };
-export const ContactRules = (): CollectionRule[] => { return null };
 registerCollection('Contact', DataType.contact, ContactSchema(), ContactUI(), ContactRules())
