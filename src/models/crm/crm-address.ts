@@ -58,7 +58,7 @@ export const AddressRules = (): CollectionRule[] => {
       action: [
         {
           operation: 'script',
-          value: ' schema.properties.region.dataSource.json === context.getCountryRegions(data.country) ',
+          value: ' schema.properties.region.dataSource.json = context.getCountryRegions(data.country) ',
           targetField: '/properties/region',
           sourceField: '/properties/country',
         },

@@ -31,5 +31,6 @@ export enum ComponentName {
   DataViz = 'DataViz',
   Customer360 = 'Customer360',
   ProductHome = 'ProductHome',
-  BusinessLocations = 'BusinessLocations'
+  BusinessLocations = 'BusinessLocations',
+  ScrapeWebsite = 'ScrapeWebsite'
 }
