@@ -5,6 +5,7 @@ import { DataType } from '../../types';
 
 export const SFWishlistSchema = () => {
   return {
+    type: 'object',
     properties: {
       name: {
         type: 'string',
@@ -14,17 +15,20 @@ export const SFWishlistSchema = () => {
       },
       products: {
         type: 'array',
-        properties: {
-          sku: {
-            type: 'string'
+        items: {
+          type: 'object',
+          properties: {
+            sku: {
+              type: 'string'
+            },
+            name: {
+              type: 'string'
+            },
+            price: {
+              type: 'number',
+            },
           },
-          name: {
-            type: 'string'
-          },
-          price: {
-            type: 'number',
-          },
-        },
+        }
       }
     }
   } as const;
