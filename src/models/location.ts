@@ -1,6 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../defaultschema';
-import { DataType } from '../types';
+import { DataType, FieldType } from '../types';
 import { CollectionRule, CollectionUI } from './collection';
 import { AddressSchema } from './crm/crm-address';
 
@@ -20,10 +20,13 @@ export const LocationSchema = () => {
         enum: ['store', 'mini', 'wearhouse', 'web', 'partner', 'contact-point', 'lockbox', 'dropbox', 'corporate']
       },
       services: {
-        type: 'array',
-        items: {
-          type: 'string'
-        }
+        type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        inputStyle: 'chip',
+        dataSource: {
+          source: 'json',
+          json: [{ label: 'service a', value: 'service a' }, { label: 'service b', value: 'service b' }],
+        },
       },
       address: AddressSchema(),
       status: {
