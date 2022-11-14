@@ -1,4 +1,37 @@
 export const countries = {
+  "US": {
+    "name": "United States",
+    "native": "United States",
+    "phone": [
+      1
+    ],
+    "continent": "NA",
+    "capital": "Washington D.C.",
+    "currency": [
+      "USD",
+      "USN",
+      "USS"
+    ],
+    "languages": [
+      "en"
+    ]
+  },
+  "CA": {
+    "name": "Canada",
+    "native": "Canada",
+    "phone": [
+      1
+    ],
+    "continent": "NA",
+    "capital": "Ottawa",
+    "currency": [
+      "CAD"
+    ],
+    "languages": [
+      "en",
+      "fr"
+    ]
+  },
   "AD": {
     "name": "Andorra",
     "native": "Andorra",
@@ -575,22 +608,7 @@ export const countries = {
       "es"
     ]
   },
-  "CA": {
-    "name": "Canada",
-    "native": "Canada",
-    "phone": [
-      1
-    ],
-    "continent": "NA",
-    "capital": "Ottawa",
-    "currency": [
-      "CAD"
-    ],
-    "languages": [
-      "en",
-      "fr"
-    ]
-  },
+
   "CC": {
     "name": "Cocos [Keeling] Islands",
     "native": "Cocos (Keeling) Islands",
@@ -3613,23 +3631,6 @@ export const countries = {
     "capital": "",
     "currency": [
       "USD"
-    ],
-    "languages": [
-      "en"
-    ]
-  },
-  "US": {
-    "name": "United States",
-    "native": "United States",
-    "phone": [
-      1
-    ],
-    "continent": "NA",
-    "capital": "Washington D.C.",
-    "currency": [
-      "USD",
-      "USN",
-      "USS"
     ],
     "languages": [
       "en"
