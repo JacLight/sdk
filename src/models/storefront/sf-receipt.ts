@@ -2,6 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionUI, CollectionRule } from '../collection';
 import { DataType } from '../../types';
+import { FileInfoSchema } from '../fileinfo';
 
 export const SFReceiptSchema = () => {
     return {
@@ -31,12 +32,7 @@ export const SFReceiptSchema = () => {
             to: {
                 type: 'string',
             },
-            attachements: {
-                type: 'array',
-                items: {
-                    type: 'object'
-                }
-            },
+            attachements: FileInfoSchema(),
             conversation: {
                 type: 'string',
             },

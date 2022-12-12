@@ -49,7 +49,7 @@ export const CommentListSchema = () => {
     properties: {
       comments: {
         type: 'array',
-        readonly: true,
+        readOnly: true,
         items: {
           type: 'object',
           properties: {

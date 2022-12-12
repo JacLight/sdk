@@ -32,5 +32,8 @@ export enum ComponentName {
   Customer360 = 'Customer360',
   ProductHome = 'ProductHome',
   BusinessLocations = 'BusinessLocations',
-  ScrapeWebsite = 'ScrapeWebsite'
+  ScrapeWebsite = 'ScrapeWebsite',
+  SendMessage = 'SendMessage',
+  ImageEditor = 'ImageEditor',
+  CreativeStudio = 'CreativeStudio',
 }

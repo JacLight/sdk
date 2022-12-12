@@ -2,6 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionUI, CollectionRule } from '../collection';
 import { DataType, FormViewSectionType, FieldType } from '../../types';
+import { FileInfoSchema } from '../fileinfo';
 
 export const MessageSchema = () => {
     return {
@@ -9,7 +10,7 @@ export const MessageSchema = () => {
         properties: {
             message: {
                 type: 'string',
-                fieldType: 'richtext'
+                fieldType: 'richtext',
             },
             title: {
                 type: 'string',
@@ -41,16 +42,9 @@ export const MessageSchema = () => {
             to: {
                 type: 'string',
             },
-            files: {
-                type: 'array',
-                items: {
-                    type: 'object'
-                }
-            },
-            conversation: {
-                type: 'string',
-            },
+            files: FileInfoSchema()
         },
+        required: ['message', 'to', 'title', 'type'],
     } as const;
 };
 const ms = MessageSchema();
@@ -63,7 +57,7 @@ export const MessageUI = (): CollectionUI[] => {
             type: FormViewSectionType.sectiontab,
             tab: [
                 {
-                    title: 'Site Info',
+                    title: 'Instant Send',
                     items: [
                         {
                             '0': '/properties/type',

@@ -120,7 +120,7 @@ export const SFProductSchema = () => {
             options: {
               type: 'array',
               title: 'Options',
-              readonly: true,
+              readOnly: true,
               displayStyle: 'card',
               layout: 'horizontal',
               items: {

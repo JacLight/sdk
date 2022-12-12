@@ -2,6 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionUI, CollectionRule } from '../collection';
 import { DataType } from '../../types';
+import { FileInfoSchema } from '../fileinfo';
 
 export const SFRefundSchema = () => {
   return {
@@ -29,12 +30,7 @@ export const SFRefundSchema = () => {
       remark: {
         type: 'string',
       },
-      attachements: {
-        type: 'array',
-        items: {
-          type: 'object'
-        }
-      },
+      attachements: FileInfoSchema()
     },
   } as const;
 };

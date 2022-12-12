@@ -66,7 +66,7 @@ export const SFInvoiceSchema = () => {
             description: { type: 'string' },
             price: { type: 'number' },
             quantity: { type: 'number' },
-            amount: { type: 'number', readonly: true },
+            amount: { type: 'number', readOnly: true },
           }
         }
       },

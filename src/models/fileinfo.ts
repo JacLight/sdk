@@ -6,7 +6,7 @@ import { CollectionRule, CollectionUI } from './collection';
 export const FileInfoSchema = () => {
     return {
         type: 'array',
-        readonly: true,
+        readOnly: true,
         fieldType: FieldType.file,
         repeatable: true,
         items: {
