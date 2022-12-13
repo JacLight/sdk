@@ -8,9 +8,13 @@ export const MessageSchema = () => {
     return {
         type: 'object',
         properties: {
-            message: {
+            bodyHtml: {
                 type: 'string',
                 fieldType: 'richtext',
+            },
+            text: {
+                type: 'string',
+                inputStyle: 'textarea',
             },
             title: {
                 type: 'string',
@@ -41,6 +45,7 @@ export const MessageSchema = () => {
             },
             to: {
                 type: 'string',
+                inputStyle: 'textarea',
             },
             files: FileInfoSchema()
         },
@@ -65,15 +70,16 @@ export const MessageUI = (): CollectionUI[] => {
                         },
                         {
                             '0': '/properties/from',
-                        },
-                        {
-                            '0': '/properties/to',
+                            '1': '/properties/to',
                         },
                         {
                             '0': '/properties/title',
                         },
                         {
-                            '0': '/properties/message',
+                            '0': '/properties/bodyHtml',
+                        },
+                        {
+                            '0': '/properties/text',
                         },
                         {
                             '0': '/properties/files',
@@ -90,5 +96,28 @@ export const MessageUI = (): CollectionUI[] => {
 };
 
 
-export const MessageRules = (): CollectionRule[] => { return null };
+export const MessageRules = (): CollectionRule[] => {
+    return [
+        {
+            name: 'Hide HTML',
+            action: [
+                {
+                    operation: 'hide',
+                    targetField: '/properties/bodyHtml',
+                },
+            ],
+            condition: {
+                type: 'and',
+                param: [
+                    {
+                        value: 'sms',
+                        field1: '/properties/type',
+                        operation: 'equal',
+                    },
+                ],
+            },
+        },
+    ]
+};
+
 registerCollection('Message', DataType.message, MessageSchema(), MessageUI(), MessageRules(), true)

@@ -10,7 +10,7 @@ export const NotificationSchema = () => {
     properties: {
       name: {
         type: 'string',
-        pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
+        pattern: '^[a-zA-Z_\\-0-9]*$',
       },
       title: {
         type: 'string',

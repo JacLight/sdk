@@ -36,4 +36,6 @@ export enum ComponentName {
   SendMessage = 'SendMessage',
   ImageEditor = 'ImageEditor',
   CreativeStudio = 'CreativeStudio',
+  EmailDesigner = 'EmailDesigner',
+  ScriptEditor = 'ScriptEditor'
 }

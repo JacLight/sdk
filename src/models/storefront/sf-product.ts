@@ -14,7 +14,7 @@ export const SFProductSchema = () => {
       },
       sku: {
         type: 'string',
-        pattern: '^[a-zA-Z_$0-9\-]*$',
+        pattern: '^[^[a-zA-Z_\-0-9]*$',
         minLength: 3,
         maxLength: 50,
         unique: true,

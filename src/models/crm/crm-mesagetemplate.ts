@@ -9,7 +9,7 @@ export const MessageTemplateSchema = () => {
     properties: {
       name: {
         type: 'string',
-        pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
+        pattern: '^[a-zA-Z_\\-0-9]*$',
         minLength: 3,
         maxLength: 50,
         unique: true,
@@ -23,7 +23,7 @@ export const MessageTemplateSchema = () => {
       title: {
         type: 'string',
       },
-      sections: {
+      blocks: {
         type: 'array',
         hidden: true
       },
@@ -31,15 +31,18 @@ export const MessageTemplateSchema = () => {
         type: 'string',
         fieldType: 'Rich Text Editor',
         displayStyle: 'full',
+        hidden: true
       },
       emailText: {
         type: 'string',
         inputStyle: 'textarea',
+        hidden: true
       },
       sms: {
         type: 'string',
         inputStyle: 'textarea',
         maxLength: 150,
+        hidden: true
       },
     },
   } as const;
