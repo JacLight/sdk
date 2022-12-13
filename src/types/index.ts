@@ -9,3 +9,4 @@ export * from './permissiontype';
 export * from './roletype';
 export * from './configtype';
 export * from './componenttype';
+export * from './notificationchannels';

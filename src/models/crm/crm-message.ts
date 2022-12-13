@@ -2,14 +2,19 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionUI, CollectionRule } from '../collection';
 import { DataType, FormViewSectionType, FieldType } from '../../types';
+import { FileInfoSchema } from '../fileinfo';
 
 export const MessageSchema = () => {
     return {
         type: 'object',
         properties: {
-            message: {
+            bodyHtml: {
                 type: 'string',
-                fieldType: 'richtext'
+                fieldType: 'richtext',
+            },
+            text: {
+                type: 'string',
+                inputStyle: 'textarea',
             },
             title: {
                 type: 'string',
@@ -40,17 +45,11 @@ export const MessageSchema = () => {
             },
             to: {
                 type: 'string',
+                inputStyle: 'textarea',
             },
-            files: {
-                type: 'array',
-                items: {
-                    type: 'object'
-                }
-            },
-            conversation: {
-                type: 'string',
-            },
+            files: FileInfoSchema()
         },
+        required: ['message', 'to', 'title', 'type'],
     } as const;
 };
 const ms = MessageSchema();
@@ -63,7 +62,7 @@ export const MessageUI = (): CollectionUI[] => {
             type: FormViewSectionType.sectiontab,
             tab: [
                 {
-                    title: 'Site Info',
+                    title: 'Instant Send',
                     items: [
                         {
                             '0': '/properties/type',
@@ -71,15 +70,16 @@ export const MessageUI = (): CollectionUI[] => {
                         },
                         {
                             '0': '/properties/from',
-                        },
-                        {
-                            '0': '/properties/to',
+                            '1': '/properties/to',
                         },
                         {
                             '0': '/properties/title',
                         },
                         {
-                            '0': '/properties/message',
+                            '0': '/properties/bodyHtml',
+                        },
+                        {
+                            '0': '/properties/text',
                         },
                         {
                             '0': '/properties/files',
@@ -96,5 +96,28 @@ export const MessageUI = (): CollectionUI[] => {
 };
 
 
-export const MessageRules = (): CollectionRule[] => { return null };
+export const MessageRules = (): CollectionRule[] => {
+    return [
+        {
+            name: 'Hide HTML',
+            action: [
+                {
+                    operation: 'hide',
+                    targetField: '/properties/bodyHtml',
+                },
+            ],
+            condition: {
+                type: 'and',
+                param: [
+                    {
+                        value: 'sms',
+                        field1: '/properties/type',
+                        operation: 'equal',
+                    },
+                ],
+            },
+        },
+    ]
+};
+
 registerCollection('Message', DataType.message, MessageSchema(), MessageUI(), MessageRules(), true)

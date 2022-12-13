@@ -1,7 +1,8 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionUI, CollectionRule } from '../collection';
-import { DataType, FieldType } from '../../types';
+import { DataType, FieldType, NotificationChannels } from '../../types';
+import { toTitleCase } from '../../utils';
 
 export const NotificationSchema = () => {
   return {
@@ -9,7 +10,7 @@ export const NotificationSchema = () => {
     properties: {
       name: {
         type: 'string',
-        pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
+        pattern: '^[a-zA-Z_\\-0-9]*$',
       },
       title: {
         type: 'string',
@@ -27,25 +28,42 @@ export const NotificationSchema = () => {
       },
       channel: {
         type: 'string',
+        fieldType: FieldType.selectionmultiple,
         inputStyle: 'chip',
-        enum: ['popup', 'alert', 'dialog', 'infobar', 'email', 'sms', 'call', 'whatsapp', 'slack'],
+        dataSource: {
+          source: 'json',
+          json: Object.values(NotificationChannels).map(key => ({ value: key, label: toTitleCase(key) }))
+        },
       },
       to: {
         type: 'string'
       },
-      schdule: {
+      schedule: {
         type: 'array',
+        title: 'Schedule',
         items: {
           type: 'string',
           format: 'date-time'
         }
       },
-      repeat: {
-        type: 'boolean'
+      cron: {
+        type: 'string',
+        fieldType: FieldType.cron
       },
       status: {
-        type: 'string'
-      }
+        type: 'string',
+        enum: ['active', 'stop']
+      },
+      lastRun: {
+        type: 'string',
+        format: 'date-time',
+        readOnly: true
+      },
+      nextRun: {
+        type: 'string',
+        format: 'date-time',
+        readOnly: true
+      },
     },
   } as const;
 };

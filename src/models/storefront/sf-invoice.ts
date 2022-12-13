@@ -9,7 +9,7 @@ export const SFInvoiceSchema = () => {
     properties: {
       id: {
         type: 'string',
-        pattern: '^[a-zA-Z_$0-9\-]*$',
+        pattern: '^[^[a-zA-Z_\-0-9]*$',
         minLength: 10,
         maxLength: 10,
         unique: true,
@@ -66,7 +66,7 @@ export const SFInvoiceSchema = () => {
             description: { type: 'string' },
             price: { type: 'number' },
             quantity: { type: 'number' },
-            amount: { type: 'number', readonly: true },
+            amount: { type: 'number', readOnly: true },
           }
         }
       },

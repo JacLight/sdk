@@ -10,7 +10,7 @@ export const WorkflowDefinitionSchema = () => {
         properties: {
             name: {
                 type: 'string',
-                pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
+                pattern: '^[a-zA-Z_\\-0-9]*$',
                 unique: true,
             },
             title: {
@@ -122,7 +122,7 @@ export const WorkflowStageSchema = () => {
             id: {
                 type: ['string', 'number'],
                 fieldType: FieldType.uuid,
-                readonly: true
+                readOnly: true
             },
             state: {
                 type: 'string',
@@ -202,7 +202,7 @@ export const WorkflowSubSchema = () => {
                 type: 'array',
                 items: TaskSchema(),
                 inputStyle: 'table',
-                readonly: true,
+                readOnly: true,
             },
         },
     } as const;

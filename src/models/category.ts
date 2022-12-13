@@ -12,7 +12,7 @@ export const CategorySchema = () => {
         type: 'string',
         minLength: 3,
         maxLength: 50,
-        pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
+        pattern: '^[a-zA-Z_\\-0-9]*$',
         unique: true,
       },
       title: {

@@ -37,7 +37,7 @@ export const PostSubSchema = () => {
       },
       slug: {
         type: 'string',
-        pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
+        pattern: '^[a-zA-Z_\\-0-9]*$',
       },
       preview: {
         type: 'string',

@@ -9,14 +9,14 @@ export const CompanySchema = () => {
     properties: {
       name: {
         type: 'string',
-        pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
+        pattern: '^[a-zA-Z_\\-0-9]*$',
         minLength: 3,
         maxLength: 100,
         unique: true,
       },
       database: {
         type: 'string',
-        pattern: '^[a-zA-Z_$][a-zA-Z_$0-9]*$',
+        pattern: '^[a-zA-Z_\\-0-9]*$',
         minLength: 3,
         maxLength: 20,
         unique: true,

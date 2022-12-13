@@ -50,7 +50,7 @@ export const TicketSchema = () => {
       assignments: {
         type: 'array',
         title: 'Assignments',
-        readonly: true,
+        readOnly: true,
         collapsible: true,
         items: {
           type: 'object',

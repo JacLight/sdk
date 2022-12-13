@@ -45,7 +45,7 @@ export const PermissionEntrySchema = () => {
 export const PermissionSchema = () => {
   return {
     type: 'array',
-    readonly: true,
+    readOnly: true,
     items: PermissionEntrySchema(),
   } as const;
 };

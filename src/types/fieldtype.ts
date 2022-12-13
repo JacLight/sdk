@@ -20,4 +20,5 @@ export enum FieldType {
   linkedSelect = 'Linked Selection',
   button = 'Button',
   label = 'Label',
+  cron = 'Cron',
 }
