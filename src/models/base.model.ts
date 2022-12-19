@@ -34,13 +34,16 @@ export const PostSubSchema = () => {
     properties: {
       title: {
         type: 'string',
+        hidden: true,
       },
       slug: {
         type: 'string',
+        hidden: true,
         pattern: '^[a-zA-Z_\\-0-9]*$',
       },
-      preview: {
+      summary: {
         type: 'string',
+        hidden: true,
         inputStyle: 'textarea',
       },
       allowShare: {

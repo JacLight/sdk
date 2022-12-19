@@ -138,10 +138,12 @@ export const PageSectionSchema = () => {
       },
       detailTemplate: {
         type: 'string',
+        hidden: true,
         enum: isEmpty(viewTemplateStore.templateList) ? ['default'] : viewTemplateStore.templateList.map(template => template.name)
       },
       listTemplate: {
         type: 'string',
+        hidden: true,
         enum: isEmpty(viewTemplateStore.templateList) ? ['default'] : viewTemplateStore.templateList.map(template => template.name)
       },
       manualSelection: {
@@ -151,6 +153,7 @@ export const PageSectionSchema = () => {
         type: 'string',
         fieldType: FieldType.selectionmultiple,
         enum: Object.values(DataType),
+        default: DataType.post
       },
       selection: {
         type: 'array',
@@ -168,7 +171,7 @@ export const PageSectionSchema = () => {
             datatype: {
               type: 'string',
             },
-            uid: {
+            id: {
               type: 'string',
             },
             name: {
@@ -227,7 +230,6 @@ export const PageSectionSchema = () => {
         ],
       },
     },
-    required: ['id'],
   } as const;
 };
 
