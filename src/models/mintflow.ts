@@ -73,12 +73,12 @@ export const MintflowNodeSchema = () => {
         hidden: true,
         type: 'string',
       },
-      targetNodePos: {
+      inNodePos: {
         type: 'string',
         default: 'Top',
         enum: ['', 'Top', 'Right', 'Bottom', 'Left'],
       },
-      sourceNodePos: {
+      outNodePos: {
         type: 'string',
         default: 'Bottom',
         enum: ['', 'Top', 'Right', 'Bottom', 'Left'],

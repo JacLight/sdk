@@ -9,10 +9,14 @@ export const PostSchema = () => {
     properties: {
       name: {
         type: 'string',
+        title: 'Slug',
         pattern: '^[a-zA-Z_\\-0-9]*$',
         minLength: 3,
         maxLength: 50,
         unique: true,
+      },
+      title: {
+        type: 'string',
       },
       template: {
         type: 'string',
