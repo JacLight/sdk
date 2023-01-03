@@ -55,6 +55,7 @@ export interface CollectionModel {
   enableSubSchema?: boolean;
   enableIndexing?: boolean;
   enableWorkflow?: boolean;
+  workflow?: string;
   permission?: {};
   rules?: CollectionRule[];
   validations?: {};

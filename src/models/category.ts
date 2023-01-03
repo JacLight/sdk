@@ -22,6 +22,12 @@ export const CategorySchema = () => {
         type: 'string',
         inputStyle: 'textarea',
       },
+      tags: {
+        type: 'array',
+        items: {
+          type: 'string'
+        }
+      },
       image: FileInfoSchema(),
       categories: {
         type: 'array',

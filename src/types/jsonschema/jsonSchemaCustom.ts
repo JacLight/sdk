@@ -178,6 +178,7 @@ export interface JsonSchemaCustom {
   hidden?: boolean;
   layout?: string;
   displaySize?: string;
+  templateObject: boolean
   clickToShow?: boolean;
   dataSource?: string | JsonSchemaCustom;
   parent?: string | JsonSchemaCustom;

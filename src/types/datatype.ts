@@ -64,5 +64,6 @@ export enum DataType {
   sf_discount = 'sf_discount',
   sf_marketing = 'sf_marketing',
   sf_inventory = 'sf_inventory',
-  location = 'location'
+  location = 'location',
+  flexdata = 'flexdata'
 }
