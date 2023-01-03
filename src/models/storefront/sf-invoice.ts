@@ -51,13 +51,14 @@ export const SFInvoiceSchema = () => {
       remarks: {
         type: 'string',
       },
-      items: {
+      products: {
         type: 'array',
         dataSource: {
           source: 'collection',
           collection: DataType.sf_product,
         },
         inputStyle: 'picker',
+        displayStyle: 'table',
         items: {
           type: 'object',
           properties: {

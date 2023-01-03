@@ -1,6 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../defaultschema';
-import { DataType } from '../types';
+import { DataType, FieldType } from '../types';
 import { CollectionRule, CollectionUI } from './collection';
 
 export const SettingSchema = () => {
@@ -14,29 +14,58 @@ export const SettingSchema = () => {
         maxLength: 50,
         unique: true,
       },
-      ownerType: {
-        type: 'string', // System, Role, Group, User
-      },
-      ownerId: {
+      orderEmailTemplate: getSettingItemSchema(),
+      orderSmsTemplate: getSettingItemSchema(),
+      ticketEmailTemplate: getSettingItemSchema(),
+      ticketSmsTemplate: getSettingItemSchema(),
+      registerEmailTemplate: getSettingItemSchema(),
+      registerSmsTemplate: getSettingItemSchema(),
+      passwordEmailTemplate: getSettingItemSchema(),
+      passwordSmsTemplate: getSettingItemSchema(),
+      workflowEmailTemplate: getSettingItemSchema(),
+      workflowSmsTemplate: getSettingItemSchema(),
+      smsGateway: {
         type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.config,
+          value: 'sk',
+          label: 'name'
+        }
       },
-      '^setting_': {
-        type: 'object',
-        displayStyle: 'card',
-        properties: {
-          '^property_': {
-            type: 'string',
-          },
-        },
-      },
-    },
+      emailGateway: {
+        type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.config,
+          value: 'sk',
+          label: 'name'
+        }
+      }
+    }
   } as const;
 };
+
+const getSettingItemSchema = () => (
+  {
+    type: 'string',
+    fieldType: FieldType.selectionmultiple,
+    dataSource: {
+      source: 'collection',
+      collection: DataType.messagetemplate,
+      value: 'sk',
+      label: 'name'
+    }
+  } as const
+)
 
 export const LogSchema = () => {
   return {
     type: 'object',
-    properties: {
+    fieldType: FieldType.selectionmultiple,
+    dataSource: {
       sourceType: { type: 'string' },
       source: { type: 'string' },
       logType: { type: 'string' },
@@ -54,6 +83,8 @@ export type LogModel = FromSchema<typeof ush>;
 
 export const SettingUI = (): CollectionUI[] => { return null };
 export const SettingRules = (): CollectionRule[] => { return [] };
+
+export type BaseSettingKeys = keyof typeof usgh.properties
 
 registerCollection('Setting', DataType.setting, SettingSchema(), SettingUI(), SettingRules())
 registerCollection('Log', DataType.log, LogSchema(), null, null)

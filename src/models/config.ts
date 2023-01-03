@@ -20,6 +20,9 @@ export const ConfigSchema = () => {
         enum: Object.values(ConfigType),
         disabled: true
       },
+      default: {
+        type: 'boolean',
+      },
       provider: {
         type: 'string',
         disabled: true

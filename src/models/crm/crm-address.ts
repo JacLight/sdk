@@ -8,6 +8,9 @@ export const AddressSchema = () => {
   return {
     type: 'object',
     properties: {
+      name: {
+        type: 'string',
+      },
       street1: {
         type: 'string',
       },
@@ -19,6 +22,17 @@ export const AddressSchema = () => {
       },
       zip: {
         type: 'string',
+      },
+      company: {
+        type: 'string',
+      },
+      email: {
+        type: 'string',
+        hidden: true
+      },
+      phone: {
+        type: 'string',
+        hidden: true
       },
       region: {
         type: 'string',

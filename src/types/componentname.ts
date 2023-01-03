@@ -31,11 +31,13 @@ export enum ComponentName {
   DataViz = 'DataViz',
   Customer360 = 'Customer360',
   ProductHome = 'ProductHome',
+  ShippingHome = 'ShippingHome',
+  ReturnHome = 'ReturnHome',
   BusinessLocations = 'BusinessLocations',
   ScrapeWebsite = 'ScrapeWebsite',
   SendMessage = 'SendMessage',
   ImageEditor = 'ImageEditor',
   CreativeStudio = 'CreativeStudio',
-  EmailDesigner = 'EmailDesigner',
+  TemplateEditor = 'TemplateEditor',
   ScriptEditor = 'ScriptEditor'
 }

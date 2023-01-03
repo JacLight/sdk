@@ -37,7 +37,7 @@ export const validUrl = (url: string) => {
 
 export function getRandomString(length = 20) {
   var randomChars =
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnpqrstuvwxyz0123456789';
   var result = '';
   for (var i = 0; i < length; i++) {
     result += randomChars.charAt(

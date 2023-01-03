@@ -48,7 +48,7 @@ export const SFProductSchema = () => {
         type: 'string',
       },
       stock: { type: 'number' },
-      shipping: {
+      parcel: {
         type: 'object',
         layout: 'horizontal',
         properties: {
@@ -235,7 +235,7 @@ export const SFProductUI = (): CollectionUI[] => {
           '1': '/properties/isbn',
         },
         {
-          '0': '/properties/shipping',
+          '0': '/properties/parcel',
         },
       ]
     },

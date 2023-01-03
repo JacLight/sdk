@@ -1,6 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../defaultschema';
-import { DataType } from '../types';
+import { DataType, FieldType } from '../types';
 import { CollectionUI, CollectionRule } from './collection';
 
 export const DataVizSchema = () => {
@@ -36,16 +36,37 @@ export const DataVizSchema = () => {
                 type: 'object',
                 properties: {
                   type: {
-                    type: 'string'
+                    type: 'string',
                   },
-                  config: {
-                    type: 'object'
+                  caption: {
+                    type: 'string',
+                    inputStyle: 'textarea'
+                  },
+                  table: {
+                    type: 'string',
+                    fieldType: FieldType.selectionmultiple,
+                    dataSource: {
+                      source: 'collection',
+                      collection: DataType.dataviz,
+                      value: 'sk',
+                      label: 'name',
+                      filter: { property: 'type', operation: 'equal', value: 'table' },
+                    },
+                  },
+                  chart: {
+                    type: 'string',
+                    fieldType: FieldType.selectionmultiple,
+                    dataSource: {
+                      source: 'collection',
+                      collection: DataType.dataviz,
+                      value: 'sk',
+                      label: 'name',
+                      filter: { property: 'type', operation: 'equal', value: 'chart' },
+                    },
                   },
                   style: {
-                    type: 'object'
-                  },
-                  data: {
-                    type: 'object'
+                    type: 'string',
+                    inputStyle: 'textarea'
                   },
                 }
               }
@@ -64,7 +85,7 @@ export const DataVizSchema = () => {
             type: 'string'
           },
           config: {
-            type: 'string'
+            type: 'object'
           },
           style: {
             type: 'string'

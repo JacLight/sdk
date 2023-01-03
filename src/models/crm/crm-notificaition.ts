@@ -52,7 +52,7 @@ export const NotificationSchema = () => {
       },
       status: {
         type: 'string',
-        enum: ['active', 'stop']
+        enum: ['active', 'stop', 'error', 'done']
       },
       lastRun: {
         type: 'string',

@@ -1,18 +1,17 @@
 import { DataType, CollectionType, JsonSchemaCustom } from './types';
-import { toTitleCase } from './utils';
 import { RoleType } from './types';
-import { BaseModel, CollectionRule, CollectionUI, PageModel, SettingModel, UserGroupModel, UserModel } from './models';
+import { BaseModel, CollectionRule, CollectionUI, PageModel, UserGroupModel, UserModel } from './models';
 
 const createConcreteCollection = (
-  dataType: DataType,
+  name: string,
   data: any
 ): BaseModel<any> => {
   return {
-    pk: dataType,
-    sk: dataType,
-    name: dataType,
+    pk: name,
+    sk: name,
+    name: name,
     data: data,
-    datatype: dataType,
+    datatype: DataType.collection,
     version: 0,
   };
 };
@@ -94,48 +93,6 @@ groups.push(
 );
 groups.push(createGroup('Admin', 'Omin Administrator', [RoleType.RootAdmin].join(',')));
 
-export const baseSettings: SettingModel = {
-  name: 'BaseSettings',
-  ownertype: 'System',
-  ownerid: '',
-};
-const addSetting = (
-  resourcetype: 'component' | 'collection' | 'route',
-  resourceid: string,
-  property: string,
-  value: boolean | number | string
-) => {
-  const settingKey = `setting_${resourcetype}_${resourceid}`;
-  const thisSetting: any = baseSettings[settingKey] || {
-    title: toTitleCase(resourceid?.replace(/_/g, ' ')),
-  };
-
-  const valueString: string = value as string;
-  thisSetting[`property_${property}`] = valueString;
-  baseSettings[settingKey] = thisSetting;
-};
-
-addSetting('component', 'dataform', 'width', 600);
-addSetting('component', 'dataform', 'height', 800);
-addSetting('component', 'table', 'pagesize', 100);
-addSetting('component', 'table', 'autoscroll', true);
-addSetting('component', 'table', 'show', true);
-addSetting('component', 'table', 'pagerstyle', 'auto');
-addSetting('component', 'email_server', 'type', '');
-addSetting('component', 'email_server', 'url', '');
-addSetting('component', 'email_server', 'password', '');
-addSetting('component', 'email_server', 'username', '');
-addSetting('component', 'email_server', 'username', '');
-addSetting('component', 'email_template', 'order', '');
-addSetting('component', 'email_template', 'ticket', '');
-addSetting('component', 'email_template', 'signup', '');
-addSetting('component', 'email_template', 'passwordreset', '');
-addSetting('component', 'sms_template', 'order', '');
-addSetting('component', 'sms_template', 'signup', '');
-addSetting('component', 'sms_template', 'ticket', '');
-addSetting('component', 'sms_template', 'passwordreset', '');
-addSetting('component', 'site', 'name', 'Websitemint');
-addSetting('component', 'site', 'domain', 'localhost');
 
 export const rootPage: PageModel = {
   name: 'rootpage',

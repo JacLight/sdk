@@ -2,6 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionUI, CollectionRule } from '../collection';
 import { DataType } from '../../types';
+import { AddressSchema } from '../crm/crm-address';
 
 export const SFOrderSchema = () => {
     return {
@@ -10,30 +11,46 @@ export const SFOrderSchema = () => {
             store: { type: 'string' },
             number: {
                 type: 'string',
+                unique: true,
+                pattern: '^[^[a-zA-Z_\-0-9]*$',
+                minLength: 6,
+                maxLength: 18,
             },
             user: {
+                type: 'string',
+            },
+            name: {
+                type: 'string',
+            },
+            email: {
                 type: 'string',
             },
             currency: {
                 type: 'string',
             },
             amount: {
+                type: 'number',
+            },
+            trackingNumber: {
                 type: 'string',
             },
             conversion: {
                 type: 'string',
             },
             tax: {
-                type: 'string',
+                type: 'number',
             },
             discount: {
-                type: 'string',
+                type: 'number',
             },
             discountInfo: {
                 type: 'string',
             },
-            commission: {
+            discountCode: {
                 type: 'string',
+            },
+            commission: {
+                type: 'number',
             },
             status: {
                 type: 'string',
@@ -47,8 +64,21 @@ export const SFOrderSchema = () => {
             ip: {
                 type: 'string',
             },
-            items: {
+            paymentRef: {
+                type: 'string',
+            },
+            paymentGateway: {
+                type: 'string',
+            },
+            shippingMethod: {
+                type: 'string',
+            },
+            shippingFee: {
+                type: 'number',
+            },
+            products: {
                 type: 'array',
+                displayStyle: 'table',
                 items: {
                     type: 'object',
                     property: {
@@ -57,8 +87,8 @@ export const SFOrderSchema = () => {
                     }
                 }
             },
-            paymentAddress: { type: 'object' },
-            shippingAddress: { type: 'object' },
+            billingAddress: AddressSchema(),
+            shippingAddress: AddressSchema(),
             shipping: {
                 type: 'array'
             }

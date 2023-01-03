@@ -8,11 +8,15 @@ export const MessageSchema = () => {
     return {
         type: 'object',
         properties: {
-            bodyHtml: {
+            email: {
                 type: 'string',
                 fieldType: 'richtext',
             },
-            text: {
+            emailText: {
+                type: 'string',
+                inputStyle: 'textarea',
+            },
+            sms: {
                 type: 'string',
                 inputStyle: 'textarea',
             },
