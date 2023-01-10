@@ -3,7 +3,7 @@ import { toTitleCase } from '../utils';
 import {
   PermissionTypeComponent,
   PermissionTypeContent,
-} from './permissiontype';
+} from './permission-type';
 
 export enum RoleType {
   Guest = 'Guest',

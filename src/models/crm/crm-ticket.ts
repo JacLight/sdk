@@ -1,21 +1,43 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { registerCollection } from '../../defaultschema';
+import { registerCollection, registerDefaultData } from '../../defaultschema';
 import { CollectionUI, CollectionRule } from '../collection';
-import { DataType, FieldType } from '../../types';
+import { DataType, FieldType, FormViewSectionType } from '../../types';
 
 export const TicketSchema = () => {
   return {
     type: 'object',
     properties: {
+      reportedBy: {
+        title: 'Name',
+        type: 'string',
+        hidden: true
+      },
+      reportedByEmail: {
+        title: 'Email',
+        type: 'string',
+        format: 'email',
+        hidden: true
+      },
+      reportedByPhone: {
+        title: 'Phone',
+        type: 'string',
+        hidden: true
+      },
       title: {
         type: 'string',
       },
-      story: { type: 'string', inputStyle: 'textarea' },
+      story: {
+        type: 'string',
+        inputStyle: 'textarea',
+        rows: 4
+      },
       priority: {
         type: 'string',
+        enum: ['low', 'medium', 'high', 'urgent']
       },
       severity: {
         type: 'string',
+        enum: ['minor', 'major', 'critical', 'catastrophic']
       },
       channel: {
         type: 'string',
@@ -43,10 +65,6 @@ export const TicketSchema = () => {
         type: 'string',
         hidden: true
       },
-      reportedBy: {
-        type: 'string',
-        disabled: true
-      },
       assignments: {
         type: 'array',
         title: 'Assignments',
@@ -67,9 +85,35 @@ export const TicketSchema = () => {
   } as const;
 };
 
+
+export const TicketUI = (): CollectionUI[] => {
+  return [
+    {
+      type: FormViewSectionType.section2column,
+      items: [
+        {
+          '0': '/properties/reportedBy',
+          '1': '/properties/reportedByEmail',
+          '2': '/properties/reportedByPhone',
+        },
+
+      ],
+    },
+    {
+      type: FormViewSectionType.section1column,
+      default: true,
+      collapsible: true,
+    }
+  ]
+}
+
 const tt = TicketSchema();
 export type TicketModel = FromSchema<typeof tt>;
 
-export const TicketUI = (): CollectionUI[] => { return null };
 export const TicketRules = (): CollectionRule[] => { return null };
 registerCollection('Ticket', DataType.ticket, TicketSchema(), TicketUI(), TicketRules(), true, true)
+
+const genDefaultData = () => {
+  return { status: 'new', priority: 'low', severity: 'minor', stage: 0 }
+};
+registerDefaultData(DataType.ticket, genDefaultData)

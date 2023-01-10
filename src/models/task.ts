@@ -1,6 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../defaultschema';
-import { DataType, FieldType } from '../types';
+import { DataType, FieldType, TaskStatus } from '../types';
 import { CollectionRule, CollectionUI } from './collection';
 
 export const TaskSchema = () => {
@@ -9,6 +9,7 @@ export const TaskSchema = () => {
         properties: {
             workflowId: {
                 type: 'string',
+                readOnly: true,
                 fieldType: FieldType.selectionmultiple,
                 dataSource: {
                     source: 'collection',
@@ -19,7 +20,7 @@ export const TaskSchema = () => {
             },
             status: {
                 type: 'string',
-                enum: ['new', 'pending', 'inprogress', 'blocked', 'done', 'canceled']
+                enum: Object.values(TaskStatus)
             },
             name: {
                 type: 'string',
@@ -29,11 +30,9 @@ export const TaskSchema = () => {
                 inputStyle: 'textarea'
             },
             stageId: {
+                title: 'Stage',
                 type: 'number',
                 disabled: true,
-            },
-            eventDate: {
-                type: 'string',
             },
             note: {
                 type: 'string',
@@ -41,11 +40,11 @@ export const TaskSchema = () => {
             },
             resourceType: {
                 type: 'string',
-                hidden: true
+                disabled: true
             },
             resourceId: {
                 type: 'string',
-                hidden: true
+                disabled: true
             },
             assignType: {
                 type: 'string',
@@ -62,7 +61,7 @@ export const TaskSchema = () => {
                     source: 'collection',
                     collection: DataType.usergroup,
                     value: 'sk',
-                    label: 'name',
+                    label: 'username',
                 },
             },
         }
@@ -80,6 +79,11 @@ export const TaskRules = (): CollectionRule[] => {
                     targetField: '/properties/assignTo/dataSource/collection',
                     sourceField: '/properties/assignType',
                 },
+                {
+                    operation: 'setProperty',
+                    targetField: '/properties/assignTo/dataSource/label',
+                    value: 'name',
+                },
             ],
             condition: {
                 type: 'and',
@@ -88,6 +92,27 @@ export const TaskRules = (): CollectionRule[] => {
                         value: true,
                         field1: '/properties/assignType',
                         operation: 'notEmpty',
+                    },
+                ],
+            },
+
+        },
+        {
+            name: 'Actor Type',
+            action: [
+                {
+                    operation: 'setProperty',
+                    targetField: '/properties/assignTo/dataSource/label',
+                    value: 'username',
+                },
+            ],
+            condition: {
+                type: 'and',
+                param: [
+                    {
+                        value: 'user',
+                        field1: '/properties/assignType',
+                        operation: 'equal',
                     },
                 ],
             },

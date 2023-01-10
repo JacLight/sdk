@@ -1,26 +1,41 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionUI, CollectionRule } from '../collection';
-import { DataType } from '../../types';
+import { DataType, FieldType, FormViewSectionType } from '../../types';
 import { AddressSchema } from '../crm/crm-address';
 
 export const SFOrderSchema = () => {
     return {
         type: 'object',
         properties: {
-            store: { type: 'string' },
+            store: {
+                type: 'string',
+                fieldType: FieldType.selectionmultiple,
+                dataSource: {
+                    source: 'collection',
+                    collection: DataType.location,
+                    value: 'sk',
+                    label: 'name',
+                },
+            },
             number: {
                 type: 'string',
                 unique: true,
-                pattern: '^[^[a-zA-Z_\-0-9]*$',
-                minLength: 6,
-                maxLength: 18,
+                readOnly: true
             },
-            user: {
+            status: {
                 type: 'string',
+                enum: ['new', 'payment', 'paid', 'unfulfilled', 'fulfilled', 'refunded']
             },
             name: {
                 type: 'string',
+                fieldType: FieldType.selectionmultiple,
+                dataSource: {
+                    source: 'collection',
+                    collection: DataType.user,
+                    value: 'sk',
+                    label: 'username',
+                },
             },
             email: {
                 type: 'string',
@@ -30,12 +45,6 @@ export const SFOrderSchema = () => {
             },
             amount: {
                 type: 'number',
-            },
-            trackingNumber: {
-                type: 'string',
-            },
-            conversion: {
-                type: 'string',
             },
             tax: {
                 type: 'number',
@@ -52,9 +61,6 @@ export const SFOrderSchema = () => {
             commission: {
                 type: 'number',
             },
-            status: {
-                type: 'string',
-            },
             affiliate: {
                 type: 'string',
             },
@@ -70,35 +76,158 @@ export const SFOrderSchema = () => {
             paymentGateway: {
                 type: 'string',
             },
-            shippingMethod: {
-                type: 'string',
-            },
-            shippingFee: {
-                type: 'number',
-            },
             products: {
                 type: 'array',
+                hideLabel: true,
+                dataSource: {
+                    source: 'collection',
+                    collection: DataType.sf_product,
+                },
                 displayStyle: 'table',
                 items: {
                     type: 'object',
                     property: {
-                        quantity: { type: 'number' },
-                        product: { type: 'object' }
+                        sku: {
+                            type: 'string',
+                        },
+                        name: {
+                            type: 'string',
+                        },
+                        options: {
+                            type: 'string',
+                        },
+                        quantity: {
+                            type: 'number',
+                        },
+                        image: {
+                            type: 'string',
+                        },
                     }
                 }
             },
-            billingAddress: AddressSchema(),
-            shippingAddress: AddressSchema(),
-            shipping: {
-                type: 'array'
+            shippingAddress: { ...AddressSchema() },
+            billingAddress: { ...AddressSchema() },
+            shippingInfo: {
+                type: 'array',
+                hideLabel: true,
+                items: {
+                    type: 'object',
+                    properties: {
+                        carrier: {
+                            type: 'string'
+                        },
+                        tracker: {
+                            type: 'string'
+                        },
+                        rate: {
+                            type: 'string'
+                        },
+                        cost: {
+                            type: 'string'
+                        }
+                    }
+                }
             }
         },
     } as const;
 };
 
+
+export const SFOrderUI = (): CollectionUI[] => {
+    return [
+        {
+            type: FormViewSectionType.section2column,
+            items: [
+                {
+                    '0': '/properties/store',
+                    '1': '/properties/number',
+                    '2': '/properties/status',
+                },
+                {
+                    '0': '/properties/name',
+                    '1': '/properties/email',
+                },
+            ]
+        },
+        {
+            type: FormViewSectionType.section2column,
+            collapsible: true,
+            title: 'products',
+            items: [
+                {
+                    '0': '/properties/products',
+                },
+
+            ]
+        },
+        {
+            type: FormViewSectionType.section2column,
+            title: 'Payment',
+            collapsible: true,
+            items: [
+                {
+                    '0': '/properties/paymentRef',
+                    '1': '/properties/paymentGateway',
+                },
+                {
+                    '0': '/properties/currency',
+                    '1': '/properties/tax',
+                    '2': '/properties/amount',
+                },
+                {
+                    '0': '/properties/discount',
+                    '1': '/properties/discountInfo',
+                    '2': '/properties/discountCode',
+                },
+                {
+                    '1': '/properties/commission',
+                    '2': '/properties/affiliate',
+                },
+                {
+                    '0': '/properties/ip',
+                    '1': '/properties/remarks',
+                },
+            ]
+        },
+        {
+            type: FormViewSectionType.section2column,
+            collapsible: true,
+            title: 'Shipping Address',
+            items: [
+                {
+                    '0': '/properties/shippingAddress',
+                },
+
+            ]
+        },
+        {
+            type: FormViewSectionType.section2column,
+            collapsible: true,
+            title: 'Billing Address',
+            items: [
+                {
+                    '0': '/properties/billingAddress',
+                },
+
+            ]
+        },
+        {
+            type: FormViewSectionType.section2column,
+            collapsible: true,
+            title: 'Shipping Info',
+            items: [
+                {
+                    '0': '/properties/shippingInfo',
+                },
+
+            ]
+        },
+
+    ]
+}
+
 const ms = SFOrderSchema();
 export type SFOrderModel = FromSchema<typeof ms>;
 
-export const SFOrderUI = (): CollectionUI[] => { return null };
 export const SFOrderRules = (): CollectionRule[] => { return null };
 registerCollection('Store Order', DataType.sf_order, SFOrderSchema(), SFOrderUI(), SFOrderRules())

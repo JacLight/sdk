@@ -7,11 +7,26 @@ export const SFGiftCardSchema = () => {
     return {
         type: 'object',
         properties: {
-            serial: { type: 'string' },
-            code: { type: 'string' },
+            serial: {
+                type: 'string',
+                pattern: '^[^[a-zA-Z_\-0-9]*$',
+                readOnly: true
+            },
+            batch: {
+                type: 'string',
+                pattern: '^[^[a-zA-Z_\-0-9]*$',
+                readOnly: true
+            },
+            code: {
+                type: 'string',
+                pattern: '^[^[a-zA-Z_\-0-9]*$',
+                readOnly: true
+            },
+            noOfUse: {
+                type: 'number'
+            },
             amount: { type: 'number' },
             amountUsed: { type: 'number' },
-            batch: { type: 'string' },
             agent: { type: 'string' },
             boughtBy: { type: 'number' },
             boughtDate: { type: 'string' },
@@ -23,16 +38,29 @@ export const SFGiftCardSchema = () => {
                         user: { type: 'string' },
                         date: { type: 'string' },
                         amount: { type: 'number' },
-                        order: { type: 'string' }
+                        orderNumber: { type: 'string' }
                     }
                 }
             },
-            status: { type: 'string' },
-            type: { type: 'string' },
-            limits: { type: 'string' },
-            allowedSku: { type: 'string' },
-            allowedUser: { type: 'string' },
-            maxUses: { type: 'number' },
+            type: {
+                type: 'string'
+            },
+            limits: {
+                type: 'string'
+            },
+            sku: {
+                type: 'string'
+            },
+            user: {
+                type: 'string'
+            },
+            category: {
+                type: 'string'
+            },
+            status: {
+                type: 'string',
+                enum: ['new', 'assigned', 'sold', 'used']
+            },
         },
     } as const;
 };

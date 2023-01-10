@@ -33,13 +33,13 @@ export enum DataType {
   ticket = 'ticket',
   chat = 'chat',
   call = 'call',
-  contact = 'contact',
   message = 'message',
   notification = 'notification',
   trash = 'trash',
   log = 'log',
   company = 'company',
   address = 'address',
+  customer = 'customer',
   calllog = 'calllog',
   chatmessage = 'chatmessage',
   chatgroup = 'chatgroup',
@@ -65,5 +65,6 @@ export enum DataType {
   sf_marketing = 'sf_marketing',
   sf_inventory = 'sf_inventory',
   location = 'location',
-  flexdata = 'flexdata'
+  flexdata = 'flexdata',
+  escalation = 'escalation'
 }

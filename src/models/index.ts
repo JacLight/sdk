@@ -25,3 +25,4 @@ export * from './dataviz';
 export * from './fileinfo';
 export * from './location';
 export * from './flexdata';
+export * from './escalation';

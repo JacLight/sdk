@@ -32,6 +32,7 @@ export enum ComponentName {
   Customer360 = 'Customer360',
   ProductHome = 'ProductHome',
   ShippingHome = 'ShippingHome',
+  OrderHome = 'OrderHome',
   ReturnHome = 'ReturnHome',
   BusinessLocations = 'BusinessLocations',
   ScrapeWebsite = 'ScrapeWebsite',

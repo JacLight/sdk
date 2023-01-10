@@ -1,7 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionUI, CollectionRule } from '../collection';
-import { DataType } from '../../types';
+import { DataType, FieldType } from '../../types';
 
 export const SFPromotionSchema = () => {
     return {
@@ -12,9 +12,11 @@ export const SFPromotionSchema = () => {
             },
             start: {
                 type: 'string',
+                format: 'date-time'
             },
             end: {
                 type: 'string',
+                format: 'date-time'
             },
             discountType: {
                 type: 'string',
@@ -23,14 +25,45 @@ export const SFPromotionSchema = () => {
             discount: {
                 type: 'number',
             },
-            skus: {
-                type: 'array',
+            sku: {
+                type: 'string',
+                inputStyle: 'chip',
+                fieldType: FieldType.selectionmultiple,
+                dataSource: {
+                    source: 'collection',
+                    collection: DataType.sf_product,
+                    value: 'sk',
+                    label: 'sku',
+                },
             },
-            users: {
-                type: 'array',
+            user: {
+                type: 'string',
+                inputStyle: 'chip',
+                fieldType: FieldType.selectionmultiple,
+                dataSource: {
+                    source: 'collection',
+                    collection: DataType.user,
+                    value: 'sk',
+                    label: 'username',
+                },
+            },
+            category: {
+                type: 'string',
+                inputStyle: 'chip',
+                fieldType: FieldType.selectionmultiple,
+                dataSource: {
+                    source: 'collection',
+                    collection: DataType.category,
+                    value: 'sk',
+                    label: 'name',
+                },
             },
             usePerUser: {
                 type: 'number',
+            },
+            status: {
+                type: 'string',
+                enum: ['new', 'active', 'stopped'],
             },
         },
     } as const;
