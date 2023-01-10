@@ -147,7 +147,7 @@ export const SFProductSchema = () => {
       },
       bundle: {
         type: 'array',
-        inputStyle: 'table',
+        displayStyle: 'table',
         hideLabel: true,
         dataSource: {
           source: 'collection',

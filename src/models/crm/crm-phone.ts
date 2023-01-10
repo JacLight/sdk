@@ -6,8 +6,9 @@ import { DataType } from '../../types';
 export const PhoneSchema = () => {
   return {
     type: 'object',
+    layout: 'horizontal',
     properties: {
-      countrycode: {
+      countryCode: {
         type: 'string',
         pattern: '^[-$0-9]*$',
       },
@@ -18,10 +19,14 @@ export const PhoneSchema = () => {
       extension: {
         type: 'string',
       },
-      typeid: {
+      type: {
         type: 'string',
       },
       primary: {
+        type: 'boolean',
+        default: false,
+      },
+      verified: {
         type: 'boolean',
         default: false,
       },

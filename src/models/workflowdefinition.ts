@@ -1,6 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection, registerDefaultData } from '../defaultschema';
-import { DataType, FieldType } from '../types';
+import { DataType, FieldType, TaskStatus } from '../types';
 import { CollectionRule, CollectionUI } from './collection';
 import { TaskSchema } from './task';
 
@@ -21,6 +21,13 @@ export const WorkflowDefinitionSchema = () => {
             },
             sla: {
                 type: 'string',
+                fieldType: FieldType.selectionmultiple,
+                dataSource: {
+                    source: 'collection',
+                    collection: DataType.escalation,
+                    value: 'sk',
+                    label: 'name',
+                },
             },
             startFlow: {
                 type: 'string',
@@ -124,7 +131,7 @@ export const WorkflowStageSchema = () => {
                 fieldType: FieldType.uuid,
                 readOnly: true
             },
-            state: {
+            type: {
                 type: 'string',
                 enum: ['start', 'intermediate', 'end']
             },
@@ -136,6 +143,13 @@ export const WorkflowStageSchema = () => {
             },
             sla: {
                 type: 'string',
+                fieldType: FieldType.selectionmultiple,
+                dataSource: {
+                    source: 'collection',
+                    collection: DataType.escalation,
+                    value: 'sk',
+                    label: 'name',
+                },
             },
             flow: {
                 type: 'string',
@@ -143,6 +157,16 @@ export const WorkflowStageSchema = () => {
                 dataSource: {
                     source: 'collection',
                     collection: DataType.mintflow,
+                    value: 'sk',
+                    label: 'name',
+                },
+            },
+            notificationTemplate: {
+                type: 'string',
+                fieldType: FieldType.selectionmultiple,
+                dataSource: {
+                    source: 'collection',
+                    collection: DataType.messagetemplate,
                     value: 'sk',
                     label: 'name',
                 },
@@ -192,7 +216,7 @@ export const WorkflowSubSchema = () => {
             status: {
                 type: 'string',
                 disabled: true,
-                enum: ['new', 'pending', 'inprogress', 'blocked', 'done', 'canceled'],
+                enum: Object.values(TaskStatus),
                 default: 'new'
             },
             note: {
@@ -201,7 +225,7 @@ export const WorkflowSubSchema = () => {
             tasks: {
                 type: 'array',
                 items: TaskSchema(),
-                inputStyle: 'table',
+                displayStyle: 'table',
                 readOnly: true,
             },
         },
@@ -237,12 +261,11 @@ const genDefaultData = () => {
     return {
         tasks: [
             { status: 'new', name: 'Check Stock', description: 'Check if item is in stock', stageId: 0 },
-            { status: 'new', name: 'Prepare Shipping', description: 'Start shipping process', stageId: 0 },
-            { status: 'new', name: 'Process Billing', description: 'Billing needs to take place also', stageId: 0 },
         ],
         stages: [
-            { id: 0, state: 'start', name: 'To Do' },
-            { id: 1, state: 'end', name: 'Done' }
+            { id: 0, type: 'start', name: 'To Do' },
+            { id: 0, type: 'intermediate', name: 'In Progress' },
+            { id: 1, type: 'end', name: 'Done' }
         ]
     }
 };
@@ -254,4 +277,6 @@ const wfe = WorkflowSubSchema();
 export type WorkflowDefinitionModel = FromSchema<typeof wfd>;
 export type WorkflowSubModel = FromSchema<typeof wfe>;
 registerCollection('WorkflowDefinition', DataType.workflowdefinition, WorkflowDefinitionSchema(), WorkflowDefinitionUI(), WorkflowDefinitionRules())
+
+
 registerDefaultData(DataType.workflowdefinition, genDefaultData)

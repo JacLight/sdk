@@ -49,6 +49,7 @@ export const CommentListSchema = () => {
     properties: {
       comments: {
         type: 'array',
+        hideLabel: true,
         readOnly: true,
         items: {
           type: 'object',
@@ -71,6 +72,7 @@ export const CommentListSchema = () => {
       comment: {
         type: 'string',
         inputStyle: 'textarea',
+        displayStyle: 'outlined'
       },
     }
   } as const;
