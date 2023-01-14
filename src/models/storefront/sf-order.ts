@@ -150,7 +150,7 @@ export const SFOrderUI = (): CollectionUI[] => {
             ]
         },
         {
-            type: FormViewSectionType.section2column,
+            type: FormViewSectionType.sectiontable,
             collapsible: true,
             title: 'products',
             items: [

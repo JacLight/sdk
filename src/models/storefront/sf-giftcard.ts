@@ -1,7 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionUI, CollectionRule } from '../collection';
-import { DataType } from '../../types';
+import { DataType, FieldType } from '../../types';
 
 export const SFGiftCardSchema = () => {
     return {
@@ -45,17 +45,38 @@ export const SFGiftCardSchema = () => {
             type: {
                 type: 'string'
             },
-            limits: {
-                type: 'string'
-            },
             sku: {
-                type: 'string'
+                type: 'string',
+                inputStyle: 'chip',
+                fieldType: FieldType.selectionmultiple,
+                dataSource: {
+                    source: 'collection',
+                    collection: DataType.sf_product,
+                    value: 'sk',
+                    label: 'sku',
+                },
             },
             user: {
-                type: 'string'
+                type: 'string',
+                inputStyle: 'chip',
+                fieldType: FieldType.selectionmultiple,
+                dataSource: {
+                    source: 'collection',
+                    collection: DataType.user,
+                    value: 'sk',
+                    label: 'username',
+                },
             },
             category: {
-                type: 'string'
+                type: 'string',
+                inputStyle: 'chip',
+                fieldType: FieldType.selectionmultiple,
+                dataSource: {
+                    source: 'collection',
+                    collection: DataType.category,
+                    value: 'sk',
+                    label: 'name',
+                },
             },
             status: {
                 type: 'string',

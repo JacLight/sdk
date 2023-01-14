@@ -5,5 +5,6 @@ export enum FormViewSectionType {
   section3column = 'section3column',
   section4column = 'section4column',
   sectiontab = 'sectiontab',
+  sectiontable = 'sectiontable',
   sectionaccordion = 'sectionaccordion',
 }
