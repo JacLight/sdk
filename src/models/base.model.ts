@@ -3,11 +3,24 @@ import { DataType, FieldType } from '../types';
 import { CommentModel } from './comment';
 import { FileInfoSchema } from './fileinfo';
 import { WorkflowSubModel } from './workflowdefinition';
-export interface BaseModelDTO<T> {
-  page: number;
-  pagesize: number;
-  total: number;
-  data: BaseModel<T>[];
+
+
+export enum SortType {
+  desc = 'desc',
+  asc = 'asc',
+}
+export interface DataOptions {
+  sort?: any;
+  sortType?: SortType;
+  lastItem?: string;
+  page?: number;
+  pageSize?: number
+}
+export interface BaseModelDTO<T> extends DataOptions {
+  total?: number
+  datatype: DataType | string
+  error?: { message: string, code: number, stalk: any }
+  data?: BaseModel<T>[];
 }
 
 export interface BaseModel<T> {
