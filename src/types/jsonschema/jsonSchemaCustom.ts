@@ -182,4 +182,5 @@ export interface JsonSchemaCustom {
   clickToShow?: boolean;
   dataSource?: string | JsonSchemaCustom;
   parent?: string | JsonSchemaCustom;
+  indexable: boolean
 }
