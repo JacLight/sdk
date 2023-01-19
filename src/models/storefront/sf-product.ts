@@ -8,6 +8,11 @@ export const SFProductSchema = () => {
   return {
     type: 'object',
     properties: {
+      slug: {
+        type: 'string',
+        hidden: true,
+        pattern: '^[a-zA-Z_\\-0-9]*$',
+      },
       name: {
         type: 'string',
         label: 'Title'

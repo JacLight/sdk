@@ -94,3 +94,7 @@ export const isObjectString = (str: any) => {
 export const isJsonString = (str: any) => {
   return isArrayString(str) || isObjectString(str);
 };
+
+export const niceURI = (crappyURI: any) => {
+  return crappyURI.replace(/[^a-zA-Z0-9-_]/g, '-');
+};
