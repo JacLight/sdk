@@ -1,40 +1,49 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionUI, CollectionRule } from '../collection';
-import { DataType, FormViewSectionType, FieldType } from '../../types';
+import { DataType, FormViewSectionType } from '../../types';
 import { FileInfoSchema } from '../fileinfo';
 
 export const MessageSchema = () => {
     return {
         type: 'object',
         properties: {
-            email: {
+            from: {
                 type: 'string',
-                fieldType: 'richtext',
             },
-            emailText: {
+            to: {
                 type: 'string',
                 inputStyle: 'textarea',
             },
+            bodyHtml: {
+                title: 'Content',
+                type: 'string',
+                fieldType: 'richtext',
+            },
+            text: {
+                title: 'Content as text',
+                type: 'string',
+                inputStyle: 'textarea',
+                rows: 4,
+                displayStyle: 'outlined'
+            },
             sms: {
                 type: 'string',
+                rows: 4,
+                displayStyle: 'outlined',
                 inputStyle: 'textarea',
             },
             title: {
                 type: 'string',
             },
-            template: {
-                type: 'string',
-                fieldType: FieldType.selectionmultiple,
-                dataSource: {
-                    source: 'self',
-                    value: 'currencies',
-                    label: 'currencies',
-                },
-            },
             type: {
                 type: 'string',
-                enum: ['dialog', 'alert', 'popup', 'email', 'sms', 'whatsapp', 'slack']
+                enum: ['dialog', 'alert', 'popup', 'email', 'sms', 'whatsapp', 'slack'],
+                default: 'email'
+            },
+            maxTries: {
+                type: 'number',
+                default: 3
             },
             source: {
                 type: 'string',
@@ -44,13 +53,31 @@ export const MessageSchema = () => {
                 type: 'string',
                 fieldType: 'label'
             },
-            from: {
-                type: 'string',
+            tries: {
+                type: 'number',
+                fieldType: 'label'
             },
-            to: {
-                type: 'string',
-                inputStyle: 'textarea',
+
+            statusHistory: {
+                type: 'array',
+                fieldType: 'label',
+                items: {
+                    type: 'object',
+                    properties: {
+                        date: {
+                            type: 'string',
+                            format: 'date-time'
+                        },
+                        status: {
+                            type: 'string'
+                        },
+                        statusText: {
+                            type: 'string'
+                        }
+                    }
+                }
             },
+
             files: FileInfoSchema()
         },
         required: ['message', 'to', 'title', 'type'],
@@ -70,7 +97,6 @@ export const MessageUI = (): CollectionUI[] => {
                     items: [
                         {
                             '0': '/properties/type',
-                            '1': '/properties/template',
                         },
                         {
                             '0': '/properties/from',
@@ -84,6 +110,9 @@ export const MessageUI = (): CollectionUI[] => {
                         },
                         {
                             '0': '/properties/text',
+                        },
+                        {
+                            '0': '/properties/sms',
                         },
                         {
                             '0': '/properties/files',
@@ -107,7 +136,11 @@ export const MessageRules = (): CollectionRule[] => {
             action: [
                 {
                     operation: 'hide',
-                    targetField: '/properties/bodyHtml',
+                    targetField: ['/properties/bodyHtml', '/properties/text'],
+                },
+                {
+                    operation: 'show',
+                    targetField: ['/properties/sms'],
                 },
             ],
             condition: {
@@ -115,6 +148,25 @@ export const MessageRules = (): CollectionRule[] => {
                 param: [
                     {
                         value: 'sms',
+                        field1: '/properties/type',
+                        operation: 'equal',
+                    },
+                ],
+            },
+        },
+        {
+            name: 'Show Text',
+            action: [
+                {
+                    operation: 'show',
+                    targetField: ['/properties/text'],
+                },
+            ],
+            condition: {
+                type: 'and',
+                param: [
+                    {
+                        value: 'email',
                         field1: '/properties/type',
                         operation: 'equal',
                     },

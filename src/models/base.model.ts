@@ -7,7 +7,7 @@ import { WorkflowSubModel } from './workflowdefinition';
 
 export enum SortType {
   desc = 'desc',
-  asc = 'asc',
+  asc = 'asc'
 }
 export interface DataOptions {
   sort?: any;
@@ -15,10 +15,11 @@ export interface DataOptions {
   lastItem?: string;
   page?: number;
   pageSize?: number
+  lastPage?: number
 }
 export interface BaseModelDTO<T> extends DataOptions {
   total?: number
-  datatype: DataType | string
+  datatype?: DataType | string
   error?: { message: string, code: number, stalk: any }
   data?: BaseModel<T>[];
 }
@@ -48,11 +49,6 @@ export const PostSubSchema = () => {
       title: {
         type: 'string',
         hidden: true,
-      },
-      slug: {
-        type: 'string',
-        hidden: true,
-        pattern: '^[a-zA-Z_\\-0-9]*$',
       },
       summary: {
         type: 'string',
@@ -84,7 +80,10 @@ export const PostSubSchema = () => {
         format: 'date-time',
       },
       categories: {
-        type: 'string',
+        type: 'array',
+        items: {
+          type: 'string'
+        },
         inputStyle: 'chip',
         fieldType: FieldType.selectionmultiple,
         dataSource: {
@@ -95,7 +94,10 @@ export const PostSubSchema = () => {
         },
       },
       tags: {
-        type: 'string',
+        type: 'array',
+        items: {
+          type: 'string'
+        },
         inputStyle: 'chip',
         fieldType: FieldType.selectionmultiple,
         dataSource: {
