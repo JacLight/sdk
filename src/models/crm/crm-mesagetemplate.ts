@@ -27,13 +27,13 @@ export const MessageTemplateSchema = () => {
         type: 'array',
         hidden: true
       },
-      email: {
+      bodyHtml: {
         type: 'string',
         fieldType: 'Rich Text Editor',
         displayStyle: 'full',
         hidden: true
       },
-      emailText: {
+      text: {
         type: 'string',
         inputStyle: 'textarea',
         hidden: true

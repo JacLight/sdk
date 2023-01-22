@@ -26,6 +26,16 @@ export const NotificationSchema = () => {
           label: 'name',
         },
       },
+      message: {
+        type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.message,
+          value: 'sk',
+          label: 'name',
+        },
+      },
       channel: {
         type: 'string',
         fieldType: FieldType.selectionmultiple,
