@@ -9,4 +9,5 @@ export enum ConfigType {
   PostgresSQL = 'PostgresSQL',
   Kafka = 'Kafka',
   MySQL = 'MySQL',
+  MongoDB = 'MongoDB',
 }

@@ -1,6 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { DataType, FieldType, FormViewSectionType } from '../types';
-import { viewTemplateStore } from '../ViewTemplateStore';
+import { viewComponentStore } from '../view-component-store';
 import { CollectionRule, CollectionUI } from './collection';
 import { registerCollection } from '../defaultschema';
 import { isEmpty } from '../utils';
@@ -106,7 +106,6 @@ export const PageSectionSchema = () => {
   return {
     type: 'object',
     displayStyle: 'card',
-    hidden: true,
     properties: {
       id: {
         type: 'string',
@@ -132,19 +131,50 @@ export const PageSectionSchema = () => {
         type: 'number',
         hidden: true,
       },
+      style: {
+        type: 'string',
+        hidden: true,
+      },
+      className: {
+        type: 'string',
+        hidden: true,
+      },
       content: {
         type: 'string',
         hidden: true,
       },
-      detailTemplate: {
+      component: {
         type: 'string',
         hidden: true,
-        enum: isEmpty(viewTemplateStore.templateList) ? ['default'] : viewTemplateStore.templateList.map(template => template.name)
+        enum: isEmpty(viewComponentStore.components) ? ['default'] : viewComponentStore.components.map(component => component.name)
       },
-      listTemplate: {
-        type: 'string',
-        hidden: true,
-        enum: isEmpty(viewTemplateStore.templateList) ? ['default'] : viewTemplateStore.templateList.map(template => template.name)
+      fieldMap: {
+        type: 'array',
+        layout: 'horizontal',
+        items: {
+          type: 'object',
+          properties: {
+            templateProp: {
+              type: 'string',
+              fieldType: FieldType.selectionmultiple,
+              dataSource: {
+                source: 'json',
+                json: [],
+              },
+            },
+            dataProp: {
+              type: 'string',
+              fieldType: FieldType.selectionmultiple,
+              dataSource: {
+                source: 'json',
+                json: [],
+              },
+            },
+            hide: {
+              type: 'boolean',
+            },
+          }
+        }
       },
       manualSelection: {
         type: 'boolean',
@@ -292,6 +322,51 @@ export const PageUI = (): CollectionUI[] => {
   ];
 };
 
+
+export const PageSectionUI = (): CollectionUI[] => {
+  return [
+    {
+      type: FormViewSectionType.sectiontab,
+      tab: [
+        {
+          title: 'Data Selection',
+          items: [
+            {
+              '0': '/properties/manualSelection',
+              '1': '/properties/dataType',
+            },
+            {
+              '0': '/properties/selection',
+            },
+            {
+              '0': '/properties/postType',
+            },
+            {
+              '0': '/properties/category',
+            },
+            {
+              '0': '/properties/tag',
+            },
+            {
+              '0': '/properties/sort',
+            },
+          ],
+        },
+        {
+          title: 'Field Map',
+          items: [
+            {
+              '0': '/properties/fieldMap',
+            },
+          ],
+        },
+      ],
+    },
+  ];
+};
+
+
+
 export const PageRules = (): CollectionRule[] => {
   return [];
 };
@@ -330,13 +405,17 @@ export const PageSectionRules = (): CollectionRule[] => {
           sourceField: '/properties/dataType',
           valueFromField: true,
         },
+        {
+          operation: 'script',
+          value: ` schema.properties.fieldMap.items.properties.dataProp.dataSource.json = Object.keys(context.concreteCollections.get(data.dataType).data.schema.properties).map( key => ({label: key, value: key}));`,
+        },
       ],
       condition: {
         type: 'and',
         param: [
           {
             value: true,
-            field1: '/properties/datatype',
+            field1: '/properties/dataType',
             operation: 'notEmpty',
           },
         ],

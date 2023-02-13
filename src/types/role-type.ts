@@ -18,6 +18,7 @@ export enum RoleType {
   RootAdmin = 'RootAdmin',
   RootUser = 'RootUser',
   RootPowerUser = 'RootPowerUser',
+  Customer = 'Customer',
 }
 
 export const getPermission = () => {
@@ -28,6 +29,11 @@ export const getPermission = () => {
     },
 
     User: {
+      content: [PermissionTypeContent.read, PermissionTypeContent.create],
+      component: [PermissionTypeComponent.view],
+    },
+
+    Customer: {
       content: [PermissionTypeContent.read, PermissionTypeContent.create],
       component: [PermissionTypeComponent.view],
     },
