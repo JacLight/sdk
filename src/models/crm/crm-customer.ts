@@ -221,6 +221,12 @@ export const CustomerSchema = () => {
           }
         }
       },
+      subscriptions: {
+        type: 'array',
+        items: {
+          type: 'string',
+        }
+      }
     },
   } as const;
 };
@@ -266,6 +272,14 @@ export const CustomerUI = (): CollectionUI[] => {
           items: [
             {
               '0': '/properties/address',
+            },
+          ],
+        },
+        {
+          title: 'Subscriptions',
+          items: [
+            {
+              '0': '/properties/subscriptions',
             },
           ],
         },

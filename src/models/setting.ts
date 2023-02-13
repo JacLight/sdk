@@ -14,14 +14,20 @@ export const SettingSchema = () => {
         maxLength: 50,
         unique: true,
       },
+      emailTemplate: getSettingItemSchema(),
+      smsTemplate: getSettingItemSchema(),
       orderEmailTemplate: getSettingItemSchema(),
       orderSmsTemplate: getSettingItemSchema(),
       ticketEmailTemplate: getSettingItemSchema(),
       ticketSmsTemplate: getSettingItemSchema(),
       registerEmailTemplate: getSettingItemSchema(),
       registerSmsTemplate: getSettingItemSchema(),
-      passwordEmailTemplate: getSettingItemSchema(),
-      passwordSmsTemplate: getSettingItemSchema(),
+      profileUpdateEmailTemplate: getSettingItemSchema(),
+      profileUpdateSmsTemplate: getSettingItemSchema(),
+      passwordChangeEmailTemplate: getSettingItemSchema(),
+      passwordChangeSmsTemplate: getSettingItemSchema(),
+      passwordResetEmailTemplate: getSettingItemSchema(),
+      passwordResetSmsTemplate: getSettingItemSchema(),
       workflowEmailTemplate: getSettingItemSchema(),
       workflowSmsTemplate: getSettingItemSchema(),
       smsGateway: {
@@ -78,13 +84,16 @@ export const LogSchema = () => {
 const ush = LogSchema();
 const usgh = SettingSchema();
 
-export type SettingModel = FromSchema<typeof usgh>;
-export type LogModel = FromSchema<typeof ush>;
+type SettingModel = FromSchema<typeof usgh>;
+type LogModel = FromSchema<typeof ush>;
 
-export const SettingUI = (): CollectionUI[] => { return null };
-export const SettingRules = (): CollectionRule[] => { return [] };
+const SettingUI = (): CollectionUI[] => { return null };
+const SettingRules = (): CollectionRule[] => { return [] };
 
-export type BaseSettingKeys = keyof typeof usgh.properties
+type BaseSettingType = keyof typeof usgh.properties
+const BaseSettingKeys: { [key in BaseSettingType]?: BaseSettingType } = {}
+Object.keys(usgh.properties).forEach((key: string) => BaseSettingKeys[key as BaseSettingType] = key as BaseSettingType)
+export { SettingModel, LogModel, SettingUI, SettingRules, BaseSettingType, BaseSettingKeys }
 
 registerCollection('Setting', DataType.setting, SettingSchema(), SettingUI(), SettingRules())
 registerCollection('Log', DataType.log, LogSchema(), null, null)

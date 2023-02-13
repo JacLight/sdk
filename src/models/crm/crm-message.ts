@@ -8,10 +8,17 @@ export const MessageSchema = () => {
     return {
         type: 'object',
         properties: {
-            from: {
+            fromEmail: {
                 type: 'string',
             },
-            to: {
+            fromPhone: {
+                type: 'string',
+            },
+            toEmail: {
+                type: 'string',
+                inputStyle: 'textarea',
+            },
+            toPhone: {
                 type: 'string',
                 inputStyle: 'textarea',
             },

@@ -14,11 +14,19 @@ export const MessageTemplateSchema = () => {
         maxLength: 50,
         unique: true,
       },
-      from: {
+      fromEmail: {
         type: 'string',
       },
-      to: {
+      fromPhone: {
         type: 'string',
+      },
+      toEmail: {
+        type: 'string',
+        inputStyle: 'textarea',
+      },
+      toPhone: {
+        type: 'string',
+        inputStyle: 'textarea',
       },
       title: {
         type: 'string',
