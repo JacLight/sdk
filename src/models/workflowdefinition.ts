@@ -277,6 +277,4 @@ const wfe = WorkflowSubSchema();
 export type WorkflowDefinitionModel = FromSchema<typeof wfd>;
 export type WorkflowSubModel = FromSchema<typeof wfe>;
 registerCollection('WorkflowDefinition', DataType.workflowdefinition, WorkflowDefinitionSchema(), WorkflowDefinitionUI(), WorkflowDefinitionRules())
-
-
 registerDefaultData(DataType.workflowdefinition, genDefaultData)
