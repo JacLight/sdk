@@ -6,22 +6,24 @@ import { WorkflowSubModel } from './workflowdefinition';
 
 
 export enum SortType {
-  desc = 'desc',
-  asc = 'asc'
+  desc = -1,
+  asc = 1
 }
 export interface DataOptions {
   sort?: any;
   sortType?: SortType;
   lastItem?: string;
   page?: number;
-  pageSize?: number
-  lastPage?: number
+  pageSize?: number;
+  lastPage?: number;
+  refresh?: boolean;
 }
 export interface BaseModelDTO<T> extends DataOptions {
   total?: number
   datatype?: DataType | string
   error?: { message: string, code: number, stalk: any }
   data?: BaseModel<T>[];
+  fromCache?: boolean;
 }
 
 export interface BaseModel<T> {

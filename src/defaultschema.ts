@@ -101,10 +101,11 @@ export const rootPage: PageModel = {
   childEditing: 'append',
   site: '',
   breakpoints: [
-    { high: 480, low: 0, columns: 1 },
-    { high: 768, low: 480, columns: 2 },
-    { high: 996, low: 768, columns: 4 },
-    { high: 1200, low: 996, columns: 8 },
-    { high: 10000, low: 1200, columns: 12 },
+    { high: 480, low: 0, columns: 1, name: 'flex' },
+    { high: 640, low: 480, columns: 2, name: 'sm' },
+    { high: 768, low: 640, columns: 2, name: 'md' },
+    { high: 1024, low: 768, columns: 4, name: 'lg' },
+    { high: 1280, low: 1024, columns: 8, name: 'xl' },
+    { high: 10000, low: 1280, columns: 12, name: '2xl' },
   ],
 };

@@ -106,8 +106,12 @@ export const MessageUI = (): CollectionUI[] => {
                             '0': '/properties/type',
                         },
                         {
-                            '0': '/properties/from',
-                            '1': '/properties/to',
+                            '0': '/properties/fromEmail',
+                            '1': '/properties/toEmail',
+                        },
+                        {
+                            '0': '/properties/fromPhone',
+                            '1': '/properties/toPHone',
                         },
                         {
                             '0': '/properties/title',
@@ -143,11 +147,11 @@ export const MessageRules = (): CollectionRule[] => {
             action: [
                 {
                     operation: 'hide',
-                    targetField: ['/properties/bodyHtml', '/properties/text'],
+                    targetField: ['/properties/bodyHtml', '/properties/text', '/properties/fromEmail', '/properties/toEmail'],
                 },
                 {
                     operation: 'show',
-                    targetField: ['/properties/sms'],
+                    targetField: ['/properties/sms', '/properties/fromPhone', '/properties/toPhone'],
                 },
             ],
             condition: {
