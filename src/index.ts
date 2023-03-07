@@ -9,3 +9,4 @@ export * from './view-component-store';
 export * from './rules'
 export * from './data'
 export * from './rules/rules-types'
+export * from './appengine-client'

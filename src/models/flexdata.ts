@@ -1,7 +1,8 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { CollectionRule, CollectionUI } from './collection';
-import { ComponentName, DataType } from '../types';
+import { ComponentName, DataType, FieldType, FormViewSectionType } from '../types';
 import { registerCollection } from '../defaultschema';
+import { FileInfoSchema } from './fileinfo';
 
 export const FlexDataSchema = () => {
   return {
@@ -9,17 +10,17 @@ export const FlexDataSchema = () => {
     properties: {
       name: {
         type: 'string',
-        title: 'Slug',
-        pattern: '^[a-zA-Z_\\-0-9]*$',
         minLength: 3,
         maxLength: 50,
-        unique: true,
       },
       application: {
         type: 'string',
         enum: Object.values(ComponentName)
       },
-      data: {
+      type: {
+        type: 'string',
+      },
+      content: {
         type: 'object',
         properties: {
 
@@ -29,6 +30,60 @@ export const FlexDataSchema = () => {
     required: ['name', 'application']
   } as const;
 };
+
+export const FlexDataViewTemplateSchema = () => {
+  return {
+    type: 'object',
+    properties: {
+      code: {
+        type: 'string',
+        inputStyle: 'html',
+        fieldType: FieldType.code,
+        css: { height: '600px' },
+        hideLabel: true
+      },
+      usage: {
+        type: 'array',
+        items: {
+          type: 'string'
+        },
+        inputStyle: 'chip',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'json',
+          json: ['web', 'email', 'mobile']
+        },
+      },
+      source: {
+        type: 'string',
+        hidden: true
+      },
+      image: FileInfoSchema(),
+    },
+  } as const;
+};
+
+
+export const FlexDataViewTemplateUI = (): CollectionUI[] => {
+  return [
+    {
+      type: FormViewSectionType.section2column,
+      items: [
+        {
+          '0': '/properties/application',
+        },
+        {
+          '0': '/properties/name',
+          '1': '/properties/type',
+        },
+        {
+          '0': '/properties/content',
+        },
+      ],
+    },
+  ];
+};
+
 
 const rt = FlexDataSchema();
 export type FlexStoreModel = FromSchema<typeof rt>;
