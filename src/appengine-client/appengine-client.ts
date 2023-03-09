@@ -83,24 +83,23 @@ export class AppEngineClient {
   };
 
   async getSite() {
-    const sitePath = `${appEndpoints.get.path}/site/name/${this.appConfig.siteName}`
+    const sitePath = `${appEndpoints.query.path}/site/name/${this.appConfig.siteName}`
     const rt: any = await this.processRequest('get', sitePath, null, null);
     if (rt && Array.isArray(rt.data) && rt.data.length > 0) {
       const [site] = rt.data;
       if (site.data.mainNavigation) {
         const navPath = `${appEndpoints.get.path}/${DataType.navigation}/${site.data.mainNavigation}`
         const mainNav = await this.processRequest('get', navPath, null, null);
-        site.data.mainNavigation = mainNav?.data?.data;
+        site.data.mainNavigation = mainNav?.data?.data || [];
       }
 
       if (site.data.footerNavigation) {
         const navPath = `${appEndpoints.get.path}/${DataType.navigation}/${site.data.footerNavigation}`
         const footNav = await this.processRequest('get', navPath, null, null);
-        site.data.mainNavigation = footNav?.data?.data;
+        site.data.mainNavigation = footNav?.data?.data || [];
       }
 
-
-      const pagePath = `${appEndpoints.get.path}/${DataType.page}/site/${site.sk}`
+      const pagePath = `${appEndpoints.query.path}/${DataType.page}/site/${site.sk}`
       const pages = await this.processRequest('get', pagePath, null, null);
       site.data.pages = pages.data;
       if (site.data.languages) {

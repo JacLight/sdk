@@ -16,6 +16,9 @@ export const SiteSchema = () => {
         maxLength: 50,
         unique: true,
       },
+      template: {
+        type: 'string',
+      },
       title: {
         type: 'string',
       },
