@@ -40,5 +40,7 @@ export enum ComponentName {
   ImageEditor = 'ImageEditor',
   CreativeStudio = 'CreativeStudio',
   TemplateEditor = 'TemplateEditor',
-  ScriptEditor = 'ScriptEditor'
+  ScriptEditor = 'ScriptEditor',
+  SlideEditor = 'SlideEditor',
+  ViewTemplate = 'ViewTemplate'
 }

@@ -91,7 +91,7 @@ export const PostSubSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.category,
-          value: 'sk',
+          value: 'name',
           label: 'name',
         },
       },
@@ -105,7 +105,7 @@ export const PostSubSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.tag,
-          value: 'sk',
+          value: 'name',
           label: 'name',
         },
       },
