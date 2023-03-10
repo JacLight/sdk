@@ -1,5 +1,5 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { getCountryDropDownOptions, getLanguages } from '../../data';
+import { getCountryDropDownOptions, getLanguages } from '../data';
 import { registerCollection } from '../defaultschema';
 import { DataType, FieldType } from '../types';
 import { CollectionRule, CollectionUI } from './collection';
