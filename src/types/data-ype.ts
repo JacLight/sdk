@@ -66,5 +66,6 @@ export enum DataType {
   sf_inventory = 'sf_inventory',
   location = 'location',
   flexdata = 'flexdata',
-  escalation = 'escalation'
+  escalation = 'escalation',
+  translation = 'translation'
 }
