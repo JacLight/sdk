@@ -1,9 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { DataType, FieldType, FormViewSectionType } from '../types';
-import { viewComponentStore } from '../view-component-store';
 import { CollectionRule, CollectionUI } from './collection';
 import { registerCollection } from '../defaultschema';
-import { isEmpty } from '../utils';
 
 export const PageSchema = (title = '', description = '') => {
   return {
@@ -139,6 +137,10 @@ export const PageSectionSchema = () => {
         type: 'string',
         hidden: true,
       },
+      config: {
+        type: 'string',
+        hidden: true,
+      },
       content: {
         type: 'string',
         hidden: true,
@@ -146,7 +148,6 @@ export const PageSectionSchema = () => {
       component: {
         type: 'string',
         hidden: true,
-        enum: isEmpty(viewComponentStore.components) ? ['default'] : viewComponentStore.components.map(component => component.name)
       },
       fieldMap: {
         type: 'array',
@@ -156,11 +157,6 @@ export const PageSectionSchema = () => {
           properties: {
             templateProp: {
               type: 'string',
-              fieldType: FieldType.selectionmultiple,
-              dataSource: {
-                source: 'json',
-                json: [],
-              },
             },
             dataProp: {
               type: 'string',

@@ -1,5 +1,5 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { getCountryDropDownOptions, getLanguages } from '../data';
+import { getLanguages } from '../data';
 import { registerCollection } from '../defaultschema';
 import { DataType, FieldType } from '../types';
 import { CollectionRule, CollectionUI } from './collection';
@@ -21,17 +21,10 @@ export const TranslationSchema = () => {
       },
       item: {
         type: 'array',
+        layout: 'horizontal',
         items: {
           type: 'object',
           properties: {
-            country: {
-              type: 'string',
-              fieldType: FieldType.selectionmultiple,
-              dataSource: {
-                source: 'json',
-                json: getCountryDropDownOptions()
-              },
-            },
             language: {
               type: 'string',
               fieldType: FieldType.selectionmultiple,
@@ -46,9 +39,6 @@ export const TranslationSchema = () => {
           },
         }
       },
-      status: {
-        type: 'string',
-      }
     },
   } as const;
 };

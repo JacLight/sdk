@@ -5,5 +5,6 @@ export * from './crm-mesagetemplate';
 export * from './crm-phone';
 export * from './crm-ticket';
 export * from './crm-message';
-export * from './crm-notificaition';
+export * from './crm-notification';
 export * from './crm-customer';
+export * from './crm-event';

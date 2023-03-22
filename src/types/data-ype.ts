@@ -67,5 +67,6 @@ export enum DataType {
   location = 'location',
   flexdata = 'flexdata',
   escalation = 'escalation',
-  translation = 'translation'
+  translation = 'translation',
+  event = 'event'
 }

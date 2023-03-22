@@ -87,6 +87,16 @@ export const SiteSchema = () => {
           label: 'name',
         },
       },
+      mobileNavigation: {
+        type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.navigation,
+          value: 'sk',
+          label: 'name',
+        },
+      },
       footerNavigation: {
         type: 'string',
         fieldType: FieldType.selectionmultiple,
