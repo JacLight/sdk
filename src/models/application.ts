@@ -1,7 +1,8 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { ComponentType, ComponentName, DataType, FieldType } from '../types';
-import { CollectionRule, CollectionUI } from './collection';
 import { registerCollection } from '../defaultschema';
+import { CollectionRule } from './collection-rule';
+import { CollectionUI } from './collection-ui';
 
 export const ApplicationSchema = () => {
   return {

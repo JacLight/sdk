@@ -2,7 +2,8 @@ import { FromSchema } from 'json-schema-to-ts';
 import { getLanguages } from '../data';
 import { registerCollection } from '../defaultschema';
 import { DataType, FieldType } from '../types';
-import { CollectionRule, CollectionUI } from './collection';
+import { CollectionRule } from './collection-rule';
+import { CollectionUI } from './collection-ui';
 
 export const TranslationSchema = () => {
   return {

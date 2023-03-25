@@ -1,49 +1,7 @@
 import { registerCollection } from '../defaultschema';
-import { CollectionType, DataType, FieldType, FormViewSectionType } from '../types';
-
-export interface CollectionUIGroup {
-  title: string;
-  description?: string;
-  items?: { [key: string]: string }[];
-  type?: string;
-}
-export interface CollectionUI {
-  type: FormViewSectionType;
-  default?: boolean;
-  title?: string;
-  collapsible?: boolean;
-  items?: { [key: string]: string }[];
-  accordion?: CollectionUIGroup[];
-  tab?: CollectionUIGroup[];
-  buttons?: {
-    back?: { title: string; handler: () => {} };
-    next?: { title: string; handler: () => {} };
-    skip?: { title: string; handler: () => {} };
-    finish?: { title: string; handler: () => {} };
-  };
-  rules?: {};
-}
-
-export interface CollectionRule {
-  name: string;
-  condition?: {
-    type?: string;  //and or
-    param?: {
-      field1?: string; //property you want to read or compare
-      field2?: string; //property you want to read or compare
-      compareField?: boolean; // field or value
-      value?: string | number | boolean; // incase you're comparing to a fixed value  set it here
-      operation?: string;
-    }[];
-  };
-  action?: {
-    operation: string;
-    targetField?: string | string[]; //property you want to apply actions to
-    sourceField?: string, //property where the value you want to apply will come from
-    valueFromField?: boolean;
-    value?: string, // incase you're set to fixed value put it here
-  }[];
-}
+import { CollectionType, DataType, FieldType } from '../types';
+import { CollectionRule } from './collection-rule';
+import { CollectionUI } from './collection-ui';
 
 export interface CollectionModel {
   name: string;
@@ -133,15 +91,15 @@ export const CollectionSchema = () => {
 };
 
 
-export const CollectionUI = (): CollectionUI[] => { return null };
+export const CollectionUIDef = (): CollectionUI[] => { return null };
 export const CollectionRules = (): CollectionRule[] => { return null };
 
 export const CollectionFormSchema = CollectionSchema;
 export const CollectionViewSchema = CollectionSchema;
 
-registerCollection('CollectionForm', DataType.collectionform, CollectionSchema(), CollectionUI(), CollectionRules())
-registerCollection('CollectionView', DataType.collectionview, CollectionSchema(), CollectionUI(), CollectionRules())
-registerCollection('Collection', DataType.collection, CollectionSchema(), CollectionUI(), CollectionRules())
-registerCollection('SubSchema', DataType.subschema, CollectionSchema(), CollectionUI(), CollectionRules())
+registerCollection('CollectionForm', DataType.collectionform, CollectionSchema(), CollectionUIDef(), CollectionRules())
+registerCollection('CollectionView', DataType.collectionview, CollectionSchema(), CollectionUIDef(), CollectionRules())
+registerCollection('Collection', DataType.collection, CollectionSchema(), CollectionUIDef(), CollectionRules())
+registerCollection('SubSchema', DataType.subschema, CollectionSchema(), CollectionUIDef(), CollectionRules())
 
 

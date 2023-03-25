@@ -27,3 +27,5 @@ export * from './location';
 export * from './flexdata';
 export * from './escalation';
 export * from './translation';
+export * from './collection-rule';
+export * from './collection-ui';

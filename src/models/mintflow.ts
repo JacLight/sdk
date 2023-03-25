@@ -2,7 +2,8 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../defaultschema';
 import { FieldType } from '../types';
 import { DataType } from '../types';
-import { CollectionRule, CollectionUI } from './collection';
+import { CollectionRule } from './collection-rule';
+import { CollectionUI } from './collection-ui';
 
 export const MintflowSchema = () => {
   return {

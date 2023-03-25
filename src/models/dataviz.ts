@@ -1,7 +1,8 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../defaultschema';
 import { DataType, FieldType } from '../types';
-import { CollectionUI, CollectionRule } from './collection';
+import { CollectionRule } from './collection-rule';
+import { CollectionUI } from './collection-ui';
 
 export const DataVizSchema = () => {
   return {

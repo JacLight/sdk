@@ -2,7 +2,8 @@ import { FromSchema } from 'json-schema-to-ts';
 import { DataType, FieldType, FormViewSectionType } from '../types';
 import { FileInfoSchema } from './fileinfo';
 import { getCurrencies, getLanguages } from '../data';
-import { CollectionRule, CollectionUI } from './collection';
+import { CollectionRule } from './collection-rule';
+import { CollectionUI } from './collection-ui';
 import { registerCollection } from '../defaultschema';
 
 export const SiteSchema = () => {

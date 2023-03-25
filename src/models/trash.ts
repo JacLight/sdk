@@ -1,6 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { DataType } from '../types';
-import { CollectionRule, CollectionUI } from './collection';
+import { CollectionRule } from './collection-rule';
+import { CollectionUI } from './collection-ui';
 import { registerCollection } from '../defaultschema';
 
 export const TrashSchema = () => {
