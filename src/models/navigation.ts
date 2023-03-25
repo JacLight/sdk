@@ -1,5 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { CollectionRule, CollectionUI } from './collection';
+import { CollectionRule } from './collection-rule';
+import { CollectionUI } from './collection-ui';
 import { DataType, FieldType } from '../types';
 import { widgetStore } from '../WidgetStore';
 import { registerCollection } from '../defaultschema';

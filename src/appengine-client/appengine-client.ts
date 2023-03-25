@@ -1,6 +1,17 @@
 import { DataType } from "../types";
 import { appEndpoints } from "./endpoints";
+// import { decode } from "jsonwebtoken";
+// import { BaseModel } from "@models/base.model";
+// import { UserModel } from "@models/user";
 
+
+class CustomHttpError extends Error {
+  public response = { data: {}, status: 0 }
+  constructor(status: number, message: string, data: any) {
+    super(message)
+    this.response.data = data, this.response.status = status;
+  }
+}
 export class AppEngineClient {
   private renewTries = 0;
   private token: string = null;
@@ -24,6 +35,23 @@ export class AppEngineClient {
     }
   }
 
+  getUserFromToken(auth_token: string) {
+    if (!auth_token) {
+      console.error("user auth_token is undefined")
+      return null;
+    }
+
+    try {
+      const token = auth_token.split(" ")[1];
+      const user = { sk: '', token };// decode(token) as BaseModel<UserModel>;
+      return user
+    } catch (err) {
+      console.error(err)
+    }
+    return null;
+  };
+
+
   getBaseHeader(): { headers: any } {
     return {
       headers: {
@@ -43,8 +71,36 @@ export class AppEngineClient {
     return init;
   };
 
-  async processRequest(method: string, clientPath: string, clietData?: any, clientHeader?: any, clientQuery?: any): Promise<any> {
+  private userAuthPaths = ['user/customer']
+  async processRequest(method: string, clientPath: string, clientData?: any, clientHeader?: any, clientQuery?: any): Promise<any> {
     let path;
+
+    //check authorization
+    let clientAuthRequired = false
+    this.userAuthPaths.forEach(path => {
+      if (clientPath.includes(path)) {
+        clientAuthRequired = true
+      }
+    })
+    if (clientAuthRequired) {
+      const user = this.getUserFromToken(clientHeader?.authorization)
+      if (!user) {
+        return new CustomHttpError(401, 'Unauthorized', 'User information required');
+      }
+
+      if (clientPath.includes('repository/create') && clientData) {
+        if (!clientData.author || clientData.author !== user.sk) {
+          return new CustomHttpError(422, 'Data author not set', 'Invalid owner information, set author prop');
+        }
+      }
+
+      if (clientPath.includes('repository/update') && clientData) {
+        if (clientData.author && clientData.author !== user.sk) {
+          return new CustomHttpError(401, 'Unauthorized', 'Owner information required');
+        }
+      }
+    }
+
     if (clientPath.startsWith('/api')) {
       path = this.appConfig.appengine.host + "/" + clientPath.substring(clientPath.indexOf('/api/') + 5)
     } else {
@@ -52,7 +108,7 @@ export class AppEngineClient {
     }
     const header: any = await this.getHeaderWithToken();
     header['x-client-authorization'] = clientHeader?.authorization
-    const data = clietData;
+    const data = clientData;
     if (data) {
       data.clientQuery = clientQuery
     }

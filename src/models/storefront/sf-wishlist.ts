@@ -1,7 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
-import { CollectionUI, CollectionRule } from '../collection';
-import { DataType } from '../../types';
+import { CollectionRule } from '../collection-rule';
+import { CollectionUI } from '../collection-ui'; import { DataType } from '../../types';
 
 export const SFWishlistSchema = () => {
   return {

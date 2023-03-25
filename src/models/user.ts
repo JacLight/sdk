@@ -1,7 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../defaultschema';
 import { DataType, FieldType, FormViewSectionType, PermissionTypeComponent, PermissionTypeContent } from '../types';
-import { CollectionUI } from './collection';
+import { CollectionUI } from './collection-ui';
 import { FileInfoSchema } from './fileinfo';
 
 

@@ -1,8 +1,8 @@
-import { CollectionRule } from '../collection';
+import { CollectionRule } from '../collection-rule';
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { DataType, FieldType, FormViewSectionType } from '../../types';
-import { CollectionUI } from '../collection';
+import { CollectionUI } from '../collection-ui';
 import { FileInfoSchema } from '../fileinfo';
 import { PhoneSchema } from './crm-phone';
 

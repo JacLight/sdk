@@ -1,7 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
-import { CollectionUI, CollectionRule } from '../collection';
-import { DataType, FieldType } from '../../types';
+import { CollectionRule } from '../collection-rule';
+import { CollectionUI } from '../collection-ui'; import { DataType, FieldType } from '../../types';
 
 export const SFPromotionSchema = () => {
     return {

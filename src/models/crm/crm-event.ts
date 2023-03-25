@@ -2,48 +2,51 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
 import { CollectionUI } from '../collection-ui'; import { DataType } from '../../types';
-import { FileInfoSchema } from '../fileinfo';
 
-export const SFReceiptSchema = () => {
+export const EventSchema = () => {
     return {
         type: 'object',
         properties: {
-            parent: {
+            name: {
                 type: 'string',
             },
-            message: {
+            host: {
                 type: 'string',
             },
-            template: {
+            duration: {
+                type: 'string',
+            },
+            startTime: {
+                type: 'string',
+                format: 'date-time'
+            },
+            endTime: {
+                type: 'string',
+                format: 'date-time'
+            },
+            venue: {
+                type: 'string',
+            },
+            participants: {
                 type: 'string',
             },
             type: {
                 type: 'string',
             },
-            source: {
-                type: 'string',
-            },
             status: {
                 type: 'string',
             },
-            from: {
-                type: 'string',
-            },
-            to: {
-                type: 'string',
-            },
-            attachements: FileInfoSchema(),
-            conversation: {
-                type: 'string',
+            template: {
+                type: 'boolean',
             },
         },
     } as const;
 };
 
-const ms = SFReceiptSchema();
-export type SFReceiptModel = FromSchema<typeof ms>;
 
+const cs = EventSchema();
+export type EventModel = FromSchema<typeof cs>;
 
-export const SFReceiptUI = (): CollectionUI[] => { return null };
-export const SFReceiptRules = (): CollectionRule[] => { return null };
-registerCollection('Store Receipt', DataType.sf_receipt, SFReceiptSchema(), SFReceiptUI(), SFReceiptRules(), true)
+export const EventUI = (): CollectionUI[] => { return null };
+export const EventRules = (): CollectionRule[] => { return null };
+registerCollection('Event', DataType.event, EventSchema(), EventUI(), EventRules(), true)
