@@ -30,47 +30,15 @@ export const WorkflowDefinitionSchema = () => {
                     label: 'name',
                 },
             },
-            startFlow: {
+            reservation: {
                 type: 'string',
                 fieldType: FieldType.selectionmultiple,
                 dataSource: {
                     source: 'collection',
-                    collection: DataType.mintflow,
+                    collection: DataType.reservation,
                     value: 'sk',
                     label: 'name',
                 },
-            },
-            endFlow: {
-                type: 'string',
-                fieldType: FieldType.selectionmultiple,
-                dataSource: {
-                    source: 'collection',
-                    collection: DataType.mintflow,
-                    value: 'sk',
-                    label: 'name',
-                },
-            },
-            notificationTemplate: {
-                type: 'string',
-                fieldType: FieldType.selectionmultiple,
-                dataSource: {
-                    source: 'collection',
-                    collection: DataType.messagetemplate,
-                    value: 'sk',
-                    label: 'name',
-                },
-            },
-            tasks: {
-                type: 'array',
-                collapsible: true,
-                minItems: 1,
-                items: TaskSchema()
-            },
-            stages: {
-                type: 'array',
-                collapsible: true,
-                minItems: 2,
-                items: WorkflowStageSchema(),
             },
         },
         required: ['name', 'stages']
