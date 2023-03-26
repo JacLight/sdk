@@ -80,7 +80,6 @@ export const TicketSchema = () => {
           },
         }
       },
-
     },
   } as const;
 };

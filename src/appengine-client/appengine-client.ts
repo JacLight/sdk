@@ -119,7 +119,7 @@ export class AppEngineClient {
       if (method === 'post') {
         rt = await this.axios.post(path, data, header);
       } else if (method === 'put') {
-        rt = await this.axios.post(path, data, header);
+        rt = await this.axios.put(path, data, header);
       } else if (method === 'get') {
         rt = await this.axios.get(path, header);
       } else if (method === 'delete') {

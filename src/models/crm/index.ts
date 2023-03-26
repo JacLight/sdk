@@ -8,3 +8,4 @@ export * from './crm-message';
 export * from './crm-notification';
 export * from './crm-customer';
 export * from './crm-event';
+export * from './crm-reservation';
