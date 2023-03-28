@@ -48,7 +48,7 @@ export const SiteSchema = () => {
         fieldType: FieldType.selectionmultiple,
         dataSource: {
           source: 'json',
-          json: getCurrencies()
+          json: getCurrencies(),
         },
       },
       defautLanguage: {
@@ -66,7 +66,7 @@ export const SiteSchema = () => {
         fieldType: FieldType.selectionmultiple,
         dataSource: {
           source: 'json',
-          json: getLanguages()
+          json: getLanguages(),
         },
       },
       hostname: {
@@ -236,5 +236,7 @@ export const SiteUI = (): CollectionUI[] => {
 const dd = SiteSchema();
 export type SiteModel = FromSchema<typeof dd>;
 
-export const SiteRules = (): CollectionRule[] => { return [{ name: 'norule' }] };
-registerCollection('Site', DataType.site, SiteSchema(), SiteUI(), SiteRules())
+export const SiteRules = (): CollectionRule[] => {
+  return [{ name: 'norule' }];
+};
+registerCollection('Site', DataType.site, SiteSchema(), SiteUI(), SiteRules());

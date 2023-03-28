@@ -43,7 +43,6 @@ export const getPermission = () => {
       component: [PermissionTypeComponent.view],
     },
 
-
     Owner: {
       content: Object.values(PermissionTypeContent),
       component: Object.values(PermissionTypeComponent),
@@ -130,9 +129,9 @@ export const getPermissionRole = (roleName: RoleItemType) => {
 export const getDefaultUserRoles = (): BaseModel<UserRoleModel>[] => {
   const roles: any = [];
   Object.values(RoleType).forEach(role => {
-    const rolePermissions: any = getPermission()[role]
-    const compoentPermissions: [] = rolePermissions.component
-    const contentPermissions: [] = rolePermissions.content
+    const rolePermissions: any = getPermission()[role];
+    const compoentPermissions: [] = rolePermissions.component;
+    const contentPermissions: [] = rolePermissions.content;
     const newRole: UserRoleModel = {
       sk: role,
       name: role,
@@ -141,16 +140,15 @@ export const getDefaultUserRoles = (): BaseModel<UserRoleModel>[] => {
         description: role,
         type: 'system',
         permissions: {
-          component: compoentPermissions?.join(","),
-          content: contentPermissions?.join(",")
-        }
-      }
-    }
-    roles.push(newRole)
-  })
+          component: compoentPermissions?.join(','),
+          content: contentPermissions?.join(','),
+        },
+      },
+    };
+    roles.push(newRole);
+  });
   return roles;
 };
-
 
 export const getPermissionRoleEffective = (roleName: RoleItemType) => {
   if (roleName === RoleType.Guest || roleName === RoleType.User) {
@@ -166,24 +164,27 @@ export const getPermissionRoleEffective = (roleName: RoleItemType) => {
   if (addRole.component) {
     baseRole.component = Array.from(
       new Set([...baseRole.component, ...addRole.component])
-    )
+    );
   }
   return baseRole;
 };
-
 
 //use this method to get the aggregate permissions for a user
 export const getPermissionEffective = (roleNames: RoleItemType[]) => {
   let contentPermissions: string[] = [];
   let componentPermissions: string[] = [];
   if (!roleNames) {
-    roleNames = Object.values(RoleType)
+    roleNames = Object.values(RoleType);
   }
   roleNames.forEach(role => {
     const rolePermissions = getPermissionRoleEffective(role);
-    contentPermissions = Array.from(new Set([...contentPermissions, ...rolePermissions.content]))
-    componentPermissions = Array.from(new Set([...componentPermissions, ...rolePermissions.component]))
-  })
+    contentPermissions = Array.from(
+      new Set([...contentPermissions, ...rolePermissions.content])
+    );
+    componentPermissions = Array.from(
+      new Set([...componentPermissions, ...rolePermissions.component])
+    );
+  });
 
   return { content: contentPermissions, component: componentPermissions };
 };
@@ -191,7 +192,8 @@ export const getPermissionEffective = (roleNames: RoleItemType[]) => {
 export const getPermissionComponent = () => {
   const permission: PermissionModel = [];
   Object.values(RoleType).forEach((role: any) => {
-    if (role === 'RootAdmin' || role === 'ContentAdmin' || role === 'System') return;
+    if (role === 'RootAdmin' || role === 'ContentAdmin' || role === 'System')
+      return;
     permission.push({
       role: role,
       component: getPermissionRole(role).component,
@@ -204,7 +206,8 @@ export const getPermissionComponent = () => {
 export const getPermissionContent = () => {
   const permission: PermissionModel = [];
   Object.values(RoleType).forEach((role: any) => {
-    if (role === 'RootAdmin' || role === 'ConfigAdmin' || role === 'System') return;
+    if (role === 'RootAdmin' || role === 'ConfigAdmin' || role === 'System')
+      return;
     permission.push({
       role: role,
       content: getPermissionRole(role).content,
@@ -217,32 +220,36 @@ export const getPermissionContent = () => {
 export const getRolesWithContentPermission = () => {
   const premissionRoles: any = {};
   Object.values(RoleType).forEach((role: any) => {
-    const permission: any = getPermissionRoleEffective(role)
+    const permission: any = getPermissionRoleEffective(role);
     permission.content.forEach((item: string) => {
       if (premissionRoles[item]) {
-        premissionRoles[item].add(role)
+        premissionRoles[item].add(role);
       } else {
-        premissionRoles[item] = new Set([role])
+        premissionRoles[item] = new Set([role]);
       }
-    })
+    });
   });
 
-  Object.keys(premissionRoles).forEach(key => premissionRoles[key] = Array.from(premissionRoles[key]))
+  Object.keys(premissionRoles).forEach(
+    key => (premissionRoles[key] = Array.from(premissionRoles[key]))
+  );
   return premissionRoles;
-}
+};
 
 export const getRolesWithComponentPermission = () => {
   const premissionRoles: any = {};
   Object.values(RoleType).forEach((role: any) => {
-    const permission: any = getPermissionRoleEffective(role)
+    const permission: any = getPermissionRoleEffective(role);
     permission.component.forEach((item: string) => {
       if (premissionRoles[item]) {
-        premissionRoles[item].add(role)
+        premissionRoles[item].add(role);
       } else {
-        premissionRoles[item] = new Set([role])
+        premissionRoles[item] = new Set([role]);
       }
-    })
+    });
   });
-  Object.keys(premissionRoles).forEach(key => premissionRoles[key] = Array.from(premissionRoles[key]))
+  Object.keys(premissionRoles).forEach(
+    key => (premissionRoles[key] = Array.from(premissionRoles[key]))
+  );
   return premissionRoles;
-}
+};

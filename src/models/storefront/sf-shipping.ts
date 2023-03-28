@@ -1,7 +1,8 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
-import { CollectionUI } from '../collection-ui'; import { DataType, FieldType } from '../../types';
+import { CollectionUI } from '../collection-ui';
+import { DataType, FieldType } from '../../types';
 import { AddressSchema } from '../crm/crm-address';
 
 export const SFShippingSchema = () => {
@@ -10,7 +11,7 @@ export const SFShippingSchema = () => {
     properties: {
       courier: {
         type: 'string',
-        hidden: true
+        hidden: true,
       },
       orderNumber: {
         type: 'string',
@@ -64,21 +65,21 @@ export const SFShippingSchema = () => {
               layout: 'horizontal',
               properties: {
                 weight: {
-                  type: 'number'
+                  type: 'number',
                 },
                 length: {
-                  type: 'number'
+                  type: 'number',
                 },
                 height: {
-                  type: 'number'
+                  type: 'number',
                 },
                 width: {
-                  type: 'number'
+                  type: 'number',
                 },
-              }
+              },
             },
-          }
-        }
+          },
+        },
       },
       parcel: {
         type: 'array',
@@ -93,8 +94,8 @@ export const SFShippingSchema = () => {
             width: { type: 'number' },
             height: { type: 'number' },
             weight: { type: 'number' },
-          }
-        }
+          },
+        },
       },
       tracking: {
         type: 'string',
@@ -119,18 +120,18 @@ export const SFShippingSchema = () => {
       },
       cost: {
         hidden: true,
-        type: 'number'
+        type: 'number',
       },
       proofOfDelivery: {
         hidden: true,
         type: 'array',
         items: {
-          type: 'object'
-        }
+          type: 'object',
+        },
       },
       remarks: {
         hidden: true,
-        type: 'string'
+        type: 'string',
       },
     },
   } as const;
@@ -143,7 +144,8 @@ export const SFShippingRules = (): CollectionRule[] => {
       action: [
         {
           operation: 'script',
-          value: ' schema.properties.to.properties.region.dataSource.json = context.getCountryRegions(data.to.country) ',
+          value:
+            ' schema.properties.to.properties.region.dataSource.json = context.getCountryRegions(data.to.country) ',
           targetField: '/properties/to/properties/region',
           sourceField: '/properties/to/properties/country',
         },
@@ -159,11 +161,20 @@ export const SFShippingRules = (): CollectionRule[] => {
         ],
       },
     },
-  ]
+  ];
 };
 
 const ms = SFShippingSchema();
 export type SFShippingModel = FromSchema<typeof ms>;
 
-export const SFShippingUI = (): CollectionUI[] => { return null };
-registerCollection('Store Shipping', DataType.sf_shipping, SFShippingSchema(), SFShippingUI(), SFShippingRules(), true)
+export const SFShippingUI = (): CollectionUI[] => {
+  return null;
+};
+registerCollection(
+  'Store Shipping',
+  DataType.sf_shipping,
+  SFShippingSchema(),
+  SFShippingUI(),
+  SFShippingRules(),
+  true
+);

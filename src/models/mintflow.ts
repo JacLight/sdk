@@ -22,7 +22,7 @@ export const MintflowSchema = () => {
       instances: {
         type: 'number',
         maximum: 10,
-        minimum: 0
+        minimum: 0,
       },
       description: {
         type: 'string',
@@ -87,7 +87,7 @@ export const MintflowNodeSchema = () => {
     },
     required: ['name'],
   } as const;
-}
+};
 
 const ps = MintflowSchema();
 export type MintflowModel = FromSchema<typeof ps>;
@@ -95,7 +95,17 @@ export type MintflowModel = FromSchema<typeof ps>;
 const ps1 = MintflowNodeSchema();
 export type MintflowNodeModel = FromSchema<typeof ps1>;
 
-export const MintflowUI = (): CollectionUI[] => { return null };
-export const MintflowRules = (): CollectionRule[] => { return [] };
+export const MintflowUI = (): CollectionUI[] => {
+  return null;
+};
+export const MintflowRules = (): CollectionRule[] => {
+  return [];
+};
 
-registerCollection('Mintflow', DataType.mintflow, MintflowSchema(), MintflowUI(), MintflowRules())
+registerCollection(
+  'Mintflow',
+  DataType.mintflow,
+  MintflowSchema(),
+  MintflowUI(),
+  MintflowRules()
+);

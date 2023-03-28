@@ -1,7 +1,8 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
-import { CollectionUI } from '../collection-ui'; import { DataType } from '../../types';
+import { CollectionUI } from '../collection-ui';
+import { DataType } from '../../types';
 
 export const SFWishlistSchema = () => {
   return {
@@ -19,25 +20,35 @@ export const SFWishlistSchema = () => {
           type: 'object',
           properties: {
             sku: {
-              type: 'string'
+              type: 'string',
             },
             name: {
-              type: 'string'
+              type: 'string',
             },
             price: {
               type: 'number',
             },
           },
-        }
-      }
-    }
+        },
+      },
+    },
   } as const;
 };
 
 const ms = SFWishlistSchema();
 export type SFWishlistModel = FromSchema<typeof ms>;
 
-
-export const SFWishlistUI = (): CollectionUI[] => { return null };
-export const SFWishlistRules = (): CollectionRule[] => { return null };
-registerCollection('Store Wishlist', DataType.sf_wishlist, SFWishlistSchema(), SFWishlistUI(), SFWishlistRules(), true)
+export const SFWishlistUI = (): CollectionUI[] => {
+  return null;
+};
+export const SFWishlistRules = (): CollectionRule[] => {
+  return null;
+};
+registerCollection(
+  'Store Wishlist',
+  DataType.sf_wishlist,
+  SFWishlistSchema(),
+  SFWishlistUI(),
+  SFWishlistRules(),
+  true
+);

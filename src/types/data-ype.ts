@@ -21,7 +21,6 @@ export enum DataType {
   permission = 'permission',
   setting = 'setting',
   collectionview = 'collectionview',
-  collectionform = 'collectionform',
   dataviz = 'dataviz',
   mintflow = 'mintflow',
   mintflownode = 'mintflownode',

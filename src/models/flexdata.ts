@@ -1,7 +1,12 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { CollectionRule } from './collection-rule';
 import { CollectionUI } from './collection-ui';
-import { ComponentName, DataType, FieldType, FormViewSectionType } from '../types';
+import {
+  ComponentName,
+  DataType,
+  FieldType,
+  FormViewSectionType,
+} from '../types';
 import { registerCollection } from '../defaultschema';
 import { FileInfoSchema } from './fileinfo';
 
@@ -16,19 +21,17 @@ export const FlexDataSchema = () => {
       },
       application: {
         type: 'string',
-        enum: Object.values(ComponentName)
+        enum: Object.values(ComponentName),
       },
       type: {
         type: 'string',
       },
       content: {
         type: 'object',
-        properties: {
-
-        }
-      }
+        properties: {},
+      },
     },
-    required: ['name', 'application']
+    required: ['name', 'application'],
   } as const;
 };
 
@@ -41,29 +44,28 @@ export const FlexDataViewTemplateSchema = () => {
         inputStyle: 'html',
         fieldType: FieldType.code,
         css: { height: '600px' },
-        hideLabel: true
+        hideLabel: true,
       },
       usage: {
         type: 'array',
         items: {
-          type: 'string'
+          type: 'string',
         },
         inputStyle: 'chip',
         fieldType: FieldType.selectionmultiple,
         dataSource: {
           source: 'json',
-          json: ['web', 'email', 'mobile']
+          json: ['web', 'email', 'mobile'],
         },
       },
       source: {
         type: 'string',
-        hidden: true
+        hidden: true,
       },
       image: FileInfoSchema(),
     },
   } as const;
 };
-
 
 export const FlexDataViewTemplateUI = (): CollectionUI[] => {
   return [
@@ -85,10 +87,21 @@ export const FlexDataViewTemplateUI = (): CollectionUI[] => {
   ];
 };
 
-
 const rt = FlexDataSchema();
 export type FlexStoreModel = FromSchema<typeof rt>;
 
-export const FlexDataUI = (): CollectionUI[] => { return null };
-export const FlexDataRules = (): CollectionRule[] => { return [] };
-registerCollection('FlexData', DataType.flexdata, FlexDataSchema(), FlexDataUI(), FlexDataRules(), false, true);
+export const FlexDataUI = (): CollectionUI[] => {
+  return null;
+};
+export const FlexDataRules = (): CollectionRule[] => {
+  return [];
+};
+registerCollection(
+  'FlexData',
+  DataType.flexdata,
+  FlexDataSchema(),
+  FlexDataUI(),
+  FlexDataRules(),
+  false,
+  true
+);

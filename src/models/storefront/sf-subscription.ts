@@ -1,7 +1,8 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
-import { CollectionUI } from '../collection-ui'; import { DataType } from '../../types';
+import { CollectionUI } from '../collection-ui';
+import { DataType } from '../../types';
 
 export const SFSubscriptionSchema = () => {
   return {
@@ -35,8 +36,8 @@ export const SFSubscriptionSchema = () => {
           type: 'object',
           properties: {
             date: { type: 'string' },
-            transaction: { type: 'string' }
-          }
+            transaction: { type: 'string' },
+          },
         },
       },
     },
@@ -46,6 +47,17 @@ export const SFSubscriptionSchema = () => {
 const dd = SFSubscriptionSchema();
 export type SFSubscriptionSchema = FromSchema<typeof dd>;
 
-export const SFSubscriptionUI = (): CollectionUI[] => { return null };
-export const SFSubscriptionRules = (): CollectionRule[] => { return null };
-registerCollection('Store Subscription', DataType.sf_subscription, SFSubscriptionSchema(), SFSubscriptionUI(), SFSubscriptionRules(), true)
+export const SFSubscriptionUI = (): CollectionUI[] => {
+  return null;
+};
+export const SFSubscriptionRules = (): CollectionRule[] => {
+  return null;
+};
+registerCollection(
+  'Store Subscription',
+  DataType.sf_subscription,
+  SFSubscriptionSchema(),
+  SFSubscriptionUI(),
+  SFSubscriptionRules(),
+  true
+);

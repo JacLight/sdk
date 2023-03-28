@@ -1,7 +1,8 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
-import { CollectionUI } from '../collection-ui'; import { DataType, FieldType, FormViewSectionType } from '../../types';
+import { CollectionUI } from '../collection-ui';
+import { DataType, FieldType, FormViewSectionType } from '../../types';
 
 export const SFInvoiceSchema = () => {
   return {
@@ -9,7 +10,7 @@ export const SFInvoiceSchema = () => {
     properties: {
       id: {
         type: 'string',
-        pattern: '^[^[a-zA-Z_\-0-9]*$',
+        pattern: '^[^[a-zA-Z_-0-9]*$',
         minLength: 10,
         maxLength: 10,
         unique: true,
@@ -68,14 +69,13 @@ export const SFInvoiceSchema = () => {
             price: { type: 'number' },
             quantity: { type: 'number' },
             amount: { type: 'number', readOnly: true },
-          }
-        }
+          },
+        },
       },
     },
     required: ['name', 'sku'],
   } as const;
 };
-
 
 export const SFInvoiceUI = (): CollectionUI[] => {
   return [
@@ -93,9 +93,8 @@ export const SFInvoiceUI = (): CollectionUI[] => {
           '0': '/properties/invoiceData',
           '1': '/properties/dueDate',
           '2': '/properties/paymentDate',
-
         },
-      ]
+      ],
     },
     {
       type: FormViewSectionType.section2column,
@@ -105,7 +104,7 @@ export const SFInvoiceUI = (): CollectionUI[] => {
         {
           '0': '/properties/items',
         },
-      ]
+      ],
     },
     {
       type: FormViewSectionType.section2column,
@@ -119,14 +118,23 @@ export const SFInvoiceUI = (): CollectionUI[] => {
         {
           '0': '/properties/status',
           '1': '/properties/remarks',
-        }
-      ]
+        },
+      ],
     },
-  ]
-}
+  ];
+};
 
 const is = SFInvoiceSchema();
 export type SFInvoiceModel = FromSchema<typeof is>;
 
-export const SFInvoiceRules = (): CollectionRule[] => { return null };
-registerCollection('Store Invoice', DataType.sf_invoice, SFInvoiceSchema(), [], SFInvoiceRules(), true)
+export const SFInvoiceRules = (): CollectionRule[] => {
+  return null;
+};
+registerCollection(
+  'Store Invoice',
+  DataType.sf_invoice,
+  SFInvoiceSchema(),
+  [],
+  SFInvoiceRules(),
+  true
+);

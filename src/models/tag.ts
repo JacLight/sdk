@@ -39,15 +39,24 @@ export const TagGroupSchema = () => {
   } as const;
 };
 
-
 const ts = TagSchema();
 const tgs = TagGroupSchema();
 
 export type TagModel = FromSchema<typeof ts>;
 export type TagGroupModel = FromSchema<typeof tgs>;
 
-export const TagUI = (): CollectionUI[] => { return null };
-export const TagRules = (): CollectionRule[] => { return [] };
+export const TagUI = (): CollectionUI[] => {
+  return null;
+};
+export const TagRules = (): CollectionRule[] => {
+  return [];
+};
 
-registerCollection('Tag', DataType.tag, TagSchema(), TagUI(), TagRules())
-registerCollection('Tag Group', DataType.taggroup, TagGroupSchema(), TagUI(), TagRules())
+registerCollection('Tag', DataType.tag, TagSchema(), TagUI(), TagRules());
+registerCollection(
+  'Tag Group',
+  DataType.taggroup,
+  TagGroupSchema(),
+  TagUI(),
+  TagRules()
+);

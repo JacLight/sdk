@@ -31,19 +31,18 @@ export const TranslationSchema = () => {
               fieldType: FieldType.selectionmultiple,
               dataSource: {
                 source: 'json',
-                json: getLanguages()
+                json: getLanguages(),
               },
             },
             value: {
               type: 'string',
             },
           },
-        }
+        },
       },
     },
   } as const;
 };
-
 
 const dd = TranslationSchema();
 export type TranslationModel = FromSchema<typeof dd>;
@@ -56,7 +55,7 @@ export const TranslationRules = (): CollectionRule[] => {
         {
           operation: 'script',
           value: `  const regions = context.getCountryRegions(data.address.country); 
-                    schema.properties.address.properties.region.dataSource.json =  regions;`
+                    schema.properties.address.properties.region.dataSource.json =  regions;`,
         },
       ],
       condition: {
@@ -70,8 +69,16 @@ export const TranslationRules = (): CollectionRule[] => {
         ],
       },
     },
-  ]
+  ];
 };
 
-export const TranslationUI = (): CollectionUI[] => { return null };
-registerCollection('Translation', DataType.translation, TranslationSchema(), TranslationUI(), TranslationRules())
+export const TranslationUI = (): CollectionUI[] => {
+  return null;
+};
+registerCollection(
+  'Translation',
+  DataType.translation,
+  TranslationSchema(),
+  TranslationUI(),
+  TranslationRules()
+);

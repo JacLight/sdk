@@ -91,15 +91,26 @@ export const CollectionSchema = () => {
 };
 
 
-export const CollectionUIDef = (): CollectionUI[] => { return null };
-export const CollectionRules = (): CollectionRule[] => { return null };
-
-export const CollectionFormSchema = CollectionSchema;
 export const CollectionViewSchema = CollectionSchema;
 
-registerCollection('CollectionForm', DataType.collectionform, CollectionSchema(), CollectionUIDef(), CollectionRules())
-registerCollection('CollectionView', DataType.collectionview, CollectionSchema(), CollectionUIDef(), CollectionRules())
-registerCollection('Collection', DataType.collection, CollectionSchema(), CollectionUIDef(), CollectionRules())
-registerCollection('SubSchema', DataType.subschema, CollectionSchema(), CollectionUIDef(), CollectionRules())
-
-
+registerCollection(
+  'CollectionView',
+  DataType.collectionview,
+  CollectionSchema(),
+  null,
+  null
+);
+registerCollection(
+  'Collection',
+  DataType.collection,
+  CollectionSchema(),
+  null,
+  null
+);
+registerCollection(
+  'SubSchema',
+  DataType.subschema,
+  CollectionSchema(),
+  null,
+  null
+);

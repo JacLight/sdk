@@ -10,7 +10,7 @@ export const CommentSchema = () => {
     properties: {
       comment: {
         type: 'string',
-        inputStyle: 'textarea'
+        inputStyle: 'textarea',
       },
       user: {
         type: 'string',
@@ -57,33 +57,41 @@ export const CommentListSchema = () => {
           properties: {
             comment: {
               type: 'string',
-              fieldType: FieldType.paragraph
+              fieldType: FieldType.paragraph,
             },
             user: {
               type: 'string',
-              fieldType: FieldType.label
+              fieldType: FieldType.label,
             },
             time: {
               type: 'string',
-              fieldType: FieldType.label
+              fieldType: FieldType.label,
             },
           },
-        }
+        },
       },
       comment: {
         type: 'string',
         inputStyle: 'textarea',
-        displayStyle: 'outlined'
+        displayStyle: 'outlined',
       },
-    }
+    },
   } as const;
 };
-
-
 
 const cos = CommentSchema();
 export type CommentModel = FromSchema<typeof cos>;
 
-export const CommentUI = (): CollectionUI[] => { return null };
-export const CommentRules = (): CollectionRule[] => { return [] };
-registerCollection('Comment', DataType.comment, CommentSchema(), CommentUI(), CommentRules())
+export const CommentUI = (): CollectionUI[] => {
+  return null;
+};
+export const CommentRules = (): CollectionRule[] => {
+  return [];
+};
+registerCollection(
+  'Comment',
+  DataType.comment,
+  CommentSchema(),
+  CommentUI(),
+  CommentRules()
+);

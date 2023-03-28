@@ -38,8 +38,8 @@ export const SettingSchema = () => {
           source: 'collection',
           collection: DataType.config,
           value: 'sk',
-          label: 'name'
-        }
+          label: 'name',
+        },
       },
       emailGateway: {
         type: 'string',
@@ -48,25 +48,24 @@ export const SettingSchema = () => {
           source: 'collection',
           collection: DataType.config,
           value: 'sk',
-          label: 'name'
-        }
-      }
-    }
+          label: 'name',
+        },
+      },
+    },
   } as const;
 };
 
-const getSettingItemSchema = () => (
-  {
-    type: 'string',
-    fieldType: FieldType.selectionmultiple,
-    dataSource: {
-      source: 'collection',
-      collection: DataType.messagetemplate,
-      value: 'sk',
-      label: 'name'
-    }
-  } as const
-)
+const getSettingItemSchema = () =>
+({
+  type: 'string',
+  fieldType: FieldType.selectionmultiple,
+  dataSource: {
+    source: 'collection',
+    collection: DataType.messagetemplate,
+    value: 'sk',
+    label: 'name',
+  },
+} as const);
 
 export const LogSchema = () => {
   return {
@@ -88,13 +87,33 @@ const usgh = SettingSchema();
 type SettingModel = FromSchema<typeof usgh>;
 type LogModel = FromSchema<typeof ush>;
 
-const SettingUI = (): CollectionUI[] => { return null };
-const SettingRules = (): CollectionRule[] => { return [] };
+const SettingUI = (): CollectionUI[] => {
+  return null;
+};
+const SettingRules = (): CollectionRule[] => {
+  return [];
+};
 
-type BaseSettingType = keyof typeof usgh.properties
-const BaseSettingKeys: { [key in BaseSettingType]?: BaseSettingType } = {}
-Object.keys(usgh.properties).forEach((key: string) => BaseSettingKeys[key as BaseSettingType] = key as BaseSettingType)
-export { SettingModel, LogModel, SettingUI, SettingRules, BaseSettingType, BaseSettingKeys }
+type BaseSettingType = keyof typeof usgh.properties;
+const BaseSettingKeys: { [key in BaseSettingType]?: BaseSettingType } = {};
+Object.keys(usgh.properties).forEach(
+  (key: string) =>
+    (BaseSettingKeys[key as BaseSettingType] = key as BaseSettingType)
+);
+export {
+  SettingModel,
+  LogModel,
+  SettingUI,
+  SettingRules,
+  BaseSettingType,
+  BaseSettingKeys,
+};
 
-registerCollection('Setting', DataType.setting, SettingSchema(), SettingUI(), SettingRules())
-registerCollection('Log', DataType.log, LogSchema(), null, null)
+registerCollection(
+  'Setting',
+  DataType.setting,
+  SettingSchema(),
+  SettingUI(),
+  SettingRules()
+);
+registerCollection('Log', DataType.log, LogSchema(), null, null);

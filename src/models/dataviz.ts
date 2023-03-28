@@ -23,7 +23,7 @@ export const DataVizSchema = () => {
       },
       type: {
         type: 'string',
-        enum: ['dashboard', 'table', 'chart']
+        enum: ['dashboard', 'table', 'chart'],
       },
       sections: {
         hidden: true,
@@ -41,7 +41,7 @@ export const DataVizSchema = () => {
                   },
                   caption: {
                     type: 'string',
-                    inputStyle: 'textarea'
+                    inputStyle: 'textarea',
                   },
                   table: {
                     type: 'string',
@@ -51,7 +51,11 @@ export const DataVizSchema = () => {
                       collection: DataType.dataviz,
                       value: 'sk',
                       label: 'name',
-                      filter: { property: 'type', operation: 'equal', value: 'table' },
+                      filter: {
+                        property: 'type',
+                        operation: 'equal',
+                        value: 'table',
+                      },
                     },
                   },
                   chart: {
@@ -62,71 +66,81 @@ export const DataVizSchema = () => {
                       collection: DataType.dataviz,
                       value: 'sk',
                       label: 'name',
-                      filter: { property: 'type', operation: 'equal', value: 'chart' },
+                      filter: {
+                        property: 'type',
+                        operation: 'equal',
+                        value: 'chart',
+                      },
                     },
                   },
                   style: {
                     type: 'string',
-                    inputStyle: 'textarea'
+                    inputStyle: 'textarea',
                   },
-                }
-              }
+                },
+              },
             },
             style: {
-              type: 'object'
+              type: 'object',
             },
-          }
-        }
+          },
+        },
       },
       table: {
         hidden: true,
         type: 'object',
         properties: {
           type: {
-            type: 'string'
+            type: 'string',
           },
           config: {
-            type: 'object'
+            type: 'object',
           },
           style: {
-            type: 'string'
+            type: 'string',
           },
           data: {
-            type: 'string'
+            type: 'string',
           },
-        }
+        },
       },
       chart: {
         hidden: true,
         type: 'object',
         properties: {
           type: {
-            type: 'string'
+            type: 'string',
           },
           config: {
-            type: 'string'
+            type: 'string',
           },
           style: {
-            type: 'string'
+            type: 'string',
           },
           data: {
-            type: 'string'
+            type: 'string',
           },
-        }
-      }
+        },
+      },
     },
-    required: ['name']
+    required: ['name'],
   } as const;
 };
-
-
 
 const dd = DataVizSchema();
 export type DataVizModel = FromSchema<typeof dd>;
 
-export const DataVizUI = (): CollectionUI[] => { return null };
-export const DataVizRules = (): CollectionRule[] => { return null };
+export const DataVizUI = (): CollectionUI[] => {
+  return null;
+};
+export const DataVizRules = (): CollectionRule[] => {
+  return null;
+};
 
-registerCollection('DataViz', DataType.dataviz, DataVizSchema(), DataVizUI(), DataVizRules())
-
-
+registerCollection(
+  'DataViz',
+  DataType.dataviz,
+  DataVizSchema(),
+  DataVizUI(),
+  DataVizRules()
+);

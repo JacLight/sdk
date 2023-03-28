@@ -1,7 +1,8 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
-import { CollectionUI } from '../collection-ui'; import { DataType, FieldType } from '../../types';
+import { CollectionUI } from '../collection-ui';
+import { DataType, FieldType } from '../../types';
 import { getCountryDropDownOptions } from '../../data';
 
 export const AddressSchema = () => {
@@ -28,18 +29,18 @@ export const AddressSchema = () => {
       },
       email: {
         type: 'string',
-        hidden: true
+        hidden: true,
       },
       phone: {
         type: 'string',
-        hidden: true
+        hidden: true,
       },
       region: {
         type: 'string',
         fieldType: FieldType.selectionmultiple,
         dataSource: {
           source: 'json',
-          json: []
+          json: [],
         },
       },
       country: {
@@ -47,7 +48,7 @@ export const AddressSchema = () => {
         fieldType: FieldType.selectionmultiple,
         dataSource: {
           source: 'json',
-          json: getCountryDropDownOptions()
+          json: getCountryDropDownOptions(),
         },
       },
       type: {
@@ -64,7 +65,6 @@ export const AddressSchema = () => {
   } as const;
 };
 
-
 export const AddressRules = (): CollectionRule[] => {
   return [
     {
@@ -72,7 +72,8 @@ export const AddressRules = (): CollectionRule[] => {
       action: [
         {
           operation: 'script',
-          value: ' schema.properties.region.dataSource.json = context.getCountryRegions(data.country) ',
+          value:
+            ' schema.properties.region.dataSource.json = context.getCountryRegions(data.country) ',
           targetField: '/properties/region',
           sourceField: '/properties/country',
         },
@@ -88,10 +89,19 @@ export const AddressRules = (): CollectionRule[] => {
         ],
       },
     },
-  ]
+  ];
 };
 
 const dd = AddressSchema();
 export type AddressModel = FromSchema<typeof dd>;
-export const AddressUI = (): CollectionUI[] => { return null };
-registerCollection('Address', DataType.address, AddressSchema(), AddressUI(), AddressRules(), true)
+export const AddressUI = (): CollectionUI[] => {
+  return null;
+};
+registerCollection(
+  'Address',
+  DataType.address,
+  AddressSchema(),
+  AddressUI(),
+  AddressRules(),
+  true
+);

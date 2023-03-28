@@ -31,9 +31,9 @@ export const CompanySchema = () => {
       sites: {
         type: 'array',
         items: {
-          type: 'string'
-        }
-      }
+          type: 'string',
+        },
+      },
     },
   } as const;
 };
@@ -41,6 +41,16 @@ export const CompanySchema = () => {
 const dd = CompanySchema();
 export type CompanyModel = FromSchema<typeof dd>;
 
-export const CompanyUI = (): CollectionUI[] => { return null };
-export const CompanyRules = (): CollectionRule[] => { return [] };
-registerCollection('Company', DataType.company, CompanySchema(), CompanyUI(), CompanyRules())
+export const CompanyUI = (): CollectionUI[] => {
+  return null;
+};
+export const CompanyRules = (): CollectionRule[] => {
+  return [];
+};
+registerCollection(
+  'Company',
+  DataType.company,
+  CompanySchema(),
+  CompanyUI(),
+  CompanyRules()
+);

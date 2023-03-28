@@ -1,7 +1,8 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
-import { CollectionUI } from '../collection-ui'; import { DataType, FieldType, NotificationChannels } from '../../types';
+import { CollectionUI } from '../collection-ui';
+import { DataType, FieldType, NotificationChannels } from '../../types';
 import { toTitleCase } from '../../utils';
 
 export const NotificationSchema = () => {
@@ -42,37 +43,40 @@ export const NotificationSchema = () => {
         inputStyle: 'chip',
         dataSource: {
           source: 'json',
-          json: Object.values(NotificationChannels).map(key => ({ value: key, label: toTitleCase(key) }))
+          json: Object.values(NotificationChannels).map(key => ({
+            value: key,
+            label: toTitleCase(key),
+          })),
         },
       },
       to: {
-        type: 'string'
+        type: 'string',
       },
       schedule: {
         type: 'array',
         title: 'Schedule',
         items: {
           type: 'string',
-          format: 'date-time'
-        }
+          format: 'date-time',
+        },
       },
       cron: {
         type: 'string',
-        fieldType: FieldType.cron
+        fieldType: FieldType.cron,
       },
       status: {
         type: 'string',
-        enum: ['active', 'stop', 'error', 'done']
+        enum: ['active', 'stop', 'error', 'done'],
       },
       lastRun: {
         type: 'string',
         format: 'date-time',
-        readOnly: true
+        readOnly: true,
       },
       nextRun: {
         type: 'string',
         format: 'date-time',
-        readOnly: true
+        readOnly: true,
       },
     },
   } as const;
@@ -81,6 +85,17 @@ export const NotificationSchema = () => {
 const dd = NotificationSchema();
 export type NotificationModel = FromSchema<typeof dd>;
 
-export const NotificationUI = (): CollectionUI[] => { return null };
-export const NotificationRules = (): CollectionRule[] => { return null };
-registerCollection('Notification', DataType.notification, NotificationSchema(), NotificationUI(), NotificationRules(), true)
+export const NotificationUI = (): CollectionUI[] => {
+  return null;
+};
+export const NotificationRules = (): CollectionRule[] => {
+  return null;
+};
+registerCollection(
+  'Notification',
+  DataType.notification,
+  NotificationSchema(),
+  NotificationUI(),
+  NotificationRules(),
+  true
+);

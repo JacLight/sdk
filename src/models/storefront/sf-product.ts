@@ -1,7 +1,8 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
-import { CollectionUI } from '../collection-ui'; import { DataType, FieldType, FormViewSectionType } from '../../types';
+import { CollectionUI } from '../collection-ui';
+import { DataType, FieldType, FormViewSectionType } from '../../types';
 import { FileInfoSchema } from '../fileinfo';
 
 export const SFProductSchema = () => {
@@ -15,11 +16,11 @@ export const SFProductSchema = () => {
       },
       name: {
         type: 'string',
-        label: 'Title'
+        label: 'Title',
       },
       sku: {
         type: 'string',
-        pattern: '^[^[a-zA-Z_\-0-9]*$',
+        pattern: '^[^[a-zA-Z_-0-9]*$',
         minLength: 3,
         maxLength: 50,
         unique: true,
@@ -27,7 +28,7 @@ export const SFProductSchema = () => {
       description: {
         type: 'string',
         hideLabel: true,
-        fieldType: FieldType.richtext
+        fieldType: FieldType.richtext,
       },
       brand: {
         type: 'string',
@@ -39,15 +40,15 @@ export const SFProductSchema = () => {
         type: 'number',
       },
       tax: {
-        type: 'boolean'
+        type: 'boolean',
       },
       subscription: {
         type: 'boolean',
       },
-      posts: { type: 'object', hidden: true },//  PostSchema(),
+      posts: { type: 'object', hidden: true }, //  PostSchema(),
       images: {
         hideLabel: true,
-        ...FileInfoSchema()
+        ...FileInfoSchema(),
       },
       isbn: {
         type: 'string',
@@ -58,18 +59,18 @@ export const SFProductSchema = () => {
         layout: 'horizontal',
         properties: {
           weight: {
-            type: 'number'
+            type: 'number',
           },
           length: {
-            type: 'number'
+            type: 'number',
           },
           height: {
-            type: 'number'
+            type: 'number',
           },
           width: {
-            type: 'number'
+            type: 'number',
           },
-        }
+        },
       },
       points: { type: 'number' },
       available: { type: 'boolean' },
@@ -98,13 +99,17 @@ export const SFProductSchema = () => {
               dataSource: {
                 source: 'collection',
                 collection: DataType.sf_attribute,
-                filter: { property: 'name', operation: 'equal', value: '{{/properties/attributes/items/properties/name}}' },
+                filter: {
+                  property: 'name',
+                  operation: 'equal',
+                  value: '{{/properties/attributes/items/properties/name}}',
+                },
                 value: 'options',
                 label: 'options',
               },
-            }
-          }
-        }
+            },
+          },
+        },
       },
       variations: {
         type: 'array',
@@ -116,10 +121,10 @@ export const SFProductSchema = () => {
           properties: {
             sku: {
               type: 'string',
-              disabled: true
+              disabled: true,
             },
             price: {
-              type: 'number'
+              type: 'number',
             },
             stock: { type: 'number' },
             options: {
@@ -133,22 +138,22 @@ export const SFProductSchema = () => {
                 properties: {
                   name: {
                     type: 'string',
-                    disabled: true
+                    disabled: true,
                   },
                   label: {
                     type: 'string',
-                    disabled: true
+                    disabled: true,
                   },
                   value: {
                     type: 'string',
-                    disabled: true
+                    disabled: true,
                   },
-                }
-              }
+                },
+              },
             },
             images: FileInfoSchema(),
-          }
-        }
+          },
+        },
       },
       bundle: {
         type: 'array',
@@ -162,17 +167,16 @@ export const SFProductSchema = () => {
           type: 'object',
           properties: {
             sk: {
-              type: 'string'
+              type: 'string',
             },
             sku: {
-              type: 'string'
+              type: 'string',
             },
             name: {
-              type: 'string'
-            }
-          }
+              type: 'string',
+            },
+          },
         },
-
       },
       discount: { type: 'string', hidden: true },
       promotion: { type: 'string', hidden: true },
@@ -182,7 +186,6 @@ export const SFProductSchema = () => {
     required: ['name', 'sku'],
   } as const;
 };
-
 
 export const SFProductUI = (): CollectionUI[] => {
   return [
@@ -200,14 +203,13 @@ export const SFProductUI = (): CollectionUI[] => {
           '0': '/properties/price',
           '1': '/properties/cost',
           '3': '/properties/points',
-
         },
         {
           '0': '/properties/tax',
           '1': '/properties/available',
           '2': '/properties/subscription',
         },
-      ]
+      ],
     },
     {
       type: FormViewSectionType.section2column,
@@ -217,7 +219,7 @@ export const SFProductUI = (): CollectionUI[] => {
         {
           '0': '/properties/description',
         },
-      ]
+      ],
     },
     {
       type: FormViewSectionType.section2column,
@@ -227,8 +229,7 @@ export const SFProductUI = (): CollectionUI[] => {
         {
           '0': '/properties/images',
         },
-
-      ]
+      ],
     },
     {
       type: FormViewSectionType.section2column,
@@ -242,7 +243,7 @@ export const SFProductUI = (): CollectionUI[] => {
         {
           '0': '/properties/parcel',
         },
-      ]
+      ],
     },
     {
       type: FormViewSectionType.section2column,
@@ -252,7 +253,7 @@ export const SFProductUI = (): CollectionUI[] => {
         {
           '0': '/properties/attributes',
         },
-      ]
+      ],
     },
     {
       type: FormViewSectionType.section2column,
@@ -262,7 +263,7 @@ export const SFProductUI = (): CollectionUI[] => {
         {
           '0': '/properties/variations',
         },
-      ]
+      ],
     },
     {
       type: FormViewSectionType.section2column,
@@ -272,16 +273,15 @@ export const SFProductUI = (): CollectionUI[] => {
         {
           '0': '/properties/bundle',
         },
-
-      ]
+      ],
     },
     // {
     //   type: FormViewSectionType.section2column,
     //   default: true,
     //   collapsible: true,
     // }
-  ]
-}
+  ];
+};
 
 export const SFProductRules = (): CollectionRule[] => {
   return [
@@ -290,7 +290,8 @@ export const SFProductRules = (): CollectionRule[] => {
       action: [
         {
           operation: 'setProperty',
-          targetField: '/properties/attributes/items/properties/options/dataSource/filterValue',
+          targetField:
+            '/properties/attributes/items/properties/options/dataSource/filterValue',
           sourceField: '/properties/attributes/items/properties/name',
         },
       ],
@@ -305,10 +306,18 @@ export const SFProductRules = (): CollectionRule[] => {
         ],
       },
     },
-  ]
+  ];
 };
 
 const dd = SFProductSchema();
 export type SFProductModel = FromSchema<typeof dd>;
 
-registerCollection('Store Product', DataType.sf_product, SFProductSchema(), SFProductUI(), SFProductRules(), false, true)
+registerCollection(
+  'Store Product',
+  DataType.sf_product,
+  SFProductSchema(),
+  SFProductUI(),
+  SFProductRules(),
+  false,
+  true
+);

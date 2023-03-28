@@ -20,7 +20,7 @@ export const ScriptSchema = () => {
       },
       status: {
         type: 'string',
-        enum: ['active', 'disabled']
+        enum: ['active', 'disabled'],
       },
       content: {
         type: 'object',
@@ -28,7 +28,7 @@ export const ScriptSchema = () => {
           title: {
             type: 'string',
           },
-        }
+        },
       },
     },
   } as const;
@@ -36,6 +36,16 @@ export const ScriptSchema = () => {
 
 const rt = ScriptSchema();
 export type ScriptModel = FromSchema<typeof rt>;
-export const ScriptUI = (): CollectionUI[] => { return null };
-export const ScriptRules = (): CollectionRule[] => { return [] };
-registerCollection('Script', DataType.script, ScriptSchema(), ScriptUI(), ScriptRules())
+export const ScriptUI = (): CollectionUI[] => {
+  return null;
+};
+export const ScriptRules = (): CollectionRule[] => {
+  return [];
+};
+registerCollection(
+  'Script',
+  DataType.script,
+  ScriptSchema(),
+  ScriptUI(),
+  ScriptRules()
+);

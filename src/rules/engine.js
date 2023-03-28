@@ -1,16 +1,16 @@
-"use strict";
+'use strict';
 
-import Fact from "./fact";
-import Rule from "./rule";
-import Operator from "./operator";
-import Almanac from "./almanac";
-import EventEmitter from "eventemitter2";
-import defaultOperators from "./engine-default-operators";
-import debug from "./debug";
+import Fact from './fact';
+import Rule from './rule';
+import Operator from './operator';
+import Almanac from './almanac';
+import EventEmitter from 'eventemitter2';
+import defaultOperators from './engine-default-operators';
+import debug from './debug';
 
-export const READY = "READY";
-export const RUNNING = "RUNNING";
-export const FINISHED = "FINISHED";
+export const READY = 'READY';
+export const RUNNING = 'RUNNING';
+export const FINISHED = 'FINISHED';
 
 class Engine extends EventEmitter {
   /**
@@ -25,8 +25,8 @@ class Engine extends EventEmitter {
     this.operators = new Map();
     this.facts = new Map();
     this.status = READY;
-    rules.map((r) => this.addRule(r));
-    defaultOperators.map((o) => this.addOperator(o));
+    rules.map(r => this.addRule(r));
+    defaultOperators.map(o => this.addOperator(o));
   }
 
   /**
@@ -39,15 +39,15 @@ class Engine extends EventEmitter {
    * @param {Object} properties.conditions - conditions to evaluate when processing this rule
    */
   addRule(properties) {
-    if (!properties) throw new Error("Engine: addRule() requires options");
+    if (!properties) throw new Error('Engine: addRule() requires options');
 
     let rule;
     if (properties instanceof Rule) {
       rule = properties;
     } else {
-      if (!Object.prototype.hasOwnProperty.call(properties, "event"))
+      if (!Object.prototype.hasOwnProperty.call(properties, 'event'))
         throw new Error('Engine: addRule() argument requires "event" property');
-      if (!Object.prototype.hasOwnProperty.call(properties, "conditions"))
+      if (!Object.prototype.hasOwnProperty.call(properties, 'conditions'))
         throw new Error(
           'Engine: addRule() argument requires "conditions" property'
         );
@@ -65,14 +65,14 @@ class Engine extends EventEmitter {
    */
   updateRule(rule) {
     const ruleIndex = this.rules.findIndex(
-      (ruleInEngine) => ruleInEngine.name === rule.name
+      ruleInEngine => ruleInEngine.name === rule.name
     );
     if (ruleIndex > -1) {
       this.rules.splice(ruleIndex, 1);
       this.addRule(rule);
       this.prioritizedRules = null;
     } else {
-      throw new Error("Engine: updateRule() rule not found");
+      throw new Error('Engine: updateRule() rule not found');
     }
   }
 
@@ -84,7 +84,7 @@ class Engine extends EventEmitter {
     let ruleRemoved = false;
     if (!(rule instanceof Rule)) {
       const filteredRules = this.rules.filter(
-        (ruleInEngine) => ruleInEngine.name !== rule
+        ruleInEngine => ruleInEngine.name !== rule
       );
       ruleRemoved = filteredRules.length !== this.rules.length;
       this.rules = filteredRules;
@@ -185,7 +185,7 @@ class Engine extends EventEmitter {
         .sort((a, b) => {
           return Number(a) > Number(b) ? -1 : 1; // order highest priority -> lowest
         })
-        .map((priority) => ruleSets[priority]);
+        .map(priority => ruleSets[priority]);
     }
     return this.prioritizedRules;
   }
@@ -217,18 +217,18 @@ class Engine extends EventEmitter {
    */
   evaluateRules(ruleArray, almanac) {
     return Promise.all(
-      ruleArray.map((rule) => {
+      ruleArray.map(rule => {
         if (this.status !== RUNNING) {
           debug(`engine::run status:${this.status}; skipping remaining rules`);
           return Promise.resolve();
         }
-        return rule.evaluate(almanac).then((ruleResult) => {
+        return rule.evaluate(almanac).then(ruleResult => {
           debug(`engine::run ruleResult:${ruleResult.result}`);
           almanac.addResult(ruleResult);
           if (ruleResult.result) {
-            almanac.addEvent(ruleResult.event, "success");
+            almanac.addEvent(ruleResult.event, 'success');
             return this.emitAsync(
-              "success",
+              'success',
               ruleResult.event,
               almanac,
               ruleResult
@@ -241,9 +241,9 @@ class Engine extends EventEmitter {
               )
             );
           } else {
-            almanac.addEvent(ruleResult.event, "failure");
+            almanac.addEvent(ruleResult.event, 'failure');
             return this.emitAsync(
-              "failure",
+              'failure',
               ruleResult.event,
               almanac,
               ruleResult
@@ -261,7 +261,7 @@ class Engine extends EventEmitter {
    * @return {Promise} resolves when the engine has completed running
    */
   run(runtimeFacts = {}) {
-    debug("engine::run started");
+    debug('engine::run started');
     this.status = RUNNING;
     const almanacOptions = {
       allowUndefinedFacts: this.allowUndefinedFacts,
@@ -273,7 +273,7 @@ class Engine extends EventEmitter {
     // for each rule set, evaluate in parallel,
     // before proceeding to the next priority set.
     return new Promise((resolve, reject) => {
-      orderedSets.map((set) => {
+      orderedSets.map(set => {
         cursor = cursor
           .then(() => {
             return this.evaluateRules(set, almanac);
@@ -284,11 +284,11 @@ class Engine extends EventEmitter {
       cursor
         .then(() => {
           this.status = FINISHED;
-          debug("engine::run completed");
+          debug('engine::run completed');
           const ruleResults = almanac.getResults();
           const { results, failureResults } = ruleResults.reduce(
             (hash, ruleResult) => {
-              const group = ruleResult.result ? "results" : "failureResults";
+              const group = ruleResult.result ? 'results' : 'failureResults';
               hash[group].push(ruleResult);
               return hash;
             },
@@ -299,8 +299,8 @@ class Engine extends EventEmitter {
             almanac,
             results,
             failureResults,
-            events: almanac.getEvents("success"),
-            failureEvents: almanac.getEvents("failure"),
+            events: almanac.getEvents('success'),
+            failureEvents: almanac.getEvents('failure'),
           });
         })
         .catch(reject);

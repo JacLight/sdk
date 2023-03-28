@@ -19,18 +19,18 @@ export const ConfigSchema = () => {
       type: {
         type: 'string',
         enum: Object.values(ConfigType),
-        disabled: true
+        disabled: true,
       },
       default: {
         type: 'boolean',
       },
       provider: {
         type: 'string',
-        disabled: true
+        disabled: true,
       },
       data: {
         type: 'object',
-        hidden: true
+        hidden: true,
       },
     },
   } as const;
@@ -38,6 +38,16 @@ export const ConfigSchema = () => {
 
 const rt = ConfigSchema();
 export type ConfigModel = FromSchema<typeof rt>;
-export const ConfigUI = (): CollectionUI[] => { return null };
-export const ConfigRules = (): CollectionRule[] => { return [] };
-registerCollection('Config', DataType.config, ConfigSchema(), ConfigUI(), ConfigRules())
+export const ConfigUI = (): CollectionUI[] => {
+  return null;
+};
+export const ConfigRules = (): CollectionRule[] => {
+  return [];
+};
+registerCollection(
+  'Config',
+  DataType.config,
+  ConfigSchema(),
+  ConfigUI(),
+  ConfigRules()
+);

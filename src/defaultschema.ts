@@ -1,11 +1,15 @@
 import { DataType, CollectionType, JsonSchemaCustom } from './types';
 import { RoleType } from './types';
-import { BaseModel, CollectionRule, CollectionUI, PageModel, UserGroupModel, UserModel } from './models';
+import {
+  BaseModel,
+  CollectionRule,
+  CollectionUI,
+  PageModel,
+  UserGroupModel,
+  UserModel,
+} from './models';
 
-const createConcreteCollection = (
-  name: string,
-  data: any
-): BaseModel<any> => {
+const createConcreteCollection = (name: string, data: any): BaseModel<any> => {
   return {
     pk: name,
     sk: name,
@@ -17,7 +21,15 @@ const createConcreteCollection = (
 };
 
 export const concreteCollections = new Map<String, BaseModel<any>>();
-export const registerCollection = (title: string, datatype: DataType, schema: JsonSchemaCustom | any, uischema: CollectionUI[], rules: CollectionRule[], hidden = false, enableSubSchema = false) => {
+export const registerCollection = (
+  title: string,
+  datatype: DataType,
+  schema: JsonSchemaCustom | any,
+  uischema: CollectionUI[],
+  rules: CollectionRule[],
+  hidden = false,
+  enableSubSchema = false
+) => {
   const thisCollection = {
     name: datatype,
     title,
@@ -33,11 +45,14 @@ export const registerCollection = (title: string, datatype: DataType, schema: Js
     validations: {},
     schema: schema,
     uischema: uischema,
-    hidden
+    hidden,
   };
 
-  concreteCollections.set(datatype, createConcreteCollection(datatype, thisCollection));
-}
+  concreteCollections.set(
+    datatype,
+    createConcreteCollection(datatype, thisCollection)
+  );
+};
 
 const defaultData = new Map<String, {}>();
 export const defaultDataRegister = {
@@ -45,18 +60,18 @@ export const defaultDataRegister = {
     const data = defaultData.get(datatype);
     if (data) {
       if (typeof data === 'function') {
-        return data()
+        return data();
       } else {
-        return JSON.parse(JSON.stringify(data))
+        return JSON.parse(JSON.stringify(data));
       }
     }
     return null;
-  }
-}
+  },
+};
 
 export const registerDefaultData = (datatype: DataType, data: any) => {
   defaultData.set(datatype, data);
-}
+};
 
 const createUser = (
   firstname: string,
@@ -73,26 +88,32 @@ users.push(createUser('admin', 'user', 'admin@local.com', 'aaaaaa', 'Admin'));
 users.push(
   createUser('visitor', 'user', 'visitor@local.com', 'guest', 'Agent')
 );
-users.push(
-  createUser('Help', 'user', 'helpuser@local.com', 'guest', 'Guest')
-);
+users.push(createUser('Help', 'user', 'helpuser@local.com', 'guest', 'Guest'));
 
 const createGroup = (name: string, description: string, roles: string) => {
   return { name, description, roles };
 };
 export const groups: UserGroupModel[] = [];
-groups.push(createGroup('Guest', 'Unauthenticated users', [RoleType.Guest].join(',')));
 groups.push(
-  createGroup('Agent', 'Help Desk User Group', [
-    RoleType.Reviewer,
-    RoleType.Publisher,
-  ].join(','))
+  createGroup('Guest', 'Unauthenticated users', [RoleType.Guest].join(','))
 );
 groups.push(
-  createGroup('Customer', 'Site users, authenticated users', [RoleType.User].join(','))
+  createGroup(
+    'Agent',
+    'Help Desk User Group',
+    [RoleType.Reviewer, RoleType.Publisher].join(',')
+  )
 );
-groups.push(createGroup('Admin', 'Omin Administrator', [RoleType.RootAdmin].join(',')));
-
+groups.push(
+  createGroup(
+    'Customer',
+    'Site users, authenticated users',
+    [RoleType.User].join(',')
+  )
+);
+groups.push(
+  createGroup('Admin', 'Omin Administrator', [RoleType.RootAdmin].join(','))
+);
 
 export const rootPage: PageModel = {
   name: 'rootpage',
