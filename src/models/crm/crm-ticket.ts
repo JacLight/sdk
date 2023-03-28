@@ -1,7 +1,8 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection, registerDefaultData } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
-import { CollectionUI } from '../collection-ui'; import { DataType, FieldType, FormViewSectionType } from '../../types';
+import { CollectionUI } from '../collection-ui';
+import { DataType, FieldType, FormViewSectionType } from '../../types';
 
 export const TicketSchema = () => {
   return {
@@ -10,18 +11,18 @@ export const TicketSchema = () => {
       reportedBy: {
         title: 'Name',
         type: 'string',
-        hidden: true
+        hidden: true,
       },
       reportedByEmail: {
         title: 'Email',
         type: 'string',
         format: 'email',
-        hidden: true
+        hidden: true,
       },
       reportedByPhone: {
         title: 'Phone',
         type: 'string',
-        hidden: true
+        hidden: true,
       },
       title: {
         type: 'string',
@@ -29,27 +30,27 @@ export const TicketSchema = () => {
       story: {
         type: 'string',
         inputStyle: 'textarea',
-        rows: 4
+        rows: 4,
       },
       priority: {
         type: 'string',
-        enum: ['low', 'medium', 'high', 'urgent']
+        enum: ['low', 'medium', 'high', 'urgent'],
       },
       severity: {
         type: 'string',
-        enum: ['minor', 'major', 'critical', 'catastrophic']
+        enum: ['minor', 'major', 'critical', 'catastrophic'],
       },
       channel: {
         type: 'string',
-        enum: ['web', 'phone', 'chat', 'mobile', 'api', 'other']
+        enum: ['web', 'phone', 'chat', 'mobile', 'api', 'other'],
       },
       stage: {
         type: 'string',
-        hidden: true
+        hidden: true,
       },
       status: {
         type: 'string',
-        enum: ['new', 'pending', 'inprogress', 'blocked', 'done', 'canceled']
+        enum: ['new', 'pending', 'inprogress', 'blocked', 'done', 'canceled'],
       },
       assignTo: {
         type: 'string',
@@ -63,7 +64,7 @@ export const TicketSchema = () => {
       },
       assignBy: {
         type: 'string',
-        hidden: true
+        hidden: true,
       },
       assignments: {
         type: 'array',
@@ -78,12 +79,11 @@ export const TicketSchema = () => {
             assignedTo: { type: 'string' },
             assignedTime: { type: 'string' },
           },
-        }
+        },
       },
     },
   } as const;
 };
-
 
 export const TicketUI = (): CollectionUI[] => {
   return [
@@ -95,24 +95,33 @@ export const TicketUI = (): CollectionUI[] => {
           '1': '/properties/reportedByEmail',
           '2': '/properties/reportedByPhone',
         },
-
       ],
     },
     {
       type: FormViewSectionType.section1column,
       default: true,
       collapsible: true,
-    }
-  ]
-}
+    },
+  ];
+};
 
 const tt = TicketSchema();
 export type TicketModel = FromSchema<typeof tt>;
 
-export const TicketRules = (): CollectionRule[] => { return null };
-registerCollection('Ticket', DataType.ticket, TicketSchema(), TicketUI(), TicketRules(), true, true)
+export const TicketRules = (): CollectionRule[] => {
+  return null;
+};
+registerCollection(
+  'Ticket',
+  DataType.ticket,
+  TicketSchema(),
+  TicketUI(),
+  TicketRules(),
+  true,
+  true
+);
 
 const genDefaultData = () => {
-  return { status: 'new', priority: 'low', severity: 'minor', stage: 0 }
+  return { status: 'new', priority: 'low', severity: 'minor', stage: 0 };
 };
-registerDefaultData(DataType.ticket, genDefaultData)
+registerDefaultData(DataType.ticket, genDefaultData);

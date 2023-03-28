@@ -44,11 +44,11 @@ export const CustomerSchema = () => {
       },
       password: {
         type: 'string',
-        inputStyle: 'password'
+        inputStyle: 'password',
       },
       passwordReset: {
         type: 'boolean',
-        title: 'Set Password'
+        title: 'Set Password',
       },
       lockout: {
         type: 'string',
@@ -57,14 +57,14 @@ export const CustomerSchema = () => {
       lockoutDate: {
         type: 'string',
         format: 'date-time',
-        disabled: true
+        disabled: true,
       },
       status: {
         type: 'string',
       },
       phones: {
         type: 'array',
-        items: PhoneSchema()
+        items: PhoneSchema(),
       },
       address: {
         type: 'array',
@@ -79,22 +79,22 @@ export const CustomerSchema = () => {
           type: 'object',
           properties: {
             street1: {
-              type: 'string'
+              type: 'string',
             },
             city: {
-              type: 'string'
+              type: 'string',
             },
             region: {
-              type: 'string'
+              type: 'string',
             },
             zip: {
-              type: 'string'
+              type: 'string',
             },
             country: {
-              type: 'string'
-            }
-          }
-        }
+              type: 'string',
+            },
+          },
+        },
       },
       history: {
         type: 'array',
@@ -102,13 +102,13 @@ export const CustomerSchema = () => {
           type: 'object',
           properties: {
             date: {
-              type: 'string'
+              type: 'string',
             },
             event: {
-              type: 'string'
-            }
-          }
-        }
+              type: 'string',
+            },
+          },
+        },
       },
       language: {
         type: 'string',
@@ -121,7 +121,7 @@ export const CustomerSchema = () => {
       },
       guestUser: {
         type: 'boolean',
-        hidden: true
+        hidden: true,
       },
       reminderQuestion: {
         type: 'array',
@@ -152,20 +152,20 @@ export const CustomerSchema = () => {
       lastLoginDate: {
         type: 'string',
         format: 'date-time',
-        disabled: true
+        disabled: true,
       },
       lastLoginIp: {
         type: 'string',
-        disabled: true
+        disabled: true,
       },
       lastFailedLoginDate: {
         type: 'string',
         format: 'date-time',
-        disabled: true
+        disabled: true,
       },
       failedLoginAttempts: {
         type: 'number',
-        disabled: true
+        disabled: true,
       },
       passwordPolicy: {
         type: 'string',
@@ -179,7 +179,7 @@ export const CustomerSchema = () => {
       },
       image: FileInfoSchema(),
       company: {
-        type: 'string'
+        type: 'string',
       },
       prefix: {
         type: 'string',
@@ -217,16 +217,16 @@ export const CustomerSchema = () => {
           type: 'object',
           properties: {
             email: { type: 'string', format: 'email' },
-            status: { type: 'string', fieldType: FieldType.label }
-          }
-        }
+            status: { type: 'string', fieldType: FieldType.label },
+          },
+        },
       },
       subscriptions: {
         type: 'array',
         items: {
           type: 'string',
-        }
-      }
+        },
+      },
     },
   } as const;
 };
@@ -296,7 +296,17 @@ export const CustomerUI = (): CollectionUI[] => {
   ];
 };
 
-export const CustomerRules = (): CollectionRule[] => { return null };
+export const CustomerRules = (): CollectionRule[] => {
+  return null;
+};
 const ush = CustomerSchema();
 export type CustomerModel = FromSchema<typeof ush>;
-registerCollection('Customer', DataType.customer, CustomerSchema(), CustomerUI(), CustomerRules(), false, true)
+registerCollection(
+  'Customer',
+  DataType.customer,
+  CustomerSchema(),
+  CustomerUI(),
+  CustomerRules(),
+  false,
+  true
+);

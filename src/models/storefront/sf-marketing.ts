@@ -1,7 +1,8 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
-import { CollectionUI } from '../collection-ui'; import { DataType } from '../../types';
+import { CollectionUI } from '../collection-ui';
+import { DataType } from '../../types';
 
 export const SFMarketingSchema = () => {
   return {
@@ -21,7 +22,7 @@ export const SFMarketingSchema = () => {
       },
       refundType: {
         type: 'string',
-        enum: ['account', 'giftcard', 'cash']
+        enum: ['account', 'giftcard', 'cash'],
       },
       tranction: {
         type: 'string',
@@ -32,8 +33,8 @@ export const SFMarketingSchema = () => {
       attachements: {
         type: 'array',
         items: {
-          type: 'object'
-        }
+          type: 'object',
+        },
       },
     },
   } as const;
@@ -42,7 +43,17 @@ export const SFMarketingSchema = () => {
 const ms = SFMarketingSchema();
 export type SFMarketingModel = FromSchema<typeof ms>;
 
-
-export const SFMarketingUI = (): CollectionUI[] => { return null };
-export const SFMarketingRules = (): CollectionRule[] => { return null };
-registerCollection('Store Marketing', DataType.sf_marketing, SFMarketingSchema(), SFMarketingUI(), SFMarketingRules(), true)
+export const SFMarketingUI = (): CollectionUI[] => {
+  return null;
+};
+export const SFMarketingRules = (): CollectionRule[] => {
+  return null;
+};
+registerCollection(
+  'Store Marketing',
+  DataType.sf_marketing,
+  SFMarketingSchema(),
+  SFMarketingUI(),
+  SFMarketingRules(),
+  true
+);

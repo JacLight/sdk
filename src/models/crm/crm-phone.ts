@@ -1,7 +1,8 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
-import { CollectionUI } from '../collection-ui'; import { DataType } from '../../types';
+import { CollectionUI } from '../collection-ui';
+import { DataType } from '../../types';
 
 export const PhoneSchema = () => {
   return {
@@ -31,8 +32,8 @@ export const PhoneSchema = () => {
         default: false,
       },
       status: {
-        type: 'string'
-      }
+        type: 'string',
+      },
     },
   } as const;
 };
@@ -40,6 +41,17 @@ export const PhoneSchema = () => {
 const dd = PhoneSchema();
 export type PhoneModel = FromSchema<typeof dd>;
 
-export const PhoneUI = (): CollectionUI[] => { return null };
-export const PhoneRules = (): CollectionRule[] => { return null };
-registerCollection('Phone', DataType.phone, PhoneSchema(), PhoneUI(), PhoneRules(), true)
+export const PhoneUI = (): CollectionUI[] => {
+  return null;
+};
+export const PhoneRules = (): CollectionRule[] => {
+  return null;
+};
+registerCollection(
+  'Phone',
+  DataType.phone,
+  PhoneSchema(),
+  PhoneUI(),
+  PhoneRules(),
+  true
+);

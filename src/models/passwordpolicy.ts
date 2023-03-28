@@ -23,14 +23,14 @@ export const PasswordPolicySchema = () => {
       },
       passwordAge: {
         type: 'number',
-        description: 'In days'
+        description: 'In days',
       },
       maxFailure: {
         type: 'number',
       },
       resetDelayIn: {
         type: 'number',
-        description: 'In Minutes'
+        description: 'In Minutes',
       },
       allowDictionary: {
         type: 'boolean',
@@ -55,7 +55,7 @@ export const PasswordPolicySchema = () => {
       },
       exclude: {
         type: 'string',
-        description: 'characters not allowed in password'
+        description: 'characters not allowed in password',
       },
     },
   } as const;
@@ -64,6 +64,16 @@ export const PasswordPolicySchema = () => {
 const pps = PasswordPolicySchema();
 export type PasswordPolicyModel = FromSchema<typeof pps>;
 
-export const PasswordPolicyUI = (): CollectionUI[] => { return null };
-export const PasswordPolicyRules = (): CollectionRule[] => { return [] };
-registerCollection('PasswordPolicy', DataType.passwordpolicy, PasswordPolicySchema(), PasswordPolicyUI(), PasswordPolicyRules())
+export const PasswordPolicyUI = (): CollectionUI[] => {
+  return null;
+};
+export const PasswordPolicyRules = (): CollectionRule[] => {
+  return [];
+};
+registerCollection(
+  'PasswordPolicy',
+  DataType.passwordpolicy,
+  PasswordPolicySchema(),
+  PasswordPolicyUI(),
+  PasswordPolicyRules()
+);

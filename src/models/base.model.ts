@@ -4,10 +4,9 @@ import { CommentModel } from './comment';
 import { FileInfoSchema } from './fileinfo';
 import { WorkflowSubModel } from './workflowdefinition';
 
-
 export enum SortType {
   desc = -1,
-  asc = 1
+  asc = 1,
 }
 export interface DataOptions {
   sort?: any;
@@ -19,9 +18,9 @@ export interface DataOptions {
   refresh?: boolean;
 }
 export interface BaseModelDTO<T> extends DataOptions {
-  total?: number
-  datatype?: DataType | string
-  error?: { message: string, code: number, stalk: any }
+  total?: number;
+  datatype?: DataType | string;
+  error?: { message: string; code: number; stalk: any };
   data?: BaseModel<T>[];
   fromCache?: boolean;
 }
@@ -33,16 +32,16 @@ export interface BaseModel<T> {
   data?: T;
   isnew?: boolean;
   datatype?: DataType | string;
-  workflow?: WorkflowSubModel,
+  workflow?: WorkflowSubModel;
   post?: PostSubModel;
   style?: StyleSubModel;
   version: number;
   createdate?: Date;
   modifydate?: Date;
   author?: string;
-  subschema?: string,
-  requiredRole?: RequiredRoleModel
-  comments?: CommentModel[]
+  subschema?: string;
+  requiredRole?: RequiredRoleModel;
+  comments?: CommentModel[];
 }
 export const PostSubSchema = () => {
   return {
@@ -84,7 +83,7 @@ export const PostSubSchema = () => {
       categories: {
         type: 'array',
         items: {
-          type: 'string'
+          type: 'string',
         },
         inputStyle: 'chip',
         fieldType: FieldType.selectionmultiple,
@@ -98,7 +97,7 @@ export const PostSubSchema = () => {
       tags: {
         type: 'array',
         items: {
-          type: 'string'
+          type: 'string',
         },
         inputStyle: 'chip',
         fieldType: FieldType.selectionmultiple,
@@ -185,7 +184,7 @@ export const RequiredRoleSubSchema = () => {
         },
         items: {
           type: 'string',
-        }
+        },
       },
       create: {
         type: 'array',
@@ -199,7 +198,7 @@ export const RequiredRoleSubSchema = () => {
         },
         items: {
           type: 'string',
-        }
+        },
       },
       update: {
         type: 'array',
@@ -213,7 +212,7 @@ export const RequiredRoleSubSchema = () => {
         },
         items: {
           type: 'string',
-        }
+        },
       },
       delete: {
         type: 'array',
@@ -227,7 +226,7 @@ export const RequiredRoleSubSchema = () => {
         },
         items: {
           type: 'string',
-        }
+        },
       },
       review: {
         type: 'array',
@@ -241,7 +240,7 @@ export const RequiredRoleSubSchema = () => {
         },
         items: {
           type: 'string',
-        }
+        },
       },
       approve: {
         type: 'array',
@@ -255,7 +254,7 @@ export const RequiredRoleSubSchema = () => {
         },
         items: {
           type: 'string',
-        }
+        },
       },
     },
   } as const;

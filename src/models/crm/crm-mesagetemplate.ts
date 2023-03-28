@@ -1,7 +1,8 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
-import { CollectionUI } from '../collection-ui'; import { DataType } from '../../types';
+import { CollectionUI } from '../collection-ui';
+import { DataType } from '../../types';
 
 export const MessageTemplateSchema = () => {
   return {
@@ -33,24 +34,24 @@ export const MessageTemplateSchema = () => {
       },
       blocks: {
         type: 'array',
-        hidden: true
+        hidden: true,
       },
       bodyHtml: {
         type: 'string',
         fieldType: 'Rich Text Editor',
         displayStyle: 'full',
-        hidden: true
+        hidden: true,
       },
       text: {
         type: 'string',
         inputStyle: 'textarea',
-        hidden: true
+        hidden: true,
       },
       sms: {
         type: 'string',
         inputStyle: 'textarea',
         maxLength: 150,
-        hidden: true
+        hidden: true,
       },
     },
   } as const;
@@ -59,6 +60,17 @@ export const MessageTemplateSchema = () => {
 const dd = MessageTemplateSchema();
 export type MessageTemplateModel = FromSchema<typeof dd>;
 
-export const MessageTemplateUI = (): CollectionUI[] => { return null };
-export const MessageTemplateRules = (): CollectionRule[] => { return null };
-registerCollection('MessageTemplate', DataType.messagetemplate, MessageTemplateSchema(), MessageTemplateUI(), MessageTemplateRules(), true)
+export const MessageTemplateUI = (): CollectionUI[] => {
+  return null;
+};
+export const MessageTemplateRules = (): CollectionRule[] => {
+  return null;
+};
+registerCollection(
+  'MessageTemplate',
+  DataType.messagetemplate,
+  MessageTemplateSchema(),
+  MessageTemplateUI(),
+  MessageTemplateRules(),
+  true
+);

@@ -35,6 +35,16 @@ export const DataFeedSchema = () => {
 
 const ts = DataFeedSchema();
 export type DataFeedModel = FromSchema<typeof ts>;
-export const DataFeedUI = (): CollectionUI[] => { return null };
-export const DataFeedRules = (): CollectionRule[] => { return [] };
-registerCollection('DataFeed', DataType.datafeed, DataFeedSchema(), DataFeedUI(), DataFeedRules())
+export const DataFeedUI = (): CollectionUI[] => {
+  return null;
+};
+export const DataFeedRules = (): CollectionRule[] => {
+  return [];
+};
+registerCollection(
+  'DataFeed',
+  DataType.datafeed,
+  DataFeedSchema(),
+  DataFeedUI(),
+  DataFeedRules()
+);

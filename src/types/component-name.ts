@@ -41,7 +41,6 @@ export enum ComponentName {
   CreativeStudio = 'CreativeStudio',
   TemplateEditor = 'TemplateEditor',
   ScriptEditor = 'ScriptEditor',
-  SlideEditor = 'SlideEditor',
   ViewTemplate = 'ViewTemplate',
-  Events = 'Events'
+  Events = 'Events',
 }

@@ -30,10 +30,10 @@ export const ApplicationSchema = () => {
           type: 'object',
           properties: {
             name: {
-              type: 'string'
+              type: 'string',
             },
             param: {
-              type: 'string'
+              type: 'string',
             },
             componentType: {
               type: 'string',
@@ -92,12 +92,12 @@ export const ApplicationSchema = () => {
             },
             component: {
               type: 'string',
-              enum: Object.values(ComponentName)
+              enum: Object.values(ComponentName),
             },
             default: {
-              type: 'boolean'
-            }
-          }
+              type: 'boolean',
+            },
+          },
         },
       },
       config: {
@@ -228,10 +228,18 @@ export const ApplicationRules = (): CollectionRule[] => {
         ],
       },
     },
-  ]
+  ];
 };
 
 const as = ApplicationSchema();
 export type ApplicationModel = FromSchema<typeof as>;
-export const ApplicationUI = (): CollectionUI[] => { return null };
-registerCollection('Application', DataType.application, ApplicationSchema(), ApplicationUI(), ApplicationRules())
+export const ApplicationUI = (): CollectionUI[] => {
+  return null;
+};
+registerCollection(
+  'Application',
+  DataType.application,
+  ApplicationSchema(),
+  ApplicationUI(),
+  ApplicationRules()
+);

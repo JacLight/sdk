@@ -1,4 +1,4 @@
 export enum SystemStatus {
   active,
-  stop
+  stop,
 }

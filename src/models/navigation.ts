@@ -118,12 +118,12 @@ export const NavigationLinkRules = (): CollectionRule[] => {
         {
           operation: 'setProperty',
           targetField: '/properties/page/title',
-          value: 'Page'
+          value: 'Page',
         },
         {
           operation: 'setProperty',
           targetField: '/properties/page/dataSource/collection',
-          value: DataType.page
+          value: DataType.page,
         },
       ],
       condition: {
@@ -155,12 +155,12 @@ export const NavigationLinkRules = (): CollectionRule[] => {
         {
           operation: 'setProperty',
           targetField: '/properties/page/title',
-          value: 'Post'
+          value: 'Post',
         },
         {
           operation: 'setProperty',
           targetField: '/properties/page/dataSource/collection',
-          value: DataType.post
+          value: DataType.post,
         },
       ],
       condition: {
@@ -235,6 +235,16 @@ const rtlink = NavigationLinkSchema();
 const rt = NavigationSchema();
 export type NavigationLinkModel = FromSchema<typeof rtlink>;
 export type NavigationModel = FromSchema<typeof rt>;
-export const NavigationUI = (): CollectionUI[] => { return null };
-export const NavigationRules = (): CollectionRule[] => { return [] };
-registerCollection('Navigation', DataType.navigation, NavigationSchema(), NavigationUI(), NavigationRules())
+export const NavigationUI = (): CollectionUI[] => {
+  return null;
+};
+export const NavigationRules = (): CollectionRule[] => {
+  return [];
+};
+registerCollection(
+  'Navigation',
+  DataType.navigation,
+  NavigationSchema(),
+  NavigationUI(),
+  NavigationRules()
+);

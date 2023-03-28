@@ -1,7 +1,7 @@
 export interface CollectionRule {
   name: string;
   condition?: {
-    type?: string;  //and or
+    type?: string; //and or
     param?: {
       field1?: string; //property you want to read or compare
       field2?: string; //property you want to read or compare
@@ -13,8 +13,8 @@ export interface CollectionRule {
   action?: {
     operation: string;
     targetField?: string | string[]; //property you want to apply actions to
-    sourceField?: string, //property where the value you want to apply will come from
+    sourceField?: string; //property where the value you want to apply will come from
     valueFromField?: boolean;
-    value?: string, // incase you're set to fixed value put it here
+    value?: string; // incase you're set to fixed value put it here
   }[];
 }

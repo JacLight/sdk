@@ -1,4 +1,4 @@
-import Almanac from "./almanac";
+import Almanac from './almanac';
 
 export interface RuleResult {
   name: string;
@@ -23,7 +23,6 @@ export interface RuleProperties {
   onFailure?: EventHandler;
 }
 
-
 export interface ConditionProperties {
   fact: string;
   operator: string;
@@ -32,7 +31,6 @@ export interface ConditionProperties {
   priority?: number;
   params?: Record<string, any>;
 }
-
 
 type NestedCondition = ConditionProperties | TopLevelCondition;
 type AllConditions = { all: NestedCondition[] };

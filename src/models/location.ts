@@ -18,7 +18,17 @@ export const LocationSchema = () => {
       },
       type: {
         type: 'string',
-        enum: ['store', 'mini', 'wearhouse', 'web', 'partner', 'contact-point', 'lockbox', 'dropbox', 'corporate']
+        enum: [
+          'store',
+          'mini',
+          'wearhouse',
+          'web',
+          'partner',
+          'contact-point',
+          'lockbox',
+          'dropbox',
+          'corporate',
+        ],
       },
       services: {
         type: 'string',
@@ -26,20 +36,22 @@ export const LocationSchema = () => {
         inputStyle: 'chip',
         dataSource: {
           source: 'json',
-          json: [{ label: 'service a', value: 'service a' }, { label: 'service b', value: 'service b' }],
+          json: [
+            { label: 'service a', value: 'service a' },
+            { label: 'service b', value: 'service b' },
+          ],
         },
       },
       address: AddressSchema(),
       status: {
         type: 'string',
-      }
+      },
     },
   } as const;
 };
 
 const dd = LocationSchema();
 export type LocationModel = FromSchema<typeof dd>;
-
 
 export const LocationRules = (): CollectionRule[] => {
   return [
@@ -49,7 +61,7 @@ export const LocationRules = (): CollectionRule[] => {
         {
           operation: 'script',
           value: `  const regions = context.getCountryRegions(data.address.country); 
-                    schema.properties.address.properties.region.dataSource.json =  regions;`
+                    schema.properties.address.properties.region.dataSource.json =  regions;`,
         },
       ],
       condition: {
@@ -63,8 +75,16 @@ export const LocationRules = (): CollectionRule[] => {
         ],
       },
     },
-  ]
+  ];
 };
 
-export const LocationUI = (): CollectionUI[] => { return null };
-registerCollection('Business Location', DataType.location, LocationSchema(), LocationUI(), LocationRules())
+export const LocationUI = (): CollectionUI[] => {
+  return null;
+};
+registerCollection(
+  'Business Location',
+  DataType.location,
+  LocationSchema(),
+  LocationUI(),
+  LocationRules()
+);

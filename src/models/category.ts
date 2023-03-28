@@ -26,8 +26,8 @@ export const CategorySchema = () => {
       tags: {
         type: 'array',
         items: {
-          type: 'string'
-        }
+          type: 'string',
+        },
       },
       image: FileInfoSchema(),
       categories: {
@@ -42,6 +42,16 @@ export const CategorySchema = () => {
 const rt = CategorySchema();
 export type CategoryModel = FromSchema<typeof rt>;
 
-export const CategoryUI = (): CollectionUI[] => { return null };
-export const CategoryRules = (): CollectionRule[] => { return [] };
-registerCollection('Category', DataType.category, CategorySchema(), CategoryUI(), CategoryRules())
+export const CategoryUI = (): CollectionUI[] => {
+  return null;
+};
+export const CategoryRules = (): CollectionRule[] => {
+  return [];
+};
+registerCollection(
+  'Category',
+  DataType.category,
+  CategorySchema(),
+  CategoryUI(),
+  CategoryRules()
+);

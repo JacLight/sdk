@@ -1,7 +1,8 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
-import { CollectionUI } from '../collection-ui'; import { DataType } from '../../types';
+import { CollectionUI } from '../collection-ui';
+import { DataType } from '../../types';
 import { FileInfoSchema } from '../fileinfo';
 
 export const SFRefundSchema = () => {
@@ -22,7 +23,7 @@ export const SFRefundSchema = () => {
       },
       refundType: {
         type: 'string',
-        enum: ['account', 'giftcard', 'cash']
+        enum: ['account', 'giftcard', 'cash'],
       },
       tranction: {
         type: 'string',
@@ -30,7 +31,7 @@ export const SFRefundSchema = () => {
       remark: {
         type: 'string',
       },
-      attachements: FileInfoSchema()
+      attachements: FileInfoSchema(),
     },
   } as const;
 };
@@ -38,7 +39,17 @@ export const SFRefundSchema = () => {
 const ms = SFRefundSchema();
 export type SFRefundModel = FromSchema<typeof ms>;
 
-
-export const SFRefundUI = (): CollectionUI[] => { return null };
-export const SFRefundRules = (): CollectionRule[] => { return null };
-registerCollection('Store Refund', DataType.sf_refund, SFRefundSchema(), SFRefundUI(), SFRefundRules(), true)
+export const SFRefundUI = (): CollectionUI[] => {
+  return null;
+};
+export const SFRefundRules = (): CollectionRule[] => {
+  return null;
+};
+registerCollection(
+  'Store Refund',
+  DataType.sf_refund,
+  SFRefundSchema(),
+  SFRefundUI(),
+  SFRefundRules(),
+  true
+);

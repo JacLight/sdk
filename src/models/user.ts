@@ -1,9 +1,14 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../defaultschema';
-import { DataType, FieldType, FormViewSectionType, PermissionTypeComponent, PermissionTypeContent } from '../types';
+import {
+  DataType,
+  FieldType,
+  FormViewSectionType,
+  PermissionTypeComponent,
+  PermissionTypeContent,
+} from '../types';
 import { CollectionUI } from './collection-ui';
 import { FileInfoSchema } from './fileinfo';
-
 
 export const UserSchema = () => {
   return {
@@ -34,11 +39,11 @@ export const UserSchema = () => {
       portrait: FileInfoSchema(),
       password: {
         type: 'string',
-        inputStyle: 'password'
+        inputStyle: 'password',
       },
       passwordReset: {
         type: 'boolean',
-        title: 'Set Password'
+        title: 'Set Password',
       },
       lockout: {
         type: 'string',
@@ -47,7 +52,7 @@ export const UserSchema = () => {
       lockoutDate: {
         type: 'string',
         format: 'date-time',
-        disabled: true
+        disabled: true,
       },
       status: {
         type: 'string',
@@ -67,7 +72,7 @@ export const UserSchema = () => {
       },
       guestUser: {
         type: 'boolean',
-        hidden: true
+        hidden: true,
       },
       reminderQuestion: {
         type: 'array',
@@ -98,20 +103,20 @@ export const UserSchema = () => {
       lastLoginDate: {
         type: 'string',
         format: 'date-time',
-        disabled: true
+        disabled: true,
       },
       lastLoginIp: {
         type: 'string',
-        disabled: true
+        disabled: true,
       },
       lastFailedLoginDate: {
         type: 'string',
         format: 'date-time',
-        disabled: true
+        disabled: true,
       },
       failedLoginAttempts: {
         type: 'number',
-        disabled: true
+        disabled: true,
       },
       passwordPolicy: {
         type: 'string',
@@ -225,11 +230,14 @@ export const UserRoleSchema = () => {
             fieldType: FieldType.selectionmultiple,
             dataSource: {
               source: 'json',
-              json: Object.values(PermissionTypeComponent).map(value => ({ label: value, value }))
+              json: Object.values(PermissionTypeComponent).map(value => ({
+                label: value,
+                value,
+              })),
             },
             items: {
               type: 'string',
-            }
+            },
           },
           content: {
             type: 'array',
@@ -237,19 +245,20 @@ export const UserRoleSchema = () => {
             fieldType: FieldType.selectionmultiple,
             dataSource: {
               source: 'json',
-              json: Object.values(PermissionTypeContent).map(value => ({ label: value, value }))
+              json: Object.values(PermissionTypeContent).map(value => ({
+                label: value,
+                value,
+              })),
             },
             items: {
               type: 'string',
-            }
-          }
-        }
+            },
+          },
+        },
       },
     },
   } as const;
 };
-
-
 
 export const UserUI = (): CollectionUI[] => {
   return [
@@ -319,6 +328,18 @@ export type UserModel = FromSchema<typeof ush>;
 export type UserGroupModel = FromSchema<typeof usgh>;
 export type UserRoleModel = FromSchema<typeof usrh>;
 
-registerCollection('User', DataType.user, UserSchema(), UserUI(), null)
-registerCollection('User Group', DataType.usergroup, UserGroupSchema(), null, null)
-registerCollection('User Role', DataType.userrole, UserRoleSchema(), null, null)
+registerCollection('User', DataType.user, UserSchema(), UserUI(), null);
+registerCollection(
+  'User Group',
+  DataType.usergroup,
+  UserGroupSchema(),
+  null,
+  null
+);
+registerCollection(
+  'User Role',
+  DataType.userrole,
+  UserRoleSchema(),
+  null,
+  null
+);

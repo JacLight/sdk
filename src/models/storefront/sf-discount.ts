@@ -1,7 +1,8 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
-import { CollectionUI } from '../collection-ui'; import { DataType, FieldType } from '../../types';
+import { CollectionUI } from '../collection-ui';
+import { DataType, FieldType } from '../../types';
 
 export const SFDiscountSchema = () => {
   return {
@@ -12,22 +13,22 @@ export const SFDiscountSchema = () => {
       },
       code: {
         type: 'string',
-        pattern: '^[^[a-zA-Z_\-0-9]*$',
+        pattern: '^[^[a-zA-Z_-0-9]*$',
       },
       remark: {
         type: 'string',
       },
       start: {
         type: 'string',
-        format: 'date-time'
+        format: 'date-time',
       },
       end: {
         type: 'string',
-        format: 'date-time'
+        format: 'date-time',
       },
       discountType: {
         type: 'string',
-        enum: ['amount', 'percentage']
+        enum: ['amount', 'percentage'],
       },
       discount: {
         type: 'number',
@@ -78,7 +79,17 @@ export const SFDiscountSchema = () => {
 const ms = SFDiscountSchema();
 export type SFDiscountModel = FromSchema<typeof ms>;
 
-
-export const SFDiscountUI = (): CollectionUI[] => { return null };
-export const SFDiscountRules = (): CollectionRule[] => { return null };
-registerCollection('Store Discount', DataType.sf_discount, SFDiscountSchema(), SFDiscountUI(), SFDiscountRules(), true)
+export const SFDiscountUI = (): CollectionUI[] => {
+  return null;
+};
+export const SFDiscountRules = (): CollectionRule[] => {
+  return null;
+};
+registerCollection(
+  'Store Discount',
+  DataType.sf_discount,
+  SFDiscountSchema(),
+  SFDiscountUI(),
+  SFDiscountRules(),
+  true
+);

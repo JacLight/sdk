@@ -14,7 +14,7 @@ export const PageSchema = (title = '', description = '') => {
         type: 'string',
         minLength: 3,
         maxLength: 50,
-        hidden: true
+        hidden: true,
       },
       name: {
         type: 'string',
@@ -170,8 +170,8 @@ export const PageSectionSchema = () => {
             hide: {
               type: 'boolean',
             },
-          }
-        }
+          },
+        },
       },
       manualSelection: {
         type: 'boolean',
@@ -180,7 +180,7 @@ export const PageSectionSchema = () => {
         type: 'string',
         fieldType: FieldType.selectionmultiple,
         enum: Object.values(DataType),
-        default: DataType.post
+        default: DataType.post,
       },
       selection: {
         type: 'array',
@@ -319,7 +319,6 @@ export const PageUI = (): CollectionUI[] => {
   ];
 };
 
-
 export const PageSectionUI = (): CollectionUI[] => {
   return [
     {
@@ -362,8 +361,6 @@ export const PageSectionUI = (): CollectionUI[] => {
   ];
 };
 
-
-
 export const PageRules = (): CollectionRule[] => {
   return [];
 };
@@ -379,7 +376,11 @@ export const PageSectionRules = (): CollectionRule[] => {
         },
         {
           operation: 'hide',
-          targetField: ['/properties/postType', '/properties/category', '/properties/tag']
+          targetField: [
+            '/properties/postType',
+            '/properties/category',
+            '/properties/tag',
+          ],
         },
       ],
       condition: {
@@ -418,7 +419,7 @@ export const PageSectionRules = (): CollectionRule[] => {
         ],
       },
     },
-  ]
+  ];
 };
 
 const pageSectionSchema = PageSectionSchema();
@@ -427,4 +428,4 @@ const pageSchema = PageSchema();
 export type PageSectionModel = FromSchema<typeof pageSectionSchema>;
 export type PageModel = FromSchema<typeof pageSchema>;
 
-registerCollection('Page', DataType.page, PageSchema(), PageUI(), PageRules())
+registerCollection('Page', DataType.page, PageSchema(), PageUI(), PageRules());
