@@ -80,16 +80,6 @@ export const ApplicationSchema = () => {
                 label: 'name',
               },
             },
-            collectionForm: {
-              type: 'string',
-              fieldType: FieldType.selectionmultiple,
-              dataSource: {
-                source: 'collection',
-                collection: DataType.collectionform,
-                value: 'sk',
-                label: 'name',
-              },
-            },
             component: {
               type: 'string',
               enum: Object.values(ComponentName),
