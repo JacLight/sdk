@@ -22,9 +22,9 @@ export const TranslationSchema = () => {
       },
       item: {
         type: 'array',
-        layout: 'horizontal',
         items: {
           type: 'object',
+          layout: 'horizontal',
           properties: {
             language: {
               type: 'string',

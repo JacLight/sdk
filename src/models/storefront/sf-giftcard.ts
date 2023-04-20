@@ -2,12 +2,16 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
 import { CollectionUI } from '../collection-ui';
-import { DataType, FieldType } from '../../types';
+import { DataType, FieldType, FormViewSectionType } from '../../types';
 
 export const SFGiftCardSchema = () => {
   return {
     type: 'object',
     properties: {
+      name: {
+        type: 'string',
+        pattern: '^[^[a-zA-Z_-0-9]*$',
+      },
       serial: {
         type: 'string',
         pattern: '^[^[a-zA-Z_-0-9]*$',
@@ -26,26 +30,21 @@ export const SFGiftCardSchema = () => {
       noOfUse: {
         type: 'number',
       },
-      amount: { type: 'number' },
-      amountUsed: { type: 'number' },
-      agent: { type: 'string' },
-      boughtBy: { type: 'number' },
-      boughtDate: { type: 'string' },
-      uses: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            user: { type: 'string' },
-            date: { type: 'string' },
-            amount: { type: 'number' },
-            orderNumber: { type: 'string' },
-          },
-        },
+      forSale: {
+        type: 'boolean',
       },
+      amount: { type: 'number' },
       type: {
         type: 'string',
       },
+      status: {
+        type: 'string',
+        enum: ['new', 'bought', 'sold', 'used', 'expired', 'cancelled', 'refunded',],
+      },
+      agent: { type: 'string' },
+      boughtBy: { type: 'string' },
+      boughtDate: { type: 'string' },
+      amountUsed: { type: 'number', readOnly: true },
       sku: {
         type: 'string',
         inputStyle: 'chip',
@@ -55,17 +54,6 @@ export const SFGiftCardSchema = () => {
           collection: DataType.sf_product,
           value: 'sk',
           label: 'sku',
-        },
-      },
-      user: {
-        type: 'string',
-        inputStyle: 'chip',
-        fieldType: FieldType.selectionmultiple,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.user,
-          value: 'sk',
-          label: 'username',
         },
       },
       category: {
@@ -79,9 +67,40 @@ export const SFGiftCardSchema = () => {
           label: 'name',
         },
       },
-      status: {
+      customer: {
         type: 'string',
-        enum: ['new', 'assigned', 'sold', 'used'],
+        inputStyle: 'chip',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.customer,
+          value: 'sk',
+          label: 'username',
+        },
+      },
+      group: {
+        type: 'string',
+        inputStyle: 'chip',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.usergroup,
+          value: 'sk',
+          label: 'name',
+        },
+      },
+      uses: {
+        type: 'array',
+        items: {
+          type: 'object',
+          layout: 'horizontal',
+          properties: {
+            user: { type: 'string' },
+            date: { type: 'string' },
+            amount: { type: 'number' },
+            orderNumber: { type: 'string' },
+          },
+        },
       },
     },
   } as const;
@@ -90,7 +109,66 @@ const ms = SFGiftCardSchema();
 export type SFGiftCardModel = FromSchema<typeof ms>;
 
 export const SFGiftCardUI = (): CollectionUI[] => {
-  return null;
+  return [
+    {
+      type: FormViewSectionType.section2column,
+      items: [
+        {
+          '0': '/properties/name',
+          '1': '/properties/forSale',
+        },
+        {
+          '0': '/properties/serial',
+          '1': '/properties/batch',
+          '2': '/properties/code',
+        },
+        {
+          '0': '/properties/amount',
+          '1': '/properties/amountUsed',
+          '2': '/properties/noOfUse',
+        },
+        {
+          '0': '/properties/type',
+          '1': '/properties/status',
+          '2': '/properties/noOfUse',
+        },
+      ],
+    },
+    {
+      type: FormViewSectionType.sectiontable,
+      collapsible: true,
+      title: 'Allowed Uses',
+      items: [
+        {
+          '0': '/properties/sku',
+        },
+        {
+          '0': '/properties/category',
+        },
+        {
+          '0': '/properties/group',
+        },
+        {
+          '0': '/properties/customer',
+        },
+      ],
+    },
+    {
+      type: FormViewSectionType.sectiontable,
+      collapsible: true,
+      title: 'Use History',
+      items: [
+        {
+          '0': '/properties/boughtBy',
+          '1': '/properties/boughtDate',
+          '2': '/properties/agent',
+        },
+        {
+          '0': '/properties/uses',
+        },
+      ],
+    },
+  ]
 };
 export const SFGiftCardRules = (): CollectionRule[] => {
   return null;

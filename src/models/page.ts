@@ -131,15 +131,15 @@ export const PageSectionSchema = () => {
         hidden: true,
       },
       style: {
-        type: 'string',
+        type: 'string' || 'object',
         hidden: true,
       },
-      className: {
-        type: 'string',
+      classes: {
+        type: 'string' || 'array',
         hidden: true,
       },
       config: {
-        type: 'string',
+        type: 'string' || 'array' || 'object',
         hidden: true,
       },
       content: {
@@ -152,9 +152,9 @@ export const PageSectionSchema = () => {
       },
       fieldMap: {
         type: 'array',
-        layout: 'horizontal',
         items: {
           type: 'object',
+          layout: 'horizontal',
           properties: {
             templateProp: {
               type: 'string',

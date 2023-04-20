@@ -2,7 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
 import { CollectionUI } from '../collection-ui';
-import { DataType, FieldType } from '../../types';
+import { DataType, FieldType, FormViewSectionType } from '../../types';
 
 export const SFDiscountSchema = () => {
   return {
@@ -15,7 +15,10 @@ export const SFDiscountSchema = () => {
         type: 'string',
         pattern: '^[^[a-zA-Z_-0-9]*$',
       },
-      remark: {
+      active: {
+        type: 'boolean',
+      },
+      description: {
         type: 'string',
       },
       start: {
@@ -33,8 +36,8 @@ export const SFDiscountSchema = () => {
       discount: {
         type: 'number',
       },
-      active: {
-        type: 'boolean',
+      usePerUser: {
+        type: 'number',
       },
       sku: {
         type: 'string',
@@ -45,17 +48,6 @@ export const SFDiscountSchema = () => {
           collection: DataType.sf_product,
           value: 'sk',
           label: 'sku',
-        },
-      },
-      user: {
-        type: 'string',
-        inputStyle: 'chip',
-        fieldType: FieldType.selectionmultiple,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.user,
-          value: 'sk',
-          label: 'username',
         },
       },
       category: {
@@ -69,8 +61,27 @@ export const SFDiscountSchema = () => {
           label: 'name',
         },
       },
-      usePerUser: {
-        type: 'number',
+      customer: {
+        type: 'string',
+        inputStyle: 'chip',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.customer,
+          value: 'sk',
+          label: 'username',
+        },
+      },
+      group: {
+        type: 'string',
+        inputStyle: 'chip',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.usergroup,
+          value: 'sk',
+          label: 'name',
+        },
       },
     },
   } as const;
@@ -80,7 +91,49 @@ const ms = SFDiscountSchema();
 export type SFDiscountModel = FromSchema<typeof ms>;
 
 export const SFDiscountUI = (): CollectionUI[] => {
-  return null;
+  return [
+    {
+      type: FormViewSectionType.section2column,
+      items: [
+        {
+          '0': '/properties/name',
+          '1': '/properties/code',
+          '2': '/properties/active',
+        },
+        {
+          '0': '/properties/description',
+        },
+        {
+          '0': '/properties/start',
+          '1': '/properties/end',
+        },
+        {
+          '0': '/properties/discountType',
+          '1': '/properties/discount',
+          '2': '/properties/usePerUser',
+        },
+      ],
+    },
+    {
+      type: FormViewSectionType.sectiontable,
+      collapsible: true,
+      title: 'Allowed Uses',
+      items: [
+        {
+          '0': '/properties/sku',
+        },
+        {
+          '0': '/properties/category',
+        },
+        {
+          '0': '/properties/group',
+        },
+        {
+          '0': '/properties/customer',
+        },
+      ],
+    },
+  ]
 };
 export const SFDiscountRules = (): CollectionRule[] => {
   return null;

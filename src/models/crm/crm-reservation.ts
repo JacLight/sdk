@@ -3,7 +3,6 @@ import { registerCollection, registerDefaultData } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
 import { CollectionUI } from '../collection-ui';
 import { DataType, FieldType } from '../../types';
-import { FileInfoSchema } from '../fileinfo';
 
 export const ReservationSchema = () => {
   return {
@@ -14,45 +13,45 @@ export const ReservationSchema = () => {
         pattern: '^[a-zA-Z_\\-0-9]*$',
         unique: true,
       },
-      description: {
-        type: 'string',
+      workDays: {
+        type: 'array',
+        fieldType: FieldType.selectionmultiple,
+        inputStyle: 'chip',
+        items: {
+          type: 'string',
+        },
+        dataSource: {
+          source: 'json',
+          json: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+        },
       },
-      scheduleType: {
-        type: 'string',
-        enum: ['auto', 'manual'],
-      },
-      autoSchedule: {
-        type: 'object',
-        properties: {
-          interval: {
-            type: 'number',
-          },
-          minDuration: {
-            type: 'number',
-          },
-          maxDuration: {
-            type: 'number',
-          },
-          break: {
-            type: 'number',
-          },
-          startTime: {
-            type: 'string',
-            format: 'date-time',
-          },
-          endTime: {
-            type: 'string',
-            format: 'date-time',
-          },
-          days: {
-            type: 'array',
-            items: {
+      services: {
+        type: 'array',
+        items: {
+          type: 'object',
+          layout: 'horizontal',
+          properties: {
+            name: {
               type: 'string',
+              css: { width: '100%' },
+            },
+            duration: {
+              type: 'number',
+              css: { width: '50px' },
+            },
+            price: {
+              type: 'number',
+              css: { width: '50px' },
+            },
+            breakAfter: {
+              type: 'number',
+              css: { width: '50px' },
             },
           },
         },
       },
       checkInBy: {
+        layout: 'horizontal',
         type: 'object',
         properties: {
           value: {
@@ -64,98 +63,85 @@ export const ReservationSchema = () => {
           },
         },
       },
-      reservationOpen: {
+      officeHours: {
         type: 'object',
+        layout: 'horizontal',
         properties: {
-          value: {
+          startTime: {
             type: 'string',
+            format: 'time',
           },
-          unit: {
+          endTime: {
             type: 'string',
-            enum: ['days', 'hours', 'minutes', 'months'],
-          },
-        },
-      },
-      reservationClose: {
-        type: 'object',
-        properties: {
-          value: {
-            type: 'string',
-          },
-          unit: {
-            type: 'string',
-            enum: ['days', 'hours', 'minutes', 'months'],
-          },
-        },
-      },
-      manualSchedules: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            startTime: {
-              type: 'string',
-              format: 'date-time',
-            },
-            endTime: {
-              type: 'string',
-              format: 'date-time',
-            },
+            format: 'time',
           },
         },
       },
       blockedTime: {
         type: 'array',
+        collapsible: true,
         items: {
           type: 'object',
+          layout: 'horizontal',
           properties: {
             startTime: {
               type: 'string',
-              format: 'date-time',
+              format: 'time',
             },
             endTime: {
               type: 'string',
-              format: 'date-time',
+              format: 'time',
             },
           },
         },
       },
-      hosts: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            name: {
-              type: 'string',
-            },
-            description: {
-              type: 'string',
-            },
-            picture: FileInfoSchema(),
-          },
+      description: {
+        type: 'string',
+      },
+      host: {
+        type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.user,
+          value: 'sk',
+          label: 'email',
         },
       },
-      venues: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            name: {
-              type: 'string',
-            },
-            description: {
-              type: 'string',
-            },
-            picture: FileInfoSchema(),
-          },
+      spots: {
+        type: 'number',
+        'x-group': 'group1',
+        default: 1,
+      },
+      venue: {
+        type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        'x-group': 'group1',
+        dataSource: {
+          source: 'collection',
+          collection: DataType.location,
+          value: 'sk',
+          label: 'name',
         },
       },
       notificationTemplate: {
         type: 'string',
         fieldType: FieldType.selectionmultiple,
+        'x-group': 'group2',
         dataSource: {
           source: 'collection',
           collection: DataType.messagetemplate,
+          value: 'sk',
+          label: 'name',
+        },
+      },
+      workflow: {
+        type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        'x-group': 'group2',
+        dataSource: {
+          source: 'collection',
+          collection: DataType.workflowdefinition,
           value: 'sk',
           label: 'name',
         },
@@ -165,8 +151,72 @@ export const ReservationSchema = () => {
   } as const;
 };
 
+
+export const ReservationEntrySchema = () => {
+  return {
+    type: 'object',
+    properties: {
+      reservation: {
+        type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.reservation,
+          value: 'sk',
+          label: 'name',
+        },
+      },
+      service: {
+        type: 'string',
+      },
+      startTime: {
+        type: 'string',
+        format: 'date-time',
+      },
+      endTime: {
+        type: 'string',
+        format: 'date-time',
+      },
+      customer: {
+        type: 'object',
+        layout: 'horizontal',
+        properties: {
+          name: {
+            type: 'string',
+            format: 'date-time',
+          },
+          email: {
+            type: 'string',
+            format: 'date-time',
+          },
+          phone: {
+            type: 'string',
+            format: 'date-time',
+          },
+        },
+      },
+      checkedIn: {
+        type: 'boolean',
+      },
+      hosts: {
+        type: 'string',
+      },
+      venue: {
+        type: 'string',
+      },
+      status: {
+        type: 'string',
+      },
+    },
+    required: ['name'],
+  } as const;
+};
+
 const cs = ReservationSchema();
-export type ReservationSModel = FromSchema<typeof cs>;
+export type ReservationModel = FromSchema<typeof cs>;
+
+const cse = ReservationEntrySchema();
+export type ReservationEntryModel = FromSchema<typeof cse>;
 
 export const ReservationUI = (): CollectionUI[] => {
   return null;
@@ -175,13 +225,23 @@ export const ReservationRules = (): CollectionRule[] => {
   return null;
 };
 registerCollection(
-  'Reservation ',
+  'Reservation',
   DataType.reservation,
   ReservationSchema(),
   ReservationUI(),
   ReservationRules(),
   true
 );
+
+registerCollection(
+  'ReservationEntry',
+  DataType.reservationentry,
+  ReservationEntrySchema(),
+  ReservationUI(),
+  ReservationRules(),
+  true
+);
+
 
 //create a reservation workflow definition with 8 stages - intake, confirmed, check-in, waiting, completed, canceled, reschedule, error
 
