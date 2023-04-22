@@ -43,4 +43,8 @@ export enum ComponentName {
   ScriptEditor = 'ScriptEditor',
   ViewTemplate = 'ViewTemplate',
   Events = 'Events',
+  MintCalendar = 'MintCalendar',
+  Inbox = 'Inbox',
+  FinanceHome = 'FinanceHome',
+  InventoryHome = 'InventoryHome',
 }

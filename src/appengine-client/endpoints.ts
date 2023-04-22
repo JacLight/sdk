@@ -37,22 +37,32 @@ export const appEndpoints = {
   logout: {
     name: 'logout',
     method: 'get',
-    path: 'user/logout',
+    path: 'profile/customer/logout',
   },
   login: {
     name: 'login',
     method: 'post',
-    path: 'user/signin',
+    path: 'profile/customer/signin',
   },
   register: {
     name: 'register',
     method: 'post',
-    path: 'user/signup',
+    path: 'profile/customer/signup',
+  },
+  forget_password: {
+    name: 'forgot_password',
+    method: 'get',
+    path: 'profile/customer/password/forgot',
+  },
+  reset_password: {
+    name: 'reset_password',
+    method: 'get',
+    path: 'profile/customer/password/reset',
   },
   appkey: {
     name: 'appkey',
     method: 'post',
-    path: 'user/app/key',
+    path: 'profile/app/key',
   },
   delete: {
     name: 'delete',
@@ -63,11 +73,6 @@ export const appEndpoints = {
     name: 'profile',
     method: 'post',
     path: 'profile',
-  },
-  batchprocess: {
-    name: 'batchprocess',
-    method: 'post',
-    path: 'batchprocess',
   },
   file_get: {
     name: 'file_get',
@@ -168,6 +173,56 @@ export const appEndpoints = {
     name: 'upstream_get_config',
     method: 'get',
     path: 'upstream/get/config',
+  },
+  crm_ticket_get: {
+    name: 'crm_ticket_get',
+    method: 'get',
+    path: 'crm/tickets/get',
+  },
+  crm_ticket_delete: {
+    name: 'crm_ticket_delete',
+    method: 'delete',
+    path: 'crm/tickets/delete',
+  },
+  crm_ticket_create: {
+    name: 'crm_ticket_create',
+    method: 'post',
+    path: 'crm/tickets/create',
+  },
+  crm_ticket_update: {
+    name: 'crm_ticket_update',
+    method: 'post',
+    path: 'crm/tickets/update',
+  },
+  crm_reservations_get: {
+    name: 'crm_reservations_get',
+    method: 'get',
+    path: 'crm/reservations/get',
+  },
+  crm_reservations_delete: {
+    name: 'crm_reservations_delete',
+    method: 'delete',
+    path: 'crm/reservations/delete',
+  },
+  crm_reservations_create: {
+    name: 'crm_reservations_create',
+    method: 'post',
+    path: 'crm/reservations/create',
+  },
+  crm_reservations_update: {
+    name: 'crm_reservations_update',
+    method: 'post',
+    path: 'crm/reservations/update',
+  },
+  crm_reservations_definitions: {
+    name: 'crm_reservations_definitions',
+    method: 'get',
+    path: 'crm/reservations/definitions',
+  },
+  crm_reservations_slots: {
+    name: 'crm_reservations_slots',
+    method: 'post',
+    path: 'crm/reservations/slots',
   },
 };
 

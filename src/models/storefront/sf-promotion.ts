@@ -2,7 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
 import { CollectionUI } from '../collection-ui';
-import { DataType, FieldType } from '../../types';
+import { DataType, FieldType, FormViewSectionType } from '../../types';
 
 export const SFPromotionSchema = () => {
   return {
@@ -10,6 +10,13 @@ export const SFPromotionSchema = () => {
     properties: {
       name: {
         type: 'string',
+      },
+      description: {
+        type: 'string',
+      },
+      status: {
+        type: 'string',
+        enum: ['new', 'active', 'running', 'expired', 'disabled'],
       },
       start: {
         type: 'string',
@@ -37,17 +44,6 @@ export const SFPromotionSchema = () => {
           label: 'sku',
         },
       },
-      user: {
-        type: 'string',
-        inputStyle: 'chip',
-        fieldType: FieldType.selectionmultiple,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.user,
-          value: 'sk',
-          label: 'username',
-        },
-      },
       category: {
         type: 'string',
         inputStyle: 'chip',
@@ -59,12 +55,27 @@ export const SFPromotionSchema = () => {
           label: 'name',
         },
       },
-      usePerUser: {
-        type: 'number',
-      },
-      status: {
+      customer: {
         type: 'string',
-        enum: ['new', 'active', 'stopped'],
+        inputStyle: 'chip',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.customer,
+          value: 'sk',
+          label: 'username',
+        },
+      },
+      group: {
+        type: 'string',
+        inputStyle: 'chip',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.usergroup,
+          value: 'sk',
+          label: 'name',
+        },
       },
     },
   } as const;
@@ -74,7 +85,47 @@ const ms = SFPromotionSchema();
 export type SFPromotionModel = FromSchema<typeof ms>;
 
 export const SFPromotionUI = (): CollectionUI[] => {
-  return null;
+  return [
+    {
+      type: FormViewSectionType.section2column,
+      items: [
+        {
+          '0': '/properties/name',
+          '2': '/properties/status',
+        },
+        {
+          '0': '/properties/description',
+        },
+        {
+          '0': '/properties/start',
+          '1': '/properties/end',
+        },
+        {
+          '0': '/properties/discountType',
+          '1': '/properties/discount',
+        },
+      ],
+    },
+    {
+      type: FormViewSectionType.sectiontable,
+      collapsible: true,
+      title: 'Allowed Uses',
+      items: [
+        {
+          '0': '/properties/sku',
+        },
+        {
+          '0': '/properties/category',
+        },
+        {
+          '0': '/properties/group',
+        },
+        {
+          '0': '/properties/customer',
+        },
+      ],
+    },
+  ]
 };
 export const SFPromotionRules = (): CollectionRule[] => {
   return null;

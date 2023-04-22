@@ -45,6 +45,9 @@ export const CollectionSchema = () => {
       title: {
         type: 'string',
       },
+      hideHeading: {
+        type: 'boolean',
+      },
       description: {
         type: 'string',
       },

@@ -1,8 +1,8 @@
 export enum PermissionTypeComponent {
-  view = 'view',
-  configure = 'configure',
   add = 'add',
+  view = 'view',
   remove = 'remove',
+  configure = 'configure',
 }
 
 export enum PermissionTypeContent {

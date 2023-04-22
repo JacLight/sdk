@@ -69,4 +69,5 @@ export enum DataType {
   translation = 'translation',
   event = 'event',
   reservation = 'reservation',
+  reservationentry = 'reservationentry',
 }

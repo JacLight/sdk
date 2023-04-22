@@ -15,7 +15,7 @@ export class AppEngineClient {
   private renewTries = 0;
   private token: string = null;
 
-  constructor(private appConfig: any, private axios: any) {}
+  constructor(private appConfig: any, private axios: any) { }
 
   async getToken() {
     const path = `${this.appConfig.appengine.host}/${appEndpoints.appkey.path}`;
@@ -87,7 +87,7 @@ export class AppEngineClient {
       }
     });
     if (clientAuthRequired) {
-      const user = this.getUserFromToken(clientHeader?.authorization);
+      const user = this.getUserFromToken(clientHeader?.authorization || clientHeader?.Authorization);
       if (!user) {
         return new CustomHttpError(
           401,
@@ -126,7 +126,7 @@ export class AppEngineClient {
       path = this.appConfig.appengine.host + '/' + clientPath;
     }
     const header: any = await this.getHeaderWithToken();
-    header['x-client-authorization'] = clientHeader?.authorization;
+    header['x-client-authorization'] = clientHeader?.authorization || clientHeader?.Authorization;
     const data = clientData;
     if (data) {
       data.clientQuery = clientQuery;
