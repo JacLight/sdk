@@ -44,4 +44,7 @@ export enum ComponentName {
   ViewTemplate = 'ViewTemplate',
   Events = 'Events',
   MintCalendar = 'MintCalendar',
+  Inbox = 'Inbox',
+  FinanceHome = 'FinanceHome',
+  InventoryHome = 'InventoryHome',
 }
