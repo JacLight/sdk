@@ -1,4 +1,4 @@
-export * from './data-ype';
+export * from './data-type';
 export * from './field-type';
 export * from './jsonschema';
 export * from './collection-type';

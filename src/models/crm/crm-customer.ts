@@ -27,6 +27,17 @@ export const CustomerSchema = () => {
         maxLength: 150,
         unique: true,
       },
+      emails: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            email: { type: 'string', format: 'email' },
+            status: { type: 'string', fieldType: FieldType.label },
+            verified: { type: 'boolean' },
+          },
+        },
+      },
       username: {
         type: 'string',
       },
@@ -60,6 +71,9 @@ export const CustomerSchema = () => {
         disabled: true,
       },
       status: {
+        type: 'string',
+      },
+      phone: {
         type: 'string',
       },
       phones: {
@@ -210,16 +224,6 @@ export const CustomerSchema = () => {
       },
       hoursOfOperation: {
         type: 'string',
-      },
-      emails: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            email: { type: 'string', format: 'email' },
-            status: { type: 'string', fieldType: FieldType.label },
-          },
-        },
       },
       subscriptions: {
         type: 'array',

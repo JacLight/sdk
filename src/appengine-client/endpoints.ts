@@ -1,4 +1,9 @@
 export const appEndpoints = {
+  batch_log_data: {
+    name: 'batch_log_data',
+    method: 'post',
+    path: 'batch/log/data',
+  },
   get: {
     name: 'get',
     method: 'get',
@@ -37,7 +42,7 @@ export const appEndpoints = {
   logout: {
     name: 'logout',
     method: 'get',
-    path: 'profile/customer/logout',
+    path: 'profile/logout',
   },
   login: {
     name: 'login',
@@ -56,8 +61,13 @@ export const appEndpoints = {
   },
   reset_password: {
     name: 'reset_password',
-    method: 'get',
+    method: 'post',
     path: 'profile/customer/password/reset',
+  },
+  profile_update: {
+    name: 'profile_update',
+    method: 'post',
+    path: 'profile/customer/update',
   },
   appkey: {
     name: 'appkey',
