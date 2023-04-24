@@ -1,16 +1,8 @@
-import { DataType } from '../types';
 import { appEndpoints } from './endpoints';
 // import { decode } from "jsonwebtoken";
 // import { BaseModel } from "@models/base.model";
 // import { UserModel } from "@models/user";
 
-class CustomHttpError extends Error {
-  public response = { data: {}, status: 0 };
-  constructor(status: number, message: string, data: any) {
-    super(message);
-    (this.response.data = data), (this.response.status = status);
-  }
-}
 export class AppEngineClient {
   private renewTries = 0;
   private token: string = null;
@@ -69,64 +61,23 @@ export class AppEngineClient {
     return init;
   }
 
-  private userAuthPaths = ['user/customer'];
   async processRequest(
     method: string,
     clientPath: string,
     clientData?: any,
-    clientHeader?: any,
+    clientAuthorization?: string,
     clientQuery?: any
   ): Promise<any> {
     let path;
 
-    //check authorization
-    let clientAuthRequired = false;
-    this.userAuthPaths.forEach(path => {
-      if (clientPath.includes(path)) {
-        clientAuthRequired = true;
-      }
-    });
-    if (clientAuthRequired) {
-      const user = this.getUserFromToken(clientHeader?.authorization || clientHeader?.Authorization);
-      if (!user) {
-        return new CustomHttpError(
-          401,
-          'Unauthorized',
-          'User information required'
-        );
-      }
-
-      if (clientPath.includes('repository/create') && clientData) {
-        if (!clientData.author || clientData.author !== user.sk) {
-          return new CustomHttpError(
-            422,
-            'Data author not set',
-            'Invalid owner information, set author prop'
-          );
-        }
-      }
-
-      if (clientPath.includes('repository/update') && clientData) {
-        if (clientData.author && clientData.author !== user.sk) {
-          return new CustomHttpError(
-            401,
-            'Unauthorized',
-            'Owner information required'
-          );
-        }
-      }
-    }
 
     if (clientPath.startsWith('/api')) {
-      path =
-        this.appConfig.appengine.host +
-        '/' +
-        clientPath.substring(clientPath.indexOf('/api/') + 5);
+      path = this.appConfig.appengine.host + '/' + clientPath.substring(clientPath.indexOf('/api/') + 5);
     } else {
       path = this.appConfig.appengine.host + '/' + clientPath;
     }
     const header: any = await this.getHeaderWithToken();
-    header['x-client-authorization'] = clientHeader?.authorization || clientHeader?.Authorization;
+    header['x-client-authorization'] = clientAuthorization
     const data = clientData;
     if (data) {
       data.clientQuery = clientQuery;
@@ -163,34 +114,25 @@ export class AppEngineClient {
 
   async getSite() {
     const sitePath = `${appEndpoints.query.path}/site/name/${this.appConfig.siteName}`;
-    const rt: any = await this.processRequest('get', sitePath, null, null);
+    const rt: any = await this.processRequest('get', sitePath, null, null, null);
     if (rt && Array.isArray(rt.data) && rt.data.length > 0) {
       const [site] = rt.data;
-      if (site.data.mainNavigation) {
-        const navPath = `${appEndpoints.get.path}/${DataType.navigation}/${site.data.mainNavigation}`;
-        const mainNav = await this.processRequest('get', navPath, null, null);
-        site.data.mainNavigation = mainNav?.data?.data || [];
-      }
-
-      if (site.data.footerNavigation) {
-        const navPath = `${appEndpoints.get.path}/${DataType.navigation}/${site.data.footerNavigation}`;
-        const footNav = await this.processRequest('get', navPath, null, null);
-        site.data.mainNavigation = footNav?.data?.data || [];
-      }
-
-      const pagePath = `${appEndpoints.query.path}/${DataType.page}/site/${site.sk}`;
-      const pages = await this.processRequest('get', pagePath, null, null);
-      site.data.pages = pages.data;
-      if (site.data.languages) {
-        site.data.languages = JSON.parse(site.data.languages);
-      }
-      if (site.data.currencies) {
-        site.data.currencies = JSON.parse(site.data.currencies);
-      }
       return site;
     }
     return null;
   }
+
+
+  async logData(data: any) {
+    const sitePath = `${appEndpoints.batch_log_data}`;
+    const rt: any = await this.processRequest('post', sitePath, data, null, null);
+    if (rt && Array.isArray(rt.data) && rt.data.length > 0) {
+      const [site] = rt.data;
+      return site;
+    }
+    return null;
+  }
+
 
   async upload(path: string, location: string, file: any): Promise<any> {
     console.debug('request -> updateData', path);

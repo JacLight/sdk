@@ -1,5 +1,5 @@
 export const toTitleCase = (str: string) => {
-  return str.replace(/\w\S*/g, function(txt) {
+  return str.replace(/\w\S*/g, function (txt) {
     return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
   });
 };
@@ -30,7 +30,7 @@ export const validUrl = (url: string) => {
     '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
     '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
     '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-      '(\\#[-a-z\\d_]*)?$',
+    '(\\#[-a-z\\d_]*)?$',
     'i'
   ); // fragment locator
   return !!pattern.test(url);
@@ -100,3 +100,28 @@ export const isJsonString = (str: any) => {
 export const niceURI = (crappyURI: any) => {
   return crappyURI.replace(/[^a-zA-Z0-9-_]/g, '-');
 };
+
+export function findNestedKey(obj: any, key: string | number): any {
+  if (obj && typeof obj === 'object') {
+    if (obj.hasOwnProperty(key)) {
+      return obj[key];
+    }
+
+    if (Array.isArray(obj)) {
+      for (let i = 0; i < obj.length; i++) {
+        const result = findNestedKey(obj[i], key);
+        if (result !== undefined) {
+          return result;
+        }
+      }
+    } else {
+      for (let prop in obj) {
+        const result = findNestedKey(obj[prop], key);
+        if (result !== undefined) {
+          return result;
+        }
+      }
+    }
+  }
+  return undefined;
+}
