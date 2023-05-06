@@ -133,7 +133,7 @@ export class AppEngineClient {
       pagePath = `${appEndpoints.get.path}/page/${id}`;
     }
     const rt: any = await this.processRequest('get', pagePath, null, null, null);
-    rt.data
+    return rt.data
   }
 
 
