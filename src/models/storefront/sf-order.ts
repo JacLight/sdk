@@ -28,11 +28,11 @@ export const SFOrderSchema = () => {
         type: 'string',
         enum: [
           'new',
-          'payment',
-          'paid',
-          'unfulfilled',
-          'fulfilled',
+          'processing',
+          'shipped',
+          'delivered',
           'refunded',
+          'cancelled',
         ],
       },
       name: {

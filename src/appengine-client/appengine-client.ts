@@ -77,13 +77,13 @@ export class AppEngineClient {
       path = this.appConfig.appengine.host + '/' + clientPath;
     }
     const header: any = await this.getHeaderWithToken();
-    header['x-client-authorization'] = clientAuthorization
+    header.headers['x-client-authorization'] = clientAuthorization
     const data = clientData;
     if (data) {
       data.clientQuery = clientQuery;
     }
     method = method.toLowerCase();
-    console.log('request -> callStorefront', method, clientPath, path);
+    console.log('request -> appengine', method, clientPath, path);
     let rt;
     try {
       if (method === 'post') {

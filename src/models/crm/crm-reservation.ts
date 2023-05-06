@@ -37,15 +37,15 @@ export const ReservationSchema = () => {
             },
             duration: {
               type: 'number',
-              css: { width: '50px' },
+              css: { width: '60px' },
             },
             price: {
               type: 'number',
-              css: { width: '50px' },
+              css: { width: '60px' },
             },
             breakAfter: {
               type: 'number',
-              css: { width: '50px' },
+              css: { width: '60px' },
             },
           },
         },
@@ -69,11 +69,13 @@ export const ReservationSchema = () => {
         properties: {
           startTime: {
             type: 'string',
-            format: 'time',
+            format: 'date-time',
+            inputStyle: 'time'
           },
           endTime: {
             type: 'string',
-            format: 'time',
+            format: 'date-time',
+            inputStyle: 'time'
           },
         },
       },
@@ -112,6 +114,26 @@ export const ReservationSchema = () => {
         type: 'number',
         'x-group': 'group1',
         default: 1,
+      },
+      event: {
+        type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.event,
+          value: 'sk',
+          label: 'name',
+        },
+      },
+      form: {
+        type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.collection,
+          value: 'name',
+          label: 'name',
+        },
       },
       venue: {
         type: 'string',
@@ -166,16 +188,29 @@ export const ReservationEntrySchema = () => {
           label: 'name',
         },
       },
+      event: {
+        type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.event,
+          value: 'sk',
+          label: 'name',
+        },
+      },
       service: {
         type: 'string',
       },
       startTime: {
         type: 'string',
         format: 'date-time',
+        inputStyle: 'time'
+
       },
       endTime: {
         type: 'string',
         format: 'date-time',
+        inputStyle: 'time'
       },
       customer: {
         type: 'object',
@@ -183,15 +218,12 @@ export const ReservationEntrySchema = () => {
         properties: {
           name: {
             type: 'string',
-            format: 'date-time',
           },
           email: {
             type: 'string',
-            format: 'date-time',
           },
           phone: {
             type: 'string',
-            format: 'date-time',
           },
         },
       },
