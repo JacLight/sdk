@@ -17,6 +17,9 @@ export const SiteSchema = () => {
         maxLength: 50,
         unique: true,
       },
+      homePage: {
+        type: 'string',
+      },
       template: {
         type: 'string',
       },
@@ -183,9 +186,8 @@ export const SiteUI = (): CollectionUI[] => {
             },
             {
               '0': '/properties/hostname',
-            },
-            {
-              '0': '/properties/icon',
+              '1': '/properties/homePage',
+              '2': '/properties/icon',
             },
           ],
         },
