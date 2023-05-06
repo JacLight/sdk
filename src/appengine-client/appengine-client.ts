@@ -122,6 +122,20 @@ export class AppEngineClient {
     return null;
   }
 
+  async getPage(pageId: { slug?: string, name?: string, id?: string }) {
+    const { slug, name, id } = pageId;
+    let pagePath = `${appEndpoints.query.path}/page`;
+    if (slug) {
+      pagePath = `${pagePath}/slug/${slug}`;
+    } else if (name) {
+      pagePath = `${pagePath}/name/${name}`;
+    } else if (id) {
+      pagePath = `${appEndpoints.get.path}/page/${id}`;
+    }
+    const rt: any = await this.processRequest('get', pagePath, null, null, null);
+    rt.data
+  }
+
 
   async logData(data: any) {
     const sitePath = `${appEndpoints.batch_log_data}`;
