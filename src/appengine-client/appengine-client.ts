@@ -115,7 +115,11 @@ export class AppEngineClient {
   async getSite() {
     const sitePath = `${appEndpoints.query.path}/site/name/${this.appConfig.siteName}`;
     const rt: any = await this.processRequest('get', sitePath, null, null, null);
-    rt.data;
+    if (rt && Array.isArray(rt.data) && rt.data.length > 0) {
+      const [site] = rt.data;
+      return site;
+    }
+    return null;
   }
 
   async getPage(pageId: { slug?: string, name?: string, id?: string }) {
