@@ -234,6 +234,16 @@ export const appEndpoints = {
     method: 'post',
     path: 'crm/reservations/slots',
   },
+  crm_subscribe: {
+    name: 'crm_subscribe',
+    method: 'post',
+    path: 'crm/subscribe',
+  },
+  crm_unsubscribe: {
+    name: 'crm_unsubscribe',
+    method: 'post',
+    path: 'crm/unsubscribe',
+  },
 };
 
 export type APIEndpointName = keyof typeof appEndpoints;
