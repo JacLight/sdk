@@ -65,7 +65,7 @@ export const TaskSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.usergroup,
-          value: 'sk',
+          value: 'username',
           label: 'username',
         },
       },

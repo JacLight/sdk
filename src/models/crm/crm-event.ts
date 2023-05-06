@@ -2,7 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
 import { CollectionUI } from '../collection-ui';
-import { DataType } from '../../types';
+import { DataType, FieldType } from '../../types';
 
 export const EventSchema = () => {
   return {
@@ -10,12 +10,22 @@ export const EventSchema = () => {
     properties: {
       name: {
         type: 'string',
+        pattern: '^[a-zA-Z_\\-0-9]*$',
+        unique: true,
+      },
+      description: {
+        type: 'string',
+        inputStyle: 'textarea',
       },
       host: {
         type: 'string',
-      },
-      duration: {
-        type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.user,
+          value: 'sk',
+          label: 'email',
+        },
       },
       startTime: {
         type: 'string',
@@ -28,17 +38,11 @@ export const EventSchema = () => {
       venue: {
         type: 'string',
       },
-      participants: {
-        type: 'string',
-      },
       type: {
         type: 'string',
       },
       status: {
         type: 'string',
-      },
-      template: {
-        type: 'boolean',
       },
     },
   } as const;
@@ -59,5 +63,6 @@ registerCollection(
   EventSchema(),
   EventUI(),
   EventRules(),
+  true,
   true
 );

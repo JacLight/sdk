@@ -125,3 +125,51 @@ export function findNestedKey(obj: any, key: string | number): any {
   }
   return undefined;
 }
+
+export function timeAgo(createdDateTime: string): string {
+  const now = new Date();
+  const createdDate = new Date(createdDateTime);
+
+  const diffInSeconds = Math.abs(now.getTime() - createdDate.getTime()) / 1000;
+
+  const days = Math.floor(diffInSeconds / (60 * 60 * 24));
+  const hours = Math.floor((diffInSeconds % (60 * 60 * 24)) / (60 * 60));
+  const minutes = Math.floor((diffInSeconds % (60 * 60)) / 60);
+  const seconds = Math.floor(diffInSeconds % 60);
+
+  if (days > 0) {
+    return `${days} day${days > 1 ? 's' : ''}`;
+  } else if (hours > 0) {
+    return `${hours} hour${hours > 1 ? 's' : ''}`;
+  } else if (minutes > 0) {
+    return `${minutes} minute${minutes > 1 ? 's' : ''}`;
+  } else {
+    return `${seconds} second${seconds > 1 ? 's' : ''}`;
+  }
+}
+
+export function getTimePart(date: any) {
+  if (typeof date === 'string') date = new Date(date);
+  const hours24 = date.getHours();
+  const hours12 = hours24 % 12 || 12;
+  const minutes = date.getMinutes();
+  const amPm = hours24 < 12 ? 'AM' : 'PM';
+
+  const formattedHours = String(hours12).padStart(2, '0');
+  const formattedMinutes = String(minutes).padStart(2, '0');
+
+  return `${formattedHours}:${formattedMinutes} ${amPm}`;
+}
+
+export function formatTime(date: any) {
+  if (typeof date === 'string') date = new Date(date);
+  const hours24 = date.getHours();
+  const hours12 = hours24 % 12 || 12;
+  const minutes = date.getMinutes();
+  const amPm = hours24 < 12 ? 'AM' : 'PM';
+
+  const formattedHours = String(hours12).padStart(2, '0');
+  const formattedMinutes = String(minutes).padStart(2, '0');
+
+  return `${formattedHours}:${formattedMinutes} ${amPm}`;
+}
