@@ -54,7 +54,6 @@ export class AppEngineClient {
   async getHeaderWithToken() {
     if (!this.token) {
       this.token = await this.getToken();
-      this.renewTries = 0;
     }
     const init = this.getBaseHeader();
     init.headers['Authorization'] = `Bearer ${this.token}`;
@@ -95,6 +94,7 @@ export class AppEngineClient {
       } else if (method === 'delete') {
         rt = await this.axios.delete(path, header);
       }
+      this.renewTries = 0;
       return this.processResponse(rt);
     } catch (error) {
       console.error(error.message);
@@ -105,7 +105,9 @@ export class AppEngineClient {
       ) {
         console.log('Appengine Token Expired,.... renewing token');
         this.token = null;
-        return await this.processRequest(method, path, data);
+        const auth = await this.getHeaderWithToken();
+        console.log('auth', auth)
+        return await this.processRequest(method, clientPath, clientData, clientAuthorization, clientQuery);
       } else {
         throw error;
       }
