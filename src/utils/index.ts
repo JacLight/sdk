@@ -23,6 +23,10 @@ export const isEmpty = (obj: any) => {
   return true;
 };
 
+export const isNotEmpty = (obj: any) => {
+  return !isEmpty(obj);
+}
+
 export const validUrl = (url: string) => {
   var pattern = new RegExp(
     '^(https?:\\/\\/)?' + // protocol
@@ -172,4 +176,16 @@ export function formatTime(date: any) {
   const formattedMinutes = String(minutes).padStart(2, '0');
 
   return `${formattedHours}:${formattedMinutes} ${amPm}`;
+}
+
+interface AnyObject {
+  [key: string]: any;
+}
+
+export function combineObjectArray(arr1: AnyObject[], arr2: AnyObject[], uniqueKey: string): AnyObject[] {
+  return Array.from(
+    [...arr1, ...arr2].reduce((acc, obj) => {
+      return acc.set(obj[uniqueKey], obj);
+    }, new Map<any, any>()).values()
+  );
 }
