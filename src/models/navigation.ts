@@ -27,7 +27,7 @@ export const NavigationSchema = () => {
         type: 'string',
         inputStyle: 'textarea',
       },
-      links: {
+      children: {
         type: 'array',
         hidden: true,
         items: NavigationLinkSchema(),
@@ -89,7 +89,7 @@ export const NavigationLinkSchema = () => {
       image: {
         type: 'string',
       },
-      links: {
+      children: {
         type: 'array',
         hidden: true,
       },
