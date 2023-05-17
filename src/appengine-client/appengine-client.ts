@@ -105,8 +105,8 @@ export class AppEngineClient {
       ) {
         console.log('Appengine Token Expired,.... renewing token');
         this.token = null;
-        const auth = await this.getHeaderWithToken();
-        console.log('auth', auth)
+        await this.getHeaderWithToken();
+        console.log('auth ok')
         return await this.processRequest(method, clientPath, clientData, clientAuthorization, clientQuery);
       } else {
         throw error;
