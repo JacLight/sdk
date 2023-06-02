@@ -115,7 +115,7 @@ export class AppEngineClient {
   }
 
   async getSite() {
-    const sitePath = `${appEndpoints.query.path}/site/name/${this.appConfig.siteName}`;
+    const sitePath = `${appEndpoints.query.path}/site/name/${this.appConfig.siteName}?en=true`;
     const rt: any = await this.processRequest('get', sitePath, null, null, null);
     if (rt && Array.isArray(rt.data) && rt.data.length > 0) {
       const [site] = rt.data;
@@ -128,11 +128,11 @@ export class AppEngineClient {
     const { slug, name, id } = pageId;
     let pagePath = `${appEndpoints.query.path}/page`;
     if (slug) {
-      pagePath = `${pagePath}/slug/${slug}`;
+      pagePath = `${pagePath}/slug/${slug}?en=true`;
     } else if (name) {
-      pagePath = `${pagePath}/name/${name}`;
+      pagePath = `${pagePath}/name/${name}?en=true`;
     } else if (id) {
-      pagePath = `${appEndpoints.get.path}/page/${id}`;
+      pagePath = `${appEndpoints.get.path}/page/${id}?en=true`;
     }
     const rt: any = await this.processRequest('get', pagePath, null, null, null);
     return rt.data

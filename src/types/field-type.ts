@@ -2,6 +2,7 @@ export enum FieldType {
   paragraph = 'Paragraph',
   container = 'Container',
   richtext = 'Rich Text Editor',
+  markdown = 'Markdown Editor',
   textfield = 'Text Field',
   numberfield = 'Number Field',
   selectionsingle = 'Single Selection',
@@ -21,4 +22,5 @@ export enum FieldType {
   button = 'Button',
   label = 'Label',
   cron = 'Cron',
+  icon = 'Icon',
 }

@@ -11,3 +11,4 @@ export * from './config-type';
 export * from './component-type';
 export * from './notification-channels';
 export * from './task-status';
+export * from './search-response';

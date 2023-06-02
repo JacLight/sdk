@@ -65,7 +65,6 @@ export const MessageSchema = () => {
         type: 'number',
         fieldType: 'label',
       },
-
       statusHistory: {
         type: 'array',
         fieldType: 'label',
@@ -85,8 +84,10 @@ export const MessageSchema = () => {
           },
         },
       },
-
-      files: FileInfoSchema(),
+      files: {
+        hidden: true,
+        ...FileInfoSchema(),
+      }
     },
     required: ['message', 'to', 'title', 'type'],
   } as const;
@@ -111,7 +112,7 @@ export const MessageUI = (): CollectionUI[] => {
             },
             {
               '0': '/properties/fromPhone',
-              '1': '/properties/toPHone',
+              '1': '/properties/toPhone',
             },
             {
               '0': '/properties/title',

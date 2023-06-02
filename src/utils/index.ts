@@ -183,6 +183,8 @@ interface AnyObject {
 }
 
 export function combineObjectArray(arr1: AnyObject[], arr2: AnyObject[], uniqueKey: string): AnyObject[] {
+  if (!arr1) return arr2;
+  if (!arr2) return arr1;
   return Array.from(
     [...arr1, ...arr2].reduce((acc, obj) => {
       return acc.set(obj[uniqueKey], obj);

@@ -71,22 +71,11 @@ export const NavigationLinkSchema = () => {
         hidden: true,
         enum: widgetStore.widgetList.map(widget => widget.name),
       },
-      params: {
-        type: 'array',
-        layout: 'horizontal',
-        items: {
-          type: 'object',
-          properties: {
-            name: {
-              type: 'string',
-            },
-            value: {
-              type: 'string',
-            },
-          },
-        },
-      },
       image: {
+        type: 'string',
+        fieldType: FieldType.icon,
+      },
+      params: {
         type: 'string',
       },
       children: {
