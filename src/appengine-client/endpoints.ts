@@ -219,6 +219,11 @@ export const appEndpoints = {
     method: 'post',
     path: 'crm/unsubscribe',
   },
+  crm_contact_form: {
+    name: 'crm_contact_form',
+    method: 'post',
+    path: 'crm/contact/form',
+  },
 };
 
 export type APIEndpointName = keyof typeof appEndpoints;
