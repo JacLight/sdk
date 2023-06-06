@@ -27,4 +27,4 @@ export const FDBlacklistSchema = () => {
 };
 
 const rt = FDBlacklistSchema();
-export type FlexDataViewTemplateModel = FromSchema<typeof rt>;
+export type FDBlacklistModel = FromSchema<typeof rt>;

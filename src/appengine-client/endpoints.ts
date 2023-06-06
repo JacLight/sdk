@@ -84,45 +84,20 @@ export const appEndpoints = {
     method: 'post',
     path: 'profile',
   },
-  file_get: {
-    name: 'file_get',
+  file_delete: {
+    name: 'file_delete',
     method: 'post',
-    path: 'repository/file',
-  },
-  file_buffer: {
-    name: 'file_buffer',
-    method: 'post',
-    path: 'repository/file/buffer',
-  },
-  file_signedurl: {
-    name: 'file_signedurl',
-    method: 'post',
-    path: 'repository/file/signurl',
-  },
-  file_stat: {
-    name: 'file_stat',
-    method: 'post',
-    path: 'repository/file/stat',
-  },
-  file_stream: {
-    name: 'file_stream',
-    method: 'post',
-    path: 'repository/file/stream',
-  },
-  file_url: {
-    name: 'file_url',
-    method: 'post',
-    path: 'repository/file/url',
+    path: 'repository/customer/file/delete',
   },
   file_upload: {
     name: 'file_upload',
     method: 'post',
-    path: 'repository/file/upload',
+    path: 'repository/customer/file/upload',
   },
   file_flatlist: {
     name: 'file_flatlist',
     method: 'post',
-    path: 'repository/file/flatlist',
+    path: 'repository/customer/file/flatlist',
   },
   products: {
     name: 'products',
@@ -243,6 +218,11 @@ export const appEndpoints = {
     name: 'crm_unsubscribe',
     method: 'post',
     path: 'crm/unsubscribe',
+  },
+  crm_contact_form: {
+    name: 'crm_contact_form',
+    method: 'post',
+    path: 'crm/contact/form',
   },
 };
 
