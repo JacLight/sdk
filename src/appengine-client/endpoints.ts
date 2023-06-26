@@ -39,6 +39,11 @@ export const appEndpoints = {
     method: 'post',
     path: 'repository/update',
   },
+  activities: {
+    name: 'activities',
+    method: 'get',
+    path: 'repository/activities',
+  },
   logout: {
     name: 'logout',
     method: 'get',
@@ -48,6 +53,26 @@ export const appEndpoints = {
     name: 'login',
     method: 'post',
     path: 'profile/customer/signin',
+  },
+  login_magiclink: {
+    name: 'login_magiclink',
+    method: 'get',
+    path: 'profile/magiclink',
+  },
+  login_facebook: {
+    name: 'login_facebook',
+    method: 'get',
+    path: 'profile/facebook',
+  },
+  login_google: {
+    name: 'login_google',
+    method: 'get',
+    path: 'profile/google',
+  },
+  refresh_token: {
+    name: 'refresh_token',
+    method: 'post',
+    path: 'profile/customer/refresh',
   },
   register: {
     name: 'register',
@@ -178,6 +203,26 @@ export const appEndpoints = {
     name: 'crm_ticket_update',
     method: 'post',
     path: 'crm/tickets/update',
+  },
+  crm_message_get: {
+    name: 'crm_message_get',
+    method: 'get',
+    path: 'crm/message/get',
+  },
+  crm_message_delete: {
+    name: 'crm_message_delete',
+    method: 'delete',
+    path: 'crm/message/delete',
+  },
+  crm_message_create: {
+    name: 'crm_message_create',
+    method: 'post',
+    path: 'crm/message/create',
+  },
+  crm_message_update: {
+    name: 'crm_message_update',
+    method: 'post',
+    path: 'crm/message/update',
   },
   crm_reservations_get: {
     name: 'crm_reservations_get',
