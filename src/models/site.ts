@@ -129,6 +129,12 @@ export const SiteSchema = () => {
         inputStyle: 'switch',
         displayStyle: 'card',
       },
+      tailwindConfig: {
+        type: 'string',
+        fieldType: 'code',
+        inputStyle: 'json',
+        css: { height: 800 }
+      }
     },
   } as const;
 };
@@ -227,6 +233,14 @@ export const SiteUI = (): CollectionUI[] => {
             },
             {
               '0': '/properties/spanProtectionComment',
+            },
+          ],
+        },
+        {
+          title: 'Tailwind Config',
+          items: [
+            {
+              '0': '/properties/tailwindConfig',
             },
           ],
         },

@@ -16,6 +16,7 @@ export interface DataOptions {
   pageSize?: number;
   lastPage?: number;
   refresh?: boolean;
+  enrich?: boolean;
 }
 export interface BaseModelDTO<T> extends DataOptions {
   total?: number;
@@ -42,6 +43,8 @@ export interface BaseModel<T> {
   subschema?: string;
   requiredRole?: RequiredRoleModel;
   comments?: CommentModel[];
+  shares?: string[];
+  likes?: string[];
 }
 export const PostSubSchema = () => {
   return {

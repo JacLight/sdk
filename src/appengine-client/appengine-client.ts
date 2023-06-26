@@ -77,6 +77,8 @@ export class AppEngineClient {
     }
     const header: any = await this.getHeaderWithToken();
     header.headers['x-client-authorization'] = clientAuthorization
+    header.headers['x-client-host'] = clientPath.substring(0, clientPath.indexOf('/'))
+    header.headers['x-client-url'] = clientPath
     const data = clientData;
     if (data) {
       data.clientQuery = clientQuery;
