@@ -65,11 +65,10 @@ export class AppEngineClient {
     clientPath: string,
     clientData?: any,
     clientAuthorization?: string,
-    clientQuery?: any
+    clientQuery?: any,
+    clientHeaders?: any
   ): Promise<any> {
     let path;
-
-
     if (clientPath.startsWith('/api')) {
       path = this.appConfig.appengine.host + '/' + clientPath.substring(clientPath.indexOf('/api/') + 5);
     } else {
@@ -77,8 +76,14 @@ export class AppEngineClient {
     }
     const header: any = await this.getHeaderWithToken();
     header.headers['x-client-authorization'] = clientAuthorization
-    header.headers['x-client-host'] = clientPath.substring(0, clientPath.indexOf('/'))
-    header.headers['x-client-url'] = clientPath
+
+    if (clientHeaders) {
+      header.headers['x-client-host'] = clientHeaders['x-forwarded-host'] || clientHeaders.host;
+      header.headers['x-client-protocol'] = clientHeaders['x-forwarded-proto']
+      header.headers['x-client-url'] = clientPath
+      console.log('x-client-url', header.headers['x-client-url'])
+      console.log('x-client-host', header.headers['x-client-host'])
+    }
     const data = clientData;
     if (data) {
       data.clientQuery = clientQuery;
