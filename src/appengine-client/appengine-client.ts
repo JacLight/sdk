@@ -81,8 +81,6 @@ export class AppEngineClient {
       header.headers['x-client-host'] = clientHeaders['x-forwarded-host'] || clientHeaders.host;
       header.headers['x-client-protocol'] = clientHeaders['x-forwarded-proto']
       header.headers['x-client-url'] = clientPath
-      console.log('x-client-url', header.headers['x-client-url'])
-      console.log('x-client-host', header.headers['x-client-host'])
     }
     const data = clientData;
     if (data) {
