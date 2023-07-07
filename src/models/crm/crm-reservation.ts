@@ -69,13 +69,15 @@ export const ReservationSchema = () => {
         properties: {
           startTime: {
             type: 'string',
-            format: 'date-time',
-            inputStyle: 'time'
+            // format: 'date-time',
+            inputStyle: 'time',
+            fieldType: FieldType.date,
           },
           endTime: {
             type: 'string',
-            format: 'date-time',
-            inputStyle: 'time'
+            // format: 'date-time',
+            inputStyle: 'time',
+            fieldType: FieldType.date,
           },
         },
       },
@@ -88,11 +90,15 @@ export const ReservationSchema = () => {
           properties: {
             startTime: {
               type: 'string',
-              format: 'time',
+              // format: 'time',
+              inputStyle: 'time',
+              fieldType: FieldType.date,
             },
             endTime: {
               type: 'string',
-              format: 'time',
+              // format: 'time',
+              inputStyle: 'time',
+              fieldType: FieldType.date,
             },
           },
         },
@@ -106,7 +112,7 @@ export const ReservationSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.user,
-          value: 'sk',
+          value: 'email',
           label: 'email',
         },
       },
@@ -142,7 +148,7 @@ export const ReservationSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.location,
-          value: 'sk',
+          value: 'name',
           label: 'name',
         },
       },

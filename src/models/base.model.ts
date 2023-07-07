@@ -130,10 +130,7 @@ export const StyleSubSchema = () => {
     properties: {
       classes: {
         type: 'string',
-        enum: [''],
-      },
-      template: {
-        type: 'string',
+        'description': 'Classes to be applied to the element separated by space',
       },
       theme: {
         type: 'string',
@@ -150,16 +147,15 @@ export const StyleSubSchema = () => {
         collapsible: true,
         inputStyle: 'javascript',
       },
-      color: {
-        type: 'string',
-      },
       styleLinks: {
         type: 'array',
+        layout: 'horizontal',
         items: {
           type: 'string',
         },
       },
       scriptLinks: {
+        layout: 'horizontal',
         type: 'array',
         items: {
           type: 'string',

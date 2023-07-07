@@ -9,6 +9,11 @@ export const appEndpoints = {
     method: 'get',
     path: 'repository/get',
   },
+  get_collection: {
+    name: 'get_collection',
+    method: 'get',
+    path: 'repository/collection',
+  },
   isunique: {
     name: 'isunique',
     method: 'get',
@@ -268,6 +273,26 @@ export const appEndpoints = {
     name: 'crm_contact_form',
     method: 'post',
     path: 'crm/contact/form',
+  },
+  crm_events_get: {
+    name: 'crm_events_get',
+    method: 'get',
+    path: 'crm/events/get',
+  },
+  crm_events_delete: {
+    name: 'crm_events_delete',
+    method: 'delete',
+    path: 'crm/events/delete',
+  },
+  crm_events_create: {
+    name: 'crm_events_create',
+    method: 'post',
+    path: 'crm/events/create',
+  },
+  crm_events_update: {
+    name: 'crm_events_update',
+    method: 'post',
+    path: 'crm/events/update',
   },
 };
 

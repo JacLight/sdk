@@ -30,19 +30,42 @@ export const EventSchema = () => {
       startTime: {
         type: 'string',
         format: 'date-time',
+        'x-group': 'time',
       },
       endTime: {
         type: 'string',
+        'x-group': 'time',
         format: 'date-time',
       },
       venue: {
         type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        'x-group': 'group1',
+        dataSource: {
+          source: 'collection',
+          collection: DataType.location,
+          value: 'name',
+          label: 'name',
+        },
+      },
+      notificationTemplate: {
+        type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        'x-group': 'group2',
+        dataSource: {
+          source: 'collection',
+          collection: DataType.messagetemplate,
+          value: 'sk',
+          label: 'name',
+        },
       },
       type: {
         type: 'string',
+        enum: ['event', 'meeting', 'appointment'],
       },
       status: {
         type: 'string',
+        enum: ['draft', 'new', 'confirmed', 'completed', 'rescheduled', 'cancelled'],
       },
     },
   } as const;
