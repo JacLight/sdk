@@ -81,6 +81,7 @@ export const PageSchema = (title = '', description = '') => {
             high: { type: 'number', displaySize: 'small' },
             low: { type: 'number', displaySize: 'small' },
             columns: { type: 'number', displaySize: 'small' },
+            name: { type: 'string', displaySize: 'small' },
           },
         },
       },
@@ -119,11 +120,11 @@ export const PageSectionSchema = () => {
         hidden: true,
       },
       startCol: {
-        type: 'number',
+        type: 'string',
         hidden: true,
       },
       colSpan: {
-        type: 'number',
+        type: 'string',
         hidden: true,
       },
       rowSpan: {

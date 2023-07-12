@@ -2,7 +2,6 @@ import { FromSchema } from 'json-schema-to-ts';
 import { CollectionRule } from '../collection-rule';
 import { CollectionUI } from '../collection-ui';
 import {
-  ComponentName,
   DataType,
 } from '../../types';
 import { registerCollection } from '../../defaultschema';
@@ -18,7 +17,7 @@ export const FlexDataSchema = () => {
       },
       application: {
         type: 'string',
-        enum: Object.values(ComponentName),
+        // enum: Object.values(ComponentName),
       },
       type: {
         type: 'string',

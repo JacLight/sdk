@@ -30,18 +30,50 @@ export const WorkflowDefinitionSchema = () => {
           label: 'name',
         },
       },
-      reservation: {
+      startFlow: {
         type: 'string',
         fieldType: FieldType.selectionmultiple,
         dataSource: {
           source: 'collection',
-          collection: DataType.reservation,
+          collection: DataType.mintflow,
           value: 'sk',
           label: 'name',
         },
       },
+      endFlow: {
+        type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.mintflow,
+          value: 'sk',
+          label: 'name',
+        },
+      },
+      notificationTemplate: {
+        type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.messagetemplate,
+          value: 'sk',
+          label: 'name',
+        },
+      },
+      tasks: {
+        type: 'array',
+        collapsible: true,
+        minItems: 1,
+        items: TaskSchema()
+      },
+      stages: {
+        type: 'array',
+        collapsible: true,
+        minItems: 2,
+        items: WorkflowStageSchema(),
+      },
     },
-    required: ['name', 'stages'],
+    required: ['name', 'stages']
   } as const;
 };
 
@@ -52,8 +84,7 @@ export const WorkflowDefinitionRules = (): CollectionRule[] => {
       action: [
         {
           operation: 'setProperty',
-          targetField:
-            '/properties/stages/items/properties/assignTo/dataSource/collection',
+          targetField: '/properties/stages/items/properties/assignTo/dataSource/collection',
           sourceField: '/properties/stages/items/properties/assignType',
         },
       ],
@@ -73,8 +104,7 @@ export const WorkflowDefinitionRules = (): CollectionRule[] => {
       action: [
         {
           operation: 'setProperty',
-          targetField:
-            '/properties/tasks/items/properties/assignTo/dataSource/collection',
+          targetField: '/properties/tasks/items/properties/assignTo/dataSource/collection',
           sourceField: '/properties/tasks/items/properties/assignType',
         },
       ],
@@ -89,8 +119,9 @@ export const WorkflowDefinitionRules = (): CollectionRule[] => {
         ],
       },
     },
-  ];
+  ]
 };
+
 
 export const WorkflowStageSchema = () => {
   return {
@@ -99,11 +130,11 @@ export const WorkflowStageSchema = () => {
       id: {
         type: ['string', 'number'],
         fieldType: FieldType.uuid,
-        readOnly: true,
+        readOnly: true
       },
       type: {
         type: 'string',
-        enum: ['start', 'intermediate', 'end'],
+        enum: ['start', 'intermediate', 'end']
       },
       name: {
         type: 'string',
@@ -146,11 +177,7 @@ export const WorkflowStageSchema = () => {
         fieldType: FieldType.selectionmultiple,
         dataSource: {
           source: 'json',
-          json: [
-            { label: 'Group', value: 'usergroup' },
-            { label: 'Role', value: 'userrole' },
-            { label: 'User', value: 'user' },
-          ],
+          json: [{ label: 'Group', value: 'usergroup' }, { label: 'Role', value: 'userrole' }, { label: 'User', value: 'user' }]
         },
       },
       assignTo: {
@@ -191,10 +218,10 @@ export const WorkflowSubSchema = () => {
         type: 'string',
         disabled: true,
         enum: Object.values(TaskStatus),
-        default: 'new',
+        default: 'new'
       },
       note: {
-        type: 'string',
+        type: 'string'
       },
       tasks: {
         type: 'array',
@@ -228,40 +255,27 @@ export const WorkflowStageRules = (): CollectionRule[] => {
         ],
       },
     },
-  ];
+  ]
 };
 
 const genDefaultData = () => {
   return {
     tasks: [
-      {
-        status: 'new',
-        name: 'Check Stock',
-        description: 'Check if item is in stock',
-        stageId: 0,
-      },
+      { status: 'new', name: 'Check Stock', description: 'Check if item is in stock', stageId: 0 },
     ],
     stages: [
       { id: 0, type: 'start', name: 'To Do' },
       { id: 0, type: 'intermediate', name: 'In Progress' },
-      { id: 1, type: 'end', name: 'Done' },
-    ],
-  };
+      { id: 1, type: 'end', name: 'Done' }
+    ]
+  }
 };
 
-export const WorkflowDefinitionUI = (): CollectionUI[] => {
-  return null;
-};
+export const WorkflowDefinitionUI = (): CollectionUI[] => { return null };
 
 const wfd = WorkflowDefinitionSchema();
 const wfe = WorkflowSubSchema();
 export type WorkflowDefinitionModel = FromSchema<typeof wfd>;
 export type WorkflowSubModel = FromSchema<typeof wfe>;
-registerCollection(
-  'WorkflowDefinition',
-  DataType.workflowdefinition,
-  WorkflowDefinitionSchema(),
-  WorkflowDefinitionUI(),
-  WorkflowDefinitionRules()
-);
-registerDefaultData(DataType.workflowdefinition, genDefaultData);
+registerCollection('WorkflowDefinition', DataType.workflowdefinition, WorkflowDefinitionSchema(), WorkflowDefinitionUI(), WorkflowDefinitionRules())
+registerDefaultData(DataType.workflowdefinition, genDefaultData)
