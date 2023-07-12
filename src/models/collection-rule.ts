@@ -15,6 +15,6 @@ export interface CollectionRule {
     targetField?: string | string[]; //property you want to apply actions to
     sourceField?: string; //property where the value you want to apply will come from
     valueFromField?: boolean;
-    value?: string; // incase you're set to fixed value put it here
+    value?: string | number | boolean; // incase you're set to fixed value put it here
   }[];
 }

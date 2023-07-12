@@ -15,7 +15,7 @@ export const SFInventorySchema = () => {
           source: 'collection',
           collection: DataType.sf_product,
           value: 'sku',
-          label: 'sku',
+          label: ['sku', 'name'],
         },
       },
       location: {
@@ -28,6 +28,9 @@ export const SFInventorySchema = () => {
           label: 'name',
         },
       },
+      supplier: {
+        type: 'string',
+      },
       quantity: {
         type: 'number',
       },
@@ -35,19 +38,146 @@ export const SFInventorySchema = () => {
   } as const;
 };
 
-const dd = SFInventorySchema();
-export type SFInventoryModel = FromSchema<typeof dd>;
+export const SFInventoryTransferSchema = () => {
+  return {
+    type: 'object',
+    properties: {
+      transferDate: {
+        type: 'string',
+        format: 'date-time',
+      },
+      from: {
+        type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.location,
+          value: 'sk',
+          label: 'name',
+        },
+      },
+      to: {
+        type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.location,
+          value: 'sk',
+          label: 'name',
+        },
+      },
+      products: {
+        type: 'array',
+        items: {
+          type: 'object',
+          layout: 'horizontal',
+          properties: {
+            product: {
+              type: 'string',
+              fieldType: FieldType.selectionmultiple,
+              dataSource: {
+                source: 'collection',
+                collection: DataType.sf_product,
+                value: 'sku',
+                label: ['sku', 'name'],
+              },
+            },
+            quantity: {
+              type: 'number',
+            },
+          },
+        },
+      },
+      approvedBy: {
+        type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.user,
+          value: 'sk',
+          label: ['name', 'email'],
+        },
+      },
+    },
+  } as const;
+};
 
-export const SFInventoryUI = (): CollectionUI[] => {
-  return null;
+
+export const SFInventoryIntakeSchema = () => {
+  return {
+    type: 'object',
+    properties: {
+      supplier: {
+        type: 'string',
+      },
+      receivedBy: {
+        type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.user,
+          value: 'sk',
+          label: ['name', 'email'],
+        },
+      },
+      status: {
+        type: 'string',
+        enum: ['pending', 'received', 'cancelled'],
+      },
+      products: {
+        type: 'array',
+        items: {
+          type: 'object',
+          layout: 'horizontal',
+          properties: {
+            product: {
+              type: 'string',
+              fieldType: FieldType.selectionmultiple,
+              dataSource: {
+                source: 'collection',
+                collection: DataType.sf_product,
+                value: 'sku',
+                label: ['sku', 'name'],
+              },
+            },
+            quantity: {
+              type: 'number',
+            },
+          },
+        },
+      },
+      location: {
+        type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.location,
+          value: 'sk',
+          label: 'name',
+        },
+      },
+    },
+  } as const;
 };
-export const SFInventoryRules = (): CollectionRule[] => {
-  return null;
-};
-registerCollection(
-  'Store Inventory',
-  DataType.sf_inventory,
-  SFInventorySchema(),
-  SFInventoryUI(),
-  SFInventoryRules()
-);
+
+const is = SFInventorySchema();
+export type SFInventoryModel = FromSchema<typeof is>;
+export const SFInventoryUI = (): CollectionUI[] => null
+export const SFInventoryRules = (): CollectionRule[] => null
+
+
+const iis = SFInventoryIntakeSchema();
+export type SFInventoryIntakeModel = FromSchema<typeof iis>;
+export const SFInventoryIntakeUI = (): CollectionUI[] => null
+export const SFInventoryIntakeRules = (): CollectionRule[] => null
+
+
+const its = SFInventoryTransferSchema();
+export type SFInventoryTransferModel = FromSchema<typeof its>;
+export const SFInventoryTransferUI = (): CollectionUI[] => null
+export const SFInventoryTransferRules = (): CollectionRule[] => null
+
+
+registerCollection('Store Inventory', DataType.sf_inventory, SFInventorySchema(), SFInventoryUI(), SFInventoryRules());
+registerCollection('Store Inventory', DataType.sf_inventory_intake, SFInventoryIntakeSchema(), SFInventoryIntakeUI(), SFInventoryIntakeRules());
+registerCollection('Store Inventory', DataType.sf_inventory_transfer, SFInventoryTransferSchema(), SFInventoryTransferUI(), SFInventoryTransferRules());
