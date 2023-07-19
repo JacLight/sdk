@@ -123,9 +123,9 @@ export const rootPage: PageModel = {
   site: '',
   breakpoints: [
     { high: 768, low: 480, columns: 1, name: 'sm' },
-    { high: 1024, low: 768, columns: 4, name: 'md' },
-    { high: 1280, low: 1024, columns: 8, name: 'lg' },
-    { high: 1536, low: 1280, columns: 12, name: 'xl' },
+    { high: 1024, low: 768, columns: 2, name: 'md' },
+    { high: 1280, low: 1024, columns: 6, name: 'lg' },
+    { high: 1536, low: 1280, columns: 10, name: 'xl' },
     { high: 10000, low: 1536, columns: 12, name: '2xl' },
   ],
 };

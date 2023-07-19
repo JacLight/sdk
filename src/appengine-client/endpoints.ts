@@ -259,6 +259,21 @@ export const appEndpoints = {
     method: 'post',
     path: 'crm/reservations/slots',
   },
+  crm_service_request_queue_join: {
+    name: 'crm_service_request_queue_join',
+    method: 'post',
+    path: 'crm/service-request-queue/join',
+  },
+  crm_service_request_update: {
+    name: 'crm_service_request_update',
+    method: 'post',
+    path: 'crm/service-request/update',
+  },
+  crm_service_request_get: {
+    name: 'crm_service_request_get',
+    method: 'get',
+    path: 'crm/service-request/get',
+  },
   crm_subscribe: {
     name: 'crm_subscribe',
     method: 'post',
