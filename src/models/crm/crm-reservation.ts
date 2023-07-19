@@ -13,7 +13,7 @@ export const ReservationSchema = () => {
         pattern: '^[a-zA-Z_\\-0-9]*$',
         unique: true,
       },
-      definition: {
+      reservationDefinitionId: {
         type: 'string',
         fieldType: FieldType.selectionmultiple,
         dataSource: {
@@ -35,6 +35,9 @@ export const ReservationSchema = () => {
       },
       service: {
         type: 'string',
+      },
+      partySize: {
+        type: 'number',
       },
       startTime: {
         type: 'string',
