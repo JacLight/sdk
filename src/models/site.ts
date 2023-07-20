@@ -19,6 +19,13 @@ export const SiteSchema = () => {
       },
       homePage: {
         type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.page,
+          value: 'sk',
+          label: 'name',
+        },
       },
       template: {
         type: 'string',
@@ -72,11 +79,11 @@ export const SiteSchema = () => {
           json: getLanguages(),
         },
       },
-      hostname: {
+      domain: {
         type: 'string',
         format: 'hostname',
       },
-      icon: {
+      favicon: {
         type: 'string',
         format: 'uri',
       },
@@ -163,11 +170,33 @@ export const SiteUI = (): CollectionUI[] => {
       type: FormViewSectionType.sectiontab,
       tab: [
         {
-          title: 'Site Info',
+          title: 'Info',
           items: [
             {
               '0': '/properties/name',
               '1': '/properties/title',
+            },
+            {
+              '0': '/properties/description',
+            },
+            {
+              '0': '/properties/keywords',
+            },
+            {
+              '0': '/properties/robots',
+            },
+            {
+              '0': '/properties/logo',
+              '1': '/properties/favicon',
+            },
+          ],
+        },
+        {
+          title: 'Settings',
+          items: [
+            {
+              '0': '/properties/domain',
+              '1': '/properties/homePage',
             },
             {
               '0': '/properties/currencies',
@@ -182,26 +211,7 @@ export const SiteUI = (): CollectionUI[] => {
               '1': '/properties/footerNavigation',
             },
             {
-              '0': '/properties/description',
-            },
-            {
-              '0': '/properties/keywords',
-            },
-            {
-              '0': '/properties/robots',
-            },
-            {
-              '0': '/properties/hostname',
-              '1': '/properties/homePage',
-              '2': '/properties/icon',
-            },
-          ],
-        },
-        {
-          title: 'Logo',
-          items: [
-            {
-              '0': '/properties/logo',
+              '0': '/properties/template',
             },
           ],
         },
