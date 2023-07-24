@@ -75,12 +75,15 @@ export class AppEngineClient {
       path = this.appConfig.appengine.host + '/' + clientPath;
     }
     const header: any = await this.getHeaderWithToken();
-    header.headers['x-client-authorization'] = clientAuthorization
+    console.log('clientAuthorization', clientAuthorization)
+    if (clientAuthorization) {
+      header.headers['x-client-authorization'] = clientAuthorization
+    }
 
     if (clientHeaders) {
-      header.headers['x-client-host'] = clientHeaders['x-forwarded-host'] || clientHeaders.host;
-      header.headers['x-client-protocol'] = clientHeaders['x-forwarded-proto']
-      header.headers['x-client-url'] = clientPath
+      header.headers['x-client-host'] = clientHeaders['x-forwarded-host'] || clientHeaders.host || '';
+      header.headers['x-client-protocol'] = clientHeaders['x-forwarded-proto'] || ''
+      header.headers['x-client-url'] = clientPath || ''
     }
     const data = clientData;
     if (data) {

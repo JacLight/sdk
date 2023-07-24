@@ -14,6 +14,10 @@ export const FDViewTemplateSchema = () => {
         css: { height: '600px' },
         hideLabel: true,
       },
+      description: {
+        type: 'string',
+        inputStyle: 'textarea',
+      },
       usage: {
         type: 'array',
         items: {

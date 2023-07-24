@@ -17,6 +17,7 @@ export interface DataOptions {
   lastPage?: number;
   refresh?: boolean;
   enrich?: boolean;
+  hasNext?: boolean;
 }
 export interface BaseModelDTO<T> extends DataOptions {
   total?: number;
