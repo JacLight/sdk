@@ -191,3 +191,7 @@ export function combineObjectArray(arr1: AnyObject[], arr2: AnyObject[], uniqueK
     }, new Map<any, any>()).values()
   );
 }
+
+export function classNames(...classes: any) {
+  return classes.filter(Boolean).join(' ')
+}
