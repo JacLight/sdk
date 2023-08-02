@@ -42,6 +42,8 @@ export enum ComponentName {
   TemplateEditor = 'TemplateEditor',
   ScriptEditor = 'ScriptEditor',
   ViewTemplate = 'ViewTemplate',
+  ViewComponent = 'ViewComponent',
+  Blacklist = 'Blacklist',
   Events = 'Events',
   MintCalendar = 'MintCalendar',
   Inbox = 'Inbox',
