@@ -2,6 +2,7 @@ import { CollectionUI } from '../collection-ui';
 import { FieldType, FormViewSectionType, } from '../../types';
 import { FileInfoSchema } from '../fileinfo';
 import { FromSchema } from 'json-schema-to-ts';
+import { CollectionRule } from '..';
 
 export const FDViewTemplateSchema = () => {
   return {
@@ -13,6 +14,14 @@ export const FDViewTemplateSchema = () => {
         fieldType: FieldType.code,
         css: { height: '600px' },
         hideLabel: true,
+      },
+      component: {
+        hidden: true,
+        type: 'string',
+      },
+      config: {
+        type: 'object',
+        hidden: true,
       },
       description: {
         type: 'string',
@@ -55,6 +64,51 @@ export const FDViewTemplateUI = (): CollectionUI[] => {
           '0': '/properties/content',
         },
       ],
+    },
+  ];
+};
+
+export const FDViewTemplateRules = (): CollectionRule[] => {
+  return [
+    {
+      name: 'Change Data Type',
+      action: [
+        {
+          operation: 'setProperty',
+          targetField: '/properties/content/properties/code/inputStyle',
+          value: 'json',
+        }
+      ],
+      condition: {
+        type: 'and',
+        param: [
+          {
+            value: 'widget',
+            field1: '/properties/type',
+            operation: 'equal',
+          },
+        ],
+      },
+    },
+    {
+      name: 'Change Data Type',
+      action: [
+        {
+          operation: 'setProperty',
+          targetField: '/properties/content/properties/code/inputStyle',
+          value: 'html',
+        }
+      ],
+      condition: {
+        type: 'and',
+        param: [
+          {
+            value: 'widget',
+            field1: '/properties/type',
+            operation: 'notEqual',
+          },
+        ],
+      },
     },
   ];
 };

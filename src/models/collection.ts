@@ -38,7 +38,7 @@ export const CollectionSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.collection,
-          value: 'sk',
+          value: 'name',
           label: 'name',
         },
       },

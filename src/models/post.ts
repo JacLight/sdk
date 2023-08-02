@@ -1,7 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { CollectionRule } from './collection-rule';
 import { CollectionUI } from './collection-ui';
-import { DataType } from '../types';
+import { DataType, FieldType } from '../types';
 import { registerCollection } from '../defaultschema';
 
 export const PostSchema = () => {
@@ -21,7 +21,18 @@ export const PostSchema = () => {
       },
       template: {
         type: 'string',
-        hidden: true,
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.flexdata,
+          value: 'name',
+          label: 'name',
+          filter: {
+            value: 'ViewComponent',
+            property: 'application',
+            operator: 'equal'
+          }
+        },
       },
     },
   } as const;
