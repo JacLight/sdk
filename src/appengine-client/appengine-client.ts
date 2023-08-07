@@ -75,7 +75,6 @@ export class AppEngineClient {
       path = this.appConfig.appengine.host + '/' + clientPath;
     }
     const header: any = await this.getHeaderWithToken();
-    console.log('clientAuthorization', clientAuthorization)
     if (clientAuthorization) {
       header.headers['x-client-authorization'] = clientAuthorization
     }
@@ -123,6 +122,7 @@ export class AppEngineClient {
   }
 
   async getSite() {
+    //en=true enables enrichment
     const sitePath = `${appEndpoints.query.path}/site/name/${this.appConfig.siteName}?en=true`;
     const rt: any = await this.processRequest('get', sitePath, null, null, null);
     if (rt && Array.isArray(rt.data) && rt.data.length > 0) {

@@ -4,6 +4,7 @@ import { CollectionUI } from './collection-ui';
 import { DataType, FieldType } from '../types';
 import { widgetStore } from '../WidgetStore';
 import { registerCollection } from '../defaultschema';
+import { FileInfoSchema } from './fileinfo';
 
 export const NavigationSchema = () => {
   return {
@@ -50,13 +51,13 @@ export const NavigationLinkSchema = () => {
       description: {
         type: 'string',
       },
+      mega: { type: 'boolean' },
       page: {
         type: 'string',
-        hidden: true,
         fieldType: FieldType.selectionmultiple,
         dataSource: {
           source: 'collection',
-          value: 'sk',
+          value: 'name',
           label: 'name',
           collection: DataType.page,
         },
@@ -71,10 +72,11 @@ export const NavigationLinkSchema = () => {
         hidden: true,
         enum: widgetStore.widgetList.map(widget => widget.name),
       },
-      image: {
+      icon: {
         type: 'string',
         fieldType: FieldType.icon,
       },
+      image: FileInfoSchema(),
       params: {
         type: 'string',
       },

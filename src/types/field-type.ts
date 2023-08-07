@@ -23,4 +23,5 @@ export enum FieldType {
   label = 'Label',
   cron = 'Cron',
   icon = 'Icon',
+  richselect = 'Rich Select',
 }
