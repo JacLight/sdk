@@ -26,9 +26,9 @@ export const SiteSchema = () => {
           value: 'sk',
           label: 'name',
           filter: {
-            property: 'sk',
+            property: 'site',
             operation: 'equal',
-            value: '{{site.sk}}',
+            value: '{{name}}',
           }
         },
       },

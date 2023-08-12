@@ -12,9 +12,13 @@ export const PageSchema = (title = '', description = '') => {
     properties: {
       site: {
         type: 'string',
-        minLength: 3,
-        maxLength: 50,
-        hidden: true,
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.site,
+          value: 'name',
+          label: 'name',
+        },
       },
       name: {
         type: 'string',
@@ -22,6 +26,7 @@ export const PageSchema = (title = '', description = '') => {
         minLength: 3,
         maxLength: 50,
         unique: true,
+        uniqueScope: ['site'],
       },
       parent: {
         type: 'string',
@@ -29,7 +34,7 @@ export const PageSchema = (title = '', description = '') => {
         dataSource: {
           source: 'collection',
           collection: DataType.page,
-          value: 'sk',
+          value: 'name',
           label: 'name',
         },
       },
@@ -54,6 +59,7 @@ export const PageSchema = (title = '', description = '') => {
         // fn: 'return a.name.replace(/\\n/g, "")',
         event: 'onBlur',
         unique: true,
+        uniqueScope: ['site'],
       },
       iconUrl: {
         type: 'string',
@@ -270,7 +276,8 @@ export const PageUI = (): CollectionUI[] => {
           title: 'SEO & Info',
           items: [
             {
-              '0': '/properties/parent',
+              '0': '/properties/site',
+              '1': '/properties/parent',
             },
             {
               '0': '/properties/name',

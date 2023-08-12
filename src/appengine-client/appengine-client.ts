@@ -132,21 +132,15 @@ export class AppEngineClient {
     return null;
   }
 
-  async getPage(siteId: string, pageId: { slug?: string, name?: string, id?: string }) {
-    const { slug, name, id } = pageId;
-    let pagePath = `${appEndpoints.find.path}/page`;
-    let query;
-    if (slug) {
-      query = { site: siteId, slug: slug }
-      pagePath = `${pagePath}/slug/${slug}?en=true`;
-    } else if (name) {
-      query = { site: siteId, slug: slug }
-      pagePath = `${pagePath}/name/${name}?en=true`;
-    } else if (id) {
-      query = { site: siteId, slug: slug }
-      pagePath = `${appEndpoints.get.path}/page/${id}?en=true`;
+  async getPage(site: string, pageIds: { slug?: string, name?: string, id?: string }) {
+    let rt;
+    if (pageIds.id) {
+      const pagePath = `${appEndpoints.get.path}/page/${pageIds.id}?en=true`;
+      rt = await this.processRequest('get', pagePath, null, null, null);
+    } else {
+      const query = { 'data.site': site, 'data.slug': pageIds.slug, 'data.name': pageIds.name }
+      rt = await this.processRequest('post', `${appEndpoints.find.path}/page`, { query, options: { enrich: true } }, null, null);
     }
-    const rt: any = await this.processRequest('post', pagePath, { query, options: { enrich: true } }, null, null);
     return rt.data
   }
 
