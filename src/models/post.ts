@@ -13,7 +13,7 @@ export const PostSchema = () => {
         title: 'Slug',
         pattern: '^[a-zA-Z_\\-0-9]*$',
         minLength: 3,
-        maxLength: 50,
+        maxLength: 100,
         unique: true,
       },
       title: {
