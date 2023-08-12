@@ -25,6 +25,11 @@ export const SiteSchema = () => {
           collection: DataType.page,
           value: 'sk',
           label: 'name',
+          filter: {
+            property: 'sk',
+            operation: 'equal',
+            value: '{{site.sk}}',
+          }
         },
       },
       template: {
