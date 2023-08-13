@@ -64,7 +64,6 @@ export const NavigationLinkSchema = () => {
       },
       url: {
         type: 'string',
-        format: 'uri',
         hidden: true,
       },
       widget: {
