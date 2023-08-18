@@ -134,14 +134,20 @@ export class AppEngineClient {
 
   async getPage(site: string, pageIds: { slug?: string, name?: string, id?: string }) {
     let rt;
-    if (pageIds.id) {
-      const pagePath = `${appEndpoints.get.path}/page/${pageIds.id}?en=true`;
+    if (pageIds?.id) {
+      const pagePath = `${appEndpoints.get.path}/page/${pageIds?.id}?en=true`;
       rt = await this.processRequest('get', pagePath, null, null, null);
-    } else {
-      const query = { 'data.site': site, 'data.slug': pageIds.slug, 'data.name': pageIds.name }
+    } else if (pageIds?.name) {
+      const query = { 'data.site': site, 'data.name': pageIds?.name }
       rt = await this.processRequest('post', `${appEndpoints.find.path}/page`, { query, options: { enrich: true } }, null, null);
+    } else if (pageIds?.slug) {
+      const query = { 'data.site': site, 'data.slug': pageIds?.slug }
+      rt = await this.processRequest('post', `${appEndpoints.find.path}/page`, { query, options: { enrich: true } }, null, null);
+    } else {
+      console.debug('request -> getPage, not found site: ' + site + ' page: ', pageIds);
+      return null
     }
-    return rt.data
+    return rt?.data
   }
 
 
