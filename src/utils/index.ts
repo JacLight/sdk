@@ -195,3 +195,18 @@ export function combineObjectArray(arr1: AnyObject[], arr2: AnyObject[], uniqueK
 export function classNames(...classes: any) {
   return classes.filter(Boolean).join(' ')
 }
+
+export function styleToObject(style: string): { [key: string]: string } {
+  return style.split(';')
+    .map(s => s.trim())
+    .filter(s => s.length > 0)
+    .reduce<{ [key: string]: string }>((obj, item) => {
+      const [property, value] = item.split(':').map(s => s.trim());
+      if (property && value) {
+        // Convert hyphenated property to camelCase
+        const camelCaseProperty = property.replace(/-([a-z])/g, g => g[1].toUpperCase());
+        obj[camelCaseProperty] = value;
+      }
+      return obj;
+    }, {});
+}

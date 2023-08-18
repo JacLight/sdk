@@ -78,9 +78,9 @@ export const SFProductSchema = () => {
         type: 'array',
         hideLabel: true,
         showIndex: true,
-        layout: 'horizontal',
         items: {
           type: 'object',
+          layout: 'horizontal',
           properties: {
             name: {
               type: 'string',
@@ -115,7 +115,7 @@ export const SFProductSchema = () => {
         type: 'array',
         hideLabel: true,
         showIndex: true,
-        displayStyle: 'card',
+        // displayStyle: 'card',
         items: {
           type: 'object',
           properties: {
@@ -132,9 +132,9 @@ export const SFProductSchema = () => {
               title: 'Options',
               readOnly: true,
               displayStyle: 'card',
-              layout: 'horizontal',
               items: {
                 type: 'object',
+                layout: 'horizontal',
                 properties: {
                   name: {
                     type: 'string',
