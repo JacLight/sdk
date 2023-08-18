@@ -6,19 +6,15 @@ import { CollectionUI } from './collection-ui';
 
 export const FileInfoSchema = () => {
   return {
-    type: 'array',
+    type: ['object'],
     readOnly: true,
     fieldType: FieldType.file,
-    repeatable: true,
-    items: {
-      type: 'object',
-      properties: {
-        path: {
-          type: 'string',
-        },
-        url: {
-          type: 'string',
-        },
+    properties: {
+      path: {
+        type: 'string',
+      },
+      url: {
+        type: 'string',
       },
     },
   } as const;
