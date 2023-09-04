@@ -81,8 +81,11 @@ export class AppEngineClient {
 
     if (clientHeaders) {
       header.headers['x-client-host'] = clientHeaders['x-forwarded-host'] || clientHeaders.host || '';
-      header.headers['x-client-protocol'] = clientHeaders['x-forwarded-proto'] || ''
-      header.headers['x-client-url'] = clientPath || ''
+      header.headers['x-client-proto'] = clientHeaders['x-forwarded-proto'] || ''
+      header.headers['x-client-for'] = clientHeaders['x-forwarded-for'] || ''
+      header.headers['x-client-real-ip'] = clientHeaders['x-real-ip'] || ''
+      header.headers['x-client-agent'] = clientHeaders['user-agent'] || ''
+      header.headers['x-client-path'] = clientPath || ''
     }
     const data = clientData;
     if (data) {

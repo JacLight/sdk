@@ -163,10 +163,15 @@ export const PageSectionSchema = () => {
           type: 'object',
           layout: 'horizontal',
           properties: {
-            templateProp: {
+            htmlId: {
               type: 'string',
+              fieldType: FieldType.selectionmultiple,
+              dataSource: {
+                source: 'json',
+                json: [],
+              },
             },
-            dataProp: {
+            dataId: {
               type: 'string',
               fieldType: FieldType.selectionmultiple,
               dataSource: {
@@ -180,14 +185,16 @@ export const PageSectionSchema = () => {
           },
         },
       },
-      manualSelection: {
-        type: 'boolean',
-      },
       dataType: {
         type: 'string',
         fieldType: FieldType.selectionmultiple,
-        enum: Object.values(DataType),
-        default: DataType.post,
+        group: 'datatype-select',
+        groupItemId: 1,
+        inputStyle: 'chip',
+        dataSource: {
+          source: 'json',
+          json: []
+        },
       },
       selection: {
         type: 'array',
@@ -212,17 +219,6 @@ export const PageSectionSchema = () => {
               type: 'string',
             },
           },
-        },
-      },
-      postType: {
-        type: 'string',
-        inputStyle: 'chip',
-        fieldType: FieldType.selectionmultiple,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.subschema,
-          value: 'sk',
-          label: 'name',
         },
       },
       category: {
@@ -336,14 +332,10 @@ export const PageSectionUI = (): CollectionUI[] => {
           title: 'Data Selection',
           items: [
             {
-              '0': '/properties/manualSelection',
               '1': '/properties/dataType',
             },
             {
               '0': '/properties/selection',
-            },
-            {
-              '0': '/properties/postType',
             },
             {
               '0': '/properties/category',
@@ -376,44 +368,15 @@ export const PageRules = (): CollectionRule[] => {
 export const PageSectionRules = (): CollectionRule[] => {
   return [
     {
-      name: 'Manual Selection',
+      name: 'Wait for DataType',
       action: [
         {
           operation: 'show',
-          targetField: '/properties/selection',
-        },
-        {
-          operation: 'hide',
           targetField: [
-            '/properties/postType',
+            '/properties/selection',
             '/properties/category',
             '/properties/tag',
           ],
-        },
-      ],
-      condition: {
-        type: 'and',
-        param: [
-          {
-            value: true,
-            field1: '/properties/manualSelection',
-            operation: 'equal',
-          },
-        ],
-      },
-    },
-    {
-      name: 'Manual Selection Datatype',
-      action: [
-        {
-          operation: 'setProperty',
-          targetField: '/properties/selection/dataSource/collection',
-          sourceField: '/properties/dataType',
-          valueFromField: true,
-        },
-        {
-          operation: 'script',
-          value: ` schema.properties.fieldMap.items.properties.dataProp.dataSource.json = Object.keys(context.concreteCollections.get(data.dataType).data.schema.properties).map( key => ({label: key, value: key}));`,
         },
       ],
       condition: {
