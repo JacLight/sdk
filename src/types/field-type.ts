@@ -24,4 +24,5 @@ export enum FieldType {
   cron = 'Cron',
   icon = 'Icon',
   richselect = 'Rich Select',
+  'linked-select' = 'Linked Select',
 }

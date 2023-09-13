@@ -2,7 +2,6 @@ import { FromSchema } from 'json-schema-to-ts';
 import { CollectionRule } from './collection-rule';
 import { CollectionUI } from './collection-ui';
 import { DataType, FieldType } from '../types';
-import { widgetStore } from '../WidgetStore';
 import { registerCollection } from '../defaultschema';
 import { FileInfoSchema } from './fileinfo';
 
@@ -43,7 +42,7 @@ export const NavigationLinkSchema = () => {
     properties: {
       linkType: {
         type: 'string',
-        enum: ['page', 'post', 'widget', 'url'], //use of page filter liket category or tags
+        enum: ['page', 'url'], //use of page filter liket category or tags
       },
       title: {
         type: 'string',
@@ -51,7 +50,6 @@ export const NavigationLinkSchema = () => {
       description: {
         type: 'string',
       },
-      mega: { type: 'boolean' },
       page: {
         type: 'string',
         fieldType: FieldType.selectionmultiple,
@@ -62,20 +60,22 @@ export const NavigationLinkSchema = () => {
           collection: DataType.page,
         },
       },
-      url: {
+      dropType: {
         type: 'string',
-        hidden: true,
+        enum: ['list', 'compact', 'column']
       },
-      widget: {
+      display: {
         type: 'string',
-        hidden: true,
-        enum: widgetStore.widgetList.map(widget => widget.name),
+        enum: ['link', 'block', 'card', 'action']
       },
       icon: {
         type: 'string',
         fieldType: FieldType.icon,
       },
       image: FileInfoSchema(),
+      url: {
+        type: 'string',
+      },
       params: {
         type: 'string',
       },
@@ -88,138 +88,6 @@ export const NavigationLinkSchema = () => {
   } as const;
 };
 
-export const NavigationLinkRules = (): CollectionRule[] => {
-  return [
-    {
-      name: 'Show Hide Page',
-      action: [
-        {
-          operation: 'show',
-          targetField: '/properties/page',
-        },
-        {
-          operation: 'hide',
-          targetField: '/properties/widget',
-        },
-        {
-          operation: 'hide',
-          targetField: '/properties/url',
-        },
-        {
-          operation: 'setProperty',
-          targetField: '/properties/page/title',
-          value: 'Page',
-        },
-        {
-          operation: 'setProperty',
-          targetField: '/properties/page/dataSource/collection',
-          value: DataType.page,
-        },
-      ],
-      condition: {
-        type: 'and',
-        param: [
-          {
-            value: 'page',
-            field1: '/properties/linkType',
-            operation: 'equal',
-          },
-        ],
-      },
-    },
-    {
-      name: 'Show Hide Post',
-      action: [
-        {
-          operation: 'show',
-          targetField: '/properties/page',
-        },
-        {
-          operation: 'hide',
-          targetField: '/properties/widget',
-        },
-        {
-          operation: 'hide',
-          targetField: '/properties/url',
-        },
-        {
-          operation: 'setProperty',
-          targetField: '/properties/page/title',
-          value: 'Post',
-        },
-        {
-          operation: 'setProperty',
-          targetField: '/properties/page/dataSource/collection',
-          value: DataType.post,
-        },
-      ],
-      condition: {
-        type: 'and',
-        param: [
-          {
-            value: 'post',
-            field1: '/properties/linkType',
-            operation: 'equal',
-          },
-        ],
-      },
-    },
-    {
-      name: 'Show Hide URL',
-      action: [
-        {
-          operation: 'hide',
-          targetField: '/properties/page',
-        },
-        {
-          operation: 'hide',
-          targetField: '/properties/widget',
-        },
-        {
-          operation: 'show',
-          targetField: '/properties/url',
-        },
-      ],
-      condition: {
-        type: 'and',
-        param: [
-          {
-            value: 'url',
-            field1: '/properties/linkType',
-            operation: 'equal',
-          },
-        ],
-      },
-    },
-    {
-      name: 'Show Hide Widget',
-      action: [
-        {
-          operation: 'hide',
-          targetField: '/properties/page',
-        },
-        {
-          operation: 'show',
-          targetField: '/properties/widget',
-        },
-        {
-          operation: 'hide',
-          targetField: '/properties/url',
-        },
-      ],
-      condition: {
-        type: 'and',
-        param: [
-          {
-            value: 'widget',
-            field1: '/properties/linkType',
-            operation: 'equal',
-          },
-        ],
-      },
-    },
-  ];
-};
 
 const rtlink = NavigationLinkSchema();
 const rt = NavigationSchema();

@@ -6,7 +6,7 @@ import { CollectionUI } from './collection-ui';
 
 export const FileInfoSchema = () => {
   return {
-    type: ['object'],
+    type: 'object',
     readOnly: true,
     fieldType: FieldType.file,
     properties: {

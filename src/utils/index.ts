@@ -41,14 +41,16 @@ export const validUrl = (url: string) => {
 };
 
 export function getRandomString(length = 20) {
-  var randomChars =
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnpqrstuvwxyz0123456789';
-  var result = '';
-  for (var i = 0; i < length; i++) {
-    result += randomChars.charAt(
-      Math.floor(Math.random() * randomChars.length)
-    );
+  const chars = 'abcdefghijklmnpqrstuvwxyz';
+  const numbers = '0123456789';
+  const allChars = chars + numbers;
+
+  let result = chars.charAt(Math.floor(Math.random() * chars.length)); // Start with a character
+
+  for (let i = 1; i < length; i++) { // Start loop from 1 since we already have the first character
+    result += allChars.charAt(Math.floor(Math.random() * allChars.length));
   }
+
   return result;
 }
 
@@ -102,7 +104,7 @@ export const isJsonString = (str: any) => {
 };
 
 export const niceURI = (crappyURI: any) => {
-  return crappyURI.replace(/[^a-zA-Z0-9-_]/g, '-');
+  return crappyURI?.toLowerCase().replace(/[^a-zA-Z0-9-_]/g, '-');
 };
 
 export function findNestedKey(obj: any, key: string | number): any {

@@ -61,6 +61,15 @@ export const PageSchema = (title = '', description = '') => {
         unique: true,
         uniqueScope: ['site'],
       },
+      dataType: {
+        type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        inputStyle: 'chip',
+        dataSource: {
+          source: 'json',
+          json: [],
+        }
+      },
       iconUrl: {
         type: 'string',
       },
@@ -163,10 +172,15 @@ export const PageSectionSchema = () => {
           type: 'object',
           layout: 'horizontal',
           properties: {
-            templateProp: {
+            htmlId: {
               type: 'string',
+              fieldType: FieldType.selectionmultiple,
+              dataSource: {
+                source: 'json',
+                json: [],
+              },
             },
-            dataProp: {
+            dataId: {
               type: 'string',
               fieldType: FieldType.selectionmultiple,
               dataSource: {
@@ -180,14 +194,20 @@ export const PageSectionSchema = () => {
           },
         },
       },
-      manualSelection: {
-        type: 'boolean',
-      },
       dataType: {
         type: 'string',
         fieldType: FieldType.selectionmultiple,
-        enum: Object.values(DataType),
-        default: DataType.post,
+        group: 'datatype-select',
+        groupItemId: 1,
+        inputStyle: 'chip',
+        dataSource: {
+          source: 'json',
+          json: []
+        },
+      },
+      useContextData: {
+        type: 'boolean',
+        inputStyle: 'switch',
       },
       selection: {
         type: 'array',
@@ -214,17 +234,6 @@ export const PageSectionSchema = () => {
           },
         },
       },
-      postType: {
-        type: 'string',
-        inputStyle: 'chip',
-        fieldType: FieldType.selectionmultiple,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.subschema,
-          value: 'sk',
-          label: 'name',
-        },
-      },
       category: {
         type: 'string',
         inputStyle: 'chip',
@@ -232,7 +241,7 @@ export const PageSectionSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.category,
-          value: 'sk',
+          value: 'name',
           label: 'name',
         },
       },
@@ -243,7 +252,7 @@ export const PageSectionSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.tag,
-          value: 'sk',
+          value: 'name',
           label: 'name',
         },
       },
@@ -299,10 +308,11 @@ export const PageUI = (): CollectionUI[] => {
               '0': '/properties/childEditing',
             },
             {
-              '0': '/properties/hidden',
+              '0': '/properties/iconUrl',
             },
             {
-              '0': '/properties/iconUrl',
+              '0': '/properties/hidden',
+              '1': '/properties/dataType',
             },
           ],
         },
@@ -336,14 +346,10 @@ export const PageSectionUI = (): CollectionUI[] => {
           title: 'Data Selection',
           items: [
             {
-              '0': '/properties/manualSelection',
-              '1': '/properties/dataType',
+              '0': '/properties/dataType',
             },
             {
               '0': '/properties/selection',
-            },
-            {
-              '0': '/properties/postType',
             },
             {
               '0': '/properties/category',
@@ -353,6 +359,9 @@ export const PageSectionUI = (): CollectionUI[] => {
             },
             {
               '0': '/properties/sort',
+            },
+            {
+              '0': '/properties/useContextData',
             },
           ],
         },
@@ -375,58 +384,29 @@ export const PageRules = (): CollectionRule[] => {
 
 export const PageSectionRules = (): CollectionRule[] => {
   return [
-    {
-      name: 'Manual Selection',
-      action: [
-        {
-          operation: 'show',
-          targetField: '/properties/selection',
-        },
-        {
-          operation: 'hide',
-          targetField: [
-            '/properties/postType',
-            '/properties/category',
-            '/properties/tag',
-          ],
-        },
-      ],
-      condition: {
-        type: 'and',
-        param: [
-          {
-            value: true,
-            field1: '/properties/manualSelection',
-            operation: 'equal',
-          },
-        ],
-      },
-    },
-    {
-      name: 'Manual Selection Datatype',
-      action: [
-        {
-          operation: 'setProperty',
-          targetField: '/properties/selection/dataSource/collection',
-          sourceField: '/properties/dataType',
-          valueFromField: true,
-        },
-        {
-          operation: 'script',
-          value: ` schema.properties.fieldMap.items.properties.dataProp.dataSource.json = Object.keys(context.concreteCollections.get(data.dataType).data.schema.properties).map( key => ({label: key, value: key}));`,
-        },
-      ],
-      condition: {
-        type: 'and',
-        param: [
-          {
-            value: true,
-            field1: '/properties/dataType',
-            operation: 'notEmpty',
-          },
-        ],
-      },
-    },
+    // {
+    //   name: 'Wait for DataType',
+    //   action: [
+    //     {
+    //       operation: 'show',
+    //       targetField: [
+    //         '/properties/selection',
+    //         '/properties/category',
+    //         '/properties/tag',
+    //       ],
+    //     },
+    //   ],
+    //   condition: {
+    //     type: 'and',
+    //     param: [
+    //       {
+    //         value: true,
+    //         field1: '/properties/dataType',
+    //         operation: 'notEmpty',
+    //       },
+    //     ],
+    //   },
+    // },
   ];
 };
 

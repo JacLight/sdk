@@ -1,5 +1,5 @@
 import { CollectionUI } from '../collection-ui';
-import { DataType, FieldType, FormViewSectionType, } from '../../types';
+import { FieldType, FormViewSectionType, } from '../../types';
 import { FileInfoSchema } from '../fileinfo';
 import { FromSchema } from 'json-schema-to-ts';
 
@@ -19,15 +19,8 @@ export const FDViewComponentSchema = () => {
         type: 'string',
         fieldType: FieldType.selectionmultiple,
         dataSource: {
-          source: 'collection',
-          collection: DataType.subschema,
-          value: 'name',
-          label: 'name',
-          filter: {
-            property: 'parent',
-            operation: 'equal',
-            value: 'post',
-          }
+          source: 'json',
+          json: []
         },
       },
       icon: {
