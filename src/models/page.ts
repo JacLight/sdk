@@ -61,6 +61,15 @@ export const PageSchema = (title = '', description = '') => {
         unique: true,
         uniqueScope: ['site'],
       },
+      dataType: {
+        type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        inputStyle: 'chip',
+        dataSource: {
+          source: 'json',
+          json: [],
+        }
+      },
       iconUrl: {
         type: 'string',
       },
@@ -196,6 +205,10 @@ export const PageSectionSchema = () => {
           json: []
         },
       },
+      useContextData: {
+        type: 'boolean',
+        inputStyle: 'switch',
+      },
       selection: {
         type: 'array',
         title: 'Selections',
@@ -228,7 +241,7 @@ export const PageSectionSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.category,
-          value: 'sk',
+          value: 'name',
           label: 'name',
         },
       },
@@ -239,7 +252,7 @@ export const PageSectionSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.tag,
-          value: 'sk',
+          value: 'name',
           label: 'name',
         },
       },
@@ -295,10 +308,11 @@ export const PageUI = (): CollectionUI[] => {
               '0': '/properties/childEditing',
             },
             {
-              '0': '/properties/hidden',
+              '0': '/properties/iconUrl',
             },
             {
-              '0': '/properties/iconUrl',
+              '0': '/properties/hidden',
+              '1': '/properties/dataType',
             },
           ],
         },
@@ -332,7 +346,7 @@ export const PageSectionUI = (): CollectionUI[] => {
           title: 'Data Selection',
           items: [
             {
-              '1': '/properties/dataType',
+              '0': '/properties/dataType',
             },
             {
               '0': '/properties/selection',
@@ -345,6 +359,9 @@ export const PageSectionUI = (): CollectionUI[] => {
             },
             {
               '0': '/properties/sort',
+            },
+            {
+              '0': '/properties/useContextData',
             },
           ],
         },
@@ -367,29 +384,29 @@ export const PageRules = (): CollectionRule[] => {
 
 export const PageSectionRules = (): CollectionRule[] => {
   return [
-    {
-      name: 'Wait for DataType',
-      action: [
-        {
-          operation: 'show',
-          targetField: [
-            '/properties/selection',
-            '/properties/category',
-            '/properties/tag',
-          ],
-        },
-      ],
-      condition: {
-        type: 'and',
-        param: [
-          {
-            value: true,
-            field1: '/properties/dataType',
-            operation: 'notEmpty',
-          },
-        ],
-      },
-    },
+    // {
+    //   name: 'Wait for DataType',
+    //   action: [
+    //     {
+    //       operation: 'show',
+    //       targetField: [
+    //         '/properties/selection',
+    //         '/properties/category',
+    //         '/properties/tag',
+    //       ],
+    //     },
+    //   ],
+    //   condition: {
+    //     type: 'and',
+    //     param: [
+    //       {
+    //         value: true,
+    //         field1: '/properties/dataType',
+    //         operation: 'notEmpty',
+    //       },
+    //     ],
+    //   },
+    // },
   ];
 };
 

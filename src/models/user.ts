@@ -154,6 +154,7 @@ export const UserSchema = () => {
   } as const;
 };
 
+
 export const UserGroupSchema = () => {
   return {
     type: 'object',

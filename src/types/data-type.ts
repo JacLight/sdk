@@ -1,5 +1,5 @@
 export enum DataType {
-  datafeed = 'datafeed',
+  activity = 'activity',
   collection = 'collection',
   page = 'page',
   category = 'category',

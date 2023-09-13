@@ -38,15 +38,19 @@ export interface BaseModel<T> {
   post?: PostSubModel;
   style?: StyleSubModel;
   version: number;
-  createdate?: Date;
+  createate?: Date;
   modifydate?: Date;
   author?: string;
   subschema?: string;
   requiredRole?: RequiredRoleModel;
   comments?: CommentModel[];
-  shares?: string[];
-  likes?: string[];
+  shares?: number;
+  likes?: number;
+  dislikes?: number;
+  rating?: number;
+  ratingCount?: number;
 }
+
 export const PostSubSchema = () => {
   return {
     type: 'object',
