@@ -38,7 +38,7 @@ export interface BaseModel<T> {
   post?: PostSubModel;
   style?: StyleSubModel;
   version: number;
-  createate?: Date;
+  createdate?: Date;
   modifydate?: Date;
   author?: string;
   subschema?: string;

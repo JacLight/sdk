@@ -1,7 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { DataType, FieldType, FormViewSectionType } from '../types';
 import { FileInfoSchema } from './fileinfo';
-import { getCurrencies, getLanguages } from '../data';
+import { getCurrencies, getLanguages, getSiteFeatureList } from '../data';
 import { CollectionRule } from './collection-rule';
 import { CollectionUI } from './collection-ui';
 import { registerCollection } from '../defaultschema';
@@ -47,6 +47,14 @@ export const SiteSchema = () => {
       },
       robots: {
         type: 'string',
+      },
+      features: {
+        type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'json',
+          json: getSiteFeatureList(),
+        },
       },
       defaultCurrency: {
         type: 'string',
@@ -217,6 +225,9 @@ export const SiteUI = (): CollectionUI[] => {
             },
             {
               '0': '/properties/template',
+            },
+            {
+              '0': '/properties/features',
             },
           ],
         },
