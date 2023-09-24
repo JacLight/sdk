@@ -166,6 +166,10 @@ export const PageSectionSchema = () => {
         type: 'string',
         hidden: true,
       },
+      close: {
+        type: 'boolean',
+        hidden: true,
+      },
       fieldMap: {
         type: 'array',
         items: {
