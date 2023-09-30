@@ -8,11 +8,35 @@ export const CommentSchema = () => {
   return {
     type: 'object',
     properties: {
+      resourceType: {
+        type: 'string',
+        disabled: true,
+        hidden: true,
+      },
+      resourceId: {
+        type: 'string',
+        hidden: true,
+        disabled: true,
+      },
       comment: {
         type: 'string',
         inputStyle: 'textarea',
         displayStyle: 'outlined',
       },
+      ratings: { // this will store only the ratings average - actual rating will be stored with use activity
+        type: 'number',
+        inputStyle: 'rating',
+        max: 5,
+        min: 1,
+      },
+      likes: { // this will store only the likes count - actual rating will be stored with use activity
+        type: 'boolean',
+        inputStyle: 'like',
+      },
+      dislikes: { // this will store only the dislikes count - actual rating will be stored with use activity
+        type: 'boolean',
+        inputStyle: 'dislike',
+      }
     },
   } as const;
 };
@@ -25,6 +49,11 @@ export const CommentUI = (): CollectionUI[] => {
       items: [
         {
           '0': '/properties/comment',
+        },
+        {
+          '0': '/properties/ratings',
+          '1': '/properties/likes',
+          '2': '/properties/dislikes',
         },
       ]
     },
