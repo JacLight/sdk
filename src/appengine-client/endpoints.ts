@@ -74,6 +74,11 @@ export const appEndpoints = {
     method: 'get',
     path: 'profile/google',
   },
+  login_code: {
+    name: 'login_code',
+    method: 'get',
+    path: 'profile/code',
+  },
   refresh_token: {
     name: 'refresh_token',
     method: 'post',
@@ -154,10 +159,20 @@ export const appEndpoints = {
     method: 'post',
     path: 'storefront/find',
   },
-  categories: {
-    name: 'categories',
+  product_brands: {
+    name: 'product_brands',
     method: 'get',
-    path: 'storefront/category',
+    path: 'storefront/brands',
+  },
+  product_collections: {
+    name: 'product_collections',
+    method: 'get',
+    path: 'storefront/collections',
+  },
+  product_categories: {
+    name: 'product_categories',
+    method: 'get',
+    path: 'storefront/categories',
   },
   order_id: {
     name: 'order_id',

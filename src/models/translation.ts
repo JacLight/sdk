@@ -16,6 +16,7 @@ export const TranslationSchema = () => {
         minLength: 3,
         maxLength: 100,
         unique: true,
+        transform: 'uri'
       },
       group: {
         type: 'string',

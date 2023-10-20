@@ -14,6 +14,7 @@ export const SettingSchema = () => {
         minLength: 3,
         maxLength: 50,
         unique: true,
+        transform: 'uri'
       },
       emailTemplate: getSettingItemSchema(DataType.messagetemplate),
       smsTemplate: getSettingItemSchema(DataType.messagetemplate),

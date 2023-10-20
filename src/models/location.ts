@@ -15,6 +15,7 @@ export const LocationSchema = () => {
         minLength: 3,
         maxLength: 100,
         unique: true,
+        transform: 'uri'
       },
       type: {
         type: 'string',

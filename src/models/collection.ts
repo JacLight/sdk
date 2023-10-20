@@ -31,6 +31,7 @@ export const CollectionSchema = () => {
         minLength: 3,
         maxLength: 20,
         unique: true,
+        transform: 'uri'
       },
       parent: {
         type: 'string',
@@ -41,6 +42,10 @@ export const CollectionSchema = () => {
           value: 'name',
           label: 'name',
         },
+      },
+      icon: {
+        type: 'string',
+        fieldType: FieldType.icon,
       },
       title: {
         type: 'string',

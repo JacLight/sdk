@@ -15,6 +15,7 @@ export const MintflowSchema = () => {
         minLength: 3,
         maxLength: 50,
         unique: true,
+        transform: 'uri'
       },
       title: {
         type: 'string',
@@ -65,6 +66,7 @@ export const MintflowNodeSchema = () => {
         pattern: '^[a-zA-Z_\\-0-9]*$',
         minLength: 3,
         maxLength: 100,
+        transform: 'uri'
       },
       title: {
         type: 'string',

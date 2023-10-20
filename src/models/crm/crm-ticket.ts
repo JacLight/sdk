@@ -3,6 +3,7 @@ import { registerCollection, registerDefaultData } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
 import { CollectionUI } from '../collection-ui';
 import { DataType, FieldType, FormViewSectionType } from '../../types';
+import { FileInfoSchema } from '..';
 
 export const TicketSchema = () => {
   return {
@@ -31,6 +32,11 @@ export const TicketSchema = () => {
         type: 'string',
         inputStyle: 'textarea',
         rows: 4,
+      },
+      files: {
+        type: 'array',
+        fieldType: FieldType.file,
+        items: FileInfoSchema(),
       },
       priority: {
         type: 'string',
@@ -101,6 +107,48 @@ export const TicketUI = (): CollectionUI[] => {
       type: FormViewSectionType.section1column,
       default: true,
       collapsible: true,
+    },
+    {
+      type: FormViewSectionType.section2column,
+      items: [
+        {
+          '0': '/properties/title',
+        },
+        {
+          '0': '/properties/story',
+        },
+        {
+          '0': '/properties/files',
+        },
+        {
+          '0': '/properties/stage',
+          '1': '/properties/status',
+        },
+      ],
+    },
+    {
+      type: FormViewSectionType.section2column,
+      collapsible: true,
+      items: [
+        {
+          '0': '/properties/priority',
+          '1': '/properties/severity',
+          '2': '/properties/channel',
+        },
+        {
+          '0': '/properties/assignTo',
+          '1': '/properties/assignBy',
+        },
+      ],
+    },
+    {
+      type: FormViewSectionType.section2column,
+      collapsible: true,
+      items: [
+        {
+          '0': '/properties/assignments',
+        },
+      ],
     },
   ];
 };

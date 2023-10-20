@@ -12,6 +12,7 @@ export const NotificationSchema = () => {
       name: {
         type: 'string',
         pattern: '^[a-zA-Z_\\-0-9]*$',
+        transform: 'uri'
       },
       title: {
         type: 'string',

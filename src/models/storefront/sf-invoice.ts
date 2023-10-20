@@ -10,7 +10,7 @@ export const SFInvoiceSchema = () => {
     properties: {
       id: {
         type: 'string',
-        pattern: '^[^[a-zA-Z_-0-9]*$',
+        pattern: '^[a-zA-Z_\\-0-9]*$',
         minLength: 10,
         maxLength: 10,
         unique: true,

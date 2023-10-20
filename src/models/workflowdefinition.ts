@@ -13,6 +13,7 @@ export const WorkflowDefinitionSchema = () => {
         type: 'string',
         pattern: '^[a-zA-Z_\\-0-9]*$',
         unique: true,
+        transform: 'uri'
       },
       title: {
         type: 'string',
