@@ -10,21 +10,22 @@ export const SFGiftCardSchema = () => {
     properties: {
       name: {
         type: 'string',
-        pattern: '^[^[a-zA-Z_-0-9]*$',
+        pattern: '^[a-zA-Z_\\-0-9]*$',
+        transform: 'uri'
       },
       serial: {
         type: 'string',
-        pattern: '^[^[a-zA-Z_-0-9]*$',
+        pattern: '^[a-zA-Z_\\-0-9]*$',
         readOnly: true,
       },
       batch: {
         type: 'string',
-        pattern: '^[^[a-zA-Z_-0-9]*$',
+        pattern: '^[a-zA-Z_\\-0-9]*$',
         readOnly: true,
       },
       code: {
         type: 'string',
-        pattern: '^[^[a-zA-Z_-0-9]*$',
+        pattern: '^[a-zA-Z_\\-0-9]*$',
         readOnly: true,
       },
       noOfUse: {
@@ -52,7 +53,7 @@ export const SFGiftCardSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.sf_product,
-          value: 'sk',
+          value: 'sku',
           label: 'sku',
         },
       },
@@ -63,7 +64,7 @@ export const SFGiftCardSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.category,
-          value: 'sk',
+          value: 'name',
           label: 'name',
         },
       },
@@ -74,7 +75,7 @@ export const SFGiftCardSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.customer,
-          value: 'sk',
+          value: 'username',
           label: 'username',
         },
       },
@@ -85,7 +86,7 @@ export const SFGiftCardSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.usergroup,
-          value: 'sk',
+          value: 'name',
           label: 'name',
         },
       },

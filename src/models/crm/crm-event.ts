@@ -12,6 +12,7 @@ export const EventSchema = () => {
         type: 'string',
         pattern: '^[a-zA-Z_\\-0-9]*$',
         unique: true,
+        transform: 'uri'
       },
       number: {
         type: 'string',

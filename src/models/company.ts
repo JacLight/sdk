@@ -14,6 +14,7 @@ export const CompanySchema = () => {
         minLength: 3,
         maxLength: 100,
         unique: true,
+        transform: 'uri'
       },
       database: {
         type: 'string',

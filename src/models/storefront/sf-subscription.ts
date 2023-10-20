@@ -14,6 +14,7 @@ export const SFSubscriptionSchema = () => {
         minLength: 3,
         maxLength: 50,
         unique: true,
+        transform: 'uri'
       },
       plan: {
         type: 'string',

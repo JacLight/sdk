@@ -14,6 +14,7 @@ export const MessageTemplateSchema = () => {
         minLength: 3,
         maxLength: 50,
         unique: true,
+        transform: 'uri'
       },
       fromEmail: {
         type: 'string',

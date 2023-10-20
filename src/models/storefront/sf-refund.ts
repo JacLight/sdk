@@ -31,7 +31,7 @@ export const SFRefundSchema = () => {
       remark: {
         type: 'string',
       },
-      attachements: FileInfoSchema(),
+      attachments: FileInfoSchema(),
     },
   } as const;
 };

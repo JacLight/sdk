@@ -27,6 +27,7 @@ export const PageSchema = (title = '', description = '') => {
         maxLength: 50,
         unique: true,
         uniqueScope: ['site'],
+        transform: 'uri'
       },
       parent: {
         type: 'string',
@@ -60,6 +61,7 @@ export const PageSchema = (title = '', description = '') => {
         event: 'onBlur',
         unique: true,
         uniqueScope: ['site'],
+        transform: 'uri'
       },
       dataType: {
         type: 'string',

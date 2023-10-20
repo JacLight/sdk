@@ -14,6 +14,7 @@ export const ScriptSchema = () => {
         minLength: 3,
         maxLength: 50,
         unique: true,
+        transform: 'uri'
       },
       type: {
         type: 'string',

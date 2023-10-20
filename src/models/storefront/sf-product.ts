@@ -13,6 +13,7 @@ export const SFProductSchema = () => {
         type: 'string',
         hidden: true,
         pattern: '^[a-zA-Z_\\-0-9]*$',
+        transform: 'uri'
       },
       name: {
         type: 'string',
@@ -20,7 +21,7 @@ export const SFProductSchema = () => {
       },
       sku: {
         type: 'string',
-        pattern: '^[^[a-zA-Z_-0-9]*$',
+        pattern: '^[a-zA-Z_\\-0-9]*$',
         minLength: 3,
         maxLength: 50,
         unique: true,
@@ -46,9 +47,14 @@ export const SFProductSchema = () => {
         type: 'boolean',
       },
       posts: { type: 'object', hidden: true }, //  PostSchema(),
+      image: {
+        type: 'string',
+      },
       images: {
+        type: 'array',
+        fieldType: FieldType.file,
+        items: FileInfoSchema(),
         hideLabel: true,
-        ...FileInfoSchema(),
       },
       isbn: {
         type: 'string',
@@ -151,7 +157,15 @@ export const SFProductSchema = () => {
                 },
               },
             },
-            images: FileInfoSchema(),
+            image: {
+              type: 'string',
+            },
+            images: {
+              type: 'array',
+              fieldType: FieldType.file,
+              items: FileInfoSchema(),
+              hideLabel: true,
+            },
           },
         },
       },

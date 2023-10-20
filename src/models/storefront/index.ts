@@ -1,5 +1,4 @@
 export * from './sf-attribute';
-export * from './sf-vendor';
 export * from './sf-cart';
 export * from './sf-giftcard';
 export * from './sf-invoice';
@@ -17,3 +16,5 @@ export * from './sf-inventory';
 export * from './sf-subscription';
 export * from './sf-transaction';
 export * from './sf-wishlist';
+export * from './sf-brand';
+export * from './sf-collection';

@@ -16,6 +16,7 @@ export const SiteSchema = () => {
         minLength: 3,
         maxLength: 50,
         unique: true,
+        transform: 'uri'
       },
       homePage: {
         type: 'string',

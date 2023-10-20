@@ -14,6 +14,7 @@ export const PasswordPolicySchema = () => {
         minLength: 3,
         maxLength: 50,
         unique: true,
+        transform: 'uri'
       },
       description: {
         type: 'string',

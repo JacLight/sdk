@@ -40,6 +40,15 @@ export const validUrl = (url: string) => {
   return !!pattern.test(url);
 };
 
+export function getRandomNumber(length = 20) {
+  const numbers = '0123456789';
+  let result = numbers.charAt(Math.floor(Math.random() * numbers.length)); // Start with a character
+  for (let i = 1; i < length; i++) { // Start loop from 1 since we already have the first character
+    result += numbers.charAt(Math.floor(Math.random() * numbers.length));
+  }
+  return result;
+}
+
 export function getRandomString(length = 20) {
   const chars = 'abcdefghijklmnpqrstuvwxyz';
   const numbers = '0123456789';
@@ -211,4 +220,22 @@ export function styleToObject(style: string): { [key: string]: string } {
       }
       return obj;
     }, {});
+}
+
+
+export function formatBytes(bytes: number, decimals = 2): string {
+  if (bytes === 0) return '0 Bytes';
+
+  const k = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+}
+
+export function isValidEmail(email: string): boolean {
+  const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+  return emailRegex.test(email);
 }

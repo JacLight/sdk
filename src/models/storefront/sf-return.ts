@@ -33,7 +33,7 @@ export const SFReturnSchema = () => {
       receiveDate: {
         type: 'string',
       },
-      attachements: FileInfoSchema(),
+      attachments: FileInfoSchema(),
     },
   } as const;
 };

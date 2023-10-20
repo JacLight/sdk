@@ -33,7 +33,7 @@ export const SFReceiptSchema = () => {
       to: {
         type: 'string',
       },
-      attachements: FileInfoSchema(),
+      attachments: FileInfoSchema(),
       conversation: {
         type: 'string',
       },

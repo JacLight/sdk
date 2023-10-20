@@ -11,6 +11,8 @@ export const AddressSchema = () => {
     properties: {
       name: {
         type: 'string',
+        pattern: '^[a-zA-Z_\\-0-9]*$',
+        transform: 'uri'
       },
       street1: {
         type: 'string',

@@ -12,6 +12,7 @@ export const ReservationSchema = () => {
         type: 'string',
         pattern: '^[a-zA-Z_\\-0-9]*$',
         unique: true,
+        transform: 'uri'
       },
       reservationDefinitionId: {
         type: 'string',

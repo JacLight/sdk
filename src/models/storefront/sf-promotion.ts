@@ -40,7 +40,7 @@ export const SFPromotionSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.sf_product,
-          value: 'sk',
+          value: 'sku',
           label: 'sku',
         },
       },
@@ -51,7 +51,7 @@ export const SFPromotionSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.category,
-          value: 'sk',
+          value: 'name',
           label: 'name',
         },
       },
@@ -62,7 +62,7 @@ export const SFPromotionSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.customer,
-          value: 'sk',
+          value: 'username',
           label: 'username',
         },
       },
@@ -73,7 +73,7 @@ export const SFPromotionSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.usergroup,
-          value: 'sk',
+          value: 'name',
           label: 'name',
         },
       },

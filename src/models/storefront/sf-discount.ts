@@ -10,10 +10,11 @@ export const SFDiscountSchema = () => {
     properties: {
       name: {
         type: 'string',
+        transform: 'uri',
       },
       code: {
         type: 'string',
-        pattern: '^[^[a-zA-Z_-0-9]*$',
+        pattern: '^[a-zA-Z_\\-0-9]*$'
       },
       active: {
         type: 'boolean',
@@ -46,7 +47,7 @@ export const SFDiscountSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.sf_product,
-          value: 'sk',
+          value: 'sku',
           label: 'sku',
         },
       },
@@ -57,7 +58,7 @@ export const SFDiscountSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.category,
-          value: 'sk',
+          value: 'name',
           label: 'name',
         },
       },
@@ -68,7 +69,7 @@ export const SFDiscountSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.customer,
-          value: 'sk',
+          value: 'username',
           label: 'username',
         },
       },
@@ -79,7 +80,7 @@ export const SFDiscountSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.usergroup,
-          value: 'sk',
+          value: 'name',
           label: 'name',
         },
       },

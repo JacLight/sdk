@@ -14,6 +14,7 @@ export const ApplicationSchema = () => {
         minLength: 3,
         maxLength: 50,
         unique: true,
+        transform: 'uri'
       },
       title: {
         type: 'string',

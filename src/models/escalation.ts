@@ -12,6 +12,7 @@ export const EscalationSchema = () => {
         type: 'string',
         unique: true,
         pattern: '^[a-zA-Z_\\-0-9]*$',
+        transform: 'uri'
       },
       flow: {
         type: 'string',
