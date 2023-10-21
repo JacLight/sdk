@@ -51,6 +51,7 @@ export const SiteSchema = () => {
       },
       features: {
         type: 'string',
+        inputStyle: 'chip',
         fieldType: FieldType.selectionmultiple,
         dataSource: {
           source: 'json',
@@ -155,7 +156,19 @@ export const SiteSchema = () => {
         fieldType: 'code',
         inputStyle: 'json',
         css: { height: 800 }
-      }
+      },
+      searchBar: {
+        type: 'string',
+        enum: ['top', 'bottom', 'none'],
+      },
+      languageSwitch: {
+        type: 'string',
+        enum: ['icons', 'full', 'none'],
+      },
+      showLogin: {
+        type: 'boolean',
+        inputStyle: 'switch',
+      },
     },
   } as const;
 };
@@ -223,6 +236,11 @@ export const SiteUI = (): CollectionUI[] => {
             {
               '0': '/properties/mainNavigation',
               '1': '/properties/footerNavigation',
+            },
+            {
+              '0': '/properties/searchBar',
+              '1': '/properties/languageSwitch',
+              '2': '/properties/showLogin',
             },
             {
               '0': '/properties/template',

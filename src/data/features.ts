@@ -1,35 +1,43 @@
 export const getSiteFeatureList = () => {
     return [
         {
-            name: 'e-commerce',
+            value: 'e-commerce',
+            label: 'E-Commerce',
             description: 'Turn your site into an online store',
         },
         {
-            name: "account",
+            value: "account",
+            label: "Account",
             description: "Allow users to create accounts and login to your site",
         },
         {
-            name: 'site-builder',
+            value: 'site-builder',
+            label: 'Site Builder',
             description: 'Build your micro sites and landing pages with a drag and drop editor',
         },
         {
-            name: 'forms',
+            value: 'forms',
+            label: 'Forms',
             description: 'Allow users to create and host forms on your site',
         },
         {
-            name: 'creative-studio',
+            value: 'creative-studio',
+            label: 'Creative Studio',
             description: 'Enables the creative studio suite for your site, where user can create and edit graphics, videos, and more',
         },
         {
-            name: 'live-chat',
+            value: 'live-chat',
+            label: 'Live Chat',
             description: 'Enable live chat on your site',
         },
         {
-            name: 'conferencing',
+            value: 'conferencing',
+            label: 'Conferencing',
             description: 'Enable live video conferencing and meetings on your site',
         },
         {
-            name: 'crm',
+            value: 'crm',
+            label: 'CRM',
             description: 'Enable ticket support system, appointment booking, event scheduling and calendar function on your site',
         }
     ]
