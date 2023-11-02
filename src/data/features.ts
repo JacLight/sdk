@@ -39,6 +39,16 @@ export const getSiteFeatureList = () => {
             value: 'crm',
             label: 'CRM',
             description: 'Enable ticket support system, appointment booking, event scheduling and calendar function on your site',
+        },
+        {
+            value: 'reservation',
+            label: 'Reservation',
+            description: 'Enable reservation and booking system on your site',
+        },
+        {
+            value: 'calendar',
+            label: 'Calendar',
+            description: 'Enable calendar function on your site',
         }
     ]
 }

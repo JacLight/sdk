@@ -135,6 +135,13 @@ export class AppEngineClient {
     return null;
   }
 
+  async getPages(siteName = this.appConfig.siteName) {
+    const query = { 'data.site': siteName }
+    let rt = await this.processRequest('post', `${appEndpoints.find.path}/page`, { query, options: { enrich: true } }, null, null);
+    return rt?.data
+  }
+
+
   async getPage(site: string, pageIds: { slug?: string, name?: string, id?: string }) {
     let rt;
     if (pageIds?.id) {

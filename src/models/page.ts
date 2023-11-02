@@ -77,7 +77,7 @@ export const PageSchema = (title = '', description = '') => {
       },
       childEditing: {
         type: 'string',
-        enum: ['append', 'editable', 'locked'],
+        enum: ['append', 'locked'],
         default: 'append',
       },
       priority: {

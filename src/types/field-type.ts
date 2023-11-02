@@ -25,4 +25,17 @@ export enum FieldType {
   icon = 'Icon',
   richselect = 'Rich Select',
   'linked-select' = 'Linked Select',
+  payment = 'Payment',
+  address = 'Address',
+  phone = 'Phone',
+  email = 'Email',
+  layout = 'Layout',
+  slide = 'Slide',
+  accordion = 'Accordion',
+  tab = 'Tab',
+  collapsible = 'Collapsible',
+  table = 'Table',
+  list = 'List',
+  column = 'Column',
+
 }
