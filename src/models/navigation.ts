@@ -67,7 +67,7 @@ export const NavigationLinkSchema = () => {
       },
       display: {
         type: 'string',
-        enum: ['link', 'block', 'card', 'action']
+        enum: ['link', 'block', 'card', 'action', 'separator']
       },
       icon: {
         type: 'string',

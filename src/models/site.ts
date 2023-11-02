@@ -102,7 +102,25 @@ export const SiteSchema = () => {
         type: 'string',
         format: 'uri',
       },
-      logo: FileInfoSchema(),
+      logo: {
+        type: 'object',
+        title: 'Logo',
+        hideLabel: true,
+        readOnly: true,
+        fieldType: FieldType.file,
+        properties: {
+          ...FileInfoSchema().properties,
+          hideLogo: {
+            type: 'boolean',
+          },
+          width: {
+            type: 'number',
+          },
+          height: {
+            type: 'number',
+          },
+        },
+      },
       mainNavigation: {
         type: 'string',
         fieldType: FieldType.selectionmultiple,
@@ -169,6 +187,14 @@ export const SiteSchema = () => {
         type: 'boolean',
         inputStyle: 'switch',
       },
+      hideSiteHeader: {
+        type: 'boolean',
+        inputStyle: 'switch',
+      },
+      hideSiteFooter: {
+        type: 'boolean',
+        inputStyle: 'switch',
+      },
     },
   } as const;
 };
@@ -213,8 +239,10 @@ export const SiteUI = (): CollectionUI[] => {
               '0': '/properties/robots',
             },
             {
-              '0': '/properties/logo',
               '1': '/properties/favicon',
+            },
+            {
+              '0': '/properties/logo',
             },
           ],
         },
@@ -238,9 +266,13 @@ export const SiteUI = (): CollectionUI[] => {
               '1': '/properties/footerNavigation',
             },
             {
+              '0': '/properties/hideSiteHeader',
+              '1': '/properties/hideSiteFooter',
+              '2': '/properties/showLogin',
+            },
+            {
               '0': '/properties/searchBar',
               '1': '/properties/languageSwitch',
-              '2': '/properties/showLogin',
             },
             {
               '0': '/properties/template',

@@ -18,7 +18,7 @@ export function search_country(query: {
 
   // iterate over the array of countries
   return countries_translations
-    .filter(function(country: any) {
+    .filter(function (country: any) {
       // return country's data if
       return (
         // we are searching by ID and we have a match
@@ -40,8 +40,10 @@ export function search_country(query: {
 export const getCountryRegions = (
   countryCode: string
 ): { label: string; value: string }[] => {
+  if (!countryCode) return [];
+  if (countryCode == 'all') return countries_subdivisions.map(item => ({ label: item.name, value: item.name, country: item.country.toLowerCase() }));
   const regions = countries_subdivisions
-    .filter(item => item.country.toLowerCase() === countryCode.toLowerCase())
+    .filter(item => item.country.toLowerCase() === countryCode?.toLowerCase())
     .map(item => ({ label: item.name, value: item.name }));
   return regions;
 };

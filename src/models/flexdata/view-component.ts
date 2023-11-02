@@ -3,6 +3,9 @@ import { FieldType, FormViewSectionType, } from '../../types';
 import { FileInfoSchema } from '../fileinfo';
 import { FromSchema } from 'json-schema-to-ts';
 
+//TODO: add custom schema
+//TODO: add InitData
+
 export const FDViewComponentSchema = () => {
   return {
     type: 'object',
