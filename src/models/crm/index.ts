@@ -11,3 +11,4 @@ export * from './crm-event';
 export * from './crm-reservation-definition';
 export * from './crm-reservation';
 export * from './crm-service-point';
+export * from './crm-form';

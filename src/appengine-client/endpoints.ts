@@ -299,10 +299,20 @@ export const appEndpoints = {
     method: 'post',
     path: 'crm/unsubscribe',
   },
-  crm_contact_form: {
-    name: 'crm_contact_form',
+  crm_form_save: {
+    name: 'crm_form_save',
     method: 'post',
-    path: 'crm/contact/form',
+    path: 'crm/form/save',
+  },
+  crm_form_delete: {
+    name: 'crm_form_delete',
+    method: 'post',
+    path: 'crm/form/delete',
+  },
+  crm_form_get: {
+    name: 'crm_form_get',
+    method: 'get',
+    path: 'crm/form/get',
   },
   crm_events_get: {
     name: 'crm_events_get',
