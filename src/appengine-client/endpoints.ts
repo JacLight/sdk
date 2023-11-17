@@ -24,6 +24,21 @@ export const appEndpoints = {
     method: 'get',
     path: 'repository/query',
   },
+  search_raw: {
+    name: 'search_raw',
+    method: 'post',
+    path: 'search/search',
+  },
+  search_stat_count: {
+    name: 'search_stat_count',
+    method: 'get',
+    path: 'search/stat/count',
+  },
+  search_stat_histogram: {
+    name: 'search_stat_histogram',
+    method: 'get',
+    path: 'search/stat/histogram',
+  },
   search: {
     name: 'search',
     method: 'post',
