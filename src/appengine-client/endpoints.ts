@@ -349,6 +349,26 @@ export const appEndpoints = {
     method: 'post',
     path: 'crm/events/update',
   },
+  crm_flexdata_get: {
+    name: 'crm_flexdata_get',
+    method: 'get',
+    path: 'crm/flexdata/get',
+  },
+  crm_flexdata_delete: {
+    name: 'crm_flexdata_delete',
+    method: 'delete',
+    path: 'crm/flexdata/delete',
+  },
+  crm_flexdata_create: {
+    name: 'crm_flexdata_create',
+    method: 'post',
+    path: 'crm/flexdata/create',
+  },
+  crm_flexdata_update: {
+    name: 'crm_flexdata_update',
+    method: 'post',
+    path: 'crm/flexdata/update',
+  },
 };
 
 export type APIEndpointName = keyof typeof appEndpoints;
