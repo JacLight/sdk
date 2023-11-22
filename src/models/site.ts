@@ -16,9 +16,40 @@ export const SiteSchema = () => {
         minLength: 3,
         maxLength: 50,
         unique: true,
-        transform: 'uri'
+        transform: 'uri',
+        readOnly: true
       },
       homePage: {
+        type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.page,
+          value: 'sk',
+          label: 'name',
+          filter: {
+            property: 'site',
+            operation: 'equal',
+            value: '{{name}}',
+          }
+        },
+      },
+      loginRedirect: {
+        type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.page,
+          value: 'sk',
+          label: 'name',
+          filter: {
+            property: 'site',
+            operation: 'equal',
+            value: '{{name}}',
+          }
+        },
+      },
+      logoutRedirect: {
         type: 'string',
         fieldType: FieldType.selectionmultiple,
         dataSource: {
@@ -97,6 +128,7 @@ export const SiteSchema = () => {
       domain: {
         type: 'string',
         format: 'hostname',
+        placeholder: 'example.com',
       },
       favicon: {
         type: 'string',
@@ -252,6 +284,10 @@ export const SiteUI = (): CollectionUI[] => {
             {
               '0': '/properties/domain',
               '1': '/properties/homePage',
+            },
+            {
+              '0': '/properties/loginRedirect',
+              '1': '/properties/logoutRedirect',
             },
             {
               '0': '/properties/currencies',
