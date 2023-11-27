@@ -25,7 +25,7 @@ export const SiteSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.page,
-          value: 'sk',
+          value: 'name',
           label: 'name',
           filter: {
             property: 'site',
@@ -40,7 +40,7 @@ export const SiteSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.page,
-          value: 'sk',
+          value: 'name',
           label: 'name',
           filter: {
             property: 'site',
@@ -55,7 +55,7 @@ export const SiteSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.page,
-          value: 'sk',
+          value: 'name',
           label: 'name',
           filter: {
             property: 'site',
