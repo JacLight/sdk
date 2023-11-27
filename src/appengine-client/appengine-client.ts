@@ -66,7 +66,7 @@ export class AppEngineClient {
     clientData?: any,
     clientAuthorization?: string,
     clientQuery?: any,
-    clientHeaders?: any
+    clientInfo?: any,
   ): Promise<any> {
     let path;
     if (clientPath.startsWith('/api')) {
@@ -79,13 +79,8 @@ export class AppEngineClient {
       header.headers['x-client-authorization'] = clientAuthorization
     }
 
-    if (clientHeaders) {
-      header.headers['x-client-host'] = clientHeaders['x-forwarded-host'] || clientHeaders.host || '';
-      header.headers['x-client-proto'] = clientHeaders['x-forwarded-proto'] || ''
-      header.headers['x-client-for'] = clientHeaders['x-forwarded-for'] || ''
-      header.headers['x-client-real-ip'] = clientHeaders['x-real-ip'] || ''
-      header.headers['x-client-agent'] = clientHeaders['user-agent'] || ''
-      header.headers['x-client-path'] = clientPath || ''
+    if (clientInfo) {
+      header.headers['x-client-info'] = clientInfo
     }
     const data = clientData;
     if (data) {
@@ -140,7 +135,6 @@ export class AppEngineClient {
     let rt = await this.processRequest('post', `${appEndpoints.find.path}/page`, { query, options: { enrich: true } }, null, null);
     return rt?.data
   }
-
 
   async getPage(site: string, pageIds: { slug?: string, name?: string, id?: string }) {
     let rt;

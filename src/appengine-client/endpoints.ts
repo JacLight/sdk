@@ -314,10 +314,15 @@ export const appEndpoints = {
     method: 'post',
     path: 'crm/unsubscribe',
   },
-  crm_form_save: {
-    name: 'crm_form_save',
+  crm_form_save_post: {
+    name: 'crm_form_save_post',
     method: 'post',
-    path: 'crm/form/save',
+    path: 'crm/form/post',
+  },
+  crm_form_save_json: {
+    name: 'crm_form_save_json',
+    method: 'post',
+    path: 'crm/form/json',
   },
   crm_form_delete: {
     name: 'crm_form_delete',
