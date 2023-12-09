@@ -114,6 +114,19 @@ export const PageSchema = (title = '', description = '') => {
       minHeight: {
         type: 'number',
       },
+      animateScroll: {
+        type: 'boolean',
+        default: true,
+        // description: 'Animate scroll to location when click on menu item',
+      },
+      animateContent: {
+        type: 'boolean',
+        // description: 'Animate scroll to location when click on menu item',
+      },
+      hideScrollToTop: {
+        type: 'boolean',
+        // description: 'Hide scroll to top button',
+      },
     },
     required: ['name', 'slug', 'site'],
   } as const;
@@ -311,14 +324,19 @@ export const PageUI = (): CollectionUI[] => {
               '0': '/properties/robots',
             },
             {
-              '0': '/properties/childEditing',
-            },
-            {
               '0': '/properties/iconUrl',
             },
             {
-              '0': '/properties/hidden',
+              '0': '/properties/childEditing',
               '1': '/properties/dataType',
+            },
+            {
+              '0': '/properties/hidden',
+              '2': '/properties/hideScrollToTop',
+            },
+            {
+              '0': '/properties/animateScroll',
+              '1': '/properties/animateContent',
             },
           ],
         },
