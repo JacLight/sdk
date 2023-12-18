@@ -239,10 +239,25 @@ export const appEndpoints = {
     method: 'post',
     path: 'crm/tickets/update',
   },
-  crm_inbox_get: {
-    name: 'crm_inbox_get',
+  crm_inbox_message: {
+    name: 'crm_inbox_message',
     method: 'get',
-    path: 'crm/inbox/get',
+    path: 'crm/inbox/message',
+  },
+  crm_inbox_messages: {
+    name: 'crm_inbox_messages',
+    method: 'get',
+    path: 'crm/inbox/messages',
+  },
+  crm_inbox_conversation_messages: {
+    name: 'crm_inbox_conversation_messages',
+    method: 'get',
+    path: 'crm/inbox/conversation/messages',
+  },
+  crm_inbox_conversations: {
+    name: 'crm_inbox_conversations',
+    method: 'get',
+    path: 'crm/inbox/conversations',
   },
   crm_inbox_delete: {
     name: 'crm_inbox_delete',
@@ -258,11 +273,6 @@ export const appEndpoints = {
     name: 'crm_inbox_update',
     method: 'post',
     path: 'crm/inbox/update',
-  },
-  crm_inbox_conversations: {
-    name: 'crm_inbox_conversations',
-    method: 'get',
-    path: 'crm/inbox/conversations',
   },
   crm_reservations_get: {
     name: 'crm_reservations_get',
