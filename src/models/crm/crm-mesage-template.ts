@@ -16,17 +16,10 @@ export const MessageTemplateSchema = () => {
         unique: true,
         transform: 'uri'
       },
-      fromEmail: {
+      from: {
         type: 'string',
       },
-      fromPhone: {
-        type: 'string',
-      },
-      toEmail: {
-        type: 'string',
-        inputStyle: 'textarea',
-      },
-      toPhone: {
+      to: {
         type: 'string',
         inputStyle: 'textarea',
       },
@@ -46,12 +39,6 @@ export const MessageTemplateSchema = () => {
       text: {
         type: 'string',
         inputStyle: 'textarea',
-        hidden: true,
-      },
-      sms: {
-        type: 'string',
-        inputStyle: 'textarea',
-        maxLength: 150,
         hidden: true,
       },
     },

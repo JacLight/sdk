@@ -22,6 +22,7 @@ export const CommentSchema = () => {
         type: 'string',
         inputStyle: 'textarea',
         displayStyle: 'outlined',
+        rows: 3,
       },
       ratings: { // this will store only the ratings average - actual rating will be stored with use activity
         type: 'number',

@@ -239,25 +239,30 @@ export const appEndpoints = {
     method: 'post',
     path: 'crm/tickets/update',
   },
-  crm_message_get: {
-    name: 'crm_message_get',
+  crm_inbox_get: {
+    name: 'crm_inbox_get',
     method: 'get',
-    path: 'crm/message/get',
+    path: 'crm/inbox/get',
   },
-  crm_message_delete: {
-    name: 'crm_message_delete',
+  crm_inbox_delete: {
+    name: 'crm_inbox_delete',
     method: 'delete',
-    path: 'crm/message/delete',
+    path: 'crm/inbox/delete',
   },
-  crm_message_create: {
-    name: 'crm_message_create',
+  crm_inbox_create: {
+    name: 'crm_inbox_create',
     method: 'post',
-    path: 'crm/message/create',
+    path: 'crm/inbox/create',
   },
-  crm_message_update: {
-    name: 'crm_message_update',
+  crm_inbox_update: {
+    name: 'crm_inbox_update',
     method: 'post',
-    path: 'crm/message/update',
+    path: 'crm/inbox/update',
+  },
+  crm_inbox_conversations: {
+    name: 'crm_inbox_conversations',
+    method: 'get',
+    path: 'crm/inbox/conversations',
   },
   crm_reservations_get: {
     name: 'crm_reservations_get',

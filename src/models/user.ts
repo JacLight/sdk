@@ -41,10 +41,6 @@ export const UserSchema = () => {
         type: 'string',
         inputStyle: 'password',
       },
-      passwordReset: {
-        type: 'boolean',
-        title: 'Set Password',
-      },
       lockout: {
         type: 'string',
         default: 'false',
@@ -176,7 +172,7 @@ export const UserGroupSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.passwordpolicy,
-          value: 'sk',
+          value: 'name',
           label: 'name',
         },
       },
@@ -187,7 +183,7 @@ export const UserGroupSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.user,
-          value: 'sk',
+          value: 'name',
           label: 'name',
         },
       },
@@ -198,7 +194,7 @@ export const UserGroupSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.userrole,
-          value: 'sk',
+          value: 'name',
           label: 'name',
         },
       },
@@ -275,9 +271,6 @@ export const UserUI = (): CollectionUI[] => {
             },
             {
               '0': '/properties/email',
-            },
-            {
-              '0': '/properties/passwordReset',
               '1': '/properties/password',
             },
             {

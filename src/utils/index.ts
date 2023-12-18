@@ -1,15 +1,22 @@
 export const toTitleCase = (str: string) => {
+  if (!str) return str;
+  if (typeof str !== 'string') return str;
+
   return str.replace(/\w\S*/g, function (txt) {
     return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
   });
 };
 
 export const toSentenceCase = (str: string) => {
+  if (!str) return str;
+  if (typeof str !== 'string') return str;
   const result = str.replace(/([A-Z])/g, ' $1');
   return result.charAt(0).toUpperCase() + result.slice(1);
 };
 
 export const deepCopy = (source: any) => {
+  if (!source) return source;
+  if (typeof source !== 'object') return source;
   return JSON.parse(JSON.stringify(source));
 };
 
@@ -28,6 +35,7 @@ export const isNotEmpty = (obj: any) => {
 }
 
 export const validUrl = (url: string) => {
+  if (!url) return false;
   var pattern = new RegExp(
     '^(https?:\\/\\/)?' + // protocol
     '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
