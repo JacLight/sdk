@@ -1,53 +1,56 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
-import { CollectionRule } from '../collection-rule';
 import { CollectionUI } from '../collection-ui';
-import { DataType, FormViewSectionType } from '../../types';
+import { DataType, FieldType, FormViewSectionType } from '../../types';
 import { FileInfoSchema } from '../fileinfo';
 
+
+//add context to system emails can be regenerated - select the template adn add the data
 export const MessageSchema = () => {
   return {
     type: 'object',
     properties: {
-      fromEmail: {
+      deliveryType: {
+        type: 'string',
+        enum: ['email', 'sms', 'whatsapp', 'slack', 'instant', 'push', 'notification', 'site-popup', 'site-dialog', 'site-alert'],
+        default: 'email',
+      },
+      template: {
+        type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.messagetemplate
+        },
+      },
+      from: {
         type: 'string',
       },
-      fromPhone: {
+      to: {
         type: 'string',
+        inputStyle: 'chip',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'function',
+          value: 'getMessageRecipients',
+        },
       },
-      toEmail: {
+      title: {
         type: 'string',
-        inputStyle: 'textarea',
-      },
-      toPhone: {
-        type: 'string',
-        inputStyle: 'textarea',
       },
       bodyHtml: {
         title: 'Content',
+        collapsible: true,
         type: 'string',
         fieldType: 'richtext',
       },
       text: {
+        collapsible: true,
         title: 'Content as text',
         type: 'string',
         inputStyle: 'textarea',
         rows: 4,
         displayStyle: 'outlined',
-      },
-      sms: {
-        type: 'string',
-        rows: 4,
-        displayStyle: 'outlined',
-        inputStyle: 'textarea',
-      },
-      title: {
-        type: 'string',
-      },
-      type: {
-        type: 'string',
-        enum: ['dialog', 'alert', 'popup', 'email', 'sms', 'whatsapp', 'slack'],
-        default: 'email',
       },
       maxTries: {
         type: 'number',
@@ -61,6 +64,9 @@ export const MessageSchema = () => {
         type: 'string',
         fieldType: 'label',
       },
+      type: {
+        type: 'string',
+      },
       tries: {
         type: 'number',
         fieldType: 'label',
@@ -68,6 +74,7 @@ export const MessageSchema = () => {
       statusHistory: {
         type: 'array',
         fieldType: 'label',
+        collapsible: true,
         items: {
           type: 'object',
           properties: {
@@ -85,11 +92,39 @@ export const MessageSchema = () => {
         },
       },
       files: {
-        hidden: true,
-        ...FileInfoSchema(),
-      }
+        type: 'array',
+        collapsible: true,
+        allowDelete: true,
+        fieldType: FieldType.file,
+        items: FileInfoSchema(),
+      },
+      context: {
+        type: 'array',
+        fieldType: FieldType.collection,
+        collapsible: true,
+        displayStyle: 'table',
+        inputStyle: 'picker',
+        dataSource: {
+          source: 'collection',
+          collection: DataType.post,
+        },
+        items: {
+          type: 'object',
+          properties: {
+            datatype: {
+              type: 'string',
+            },
+            id: {
+              type: 'string',
+            },
+            name: {
+              type: 'string',
+            },
+          },
+        },
+      },
     },
-    required: ['message', 'to', 'title', 'type'],
+    required: ['message', 'to', 'title', 'deliveryType', 'from'],
   } as const;
 };
 const ms = MessageSchema();
@@ -104,15 +139,12 @@ export const MessageUI = (): CollectionUI[] => {
           title: 'Instant Send',
           items: [
             {
-              '0': '/properties/type',
+              '0': '/properties/from',
+              '1': '/properties/template',
+              '2': '/properties/deliveryType',
             },
             {
-              '0': '/properties/fromEmail',
-              '1': '/properties/toEmail',
-            },
-            {
-              '0': '/properties/fromPhone',
-              '1': '/properties/toPhone',
+              '0': '/properties/to',
             },
             {
               '0': '/properties/title',
@@ -124,14 +156,10 @@ export const MessageUI = (): CollectionUI[] => {
               '0': '/properties/text',
             },
             {
-              '0': '/properties/sms',
-            },
-            {
               '0': '/properties/files',
             },
             {
-              '0': '/properties/source',
-              '1': '/properties/status',
+              '0': '/properties/context',
             },
           ],
         },
@@ -140,67 +168,12 @@ export const MessageUI = (): CollectionUI[] => {
   ];
 };
 
-export const MessageRules = (): CollectionRule[] => {
-  return [
-    {
-      name: 'Hide HTML',
-      action: [
-        {
-          operation: 'hide',
-          targetField: [
-            '/properties/bodyHtml',
-            '/properties/text',
-            '/properties/fromEmail',
-            '/properties/toEmail',
-          ],
-        },
-        {
-          operation: 'show',
-          targetField: [
-            '/properties/sms',
-            '/properties/fromPhone',
-            '/properties/toPhone',
-          ],
-        },
-      ],
-      condition: {
-        type: 'and',
-        param: [
-          {
-            value: 'sms',
-            field1: '/properties/type',
-            operation: 'equal',
-          },
-        ],
-      },
-    },
-    {
-      name: 'Show Text',
-      action: [
-        {
-          operation: 'show',
-          targetField: ['/properties/text'],
-        },
-      ],
-      condition: {
-        type: 'and',
-        param: [
-          {
-            value: 'email',
-            field1: '/properties/type',
-            operation: 'equal',
-          },
-        ],
-      },
-    },
-  ];
-};
 
 registerCollection(
   'Message',
   DataType.message,
   MessageSchema(),
   MessageUI(),
-  MessageRules(),
+  null,
   true
 );

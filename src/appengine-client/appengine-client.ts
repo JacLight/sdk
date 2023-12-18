@@ -155,6 +155,11 @@ export class AppEngineClient {
   }
 
 
+  async getPreviewPage(orgId: string, site: string, page: string, token: string) {
+    return await this.processRequest('get', `tools/preview/${orgId}/${site}/${page}?token=${token}`,);
+  }
+
+
   async logData(data: any) {
     const sitePath = `${appEndpoints.batch_log_data}`;
     const rt: any = await this.processRequest('post', sitePath, data, null, null);

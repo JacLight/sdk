@@ -1,7 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../defaultschema';
 import { DataType, FieldType, TaskStatus } from '../types';
-import { CollectionRule } from './collection-rule';
 import { CollectionUI } from './collection-ui';
 
 export const TaskSchema = () => {
@@ -47,81 +46,19 @@ export const TaskSchema = () => {
         type: 'string',
         disabled: true,
       },
-      assignType: {
-        type: 'string',
-        fieldType: FieldType.selectionmultiple,
-        dataSource: {
-          source: 'json',
-          json: [
-            { label: 'Group', value: 'usergroup' },
-            { label: 'Role', value: 'userrole' },
-            { label: 'User', value: 'user' },
-          ],
-        },
-      },
       assignTo: {
         type: 'string',
+        inputStyle: 'chip',
         fieldType: FieldType.selectionmultiple,
         dataSource: {
-          source: 'collection',
-          collection: DataType.usergroup,
-          value: 'username',
-          label: 'username',
+          source: 'function',
+          value: 'getAssignToOptions',
         },
       },
     },
   } as const;
 };
 
-export const TaskRules = (): CollectionRule[] => {
-  return [
-    {
-      name: 'Actor Type',
-      action: [
-        {
-          operation: 'setProperty',
-          targetField: '/properties/assignTo/dataSource/collection',
-          sourceField: '/properties/assignType',
-        },
-        {
-          operation: 'setProperty',
-          targetField: '/properties/assignTo/dataSource/label',
-          value: 'name',
-        },
-      ],
-      condition: {
-        type: 'and',
-        param: [
-          {
-            value: true,
-            field1: '/properties/assignType',
-            operation: 'notEmpty',
-          },
-        ],
-      },
-    },
-    {
-      name: 'Actor Type',
-      action: [
-        {
-          operation: 'setProperty',
-          targetField: '/properties/assignTo/dataSource/label',
-          value: 'username',
-        },
-      ],
-      condition: {
-        type: 'and',
-        param: [
-          {
-            value: 'user',
-            field1: '/properties/assignType',
-            operation: 'equal',
-          },
-        ],
-      },
-    },
-  ];
-};
 
 export const TaskUI = (): CollectionUI[] => {
   return null;
@@ -129,4 +66,4 @@ export const TaskUI = (): CollectionUI[] => {
 
 const ts = TaskSchema();
 export type TaskModel = FromSchema<typeof ts>;
-registerCollection('Task', DataType.task, TaskSchema(), TaskUI(), TaskRules());
+registerCollection('Task', DataType.task, TaskSchema(), TaskUI(), null);

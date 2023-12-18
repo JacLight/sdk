@@ -57,10 +57,6 @@ export const CustomerSchema = () => {
         type: 'string',
         inputStyle: 'password',
       },
-      passwordReset: {
-        type: 'boolean',
-        title: 'Set Password',
-      },
       lockout: {
         type: 'string',
         default: 'false',
@@ -248,9 +244,6 @@ export const CustomerUI = (): CollectionUI[] => {
             },
             {
               '0': '/properties/email',
-            },
-            {
-              '0': '/properties/passwordReset',
               '1': '/properties/password',
             },
             {

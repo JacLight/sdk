@@ -28,7 +28,7 @@ export const TicketSchema = () => {
       title: {
         type: 'string',
       },
-      story: {
+      description: {
         type: 'string',
         inputStyle: 'textarea',
         rows: 4,
@@ -50,10 +50,6 @@ export const TicketSchema = () => {
         type: 'string',
         enum: ['web', 'phone', 'chat', 'mobile', 'api', 'other'],
       },
-      stage: {
-        type: 'string',
-        hidden: true,
-      },
       status: {
         type: 'string',
         enum: ['new', 'pending', 'inprogress', 'blocked', 'done', 'canceled'],
@@ -64,13 +60,12 @@ export const TicketSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.user,
-          value: 'sk',
-          label: 'email',
+          value: 'username',
+          label: ['email', 'username'],
         },
       },
       assignBy: {
         type: 'string',
-        hidden: true,
       },
       assignments: {
         type: 'array',
@@ -104,32 +99,15 @@ export const TicketUI = (): CollectionUI[] => {
       ],
     },
     {
-      type: FormViewSectionType.section1column,
-      default: true,
-      collapsible: true,
-    },
-    {
       type: FormViewSectionType.section2column,
       items: [
         {
           '0': '/properties/title',
-        },
-        {
-          '0': '/properties/story',
-        },
-        {
-          '0': '/properties/files',
-        },
-        {
-          '0': '/properties/stage',
           '1': '/properties/status',
         },
-      ],
-    },
-    {
-      type: FormViewSectionType.section2column,
-      collapsible: true,
-      items: [
+        {
+          '0': '/properties/description',
+        },
         {
           '0': '/properties/priority',
           '1': '/properties/severity',
@@ -138,6 +116,15 @@ export const TicketUI = (): CollectionUI[] => {
         {
           '0': '/properties/assignTo',
           '1': '/properties/assignBy',
+        },
+      ],
+    },
+    {
+      type: FormViewSectionType.section2column,
+      collapsible: true,
+      items: [
+        {
+          '0': '/properties/files',
         },
       ],
     },

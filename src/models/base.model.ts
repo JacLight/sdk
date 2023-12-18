@@ -8,6 +8,7 @@ export enum SortType {
   desc = -1,
   asc = 1,
 }
+
 export interface DataOptions {
   sort?: any;
   sortType?: SortType;
@@ -19,6 +20,7 @@ export interface DataOptions {
   enrich?: boolean;
   hasNext?: boolean;
 }
+
 export interface BaseModelDTO<T> extends DataOptions {
   total?: number;
   datatype?: DataType | string;
@@ -49,6 +51,10 @@ export interface BaseModel<T> {
   dislikes?: number;
   rating?: number;
   ratingCount?: number;
+  owner?: {
+    datatype: DataType;
+    id: string;
+  }
 }
 
 export const PostSubSchema = () => {
