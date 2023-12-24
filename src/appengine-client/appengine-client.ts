@@ -87,7 +87,7 @@ export class AppEngineClient {
       data.clientQuery = clientQuery;
     }
     method = method.toLowerCase();
-    console.log('request -> appengine', method, clientPath, path);
+    console.log('request starting  -> ', method, clientPath, path);
     let rt;
     try {
       if (method === 'post') {
@@ -100,9 +100,10 @@ export class AppEngineClient {
         rt = await this.axios.delete(path, header);
       }
       this.renewTries = 0;
+      console.log('request success -> ', method, clientPath);
       return this.processResponse(rt);
     } catch (error) {
-      console.error(error.message);
+      console.error('request error -> ', clientPath, error.message);
       if (
         this.renewTries < 2 &&
         error?.response?.status === 401 &&

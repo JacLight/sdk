@@ -21,8 +21,10 @@ export const TaskSchema = () => {
       status: {
         type: 'string',
         enum: Object.values(TaskStatus),
+        group: 'status'
       },
       name: {
+        group: 'status',
         type: 'string',
       },
       description: {
@@ -40,11 +42,11 @@ export const TaskSchema = () => {
       },
       resourceType: {
         type: 'string',
-        disabled: true,
+        hidden: true,
       },
       resourceId: {
         type: 'string',
-        disabled: true,
+        hidden: true,
       },
       assignTo: {
         type: 'string',

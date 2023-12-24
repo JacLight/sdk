@@ -94,6 +94,7 @@ export const PageSchema = (title = '', description = '') => {
         arrange: false,
         items: {
           type: 'object',
+          layout: 'horizontal',
           properties: {
             high: { type: 'number', displaySize: 'small' },
             low: { type: 'number', displaySize: 'small' },

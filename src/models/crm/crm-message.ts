@@ -27,9 +27,27 @@ export const MessageSchema = () => {
         type: 'string',
       },
       to: {
-        type: 'string',
-        inputStyle: 'chip',
+        type: 'array',
         fieldType: FieldType.selectionmultiple,
+        hideLabel: true,
+        inputStyle: 'chip',
+        items: {
+          type: 'object',
+          properties: {
+            email: {
+              type: 'string',
+            },
+            phone: {
+              type: 'string',
+            },
+            id: {
+              type: 'string',
+            },
+            dataType: {
+              type: 'string',
+            },
+          },
+        },
         dataSource: {
           source: 'function',
           value: 'getMessageRecipients',
