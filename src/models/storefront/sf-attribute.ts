@@ -1,8 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
-import { CollectionUI } from '../collection-ui';
-import { DataType, FieldType, FormViewSectionType } from '../../types';
+import { DataType, FieldType } from '../../types';
 
 export const SFAttributeSchema = () => {
   return {
@@ -24,19 +23,51 @@ export const SFAttributeSchema = () => {
         minLength: 3,
         maxLength: 50,
         unique: true,
-        transform: 'uri'
+        transform: 'uri',
+        group: 'name',
       },
       title: {
+        group: 'name',
         type: 'string',
       },
-      isFilter: {
+      type: {
         type: 'string',
+        enum: ['selection', 'number', 'date', 'text'],
+        group: 'name',
       },
-      filterPosition: {
+      display: {
+        type: 'string',
+        enum: ['checkbox', 'select', 'radio', 'range-input', 'range-slider', 'image', 'color'],
+        group: 'minmax',
+        rules: [
+          { operation: 'notIn', valueA: ['price', 'date'], valueB: '{{type}}', action: 'set-property', property: [{ enum: ['checkbox', 'select', 'radio', 'image', 'color'] }] },
+          { operation: 'in', valueA: ['price', 'date'], valueB: '{{type}}', action: 'set-property', property: [{ enum: ['checkbox', 'select', 'radio', 'range-input', 'range-slider'] }] },
+        ]
+      },
+      maxValue: {
+        type: 'string',
+        group: 'minmax',
+        rules: [
+          { operation: 'notIn', valueA: ['date', 'number'], valueB: '{{type}}', action: 'hide' },
+        ]
+      },
+      minValue: {
+        group: 'minmax',
+        type: 'string',
+        rules: [
+          { operation: 'notIn', valueA: ['date', 'number'], valueB: '{{type}}', action: 'hide' },
+        ]
+      },
+      minIncrement: {
         type: 'number',
+        group: 'minmax',
+        rules: [
+          { operation: 'notIn', valueA: ['checkbox', 'select', 'radio'], valueB: '{{display}}', action: 'hide' },
+        ]
       },
       options: {
         type: 'array',
+        collapsible: true,
         items: {
           type: 'object',
           layout: 'horizontal',
@@ -46,41 +77,15 @@ export const SFAttributeSchema = () => {
             param: { type: 'string' },
           },
         },
+        rules: [
+          { operation: 'notEqual', valueA: 'selection', valueB: '{{type}}', action: 'hide' },
+        ]
       },
     },
   } as const;
 };
 
 
-export const SFAttributeUI = (): CollectionUI[] => {
-  return [
-    {
-      type: FormViewSectionType.section2column,
-      items: [
-        {
-          '0': '/properties/parent',
-        },
-        {
-          '0': '/properties/name',
-          '1': '/properties/title',
-        },
-        {
-          '0': '/properties/isFilter',
-          '1': '/properties/filterPosition',
-        },
-      ],
-    },
-    {
-      type: FormViewSectionType.section2column,
-      collapsible: true,
-      items: [
-        {
-          '0': '/properties/options',
-        },
-      ],
-    },
-  ]
-};
 
 const ms = SFAttributeSchema();
 export type SFAttributeModel = FromSchema<typeof ms>;
@@ -92,7 +97,7 @@ registerCollection(
   'Store Attribute',
   DataType.sf_attribute,
   SFAttributeSchema(),
-  SFAttributeUI(),
+  null,
   SFAttributeRules(),
   true
 );

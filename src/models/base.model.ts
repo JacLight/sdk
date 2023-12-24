@@ -99,13 +99,14 @@ export const PostSubSchema = () => {
         items: {
           type: 'string',
         },
-        inputStyle: 'chip',
+        inputStyle: 'tree',
         fieldType: FieldType.selectionmultiple,
         dataSource: {
           source: 'collection',
           collection: DataType.category,
           value: 'name',
           label: 'name',
+          children: 'children',
         },
       },
       tags: {
@@ -144,7 +145,34 @@ export const StyleSubSchema = () => {
         'description': 'Classes to be applied to the element separated by space',
       },
       theme: {
-        type: 'string',
+        type: 'object',
+        collapsible: true,
+        properties: {
+          name: {
+            type: 'string',
+            'description': 'Name of the theme',
+          },
+          customize: {
+            type: 'array',
+            items: {
+              type: 'object',
+              layout: 'horizontal',
+              properties: {
+                property: {
+                  type: 'string',
+                  fieldType: FieldType.selectionmultiple,
+                  dataSource: {
+                    'source': 'json',
+                    'json': ['primary', 'primary-content', 'secondary', 'secondary-content', 'accent', 'neutral', 'neutral-content', 'base100', 'base-content', 'info', 'info-content', 'success', 'success-content', 'warning', 'warning-content', 'error', 'error-content'],
+                  }
+                },
+                value: {
+                  type: 'string',
+                },
+              },
+            }
+          }
+        }
       },
       css: {
         type: 'string',
@@ -160,15 +188,21 @@ export const StyleSubSchema = () => {
       },
       styleLinks: {
         type: 'array',
-        layout: 'horizontal',
+        collapsible: true,
         items: {
+          layout: 'horizontal',
+          styleClass: 'w-full',
+          hideLabel: true,
           type: 'string',
         },
       },
       scriptLinks: {
-        layout: 'horizontal',
+        collapsible: true,
         type: 'array',
         items: {
+          styleClass: 'w-full',
+          layout: 'horizontal',
+          hideLabel: true,
           type: 'string',
         },
       },

@@ -33,6 +33,13 @@ export const SFProductSchema = () => {
       },
       brand: {
         type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.sf_brand,
+          value: 'name',
+          label: 'name',
+        },
       },
       price: {
         type: 'number',
@@ -99,9 +106,25 @@ export const SFProductSchema = () => {
               },
             },
             options: {
-              type: 'string',
+              type: 'array',
+              hideLabel: true,
+              items: {
+                type: 'object',
+                properties: {
+                  label: {
+                    type: 'string',
+                  },
+                  value: {
+                    type: 'string',
+                  },
+                  param: {
+                    type: 'string',
+                  },
+                },
+              },
               fieldType: FieldType.selectionmultiple,
               inputStyle: 'chip',
+              styleClass: 'w-[60%]',
               dataSource: {
                 source: 'collection',
                 collection: DataType.sf_attribute,
@@ -192,6 +215,7 @@ export const SFProductSchema = () => {
           },
         },
       },
+      defaultImage: { type: 'string', hidden: true },
       discount: { type: 'string', hidden: true },
       promotion: { type: 'string', hidden: true },
       status: { type: 'string' },
@@ -212,11 +236,12 @@ export const SFProductUI = (): CollectionUI[] => {
         {
           '0': '/properties/sku',
           '1': '/properties/brand',
+          '2': '/properties/points',
         },
         {
           '0': '/properties/price',
-          '1': '/properties/cost',
-          '3': '/properties/points',
+          '1': '/properties/points',
+          '2': '/properties/cost',
         },
         {
           '0': '/properties/tax',
@@ -298,29 +323,7 @@ export const SFProductUI = (): CollectionUI[] => {
 };
 
 export const SFProductRules = (): CollectionRule[] => {
-  return [
-    {
-      name: 'Manual Selection',
-      action: [
-        {
-          operation: 'setProperty',
-          targetField:
-            '/properties/attributes/items/properties/options/dataSource/filterValue',
-          sourceField: '/properties/attributes/items/properties/name',
-        },
-      ],
-      condition: {
-        type: 'and',
-        param: [
-          {
-            value: true,
-            field1: '/properties/attributes/items/properties/name',
-            operation: 'notEmpty',
-          },
-        ],
-      },
-    },
-  ];
+  return null
 };
 
 const dd = SFProductSchema();

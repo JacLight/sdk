@@ -183,6 +183,89 @@ export const SiteSchema = () => {
           label: 'name',
         },
       },
+      storefront: {
+        type: 'object',
+        properties: {
+          cart: {
+            type: 'string',
+            enum: ['default', 'none'],
+            group: 'looks',
+          },
+          productGrid: {
+            type: 'string',
+            enum: ['default', 'none'],
+            group: 'looks',
+          },
+          productDetails: {
+            type: 'string',
+            enum: ['default', 'none'],
+            group: 'looks',
+          },
+          showSearch: {
+            type: 'boolean',
+            group: 'search',
+          },
+          filter: {
+            type: 'string',
+            enum: ['default', 'none'],
+            group: 'search',
+          },
+          filters: {
+            type: 'array',
+            rules: [
+              { operation: 'equal', valueA: '{{/properties/storefront/properties/filter}}', valueB: 'none', action: 'hide' },
+            ],
+            items: {
+              type: 'object',
+              hideLabel: true,
+              showIndex: true,
+              collapsible: true,
+              properties: {
+                source: {
+                  type: 'string',
+                  enum: ['price', 'category', 'brand', 'tags', 'rating', 'attribute'],
+                  group: 'name',
+                },
+                name: {
+                  type: 'string',
+                  group: 'name',
+                },
+                display: {
+                  type: 'string',
+                  enum: ['checkbox', 'select', 'radio', 'range-input', 'range-slider'],
+                  group: 'display',
+                  rules: [
+                    { operation: 'equal', valueA: 'attribute', valueB: '{{source}}', action: 'hide' },
+                    { operation: 'notEqual', valueA: 'price', valueB: '{{source}}', action: 'set-property', property: [{ enum: ['checkbox', 'select', 'radio'] }] },
+                    { operation: 'equal', valueA: 'price', valueB: '{{source}}', action: 'set-property', property: [{ enum: ['checkbox', 'select', 'radio', 'range-input', 'range-slider'] }] },
+                  ]
+                },
+                minIncrement: {
+                  type: 'number',
+                  group: 'display',
+                  default: 100,
+                  rules: [
+                    { operation: 'notEqual', valueA: 'price', valueB: '{{source}}', action: 'hide' },
+                  ]
+                },
+                attribute: {
+                  type: 'string',
+                  fieldType: FieldType.selectionmultiple,
+                  dataSource: {
+                    source: 'collection',
+                    collection: DataType.sf_attribute,
+                    value: 'name',
+                    label: 'name',
+                  },
+                  rules: [
+                    { operation: 'notEqual', valueA: '{{source}}', valueB: 'attribute', action: 'hide' },
+                  ],
+                },
+              },
+            },
+          },
+        },
+      },
       facebook: SocialSchema('Facebook'),
       twitter: SocialSchema('Twitter'),
       instagram: SocialSchema('Instagram'),
@@ -350,10 +433,10 @@ export const SiteUI = (): CollectionUI[] => {
           ],
         },
         {
-          title: 'Tailwind Config',
+          title: 'Storefront',
           items: [
             {
-              '0': '/properties/tailwindConfig',
+              '0': '/properties/storefront',
             },
           ],
         },
@@ -366,6 +449,6 @@ const dd = SiteSchema();
 export type SiteModel = FromSchema<typeof dd>;
 
 export const SiteRules = (): CollectionRule[] => {
-  return [{ name: 'norule' }];
+  return [];
 };
 registerCollection('Site', DataType.site, SiteSchema(), SiteUI(), SiteRules());
