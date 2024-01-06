@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }} 
     steps:
       - uses: actions/checkout@v2
 
@@ -52,5 +54,3 @@ jobs:
 
       - name: Publish to GitHub Package Registry
         run: yarn npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
