@@ -2,8 +2,8 @@ name: size
 on:
   push:
     branches:
-      - build
-      - master
+      - release
+
 jobs:
   size:
     runs-on: ubuntu-latest
