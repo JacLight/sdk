@@ -53,4 +53,4 @@ jobs:
           git push
 
       - name: Publish to GitHub Package Registry
-        run: yarn npm publish
+        run: npx npm publish
