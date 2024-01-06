@@ -54,3 +54,5 @@ jobs:
 
       - name: Publish to GitHub Package Registry
         run: npx npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
