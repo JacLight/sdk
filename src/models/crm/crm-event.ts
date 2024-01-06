@@ -3,6 +3,7 @@ import { registerCollection } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
 import { CollectionUI } from '../collection-ui';
 import { DataType, FieldType, FormViewSectionType } from '../../types';
+import { FileInfoSchema } from '../fileinfo';
 
 export const EventSchema = () => {
   return {
@@ -19,6 +20,7 @@ export const EventSchema = () => {
         pattern: '^[a-zA-Z_\\-0-9]*$',
         unique: true,
       },
+      image: FileInfoSchema(),
       description: {
         type: 'string',
         inputStyle: 'textarea',

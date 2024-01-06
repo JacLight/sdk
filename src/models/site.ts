@@ -66,6 +66,19 @@ export const SiteSchema = () => {
       },
       template: {
         type: 'string',
+        fieldType: FieldType.selectionmultiple,
+      },
+      colorSwitch: {
+        type: 'string',
+        inputStyle: 'chip',
+        fieldType: FieldType.selectionmultiple,
+        enum: ['on', 'off'],
+        default: 'off'
+      },
+      darkMode: {
+        type: 'string',
+        enum: ['auto', 'switch', 'on', 'off'],
+        default: 'auto'
       },
       title: {
         type: 'string',
@@ -395,6 +408,8 @@ export const SiteUI = (): CollectionUI[] => {
             },
             {
               '0': '/properties/template',
+              '1': '/properties/colorSwitch',
+              '2': '/properties/darkMode',
             },
             {
               '0': '/properties/features',
