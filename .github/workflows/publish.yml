@@ -47,7 +47,7 @@ jobs:
       - name: Bump version and push tags
         run: |
           yarn version minor
-          git push -follow-tags
+          git push --follow-tags
           git push
 
       - name: Publish to GitHub Package Registry
