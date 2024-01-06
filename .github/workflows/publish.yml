@@ -10,26 +10,47 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v2
         with:
-          node-version: '20.x'
-      - run: yarn install
-      # - run: yarn test
+          node-version: '20'
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      # Uncomment the following line if you have tests
+      # - name: Run tests
+      #   run: yarn test
 
   publish-gpr:
     needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v2
         with:
-          node-version: '20.x'
+          node-version: '20'
           registry-url: https://npm.pkg.github.com/
           always-auth: true
-      - run: yarn install
-      - run: git config --global user.email "imolewolede@gmail.com" && git config --global user.name "$GITHUB_ACTOR"
-      - run: yarn version --minor
-      - run: git push --tags && git push
-      - run: yarn publish
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Configure Git
+        run: |
+          git config --global user.email "imolewolede@gmail.com"
+          git config --global user.name "$GITHUB_ACTOR"
+
+      - name: Bump version and push tags
+        run: |
+          yarn version --minor
+          git push --tags
+          git push
+
+      - name: Publish to GitHub Package Registry
+        run: yarn publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
