@@ -42,8 +42,15 @@ export const ServicePointSchema = () => {
         type: 'string',
         format: 'date-time',
       },
-      schema: {
+      form: {
         type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.collection,
+          value: 'name',
+          label: 'name',
+        },
       },
       status: {
         type: 'string',

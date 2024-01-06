@@ -2,7 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
 import { CollectionUI } from '../collection-ui';
-import { DataType } from '../../types';
+import { DataType, FieldType } from '../../types';
 
 export const MessageTemplateSchema = () => {
   return {
@@ -20,8 +20,27 @@ export const MessageTemplateSchema = () => {
         type: 'string',
       },
       to: {
-        type: 'string',
-        inputStyle: 'textarea',
+        type: 'array',
+        fieldType: FieldType.selectionmultiple,
+        hideLabel: true,
+        inputStyle: 'chip',
+        items: {
+          type: 'object',
+          properties: {
+            email: {
+              type: 'string',
+            },
+            phone: {
+              type: 'string',
+            },
+            id: {
+              type: 'string',
+            },
+            dataType: {
+              type: 'string',
+            },
+          },
+        },
       },
       title: {
         type: 'string',

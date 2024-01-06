@@ -3,7 +3,7 @@ import { registerCollection, registerDefaultData } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
 import { CollectionUI } from '../collection-ui';
 import { DataType, FieldType, FormViewSectionType } from '../../types';
-import { FileInfoSchema } from '..';
+import { FileInfoSchema } from '../fileinfo';
 
 export const TicketSchema = () => {
   return {
