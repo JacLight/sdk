@@ -14,10 +14,22 @@ export const toSentenceCase = (str: string) => {
   return result.charAt(0).toUpperCase() + result.slice(1);
 };
 
-export const deepCopy = (source: any) => {
-  if (!source) return source;
-  if (typeof source !== 'object') return source;
-  return JSON.parse(JSON.stringify(source));
+export const deepCopy = (obj: any) => {
+  if (!obj) return obj;
+  if (obj === null || typeof obj !== 'object') {
+    return obj;
+  }
+
+  let clonedObj: any = Array.isArray(obj) ? [] : {};
+
+  for (let key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      const value = obj[key];
+      clonedObj[key] = deepCopy(value);
+    }
+  }
+
+  return clonedObj;
 };
 
 export const isEmpty = (obj: any) => {

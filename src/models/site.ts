@@ -70,7 +70,6 @@ export const SiteSchema = () => {
       },
       colorSwitch: {
         type: 'string',
-        inputStyle: 'chip',
         fieldType: FieldType.selectionmultiple,
         enum: ['on', 'off'],
         default: 'off'
