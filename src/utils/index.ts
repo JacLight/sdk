@@ -84,12 +84,20 @@ export function getRandomString(length = 20) {
 }
 
 export function removeEmpty(obj: any): any {
-  return Object.entries(obj)
-    .filter(([_, v]) => v != null)
-    .reduce(
-      (acc, [k, v]) => ({ ...acc, [k]: v === Object(v) ? removeEmpty(v) : v }),
-      {}
-    );
+  if (Array.isArray(obj)) {
+    // If it's an array, apply removeEmpty to each element
+    return obj.map(removeEmpty).filter(v => v != null);
+  } else if (obj !== null && typeof obj === 'object') {
+    // If it's an object, apply the original logic
+    return Object.entries(obj)
+      .filter(([_, v]) => v != null)
+      .reduce(
+        (acc, [k, v]) => ({ ...acc, [k]: v === Object(v) ? removeEmpty(v) : v }),
+        {}
+      );
+  }
+  // Return the value as is if it's neither an array nor an object
+  return obj;
 }
 
 export function executeFunctionByName(
