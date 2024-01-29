@@ -227,7 +227,12 @@ export const PageSectionSchema = () => {
       },
       useContextData: {
         type: 'boolean',
-        inputStyle: 'switch',
+      },
+      maxItems: {
+        type: 'number',
+      },
+      randomize: {
+        type: 'boolean',
       },
       selection: {
         type: 'array',
@@ -256,13 +261,14 @@ export const PageSectionSchema = () => {
       },
       category: {
         type: 'string',
-        inputStyle: 'chip',
+        inputStyle: 'tree',
         fieldType: FieldType.selectionmultiple,
         dataSource: {
           source: 'collection',
           collection: DataType.category,
           value: 'name',
           label: 'name',
+          children: 'children',
         },
       },
       tag: {
@@ -279,17 +285,14 @@ export const PageSectionSchema = () => {
       sort: {
         type: 'string',
         enum: [
-          'Auto',
           'Title Asc',
           'Title Desc',
           'Name Asc',
           'Name Desc',
-          'Published Asc',
-          'Published Desc',
-          'Created Asc',
-          'Created Desc',
-          'Modified Asc',
-          'Modified Desc',
+          'CreateDate Asc',
+          'CreateDate Desc',
+          'ModifyDate Asc',
+          'ModifyDate Desc',
         ],
       },
     },
@@ -387,6 +390,8 @@ export const PageSectionUI = (): CollectionUI[] => {
             },
             {
               '0': '/properties/useContextData',
+              '1': '/properties/randomize',
+              '2': '/properties/maxItems',
             },
           ],
         },

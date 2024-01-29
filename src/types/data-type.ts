@@ -77,4 +77,6 @@ export enum DataType {
   reservation = 'reservation',
   service_point = 'service_point',
   service_point_item = 'service_point_item',
+  publish = 'publish',
+  history = 'history',
 }

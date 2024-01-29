@@ -239,7 +239,7 @@ export const ReservationDefinitionRules = (): CollectionRule[] => {
   return null;
 };
 registerCollection(
-  'Reservation',
+  'Reservation Definition',
   DataType.reservationdefinition,
   ReservationDefinitionSchema(),
   ReservationDefinitionUI(),

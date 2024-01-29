@@ -48,6 +48,10 @@ export const NavigationLinkSchema = () => {
       title: {
         type: 'string',
       },
+      slug: {
+        type: 'string',
+        transform: 'uri'
+      },
       description: {
         type: 'string',
       },
