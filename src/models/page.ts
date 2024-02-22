@@ -61,7 +61,8 @@ export const PageSchema = (title = '', description = '') => {
         event: 'onBlur',
         unique: true,
         uniqueScope: ['site'],
-        transform: 'uri'
+        suffix: '-',
+        transform: ['uri', 'lowercase', 'suffix', 'random-string', '{{title}}'],
       },
       dataType: {
         type: 'string',
@@ -87,6 +88,17 @@ export const PageSchema = (title = '', description = '') => {
         type: 'array',
         hidden: true,
         items: PageSectionSchema(),
+      },
+      animations: {
+        type: 'array',
+        hidden: true,
+        items: {
+          type: 'object',
+        }
+      },
+      initData: {
+        type: 'object',
+        hidden: true,
       },
       breakpoints: {
         type: 'array',
@@ -186,52 +198,22 @@ export const PageSectionSchema = () => {
         type: 'boolean',
         hidden: true,
       },
-      fieldMap: {
-        type: 'array',
-        items: {
-          type: 'object',
-          layout: 'horizontal',
-          properties: {
-            htmlId: {
-              type: 'string',
-              fieldType: FieldType.selectionmultiple,
-              dataSource: {
-                source: 'json',
-                json: [],
-              },
-            },
-            dataId: {
-              type: 'string',
-              fieldType: FieldType.selectionmultiple,
-              dataSource: {
-                source: 'json',
-                json: [],
-              },
-            },
-            hide: {
-              type: 'boolean',
-            },
-          },
-        },
-      },
       dataType: {
-        type: 'string',
+        type: 'array',
         fieldType: FieldType.selectionmultiple,
-        group: 'datatype-select',
-        groupItemId: 1,
         inputStyle: 'chip',
+        items: {
+          type: 'string'
+        },
         dataSource: {
           source: 'json',
           json: []
         },
       },
-      useContextData: {
-        type: 'boolean',
-      },
       maxItems: {
         type: 'number',
       },
-      randomize: {
+      shuffle: {
         type: 'boolean',
       },
       selection: {
@@ -368,40 +350,26 @@ export const PageUI = (): CollectionUI[] => {
 export const PageSectionUI = (): CollectionUI[] => {
   return [
     {
-      type: FormViewSectionType.sectiontab,
-      tab: [
+      type: FormViewSectionType.section2column,
+      items: [
         {
-          title: 'Data Selection',
-          items: [
-            {
-              '0': '/properties/dataType',
-            },
-            {
-              '0': '/properties/selection',
-            },
-            {
-              '0': '/properties/category',
-            },
-            {
-              '0': '/properties/tag',
-            },
-            {
-              '0': '/properties/sort',
-            },
-            {
-              '0': '/properties/useContextData',
-              '1': '/properties/randomize',
-              '2': '/properties/maxItems',
-            },
-          ],
+          '0': '/properties/dataType',
         },
         {
-          title: 'Field Map',
-          items: [
-            {
-              '0': '/properties/fieldMap',
-            },
-          ],
+          '0': '/properties/selection',
+        },
+        {
+          '0': '/properties/category',
+        },
+        {
+          '0': '/properties/tag',
+        },
+        {
+          '0': '/properties/sort',
+        },
+        {
+          '0': '/properties/shuffle',
+          '1': '/properties/maxItems',
         },
       ],
     },
@@ -414,29 +382,6 @@ export const PageRules = (): CollectionRule[] => {
 
 export const PageSectionRules = (): CollectionRule[] => {
   return [
-    // {
-    //   name: 'Wait for DataType',
-    //   action: [
-    //     {
-    //       operation: 'show',
-    //       targetField: [
-    //         '/properties/selection',
-    //         '/properties/category',
-    //         '/properties/tag',
-    //       ],
-    //     },
-    //   ],
-    //   condition: {
-    //     type: 'and',
-    //     param: [
-    //       {
-    //         value: true,
-    //         field1: '/properties/dataType',
-    //         operation: 'notEmpty',
-    //       },
-    //     ],
-    //   },
-    // },
   ];
 };
 

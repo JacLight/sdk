@@ -8,6 +8,9 @@ export const PostSchema = () => {
   return {
     type: 'object',
     properties: {
+      title: {
+        type: 'string',
+      },
       name: {
         type: 'string',
         title: 'Slug',
@@ -15,14 +18,17 @@ export const PostSchema = () => {
         minLength: 3,
         maxLength: 100,
         unique: true,
-        transform: 'uri'
-      },
-      title: {
-        type: 'string',
+        group: 'slug',
+        groupLayout: 'flat',
+        suffix: '-',
+        transform: ['uri', 'lowercase', 'suffix', 'random-string', '{{title}}'],
+
       },
       template: {
         type: 'string',
         fieldType: FieldType.selectionmultiple,
+        groupLayout: 'flat',
+        group: 'slug',
         dataSource: {
           source: 'collection',
           collection: DataType.flexdata,
@@ -34,6 +40,14 @@ export const PostSchema = () => {
             operator: 'equal'
           }
         },
+      },
+      summary: {
+        type: 'string',
+        inputType: 'textarea',
+      },
+      content: {
+        type: 'string',
+        fieldType: FieldType.richtext,
       },
     },
   } as const;

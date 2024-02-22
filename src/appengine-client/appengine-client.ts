@@ -3,21 +3,40 @@ import { appEndpoints } from './endpoints';
 // import { BaseModel } from "@models/base.model";
 // import { UserModel } from "@models/user";
 
+type AppInfo = {
+  appId: string;
+  appKey: string;
+  appSecret: string;
+  orgId: string;
+  siteName: string;
+};
+
 export class AppEngineClient {
   private renewTries = 0;
   private token: string = null;
 
   constructor(private appConfig: any, private axios: any) { }
 
-  async getToken() {
+  async getToken(appInfo: AppInfo) {
     const path = `${this.appConfig.appengine.host}/${appEndpoints.appkey.path}`;
-    const data = {
-      appId: this.appConfig.appengine.appId,
-      secret: this.appConfig.appengine.secret,
-      key: this.appConfig.appengine.key,
-    };
+
+    let data;
+    if (appInfo?.appId && appInfo?.appKey && appInfo?.appSecret) {
+      data = {
+        appId: appInfo.appId,
+        secret: appInfo.appSecret,
+        key: appInfo.appKey,
+        siteName: appInfo.siteName,
+      };
+    } else {
+      data = {
+        appId: this.appConfig.appengine.appId,
+        secret: this.appConfig.appengine.secret,
+        key: this.appConfig.appengine.key,
+      };
+    }
     this.renewTries = this.renewTries + 1;
-    const rt = await this.axios.post(path, data, this.getBaseHeader());
+    const rt = await this.axios.post(path, data, this.getBaseHeader(appInfo));
     if (rt?.data?.token) {
       return rt.data.token;
     } else {
@@ -42,20 +61,20 @@ export class AppEngineClient {
     return null;
   }
 
-  getBaseHeader(): { headers: any } {
+  getBaseHeader(appInfo: AppInfo): { headers: any } {
     return {
       headers: {
         'Content-Type': 'application/json',
-        orgid: this.appConfig.orgId,
+        orgid: appInfo?.orgId || this.appConfig.orgId,
       },
     };
   }
 
-  async getHeaderWithToken() {
+  async getHeaderWithToken(appInfo: AppInfo) {
     if (!this.token) {
-      this.token = await this.getToken();
+      this.token = await this.getToken(appInfo);
     }
-    const init = this.getBaseHeader();
+    const init = this.getBaseHeader(appInfo);
     init.headers['Authorization'] = `Bearer ${this.token}`;
     return init;
   }
@@ -67,6 +86,7 @@ export class AppEngineClient {
     clientAuthorization?: string,
     clientQuery?: any,
     clientInfo?: any,
+    appInfo?: AppInfo
   ): Promise<any> {
     let path;
     if (clientPath.startsWith('/api')) {
@@ -74,7 +94,7 @@ export class AppEngineClient {
     } else {
       path = this.appConfig.appengine.host + '/' + clientPath;
     }
-    const header: any = await this.getHeaderWithToken();
+    const header: any = await this.getHeaderWithToken(appInfo);
     if (clientAuthorization) {
       header.headers['x-client-authorization'] = clientAuthorization
     }
@@ -111,7 +131,7 @@ export class AppEngineClient {
       ) {
         console.log('Appengine Token Expired,.... renewing token');
         this.token = null;
-        await this.getHeaderWithToken();
+        await this.getHeaderWithToken(appInfo);
         console.log('auth ok')
         return await this.processRequest(method, clientPath, clientData, clientAuthorization, clientQuery);
       } else {
@@ -120,10 +140,10 @@ export class AppEngineClient {
     }
   }
 
-  async getSite() {
+  async getSite(appInfo?: AppInfo) {
     //en=true enables enrichment
     const sitePath = `${appEndpoints.query.path}/site/name/${this.appConfig.siteName}?en=true`;
-    const rt: any = await this.processRequest('get', sitePath, null, null, null);
+    const rt: any = await this.processRequest('get', sitePath, null, null, null, null, appInfo);
     if (rt && Array.isArray(rt.data) && rt.data.length > 0) {
       const [site] = rt.data;
       return site;
@@ -131,23 +151,23 @@ export class AppEngineClient {
     return null;
   }
 
-  async getPages(siteName = this.appConfig.siteName) {
+  async getPages(siteName = this.appConfig.siteName, appInfo?: AppInfo) {
     const query = { 'data.site': siteName }
-    let rt = await this.processRequest('post', `${appEndpoints.find.path}/page`, { query, options: { enrich: true } }, null, null);
+    let rt = await this.processRequest('post', `${appEndpoints.find.path}/page`, { query, options: { enrich: true } }, null, null, null, appInfo);
     return rt?.data
   }
 
-  async getPage(site: string, pageIds: { slug?: string, name?: string, id?: string }) {
+  async getPage(site: string, pageIds: { slug?: string, name?: string, id?: string }, appInfo?: AppInfo) {
     let rt;
     if (pageIds?.id) {
       const pagePath = `${appEndpoints.get.path}/page/${pageIds?.id}?en=true`;
-      rt = await this.processRequest('get', pagePath, null, null, null);
+      rt = await this.processRequest('get', pagePath, null, null, null, null, appInfo);
     } else if (pageIds?.name) {
       const query = { 'data.site': site, 'data.name': pageIds?.name }
-      rt = await this.processRequest('post', `${appEndpoints.find.path}/page`, { query, options: { enrich: true } }, null, null);
+      rt = await this.processRequest('post', `${appEndpoints.find.path}/page`, { query, options: { enrich: true } }, null, null, null, appInfo);
     } else if (pageIds?.slug) {
       const query = { 'data.site': site, 'data.slug': pageIds?.slug }
-      rt = await this.processRequest('post', `${appEndpoints.find.path}/page`, { query, options: { enrich: true } }, null, null);
+      rt = await this.processRequest('post', `${appEndpoints.find.path}/page`, { query, options: { enrich: true } }, null, null, null, appInfo);
     } else {
       console.debug('request -> getPage, not found site: ' + site + ' page: ', pageIds);
       return null
@@ -172,7 +192,7 @@ export class AppEngineClient {
   }
 
 
-  async upload(path: string, location: string, file: any): Promise<any> {
+  async upload(path: string, location: string, file: any, appInfo?: AppInfo): Promise<any> {
     console.debug('request -> updateData', path);
     const formData = new FormData();
     formData.append('location', location);
@@ -183,7 +203,7 @@ export class AppEngineClient {
       let rt = await fetch(path, {
         method: 'POST',
         headers: new Headers({
-          ...((await this.getHeaderWithToken()) as Record<string, any>),
+          ...((await this.getHeaderWithToken(appInfo)) as Record<string, any>),
         }),
         body: formData,
       });

@@ -40,14 +40,6 @@ export const TaskSchema = () => {
         type: 'string',
         inputStyle: 'textarea',
       },
-      resourceType: {
-        type: 'string',
-        hidden: true,
-      },
-      resourceId: {
-        type: 'string',
-        hidden: true,
-      },
       assignTo: {
         type: 'string',
         inputStyle: 'chip',

@@ -67,6 +67,10 @@ export const SiteSchema = () => {
       template: {
         type: 'string',
         fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'function',
+          value: 'getSiteTemplates',
+        }
       },
       colorSwitch: {
         type: 'string',
@@ -248,8 +252,8 @@ export const SiteSchema = () => {
                   group: 'display',
                   rules: [
                     { operation: 'equal', valueA: 'attribute', valueB: '{{source}}', action: 'hide' },
-                    { operation: 'notEqual', valueA: 'price', valueB: '{{source}}', action: 'set-property', property: [{ enum: ['checkbox', 'select', 'radio'] }] },
-                    { operation: 'equal', valueA: 'price', valueB: '{{source}}', action: 'set-property', property: [{ enum: ['checkbox', 'select', 'radio', 'range-input', 'range-slider'] }] },
+                    { operation: 'notEqual', valueA: 'price', valueB: '{{source}}', action: 'set-property', property: [{ key: 'enum', value: ['checkbox', 'select', 'radio'] }] },
+                    { operation: 'equal', valueA: 'price', valueB: '{{source}}', action: 'set-property', property: [{ key: 'enum', value: ['checkbox', 'select', 'radio', 'range-input', 'range-slider'] }] },
                   ]
                 },
                 minIncrement: {
@@ -278,11 +282,26 @@ export const SiteSchema = () => {
           },
         },
       },
-      facebook: SocialSchema('Facebook'),
-      twitter: SocialSchema('Twitter'),
-      instagram: SocialSchema('Instagram'),
-      youtube: SocialSchema('Youtube'),
-      tiktok: SocialSchema('Tiktok'),
+      facebook: {
+        type: 'string',
+        format: 'uri',
+      },
+      twitter: {
+        type: 'string',
+        format: 'uri',
+      },
+      instagram: {
+        type: 'string',
+        format: 'uri',
+      },
+      youtube: {
+        type: 'string',
+        format: 'uri',
+      },
+      tiktok: {
+        type: 'string',
+        format: 'uri',
+      },
       spanProtectionComment: {
         description: 'Enable Google reCAPTCHA on contact and comment forms',
         type: 'boolean',
@@ -321,24 +340,6 @@ export const SiteSchema = () => {
       hideSiteFooter: {
         type: 'boolean',
         inputStyle: 'switch',
-      },
-    },
-  } as const;
-};
-
-export const SocialSchema = (name: string) => {
-  return {
-    type: 'object',
-    name: name,
-    title: name,
-    collapsible: true,
-    displayStyle: 'card',
-    properties: {
-      apiKey: {
-        type: 'string',
-      },
-      apiSecret: {
-        type: 'string',
       },
     },
   } as const;

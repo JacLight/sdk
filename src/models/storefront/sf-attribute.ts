@@ -40,8 +40,8 @@ export const SFAttributeSchema = () => {
         enum: ['checkbox', 'select', 'radio', 'range-input', 'range-slider', 'image', 'color'],
         group: 'minmax',
         rules: [
-          { operation: 'notIn', valueA: ['price', 'date'], valueB: '{{type}}', action: 'set-property', property: [{ enum: ['checkbox', 'select', 'radio', 'image', 'color'] }] },
-          { operation: 'in', valueA: ['price', 'date'], valueB: '{{type}}', action: 'set-property', property: [{ enum: ['checkbox', 'select', 'radio', 'range-input', 'range-slider'] }] },
+          { operation: 'notIn', valueA: ['price', 'date'], valueB: '{{type}}', action: 'set-property', property: [{ key: 'enum', value: ['checkbox', 'select', 'radio', 'image', 'color'] }] },
+          { operation: 'in', valueA: ['price', 'date'], valueB: '{{type}}', action: 'set-property', property: [{ key: 'enum', value: ['checkbox', 'select', 'radio', 'range-input', 'range-slider'] }] },
         ]
       },
       maxValue: {

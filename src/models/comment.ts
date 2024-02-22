@@ -8,16 +8,6 @@ export const CommentSchema = () => {
   return {
     type: 'object',
     properties: {
-      resourceType: {
-        type: 'string',
-        disabled: true,
-        hidden: true,
-      },
-      resourceId: {
-        type: 'string',
-        hidden: true,
-        disabled: true,
-      },
       comment: {
         type: 'string',
         inputStyle: 'textarea',

@@ -14,11 +14,11 @@ export const TrashSchema = () => {
         maxLength: 50,
         unique: true,
       },
-      resourceType: {
+      status: {
         type: 'string',
       },
-      resourceId: {
-        type: 'string',
+      data: {
+        type: 'object',
       },
       date: {
         type: 'string',

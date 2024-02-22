@@ -14,6 +14,11 @@ export const appEndpoints = {
     method: 'get',
     path: 'repository/collection',
   },
+  get_collections: {
+    name: 'get_collections',
+    method: 'get',
+    path: 'repository/collections',
+  },
   isunique: {
     name: 'isunique',
     method: 'get',
@@ -23,6 +28,16 @@ export const appEndpoints = {
     name: 'query',
     method: 'get',
     path: 'repository/query',
+  },
+  user_orgs: {
+    name: 'user_orgs',
+    method: 'get',
+    path: 'repository/org/user',
+  },
+  user_org_delete: {
+    name: 'user_org_delete',
+    method: 'delete',
+    path: 'repository/org/user',
   },
   search_raw: {
     name: 'search_raw',
@@ -43,6 +58,11 @@ export const appEndpoints = {
     name: 'search',
     method: 'post',
     path: 'repository/search',
+  },
+  search_asset: {
+    name: 'search_asset',
+    method: 'post',
+    path: 'repository/search_asset',
   },
   find: {
     name: 'find',
@@ -389,6 +409,7 @@ export const appEndpoints = {
     method: 'post',
     path: 'crm/flexdata/update',
   },
+
 };
 
 export type APIEndpointName = keyof typeof appEndpoints;

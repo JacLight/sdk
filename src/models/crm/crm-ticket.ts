@@ -9,21 +9,25 @@ export const TicketSchema = () => {
   return {
     type: 'object',
     properties: {
+      name: {
+        type: 'string',
+        pattern: '^[a-zA-Z_\\-0-9]*$',
+        unique: true,
+        transform: 'uri',
+        readOnly: true
+      },
       reportedBy: {
         title: 'Name',
         type: 'string',
-        hidden: true,
       },
       reportedByEmail: {
         title: 'Email',
         type: 'string',
         format: 'email',
-        hidden: true,
       },
       reportedByPhone: {
         title: 'Phone',
         type: 'string',
-        hidden: true,
       },
       title: {
         type: 'string',
@@ -52,7 +56,7 @@ export const TicketSchema = () => {
       },
       status: {
         type: 'string',
-        enum: ['new', 'pending', 'inprogress', 'blocked', 'done', 'canceled'],
+        enum: ['new', 'open', 'pending', 'inprogress', 'blocked', 'done', 'canceled'],
       },
       assignTo: {
         type: 'string',
@@ -102,8 +106,11 @@ export const TicketUI = (): CollectionUI[] => {
       type: FormViewSectionType.section2column,
       items: [
         {
-          '0': '/properties/title',
+          '0': '/properties/name',
           '1': '/properties/status',
+        },
+        {
+          '0': '/properties/title',
         },
         {
           '0': '/properties/description',

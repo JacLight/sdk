@@ -40,14 +40,6 @@ export const ChatMessageSchema = () => {
         ...UserSchema(),
         hidden: true,
       },
-      resourceType: {
-        type: 'string',
-        hidden: true,
-      },
-      resourceId: {
-        type: 'string',
-        disabled: true,
-      },
     },
   } as const;
 };

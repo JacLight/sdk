@@ -3,6 +3,8 @@ import { DataType, FieldType } from '../types';
 import { CommentModel } from './comment';
 import { FileInfoSchema } from './fileinfo';
 import { WorkflowSubModel } from './workflowdefinition';
+import { ActivityModel } from './activity';
+import { MessageModel } from './crm';
 
 export enum SortType {
   desc = -1,
@@ -46,6 +48,8 @@ export interface BaseModel<T> {
   subschema?: string;
   requiredRole?: RequiredRoleModel;
   comments?: CommentModel[];
+  activities?: ActivityModel[];
+  messages?: MessageModel[];
   shares?: number;
   likes?: number;
   dislikes?: number;

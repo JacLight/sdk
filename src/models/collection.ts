@@ -13,6 +13,8 @@ export interface CollectionModel {
   enableSubSchema?: boolean;
   enableIndexing?: boolean;
   enableWorkflow?: boolean;
+  mainType?: string;
+  subType?: string;
   workflow?: string;
   permission?: {};
   rules?: CollectionRule[];
@@ -49,6 +51,14 @@ export const CollectionSchema = () => {
       },
       title: {
         type: 'string',
+      },
+      mainType: {
+        type: 'string',
+        hidden: true,
+      },
+      subType: {
+        type: 'string',
+        hidden: true,
       },
       hideHeading: {
         type: 'boolean',

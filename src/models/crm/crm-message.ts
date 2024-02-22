@@ -32,31 +32,17 @@ export const MessageSchema = () => {
         hideLabel: true,
         inputStyle: 'chip',
         items: {
-          type: 'object',
-          properties: {
-            email: {
-              type: 'string',
-            },
-            phone: {
-              type: 'string',
-            },
-            id: {
-              type: 'string',
-            },
-            dataType: {
-              type: 'string',
-            },
-          },
+          type: 'string',
         },
         dataSource: {
           source: 'function',
           value: 'getMessageRecipients',
         },
       },
-      title: {
+      subject: {
         type: 'string',
       },
-      bodyHtml: {
+      html: {
         title: 'Content',
         collapsible: true,
         type: 'string',
@@ -69,10 +55,6 @@ export const MessageSchema = () => {
         inputStyle: 'textarea',
         rows: 4,
         displayStyle: 'outlined',
-      },
-      maxTries: {
-        type: 'number',
-        default: 3,
       },
       source: {
         type: 'string',
@@ -142,7 +124,7 @@ export const MessageSchema = () => {
         },
       },
     },
-    required: ['message', 'to', 'title', 'deliveryType', 'from'],
+    required: ['to', 'title', 'deliveryType', 'from'],
   } as const;
 };
 const ms = MessageSchema();
@@ -165,10 +147,10 @@ export const MessageUI = (): CollectionUI[] => {
               '0': '/properties/to',
             },
             {
-              '0': '/properties/title',
+              '0': '/properties/subject',
             },
             {
-              '0': '/properties/bodyHtml',
+              '0': '/properties/html',
             },
             {
               '0': '/properties/text',

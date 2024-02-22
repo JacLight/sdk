@@ -9,15 +9,15 @@ export const SFProductSchema = () => {
   return {
     type: 'object',
     properties: {
-      slug: {
-        type: 'string',
-        hidden: true,
-        pattern: '^[a-zA-Z_\\-0-9]*$',
-        transform: 'uri'
-      },
       name: {
         type: 'string',
         label: 'Title',
+      },
+      slug: {
+        type: 'string',
+        pattern: '^[a-zA-Z_\\-0-9]*$',
+        suffix: '-',
+        transform: ['uri', 'lowercase', 'suffix', 'random-string', '{{name}}'],
       },
       sku: {
         type: 'string',
@@ -232,6 +232,7 @@ export const SFProductUI = (): CollectionUI[] => {
       items: [
         {
           '0': '/properties/name',
+          '1': '/properties/slug',
         },
         {
           '0': '/properties/sku',

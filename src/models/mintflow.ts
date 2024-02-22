@@ -42,6 +42,11 @@ export const MintflowSchema = () => {
         items: MintflowNodeSchema(),
         hidden: true,
       },
+      status: {
+        type: 'string',
+        enum: ['draft', 'published', 'archived'],
+        default: 'Draft',
+      }
     },
   } as const;
 };

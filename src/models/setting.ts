@@ -16,6 +16,13 @@ export const SettingSchema = () => {
         unique: true,
         transform: 'uri'
       },
+      systemEmail: {
+        type: 'string',
+        format: 'email',
+      },
+      systemPhone: {
+        type: 'string',
+      },
       emailTemplate: getSettingItemSchema(DataType.messagetemplate),
       smsTemplate: getSettingItemSchema(DataType.messagetemplate),
       orderEmailTemplate: getSettingItemSchema(DataType.messagetemplate),
@@ -32,8 +39,10 @@ export const SettingSchema = () => {
       passwordResetSmsTemplate: getSettingItemSchema(DataType.messagetemplate),
       workflowEmailTemplate: getSettingItemSchema(DataType.messagetemplate),
       workflowSmsTemplate: getSettingItemSchema(DataType.messagetemplate),
-      smsGateway: getSettingItemSchema(DataType.config),
-      emailGateway: getSettingItemSchema(DataType.config),
+      inSmsGateway: getSettingItemSchema(DataType.config),
+      outSmsGateway: getSettingItemSchema(DataType.config),
+      inEmailGateway: getSettingItemSchema(DataType.config),
+      outEmailGateway: getSettingItemSchema(DataType.config),
       siteDashboard: getSettingItemSchema(DataType.dataviz),
       storeDashboard: getSettingItemSchema(DataType.dataviz),
       crmDashboard: getSettingItemSchema(DataType.dataviz),
