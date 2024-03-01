@@ -19,16 +19,24 @@ export const deepCopy = (obj: any) => {
   if (obj === null || typeof obj !== 'object') {
     return obj;
   }
+  return JSON.parse(JSON.stringify(obj));
+};
+
+
+export const deepCopySimple = (obj: any) => {
+  if (!obj) return obj;
+  if (obj === null || typeof obj !== 'object') {
+    return obj;
+  }
 
   let clonedObj: any = Array.isArray(obj) ? [] : {};
 
   for (let key in obj) {
     if (obj.hasOwnProperty(key)) {
       const value = obj[key];
-      clonedObj[key] = deepCopy(value);
+      clonedObj[key] = deepCopySimple(value);
     }
   }
-
   return clonedObj;
 };
 
@@ -266,4 +274,13 @@ export function formatBytes(bytes: number, decimals = 2): string {
 export function isValidEmail(email: string): boolean {
   const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
   return emailRegex.test(email);
+}
+
+//camelCase to kebab-case
+export const styleObjectToString = (style: { [key: string]: string }) => {
+  return Object.keys(style).map(key => {
+    const kebabCaseKey = key.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2').toLowerCase();
+    return `${kebabCaseKey}:${style[key]}`;
+  }
+  ).join(';');
 }

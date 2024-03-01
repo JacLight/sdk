@@ -2,6 +2,7 @@ export enum FieldType {
   paragraph = 'Paragraph',
   container = 'Container',
   richtext = 'Rich Text Editor',
+  html = 'HTML Editor',
   markdown = 'Markdown Editor',
   textfield = 'Text Field',
   numberfield = 'Number Field',

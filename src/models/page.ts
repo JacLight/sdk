@@ -212,9 +212,11 @@ export const PageSectionSchema = () => {
       },
       maxItems: {
         type: 'number',
+        displayStyle: 'outlined',
       },
       shuffle: {
         type: 'boolean',
+        description: 'Randomize the order of the items',
       },
       selection: {
         type: 'array',
@@ -242,9 +244,12 @@ export const PageSectionSchema = () => {
         },
       },
       category: {
-        type: 'string',
-        inputStyle: 'tree',
+        type: 'array',
         fieldType: FieldType.selectionmultiple,
+        items: {
+          type: 'string'
+        },
+        inputStyle: 'tree',
         dataSource: {
           source: 'collection',
           collection: DataType.category,
@@ -254,9 +259,12 @@ export const PageSectionSchema = () => {
         },
       },
       tag: {
-        type: 'string',
+        type: 'array',
         inputStyle: 'chip',
         fieldType: FieldType.selectionmultiple,
+        items: {
+          type: 'string'
+        },
         dataSource: {
           source: 'collection',
           collection: DataType.tag,
@@ -266,6 +274,7 @@ export const PageSectionSchema = () => {
       },
       sort: {
         type: 'string',
+        displayStyle: 'outlined',
         enum: [
           'Title Asc',
           'Title Desc',
@@ -276,6 +285,24 @@ export const PageSectionSchema = () => {
           'ModifyDate Asc',
           'ModifyDate Desc',
         ],
+      },
+      contextOverride: {
+        type: 'array',
+        inputStyle: 'chip',
+        fieldType: FieldType.selectionmultiple,
+        items: {
+          type: 'string'
+        },
+        dataSource: {
+          source: 'json',
+          json: ['datatype', 'category', 'tag', 'sort', 'sortType', 'maxItem']
+        },
+        description: 'Overrides selected item with value from request',
+      },
+      dataInRequest: {
+        type: 'boolean',
+        description: "map's request params to data fetch /datatype/keyword/search, /datatype/attribute/value, /datatype/id, /datatype can also be set as query parameter ?datatype=xxx&...",
+        hidden: true,
       },
     },
   } as const;
@@ -355,9 +382,7 @@ export const PageSectionUI = (): CollectionUI[] => {
         {
           '0': '/properties/dataType',
         },
-        {
-          '0': '/properties/selection',
-        },
+
         {
           '0': '/properties/category',
         },
@@ -366,10 +391,17 @@ export const PageSectionUI = (): CollectionUI[] => {
         },
         {
           '0': '/properties/sort',
+          '1': '/properties/maxItems',
         },
         {
           '0': '/properties/shuffle',
-          '1': '/properties/maxItems',
+          '1': '/properties/contextOverride',
+        },
+        {
+          '0': '/properties/dataInRequest',
+        },
+        {
+          '0': '/properties/selection',
         },
       ],
     },

@@ -16,6 +16,7 @@ export enum RoleType {
   ContentAdmin = 'ContentAdmin',
   ConfigAdmin = 'ConfigAdmin',
   RootAdmin = 'RootAdmin',
+  RootSystem = 'RootSystem',
   RootUser = 'RootUser',
   RootPowerUser = 'RootPowerUser',
   Customer = 'Customer',
@@ -111,6 +112,11 @@ export const getPermission = () => {
       content: Object.values(PermissionTypeContent),
     },
 
+    RootSystem: {
+      component: Object.values(PermissionTypeComponent),
+      content: Object.values(PermissionTypeContent),
+    },
+
     System: {
       component: Object.values(PermissionTypeComponent),
       content: Object.values(PermissionTypeContent),
@@ -192,7 +198,7 @@ export const getPermissionEffective = (roleNames: RoleItemType[]) => {
 export const getPermissionComponent = () => {
   const permission: PermissionModel = [];
   Object.values(RoleType).forEach((role: any) => {
-    if (role === 'RootAdmin' || role === 'ContentAdmin' || role === 'System')
+    if (role === 'RootAdmin' || role === 'ContentAdmin' || role === 'RootSystem' || role === 'System')
       return;
     permission.push({
       role: role,
@@ -206,7 +212,7 @@ export const getPermissionComponent = () => {
 export const getPermissionContent = () => {
   const permission: PermissionModel = [];
   Object.values(RoleType).forEach((role: any) => {
-    if (role === 'RootAdmin' || role === 'ConfigAdmin' || role === 'System')
+    if (role === 'RootAdmin' || role === 'ConfigAdmin' || role === 'RootSystem' || role === 'System')
       return;
     permission.push({
       role: role,

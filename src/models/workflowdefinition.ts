@@ -1,6 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection, registerDefaultData } from '../defaultschema';
-import { DataType, FieldType, TaskStatus } from '../types';
+import { DataType, FieldType, WorkflowStatus } from '../types';
 import { CollectionRule } from './collection-rule';
 import { CollectionUI } from './collection-ui';
 import { TaskSchema } from './task';
@@ -218,7 +218,7 @@ export const WorkflowSubSchema = () => {
       status: {
         type: 'string',
         disabled: true,
-        enum: Object.values(TaskStatus),
+        enum: Object.values(WorkflowStatus),
         default: 'new'
       },
       note: {

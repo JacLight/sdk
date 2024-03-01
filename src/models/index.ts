@@ -30,3 +30,5 @@ export * from './translation';
 export * from './collection-rule';
 export * from './collection-ui';
 export * from './activity';
+export * from './base.publish.model';
+export * from './base.history.model';

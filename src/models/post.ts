@@ -43,7 +43,7 @@ export const PostSchema = () => {
       },
       summary: {
         type: 'string',
-        inputType: 'textarea',
+        inputStyle: 'textarea',
       },
       content: {
         type: 'string',

@@ -49,6 +49,16 @@ export const getSiteFeatureList = () => {
             value: 'calendar',
             label: 'Calendar',
             description: 'Enable calendar function on your site',
+        },
+        {
+            value: 'doc',
+            label: 'Documentation',
+            description: 'Enable documentation and knowledge base on your site',
+        },
+        {
+            value: 'live-chat',
+            label: 'Live Chat',
+            description: 'Enable live chat on your site',
         }
     ]
 }

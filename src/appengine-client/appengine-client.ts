@@ -66,6 +66,7 @@ export class AppEngineClient {
       headers: {
         'Content-Type': 'application/json',
         orgid: appInfo?.orgId || this.appConfig.orgId,
+        domainAsOrg: this.appConfig.domainAsOrg,
       },
     };
   }
@@ -122,7 +123,8 @@ export class AppEngineClient {
       this.renewTries = 0;
       console.log('request success -> ', method, clientPath);
       return this.processResponse(rt);
-    } catch (error) {
+    } catch (err) {
+      const error = err as any;
       console.error('request error -> ', clientPath, error.message);
       if (
         this.renewTries < 2 &&
@@ -157,29 +159,31 @@ export class AppEngineClient {
     return rt?.data
   }
 
-  async getPage(site: string, pageIds: { slug?: string, name?: string, id?: string }, appInfo?: AppInfo) {
-    let rt;
-    if (pageIds?.id) {
-      const pagePath = `${appEndpoints.get.path}/page/${pageIds?.id}?en=true`;
-      rt = await this.processRequest('get', pagePath, null, null, null, null, appInfo);
-    } else if (pageIds?.name) {
-      const query = { 'data.site': site, 'data.name': pageIds?.name }
-      rt = await this.processRequest('post', `${appEndpoints.find.path}/page`, { query, options: { enrich: true } }, null, null, null, appInfo);
-    } else if (pageIds?.slug) {
-      const query = { 'data.site': site, 'data.slug': pageIds?.slug }
-      rt = await this.processRequest('post', `${appEndpoints.find.path}/page`, { query, options: { enrich: true } }, null, null, null, appInfo);
-    } else {
-      console.debug('request -> getPage, not found site: ' + site + ' page: ', pageIds);
+  async getPage(site: string, pageIds: { slug?: string, name?: string, id?: string }, pageDataType?: string, pageDataAttr?: string, pageDataValue?: string, query?: string, appInfo?: AppInfo) {
+    const pageIdType = pageIds?.id ? 'id' : pageIds?.name ? 'name' : pageIds?.slug ? 'slug' : null;
+    if (!pageIdType) {
+      console.debug('request -> getPage, no pageIds specified: ' + site + ' pageIds: ', pageIds);
       return null
     }
-    return rt?.data
-  }
 
+    let pagePath = `${appEndpoints.get_page.path}/${pageIdType}/${pageIds[pageIdType]}`;
+    if (pageDataType && pageDataAttr && pageDataValue) {
+      pagePath = `${pagePath}/${pageDataType}/${pageDataAttr}/${pageDataValue}`;
+    } else if (pageDataType) {
+      pagePath = `${pagePath}/${pageDataType}`;
+    }
+
+    if (query) {
+      pagePath = `${pagePath}?${query}&en=true`;
+    } else {
+      pagePath = `${pagePath}?en=true`;
+    }
+    return await this.processRequest('get', pagePath, null, null, null, null, appInfo);
+  }
 
   async getPreviewPage(orgId: string, site: string, page: string, token: string) {
     return await this.processRequest('get', `tools/preview/${orgId}/${site}/${page}?token=${token}`,);
   }
-
 
   async logData(data: any) {
     const sitePath = `${appEndpoints.batch_log_data}`;
@@ -213,7 +217,8 @@ export class AppEngineClient {
       } else {
         throw new Error(rt.statusText);
       }
-    } catch (error) {
+    } catch (err) {
+      const error = err as any;
       if (
         this.renewTries < 2 &&
         error.statusCode === '401' &&

@@ -11,9 +11,18 @@ export enum SortType {
   asc = 1,
 }
 
+export enum ModelState {
+  draft = 'draft',
+  published = 'published',
+  archived = 'archived',
+  deleted = 'deleted',
+  pending = 'pending',
+}
+
 export interface DataOptions {
   sort?: any;
   sortType?: SortType;
+  modelState?: ModelState | ModelState[];
   lastItem?: string;
   page?: number;
   pageSize?: number;
@@ -36,7 +45,7 @@ export interface BaseModel<T> {
   sk: string;
   name: string;
   data?: T;
-  isnew?: boolean;
+  isNew?: boolean;
   datatype?: DataType | string;
   workflow?: WorkflowSubModel;
   post?: PostSubModel;
@@ -58,7 +67,8 @@ export interface BaseModel<T> {
   owner?: {
     datatype: DataType;
     id: string;
-  }
+  },
+  state?: ModelState;
 }
 
 export const PostSubSchema = () => {

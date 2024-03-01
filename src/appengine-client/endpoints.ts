@@ -9,6 +9,16 @@ export const appEndpoints = {
     method: 'get',
     path: 'repository/get',
   },
+  get_page: {
+    name: 'get_page',
+    method: 'get',
+    path: 'repository/page',
+  },
+  get_page_section: {
+    name: 'get_page_section',
+    method: 'get',
+    path: 'repository/page-section',
+  },
   get_collection: {
     name: 'get_collection',
     method: 'get',
