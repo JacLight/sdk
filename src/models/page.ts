@@ -44,12 +44,36 @@ export const PageSchema = (title = '', description = '') => {
       },
       description: {
         type: 'string',
+        inputStyle: 'textarea',
       },
       keywords: {
         type: 'string',
+        inputStyle: 'textarea',
       },
       robots: {
         type: 'string',
+        inputStyle: 'textarea',
+      },
+      openGraph: {
+        type: 'object',
+        properties: {
+          title: {
+            type: 'string',
+          },
+          description: {
+            type: 'string',
+            inputStyle: 'textarea',
+          },
+          image: {
+            type: 'string',
+          },
+          type: {
+            type: 'string',
+          },
+          url: {
+            type: 'string',
+          },
+        },
       },
       hidden: {
         type: 'boolean',
@@ -314,7 +338,7 @@ export const PageUI = (): CollectionUI[] => {
       type: FormViewSectionType.sectiontab,
       tab: [
         {
-          title: 'SEO & Info',
+          title: 'Info',
           items: [
             {
               '0': '/properties/site',
@@ -331,12 +355,6 @@ export const PageUI = (): CollectionUI[] => {
               '0': '/properties/description',
             },
             {
-              '0': '/properties/keywords',
-            },
-            {
-              '0': '/properties/robots',
-            },
-            {
               '0': '/properties/iconUrl',
             },
             {
@@ -345,11 +363,25 @@ export const PageUI = (): CollectionUI[] => {
             },
             {
               '0': '/properties/hidden',
-              '2': '/properties/hideScrollToTop',
+              '1': '/properties/hideScrollToTop',
             },
             {
               '0': '/properties/animateScroll',
               '1': '/properties/animateContent',
+            },
+          ],
+        },
+        {
+          title: 'SEO',
+          items: [
+            {
+              '0': '/properties/keywords',
+            },
+            {
+              '0': '/properties/robots',
+            },
+            {
+              '0': '/properties/openGraph',
             },
           ],
         },

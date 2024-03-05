@@ -3,40 +3,22 @@ import { appEndpoints } from './endpoints';
 // import { BaseModel } from "@models/base.model";
 // import { UserModel } from "@models/user";
 
-type AppInfo = {
-  appId: string;
-  appKey: string;
-  appSecret: string;
-  orgId: string;
-  siteName: string;
-};
-
 export class AppEngineClient {
   private renewTries = 0;
   private token: string = null;
 
   constructor(private appConfig: any, private axios: any) { }
 
-  async getToken(appInfo: AppInfo) {
+  async getToken() {
     const path = `${this.appConfig.appengine.host}/${appEndpoints.appkey.path}`;
 
-    let data;
-    if (appInfo?.appId && appInfo?.appKey && appInfo?.appSecret) {
-      data = {
-        appId: appInfo.appId,
-        secret: appInfo.appSecret,
-        key: appInfo.appKey,
-        siteName: appInfo.siteName,
-      };
-    } else {
-      data = {
-        appId: this.appConfig.appengine.appId,
-        secret: this.appConfig.appengine.secret,
-        key: this.appConfig.appengine.key,
-      };
-    }
+    let data = {
+      appId: this.appConfig.appengine.appId,
+      secret: this.appConfig.appengine.secret,
+      key: this.appConfig.appengine.key,
+    };
     this.renewTries = this.renewTries + 1;
-    const rt = await this.axios.post(path, data, this.getBaseHeader(appInfo));
+    const rt = await this.axios.post(path, data, this.getBaseHeader());
     if (rt?.data?.token) {
       return rt.data.token;
     } else {
@@ -61,21 +43,21 @@ export class AppEngineClient {
     return null;
   }
 
-  getBaseHeader(appInfo: AppInfo): { headers: any } {
+  getBaseHeader(): { headers: any } {
     return {
       headers: {
         'Content-Type': 'application/json',
-        orgid: appInfo?.orgId || this.appConfig.orgId,
+        orgid: this.appConfig.orgId,
         domainAsOrg: this.appConfig.domainAsOrg,
       },
     };
   }
 
-  async getHeaderWithToken(appInfo: AppInfo) {
+  async getHeaderWithToken() {
     if (!this.token) {
-      this.token = await this.getToken(appInfo);
+      this.token = await this.getToken();
     }
-    const init = this.getBaseHeader(appInfo);
+    const init = this.getBaseHeader();
     init.headers['Authorization'] = `Bearer ${this.token}`;
     return init;
   }
@@ -87,7 +69,6 @@ export class AppEngineClient {
     clientAuthorization?: string,
     clientQuery?: any,
     clientInfo?: any,
-    appInfo?: AppInfo
   ): Promise<any> {
     let path;
     if (clientPath.startsWith('/api')) {
@@ -95,7 +76,7 @@ export class AppEngineClient {
     } else {
       path = this.appConfig.appengine.host + '/' + clientPath;
     }
-    const header: any = await this.getHeaderWithToken(appInfo);
+    const header: any = await this.getHeaderWithToken();
     if (clientAuthorization) {
       header.headers['x-client-authorization'] = clientAuthorization
     }
@@ -133,7 +114,7 @@ export class AppEngineClient {
       ) {
         console.log('Appengine Token Expired,.... renewing token');
         this.token = null;
-        await this.getHeaderWithToken(appInfo);
+        await this.getHeaderWithToken();
         console.log('auth ok')
         return await this.processRequest(method, clientPath, clientData, clientAuthorization, clientQuery);
       } else {
@@ -142,10 +123,11 @@ export class AppEngineClient {
     }
   }
 
-  async getSite(appInfo?: AppInfo) {
+  async getSite(siteName?: string) {
     //en=true enables enrichment
-    const sitePath = `${appEndpoints.query.path}/site/name/${this.appConfig.siteName}?en=true`;
-    const rt: any = await this.processRequest('get', sitePath, null, null, null, null, appInfo);
+    siteName = siteName || this.appConfig.siteName;
+    const sitePath = `${appEndpoints.query.path}/site/name/${siteName}?en=true`;
+    const rt: any = await this.processRequest('get', sitePath, null, null, null, null);
     if (rt && Array.isArray(rt.data) && rt.data.length > 0) {
       const [site] = rt.data;
       return site;
@@ -153,13 +135,13 @@ export class AppEngineClient {
     return null;
   }
 
-  async getPages(siteName = this.appConfig.siteName, appInfo?: AppInfo) {
+  async getPages(siteName = this.appConfig.siteName) {
     const query = { 'data.site': siteName }
-    let rt = await this.processRequest('post', `${appEndpoints.find.path}/page`, { query, options: { enrich: true } }, null, null, null, appInfo);
+    let rt = await this.processRequest('post', `${appEndpoints.find.path}/page`, { query, options: { enrich: true } }, null, null, null);
     return rt?.data
   }
 
-  async getPage(site: string, pageIds: { slug?: string, name?: string, id?: string }, pageDataType?: string, pageDataAttr?: string, pageDataValue?: string, query?: string, appInfo?: AppInfo) {
+  async getPage(site: string, pageIds: { slug?: string, name?: string, id?: string }, pageDataType?: string, pageDataAttr?: string, pageDataValue?: string, query?: string) {
     const pageIdType = pageIds?.id ? 'id' : pageIds?.name ? 'name' : pageIds?.slug ? 'slug' : null;
     if (!pageIdType) {
       console.debug('request -> getPage, no pageIds specified: ' + site + ' pageIds: ', pageIds);
@@ -178,7 +160,7 @@ export class AppEngineClient {
     } else {
       pagePath = `${pagePath}?en=true`;
     }
-    return await this.processRequest('get', pagePath, null, null, null, null, appInfo);
+    return await this.processRequest('get', pagePath, null, null, null, null);
   }
 
   async getPreviewPage(orgId: string, site: string, page: string, token: string) {
@@ -196,7 +178,7 @@ export class AppEngineClient {
   }
 
 
-  async upload(path: string, location: string, file: any, appInfo?: AppInfo): Promise<any> {
+  async upload(path: string, location: string, file: any): Promise<any> {
     console.debug('request -> updateData', path);
     const formData = new FormData();
     formData.append('location', location);
@@ -207,7 +189,7 @@ export class AppEngineClient {
       let rt = await fetch(path, {
         method: 'POST',
         headers: new Headers({
-          ...((await this.getHeaderWithToken(appInfo)) as Record<string, any>),
+          ...((await this.getHeaderWithToken()) as Record<string, any>),
         }),
         body: formData,
       });

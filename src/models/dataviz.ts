@@ -138,32 +138,53 @@ export const DataVizTableConfigSchema = () => {
     type: 'object',
     properties: {
       collection: {
-        type: 'string',
+        type: 'array',
+        showIndex: true,
+        inputStyle: 'chip',
         fieldType: FieldType.selectionmultiple,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.collection,
-          label: 'name',
-          value: 'name',
+        items: {
+          hideLabel: true,
+          type: 'string'
         },
+        dataSource: {
+          source: 'json',
+          json: []
+        },
+      },
+      exportMode: {
+        type: 'boolean',
+        groupLayout: 'flat',
+        styleClass: 'w-48',
+      },
+      code: {
+        type: 'string',
+        inputStyle: 'json',
+        fieldType: FieldType.code,
+        rules: [
+          { operation: 'isFalsy', valueA: '{{exportMode}}', action: 'hide' },
+        ]
       },
       match: {
         type: 'string',
         inputType: 'textarea',
         displayStyle: 'outlined',
         displaySize: 'small',
+        rules: [{ operation: 'isTruthy', valueA: '{{exportMode}}', action: 'hide' }]
       },
       group: {
         type: 'string',
         inputType: 'textarea',
         displayStyle: 'outlined',
         displaySize: 'small',
+        rules: [{ operation: 'isTruthy', valueA: '{{exportMode}}', action: 'hide' }]
+
       },
       sort: {
         type: 'string',
         inputType: 'textarea',
         displayStyle: 'outlined',
         displaySize: 'small',
+        rules: [{ operation: 'isTruthy', valueA: '{{exportMode}}', action: 'hide' }]
       },
     },
   } as const;

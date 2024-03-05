@@ -9,6 +9,7 @@ import {
 } from '../types';
 import { CollectionUI } from './collection-ui';
 import { FileInfoSchema } from './fileinfo';
+import { PhoneSchema } from './crm';
 
 export const UserSchema = () => {
   return {
@@ -41,6 +42,10 @@ export const UserSchema = () => {
         type: 'string',
         inputStyle: 'password',
       },
+      confirmPassword: {
+        type: 'string',
+        inputStyle: 'password',
+      },
       lockout: {
         type: 'string',
         default: 'false',
@@ -53,9 +58,42 @@ export const UserSchema = () => {
       status: {
         type: 'string',
       },
+      phone: {
+        type: 'string',
+      },
+      phones: {
+        type: 'array',
+        items: PhoneSchema(),
+      },
       address: {
         type: 'array',
-        items: { type: 'object' },
+        displayStyle: 'table',
+        dataSource: {
+          source: 'collection',
+          collection: DataType.address,
+          value: 'sk',
+          label: 'name',
+        },
+        items: {
+          type: 'object',
+          properties: {
+            street1: {
+              type: 'string',
+            },
+            city: {
+              type: 'string',
+            },
+            region: {
+              type: 'string',
+            },
+            zip: {
+              type: 'string',
+            },
+            country: {
+              type: 'string',
+            },
+          },
+        },
       },
       language: {
         type: 'string',
@@ -270,12 +308,16 @@ export const UserUI = (): CollectionUI[] => {
               '0': '/properties/portrait',
             },
             {
-              '0': '/properties/email',
-              '1': '/properties/password',
-            },
-            {
               '0': '/properties/firstName',
               '1': '/properties/lastName',
+            },
+            {
+              '0': '/properties/email',
+              '1': '/properties/phone',
+            },
+            {
+              '0': '/properties/password',
+              '1': '/properties/confirmPassword',
             },
             {
               '0': '/properties/timezone',
@@ -289,6 +331,7 @@ export const UserUI = (): CollectionUI[] => {
               '0': '/properties/lastFailedLoginDate',
               '1': '/properties/failedLoginAttempts',
             },
+
           ],
         },
         {
@@ -296,6 +339,14 @@ export const UserUI = (): CollectionUI[] => {
           items: [
             {
               '0': '/properties/address',
+            },
+          ],
+        },
+        {
+          title: 'Phones',
+          items: [
+            {
+              '0': '/properties/phones',
             },
           ],
         },

@@ -57,6 +57,10 @@ export const CustomerSchema = () => {
         type: 'string',
         inputStyle: 'password',
       },
+      confirmPassword: {
+        type: 'string',
+        inputStyle: 'password',
+      },
       lockout: {
         type: 'string',
         default: 'false',
@@ -244,11 +248,15 @@ export const CustomerUI = (): CollectionUI[] => {
             },
             {
               '0': '/properties/email',
-              '1': '/properties/password',
+              '1': '/properties/phone',
             },
             {
               '0': '/properties/firstName',
               '1': '/properties/lastName',
+            },
+            {
+              '0': '/properties/password',
+              '1': '/properties/confirmPassword',
             },
             {
               '0': '/properties/timezone',
@@ -262,6 +270,7 @@ export const CustomerUI = (): CollectionUI[] => {
               '0': '/properties/lastFailedLoginDate',
               '1': '/properties/failedLoginAttempts',
             },
+
           ],
         },
         {
@@ -269,6 +278,14 @@ export const CustomerUI = (): CollectionUI[] => {
           items: [
             {
               '0': '/properties/address',
+            },
+          ],
+        },
+        {
+          title: 'Phones',
+          items: [
+            {
+              '0': '/properties/phones',
             },
           ],
         },
