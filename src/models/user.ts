@@ -9,7 +9,6 @@ import {
 } from '../types';
 import { CollectionUI } from './collection-ui';
 import { FileInfoSchema } from './fileinfo';
-import { PhoneSchema } from './crm';
 
 export const UserSchema = () => {
   return {
@@ -63,7 +62,9 @@ export const UserSchema = () => {
       },
       phones: {
         type: 'array',
-        items: PhoneSchema(),
+        items: {
+          type: 'string',
+        }
       },
       address: {
         type: 'array',

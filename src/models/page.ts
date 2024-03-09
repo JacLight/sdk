@@ -3,6 +3,7 @@ import { DataType, FieldType, FormViewSectionType } from '../types';
 import { CollectionRule } from './collection-rule';
 import { CollectionUI } from './collection-ui';
 import { registerCollection } from '../defaultschema';
+import { FileInfoSchema } from './fileinfo';
 
 export const PageSchema = (title = '', description = '') => {
   return {
@@ -244,6 +245,7 @@ export const PageSectionSchema = () => {
       },
       selection: {
         type: 'array',
+        collapsible: true,
         title: 'Selections',
         fieldType: FieldType.collection,
         displayStyle: 'table',
@@ -327,6 +329,28 @@ export const PageSectionSchema = () => {
         type: 'boolean',
         description: "map's request params to data fetch /datatype/keyword/search, /datatype/attribute/value, /datatype/id, /datatype can also be set as query parameter ?datatype=xxx&...",
         hidden: true,
+      },
+      seo: {
+        type: 'object',
+        collapsible: 'close', // open, close, true
+        properties: {
+          title: {
+            type: 'string',
+          },
+          description: {
+            type: 'string',
+          },
+          keywords: {
+            type: 'string',
+          },
+          category: {
+            type: 'string',
+          },
+          tag: {
+            type: 'string',
+          },
+          image: FileInfoSchema(),
+        }
       },
     },
   } as const;
@@ -434,6 +458,9 @@ export const PageSectionUI = (): CollectionUI[] => {
         },
         {
           '0': '/properties/selection',
+        },
+        {
+          '0': '/properties/seo',
         },
       ],
     },

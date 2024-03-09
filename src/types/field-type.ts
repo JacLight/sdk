@@ -17,15 +17,11 @@ export enum FieldType {
   static = 'Static',
   collection = 'Collection',
   map = 'Map',
-  derivedField = 'Derived Field',
-  lookupField = 'Lookup Field',
-  linkedSelect = 'Linked Selection',
   button = 'Button',
   label = 'Label',
   cron = 'Cron',
   icon = 'Icon',
   richselect = 'Rich Select',
-  'linked-select' = 'Linked Select',
   payment = 'Payment',
   address = 'Address',
   phone = 'Phone',
@@ -38,5 +34,5 @@ export enum FieldType {
   table = 'Table',
   list = 'List',
   column = 'Column',
-
+  numberRange = 'Number Range',
 }

@@ -112,8 +112,8 @@ export const CollectionSchema = () => {
 export const CollectionViewSchema = CollectionSchema;
 
 registerCollection(
-  'CollectionView',
-  DataType.collectionview,
+  'AuraFlow',
+  DataType.auraflow,
   CollectionSchema(),
   null,
   null

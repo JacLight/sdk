@@ -20,7 +20,6 @@ export enum DataType {
   usergroup = 'usergroup',
   permission = 'permission',
   setting = 'setting',
-  collectionview = 'collectionview',
   dataviz = 'dataviz',
   mintflow = 'mintflow',
   mintflownode = 'mintflownode',
@@ -79,4 +78,5 @@ export enum DataType {
   service_point_item = 'service_point_item',
   publish = 'publish',
   history = 'history',
+  auraflow = 'auraflow',
 }
