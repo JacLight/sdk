@@ -6,9 +6,11 @@ import {
   FormViewSectionType,
   PermissionTypeComponent,
   PermissionTypeContent,
+  getMenuList
 } from '../types';
 import { CollectionUI } from './collection-ui';
 import { FileInfoSchema } from './fileinfo';
+import { PhoneSchema } from './crm/crm-phone';
 
 export const UserSchema = () => {
   return {
@@ -62,9 +64,7 @@ export const UserSchema = () => {
       },
       phones: {
         type: 'array',
-        items: {
-          type: 'string',
-        }
+        items: PhoneSchema(),
       },
       address: {
         type: 'array',
@@ -241,6 +241,7 @@ export const UserGroupSchema = () => {
   } as const;
 };
 
+const menuList = getMenuList();
 export const UserRoleSchema = () => {
   return {
     type: 'object',
@@ -291,6 +292,32 @@ export const UserRoleSchema = () => {
               type: 'string',
             },
           },
+          menuInclude: {
+            type: 'array',
+            inputStyle: 'tree',
+            fieldType: FieldType.selectionmultiple,
+            dataSource: {
+              source: 'json',
+              json: Object.values(menuList),
+              children: 'subMenu',
+            },
+            items: {
+              type: 'string',
+            },
+          },
+          menuExclude: {
+            type: 'array',
+            inputStyle: 'tree',
+            fieldType: FieldType.selectionmultiple,
+            dataSource: {
+              source: 'json',
+              json: Object.values(menuList),
+              children: 'subMenu',
+            },
+            items: {
+              type: 'string',
+            },
+          }
         },
       },
     },

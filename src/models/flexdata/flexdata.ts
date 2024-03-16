@@ -17,7 +17,6 @@ export const FlexDataSchema = () => {
       },
       application: {
         type: 'string',
-        // enum: Object.values(ComponentName),
       },
       type: {
         type: 'string',

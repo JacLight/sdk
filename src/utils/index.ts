@@ -56,25 +56,12 @@ export const isNotEmpty = (obj: any) => {
 
 export const validUrl = (url: string) => {
   if (!url) return false;
-  var pattern = new RegExp(
-    '^(https?:\\/\\/)?' + // protocol
-    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-    '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-    '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-    '(\\#[-a-z\\d_]*)?$',
-    'i'
-  ); // fragment locator
+  var pattern = new RegExp('^https?:\\/\\/'); // fragment locator
   return !!pattern.test(url);
 };
 
-export function getRandomNumber(length = 20) {
-  const numbers = '0123456789';
-  let result = numbers.charAt(Math.floor(Math.random() * numbers.length)); // Start with a character
-  for (let i = 1; i < length; i++) { // Start loop from 1 since we already have the first character
-    result += numbers.charAt(Math.floor(Math.random() * numbers.length));
-  }
-  return result;
+export function getRandomNumber(min = 0, max = 999999) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 export function getRandomString(length = 20) {
@@ -89,6 +76,10 @@ export function getRandomString(length = 20) {
   }
 
   return result;
+}
+
+export const shuffleArray = (array: any[]) => {
+  return array.sort(() => Math.random() - 0.5);
 }
 
 export function removeEmpty(obj: any): any {

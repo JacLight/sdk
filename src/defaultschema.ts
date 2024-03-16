@@ -79,8 +79,8 @@ const createUser = (
   email: string,
   password: string,
   groups: string
-) => {
-  return { firstname, lastname, email, password, groups };
+): UserModel => {
+  return { firstname, lastname, email, password, groups, lockout: '' };
 };
 export const users: UserModel[] = [];
 users.push(createUser('imzee', 'jac', 'imzee@local.com', 'aaaaaa', 'Admin'));
@@ -120,6 +120,7 @@ export const rootPage: PageModel = {
   slug: 'rootpage',
   title: 'Root Page',
   childEditing: 'append',
+  animateScroll: true,
   site: '',
   breakpoints: [
     { high: 768, low: 480, columns: 1, name: 'sm' },

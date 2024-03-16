@@ -33,7 +33,9 @@ export const CollectionSchema = () => {
         minLength: 3,
         maxLength: 20,
         unique: true,
-        transform: 'uri'
+        transform: 'uri',
+        group: 'title',
+        groupLayout: 'flat',
       },
       parent: {
         type: 'string',
@@ -48,8 +50,15 @@ export const CollectionSchema = () => {
       icon: {
         type: 'string',
         fieldType: FieldType.icon,
+        group: 'title',
+        groupLayout: 'flat',
       },
       title: {
+        type: 'string',
+        group: 'title',
+        groupLayout: 'flat',
+      },
+      type: {
         type: 'string',
       },
       mainType: {
@@ -62,24 +71,40 @@ export const CollectionSchema = () => {
       },
       hideHeading: {
         type: 'boolean',
+        hidden: true,
       },
       description: {
         type: 'string',
+        group: 'workflow',
+        groupLayout: 'flat',
       },
       workflow: {
         type: 'string',
+        fieldType: FieldType.selectionmultiple,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.workflowdefinition,
+          value: 'sk',
+          label: 'name',
+        },
+        group: 'workflow',
+        groupLayout: 'flat',
       },
       enableVersioning: {
         type: 'boolean',
+        group: 'group1',
       },
       enableIndexing: {
         type: 'boolean',
+        group: 'group1',
       },
       enableWorkflow: {
         type: 'boolean',
+        group: 'group1',
       },
       enableSubSchema: {
         type: 'boolean',
+        group: 'group1',
       },
       permission: {
         type: 'object',
@@ -89,6 +114,7 @@ export const CollectionSchema = () => {
       elements: {
         hidden: true,
         type: 'array',
+
       },
       rules: {
         hidden: true,
@@ -102,6 +128,10 @@ export const CollectionSchema = () => {
       },
       required: {
         type: 'array',
+        items: {
+          type: 'string',
+        },
+        hidden: true,
       },
     },
     required: ['name'],

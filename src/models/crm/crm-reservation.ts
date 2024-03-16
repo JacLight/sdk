@@ -12,7 +12,8 @@ export const ReservationSchema = () => {
         type: 'string',
         pattern: '^[a-zA-Z_\\-0-9]*$',
         unique: true,
-        transform: 'uri'
+        transform: 'uri',
+        readOnly: true,
       },
       reservationDefinitionId: {
         type: 'string',
@@ -70,6 +71,8 @@ export const ReservationSchema = () => {
         type: 'boolean',
       },
       servicePoint: {
+        group: 'hosts',
+        groupLayout: 'flat',
         type: 'string',
         fieldType: FieldType.selectionmultiple,
         dataSource: {
@@ -80,13 +83,20 @@ export const ReservationSchema = () => {
         },
       },
       hosts: {
+        group: 'hosts',
+        groupLayout: 'flat',
         type: 'string',
       },
       venue: {
+        groupLayout: 'flat',
+        group: 'status',
         type: 'string',
       },
       status: {
+        groupLayout: 'flat',
         type: 'string',
+        enum: ['new', 'confirmed', 'completed', 'rescheduled', 'cancelled'],
+        group: 'status',
       },
     },
     required: ['name'],

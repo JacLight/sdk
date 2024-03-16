@@ -14,7 +14,6 @@ export * from './site';
 export * from './tag';
 export * from './user';
 export * from './mintflow';
-export * from './application';
 export * from './post';
 export * from './config';
 export * from './script';

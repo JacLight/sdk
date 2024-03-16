@@ -35,7 +35,6 @@ export enum ComponentName {
   OrderHome = 'OrderHome',
   ReturnHome = 'ReturnHome',
   BusinessLocations = 'BusinessLocations',
-  ScrapeWebsite = 'ScrapeWebsite',
   SendMessage = 'SendMessage',
   ImageEditor = 'ImageEditor',
   CreativeStudio = 'CreativeStudio',
@@ -49,4 +48,5 @@ export enum ComponentName {
   Inbox = 'Inbox',
   FinanceHome = 'FinanceHome',
   InventoryHome = 'InventoryHome',
+  AuraFlow = 'AuraFlow',
 }

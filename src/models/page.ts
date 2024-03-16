@@ -337,16 +337,7 @@ export const PageSectionSchema = () => {
           title: {
             type: 'string',
           },
-          description: {
-            type: 'string',
-          },
           keywords: {
-            type: 'string',
-          },
-          category: {
-            type: 'string',
-          },
-          tag: {
             type: 'string',
           },
           image: FileInfoSchema(),

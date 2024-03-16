@@ -1,5 +1,6 @@
 import { BaseModel, PermissionModel, UserRoleModel } from '../models';
 import { toTitleCase } from '../utils';
+import { getMenuList } from './menu-list';
 import {
   PermissionTypeComponent,
   PermissionTypeContent,
@@ -22,31 +23,37 @@ export enum RoleType {
   Customer = 'Customer',
 }
 
+const menuList = getMenuList();
 export const getPermission = () => {
   return {
     Guest: {
       content: [PermissionTypeContent.read],
       component: [PermissionTypeComponent.view],
+      menuExclude: [menuList.All.value],
     },
 
     User: {
       content: [PermissionTypeContent.read, PermissionTypeContent.create],
       component: [PermissionTypeComponent.view],
+      menuExclude: [menuList.All.value],
+      menuInclude: [menuList.General.value, menuList.trash.value]
     },
-
     Customer: {
       content: [PermissionTypeContent.read, PermissionTypeContent.create],
       component: [PermissionTypeComponent.view],
+      menuExclude: [menuList.All.value],
     },
 
     RootUser: {
       content: [PermissionTypeContent.read, PermissionTypeContent.create],
       component: [PermissionTypeComponent.view],
+      menuInclude: [menuList.All.value]
     },
 
     Owner: {
       content: Object.values(PermissionTypeContent),
       component: Object.values(PermissionTypeComponent),
+      menuInclude: [menuList.All.value]
     },
 
     Publisher: {
@@ -57,6 +64,8 @@ export const getPermission = () => {
         PermissionTypeContent.review,
         PermissionTypeContent.delete,
       ],
+      menuInclude: [menuList.General.value, menuList.trash.value, menuList.Content.value, menuList.CRM.value, menuList.Storefront.value, menuList.AuraFlow.value, menuList.SitePages.value, menuList.Database.value],
+      menuExclude: [menuList.All.value],
     },
 
     Reviewer: {
@@ -65,6 +74,8 @@ export const getPermission = () => {
         PermissionTypeContent.review,
         PermissionTypeContent.approve,
       ],
+      menuInclude: [menuList.General.value, menuList.trash.value, menuList.Content.value, menuList.CRM.value, menuList.Storefront.value, menuList.AuraFlow.value, menuList.SitePages.value, menuList.Database.value],
+      menuExclude: [menuList.All.value],
     },
 
     PowerUser: {
@@ -79,8 +90,10 @@ export const getPermission = () => {
         PermissionTypeComponent.view,
         PermissionTypeComponent.configure,
       ],
+      menuInclude: [menuList.General.value, menuList.trash.value, menuList.Content.value,
+      menuList.CRM.value, menuList.Storefront.value, menuList.AuraFlow.value,
+      menuList.SitePages.value, menuList.Database.value],
     },
-
     RootPowerUser: {
       content: [
         PermissionTypeContent.read,
@@ -93,6 +106,9 @@ export const getPermission = () => {
         PermissionTypeComponent.view,
         PermissionTypeComponent.configure,
       ],
+      menuInclude: [menuList.General.value, menuList.trash.value, menuList.Content.value,
+      menuList.CRM.value, menuList.Storefront.value, menuList.AuraFlow.value,
+      menuList.SitePages.value, menuList.Database.value],
     },
 
     ContentAdmin: {
@@ -101,15 +117,19 @@ export const getPermission = () => {
         PermissionTypeComponent.view,
         PermissionTypeComponent.configure,
       ],
+      menuInclude: [menuList.General.value, menuList.trash.value, menuList.Content.value, menuList.CRM.value, menuList.Storefront.value, menuList.Database.value, menuList.AuraFlow.value, menuList.SitePages.value],
+      menuExclude: [menuList.All.value],
     },
 
     ConfigAdmin: {
       component: Object.values(PermissionTypeComponent),
+      menuInclude: [menuList.General.value, menuList.trash.value, menuList.Configuration.value, menuList.Database.value, menuList.CRM.value, menuList.Storefront.value],
     },
 
     RootAdmin: {
       component: Object.values(PermissionTypeComponent),
       content: Object.values(PermissionTypeContent),
+      menuInclude: [menuList.All.value]
     },
 
     RootSystem: {
@@ -136,8 +156,6 @@ export const getDefaultUserRoles = (): BaseModel<UserRoleModel>[] => {
   const roles: any = [];
   Object.values(RoleType).forEach(role => {
     const rolePermissions: any = getPermission()[role];
-    const compoentPermissions: [] = rolePermissions.component;
-    const contentPermissions: [] = rolePermissions.content;
     const newRole: UserRoleModel = {
       sk: role,
       name: role,
@@ -146,8 +164,10 @@ export const getDefaultUserRoles = (): BaseModel<UserRoleModel>[] => {
         description: role,
         type: 'system',
         permissions: {
-          component: compoentPermissions?.join(','),
-          content: contentPermissions?.join(','),
+          component: rolePermissions.component,
+          content: rolePermissions.content,
+          menuInclude: rolePermissions.menuInclude,
+          menuExclude: rolePermissions.menuExclude,
         },
       },
     };
