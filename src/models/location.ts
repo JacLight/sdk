@@ -1,6 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../defaultschema';
-import { DataType, FieldType } from '../types';
+import { DataType, ControlType } from '../types';
 import { CollectionRule } from './collection-rule';
 import { CollectionUI } from './collection-ui';
 import { AddressSchema } from './crm/crm-address';
@@ -33,8 +33,8 @@ export const LocationSchema = () => {
       },
       services: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
-        inputStyle: 'chip',
+        'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
         dataSource: {
           source: 'json',
           json: [

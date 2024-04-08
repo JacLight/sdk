@@ -8,26 +8,23 @@ export const CommentSchema = () => {
   return {
     type: 'object',
     properties: {
-      comment: {
+      title: {
         type: 'string',
-        inputStyle: 'textarea',
+        hidden: true,
+        displayStyle: 'outlined',
+      },
+      message: {
+        type: 'string',
+        'x-control-variant': 'textarea',
         displayStyle: 'outlined',
         rows: 3,
       },
-      ratings: { // this will store only the ratings average - actual rating will be stored with use activity
+      rating: { //this is the rating the commenter gave to the owning object
         type: 'number',
-        inputStyle: 'rating',
+        'x-control-variant': 'rating',
         max: 5,
         min: 1,
       },
-      likes: { // this will store only the likes count - actual rating will be stored with use activity
-        type: 'boolean',
-        inputStyle: 'like',
-      },
-      dislikes: { // this will store only the dislikes count - actual rating will be stored with use activity
-        type: 'boolean',
-        inputStyle: 'dislike',
-      }
     },
   } as const;
 };
@@ -63,5 +60,5 @@ registerCollection(
   DataType.comment,
   CommentSchema(),
   CommentUI(),
-  CommentRules()
+  CommentRules(),
 );

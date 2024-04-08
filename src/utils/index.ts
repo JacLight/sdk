@@ -235,6 +235,8 @@ export function classNames(...classes: any) {
 }
 
 export function styleToObject(style: string): { [key: string]: string } {
+  if (isEmpty(style)) return null;
+
   return style.split(';')
     .map(s => s.trim())
     .filter(s => s.length > 0)

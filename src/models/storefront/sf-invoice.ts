@@ -2,7 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
 import { CollectionUI } from '../collection-ui';
-import { DataType, FieldType, FormViewSectionType } from '../../types';
+import { DataType, ControlType, FormViewSectionType } from '../../types';
 
 export const SFInvoiceSchema = () => {
   return {
@@ -17,7 +17,7 @@ export const SFInvoiceSchema = () => {
       },
       billTo: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.sf_vendor,
@@ -58,7 +58,7 @@ export const SFInvoiceSchema = () => {
           source: 'collection',
           collection: DataType.sf_product,
         },
-        inputStyle: 'picker',
+        'x-control-variant': 'picker',
         displayStyle: 'table',
         items: {
           type: 'object',

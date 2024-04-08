@@ -1,9 +1,10 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection, registerDefaultData } from '../defaultschema';
-import { DataType, FieldType, WorkflowStatus } from '../types';
+import { DataType, ControlType, WorkflowStatus } from '../types';
 import { CollectionRule } from './collection-rule';
 import { CollectionUI } from './collection-ui';
 import { TaskSchema } from './task';
+import { ModelState } from './base.model';
 
 export const WorkflowDefinitionSchema = () => {
   return {
@@ -13,17 +14,31 @@ export const WorkflowDefinitionSchema = () => {
         type: 'string',
         pattern: '^[a-zA-Z_\\-0-9]*$',
         unique: true,
-        transform: 'uri'
+        transform: 'uri',
+        group: 'title',
       },
       title: {
+        group: 'title',
         type: 'string',
       },
       description: {
         type: 'string',
       },
+      startModelState: {
+        type: 'string',
+        enum: Object.values(ModelState),
+        group: 'modelState',
+        default: 'new'
+      },
+      endModelState: {
+        type: 'string',
+        enum: Object.values(ModelState),
+        group: 'modelState',
+        default: 'completed'
+      },
       sla: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.escalation,
@@ -31,35 +46,37 @@ export const WorkflowDefinitionSchema = () => {
           label: 'name',
         },
       },
-      startFlow: {
-        type: 'string',
-        fieldType: FieldType.selectionmultiple,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.mintflow,
-          value: 'sk',
-          label: 'name',
-        },
-      },
-      endFlow: {
-        type: 'string',
-        fieldType: FieldType.selectionmultiple,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.mintflow,
-          value: 'sk',
-          label: 'name',
-        },
-      },
       notificationTemplate: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.messagetemplate,
           value: 'sk',
           label: 'name',
         },
+      },
+      startFlow: {
+        type: 'string',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.mintflow,
+          value: 'sk',
+          label: 'name',
+        },
+        group: 'flow'
+      },
+      endFlow: {
+        type: 'string',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.mintflow,
+          value: 'sk',
+          label: 'name',
+        },
+        group: 'flow'
       },
       tasks: {
         type: 'array',
@@ -130,65 +147,72 @@ export const WorkflowStageSchema = () => {
     properties: {
       id: {
         type: ['string', 'number'],
-        fieldType: FieldType.uuid,
+        'x-control': ControlType.uuid,
         readOnly: true
       },
       type: {
         type: 'string',
-        enum: ['start', 'intermediate', 'end']
+        enum: ['start', 'intermediate', 'end'],
+        group: 'type',
+      },
+      modelState: {
+        type: 'string',
+        enum: Object.values(ModelState),
+        default: ModelState.inprogress,
+        group: 'type',
       },
       name: {
         type: 'string',
+        group: 'name',
       },
       event: {
         type: 'string',
+        group: 'name',
       },
       sla: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.escalation,
           value: 'sk',
           label: 'name',
         },
+        group: 'sla'
       },
       flow: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.mintflow,
           value: 'sk',
           label: 'name',
         },
+        group: 'sla'
       },
       notificationTemplate: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.messagetemplate,
           value: 'sk',
           label: 'name',
         },
-      },
-      assignType: {
-        type: 'string',
-        fieldType: FieldType.selectionmultiple,
-        dataSource: {
-          source: 'json',
-          json: [{ label: 'Group', value: 'usergroup' }, { label: 'Role', value: 'userrole' }, { label: 'User', value: 'user' }]
-        },
+        group: 'sla'
       },
       assignTo: {
-        type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        type: 'array',
+        'x-control': ControlType.selectMany,
+        hideLabel: true,
+        'x-control-variant': 'chip',
+        items: {
+          type: 'string',
+        },
         dataSource: {
-          source: 'collection',
-          collection: DataType.usergroup,
-          value: 'sk',
-          label: 'name',
+          source: 'function',
+          value: 'getAssignToOptions',
         },
       },
       items: {
@@ -207,7 +231,7 @@ export const WorkflowSubSchema = () => {
       workflowId: {
         type: 'string',
         title: 'Workflow',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.workflowdefinition,
@@ -265,9 +289,9 @@ const genDefaultData = () => {
       { status: 'new', name: 'Check Stock', description: 'Check if item is in stock', stageId: 0 },
     ],
     stages: [
-      { id: 0, type: 'start', name: 'To Do' },
-      { id: 0, type: 'intermediate', name: 'In Progress' },
-      { id: 1, type: 'end', name: 'Done' }
+      { id: 0, type: 'start', name: 'To Do', modelState: ModelState.new },
+      { id: 0, type: 'intermediate', name: 'In Progress', modelState: ModelState.inprogress },
+      { id: 1, type: 'end', name: 'Done', modelState: ModelState.completed }
     ]
   }
 };

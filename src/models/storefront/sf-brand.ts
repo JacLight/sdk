@@ -22,7 +22,7 @@ export const SFBrandSchema = () => {
       },
       products: {
         type: 'array',
-        inputStyle: 'picker',
+        'x-control-variant': 'picker',
         displayStyle: 'table',
         dataSource: {
           source: 'collection',
@@ -43,7 +43,7 @@ export const SFBrandSchema = () => {
       logo: FileInfoSchema(),
       contacts: {
         type: 'array',
-        inputStyle: 'picker',
+        'x-control-variant': 'picker',
         displayStyle: 'table',
         dataSource: {
           source: 'collection',

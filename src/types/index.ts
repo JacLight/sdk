@@ -1,5 +1,5 @@
 export * from './data-type';
-export * from './field-type';
+export * from './control-type';
 export * from './jsonschema';
 export * from './collection-type';
 export * from './component-name';

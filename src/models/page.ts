@@ -1,5 +1,5 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { DataType, FieldType, FormViewSectionType } from '../types';
+import { DataType, ControlType, FormViewSectionType } from '../types';
 import { CollectionRule } from './collection-rule';
 import { CollectionUI } from './collection-ui';
 import { registerCollection } from '../defaultschema';
@@ -13,7 +13,7 @@ export const PageSchema = (title = '', description = '') => {
     properties: {
       site: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.site,
@@ -32,7 +32,7 @@ export const PageSchema = (title = '', description = '') => {
       },
       parent: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.page,
@@ -45,15 +45,15 @@ export const PageSchema = (title = '', description = '') => {
       },
       description: {
         type: 'string',
-        inputStyle: 'textarea',
+        'x-control-variant': 'textarea',
       },
       keywords: {
         type: 'string',
-        inputStyle: 'textarea',
+        'x-control-variant': 'textarea',
       },
       robots: {
         type: 'string',
-        inputStyle: 'textarea',
+        'x-control-variant': 'textarea',
       },
       openGraph: {
         type: 'object',
@@ -63,7 +63,7 @@ export const PageSchema = (title = '', description = '') => {
           },
           description: {
             type: 'string',
-            inputStyle: 'textarea',
+            'x-control-variant': 'textarea',
           },
           image: {
             type: 'string',
@@ -91,8 +91,8 @@ export const PageSchema = (title = '', description = '') => {
       },
       dataType: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
-        inputStyle: 'chip',
+        'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
         dataSource: {
           source: 'json',
           json: [],
@@ -225,8 +225,8 @@ export const PageSectionSchema = () => {
       },
       dataType: {
         type: 'array',
-        fieldType: FieldType.selectionmultiple,
-        inputStyle: 'chip',
+        'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
         items: {
           type: 'string'
         },
@@ -247,9 +247,9 @@ export const PageSectionSchema = () => {
         type: 'array',
         collapsible: true,
         title: 'Selections',
-        fieldType: FieldType.collection,
+        'x-control': ControlType.collection,
         displayStyle: 'table',
-        inputStyle: 'picker',
+        'x-control-variant': 'picker',
         dataSource: {
           source: 'collection',
           collection: DataType.post,
@@ -271,11 +271,11 @@ export const PageSectionSchema = () => {
       },
       category: {
         type: 'array',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         items: {
           type: 'string'
         },
-        inputStyle: 'tree',
+        'x-control-variant': 'tree',
         dataSource: {
           source: 'collection',
           collection: DataType.category,
@@ -286,8 +286,8 @@ export const PageSectionSchema = () => {
       },
       tag: {
         type: 'array',
-        inputStyle: 'chip',
-        fieldType: FieldType.selectionmultiple,
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
         items: {
           type: 'string'
         },
@@ -314,8 +314,8 @@ export const PageSectionSchema = () => {
       },
       contextOverride: {
         type: 'array',
-        inputStyle: 'chip',
-        fieldType: FieldType.selectionmultiple,
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
         items: {
           type: 'string'
         },

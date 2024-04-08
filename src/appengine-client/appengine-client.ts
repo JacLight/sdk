@@ -83,6 +83,8 @@ export class AppEngineClient {
 
     if (clientInfo) {
       header.headers['x-client-info'] = clientInfo
+      header.headers['x-client-host'] = clientInfo['host']
+      header.headers['x-client-protocol'] = clientInfo['protocol']
     }
     const data = clientData;
     if (data) {
@@ -123,10 +125,19 @@ export class AppEngineClient {
     }
   }
 
-  async getSite(siteName?: string) {
+  async getSite() {
     //en=true enables enrichment
-    siteName = siteName || this.appConfig.siteName;
-    const sitePath = `${appEndpoints.query.path}/site/name/${siteName}?en=true`;
+    const sitePath = `${appEndpoints.query.path}/site/name/${this.appConfig.siteName}?en=true`;
+    const rt: any = await this.processRequest('get', sitePath, null, null, null, null);
+    if (rt && Array.isArray(rt.data) && rt.data.length > 0) {
+      const [site] = rt.data;
+      return site;
+    }
+    return null;
+  }
+
+  async getSiteShared(domainName?: string, siteName?: string) {
+    const sitePath = `${appEndpoints.query.path}/site/name/${siteName}?en=true&domain=${domainName}`;
     const rt: any = await this.processRequest('get', sitePath, null, null, null, null);
     if (rt && Array.isArray(rt.data) && rt.data.length > 0) {
       const [site] = rt.data;
@@ -141,10 +152,17 @@ export class AppEngineClient {
     return rt?.data
   }
 
-  async getPage(site: string, pageIds: { slug?: string, name?: string, id?: string }, pageDataType?: string, pageDataAttr?: string, pageDataValue?: string, query?: string) {
+  async getPagesShared(domainName: string, siteName: string) {
+    const query = { 'data.site': siteName }
+    let rt = await this.processRequest('post', `${appEndpoints.find.path}/page`, { query, options: { enrich: true } }, null, null, { domain: domainName });
+    return rt?.data
+  }
+
+
+  async getPage(pageIds: { slug?: string, name?: string, id?: string }, pageDataType?: string, pageDataAttr?: string, pageDataValue?: string, query?: string) {
     const pageIdType = pageIds?.id ? 'id' : pageIds?.name ? 'name' : pageIds?.slug ? 'slug' : null;
     if (!pageIdType) {
-      console.debug('request -> getPage, no pageIds specified: ' + site + ' pageIds: ', pageIds);
+      console.debug('request -> getPage, no pageIds specified, ', pageIds);
       return null
     }
 
@@ -161,6 +179,28 @@ export class AppEngineClient {
       pagePath = `${pagePath}?en=true`;
     }
     return await this.processRequest('get', pagePath, null, null, null, null);
+  }
+
+  async getPageShared(domainName: string, pageIds: { slug?: string, name?: string, id?: string }, pageDataType?: string, pageDataAttr?: string, pageDataValue?: string, query?: string) {
+    const pageIdType = pageIds?.id ? 'id' : pageIds?.name ? 'name' : pageIds?.slug ? 'slug' : null;
+    if (!pageIdType) {
+      console.debug(`request -> getPage, no pageIds specified,  ${pageIds}  domain: ${domainName}`);
+      return null
+    }
+
+    let pagePath = `${appEndpoints.get_page.path}/${pageIdType}/${pageIds[pageIdType]}`;
+    if (pageDataType && pageDataAttr && pageDataValue) {
+      pagePath = `${pagePath}/${pageDataType}/${pageDataAttr}/${pageDataValue}`;
+    } else if (pageDataType) {
+      pagePath = `${pagePath}/${pageDataType}`;
+    }
+
+    if (query) {
+      pagePath = `${pagePath}?${query}&en=true&domain=${domainName}`;
+    } else {
+      pagePath = `${pagePath}?en=true&domain=${domainName}`;
+    }
+    return await this.processRequest('get', pagePath, null, null, null, { domain: domainName });
   }
 
   async getPreviewPage(orgId: string, site: string, page: string, token: string) {

@@ -1,7 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
-import { DataType, FieldType } from '../../types';
+import { DataType, ControlType } from '../../types';
 
 export const SFAttributeSchema = () => {
   return {
@@ -9,7 +9,7 @@ export const SFAttributeSchema = () => {
     properties: {
       parent: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.sf_attribute,

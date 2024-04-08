@@ -1,4 +1,4 @@
-import { FieldType } from '../../types';
+import { ControlType } from '../../types';
 import { FileInfoSchema } from '../fileinfo';
 import { FromSchema } from 'json-schema-to-ts';
 
@@ -8,8 +8,8 @@ export const FDCreativeStudioSchema = () => {
     properties: {
       code: {
         type: 'string',
-        inputStyle: 'html',
-        fieldType: FieldType.code,
+        'x-control-variant': 'html',
+        'x-control': ControlType.code,
         css: { height: '600px' },
         hideLabel: true,
       },
@@ -18,8 +18,8 @@ export const FDCreativeStudioSchema = () => {
         items: {
           type: 'string',
         },
-        inputStyle: 'chip',
-        fieldType: FieldType.selectionmultiple,
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'json',
           json: ['web', 'email', 'mobile'],

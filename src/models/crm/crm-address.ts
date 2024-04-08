@@ -2,7 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
 import { CollectionUI } from '../collection-ui';
-import { DataType, FieldType } from '../../types';
+import { DataType, ControlType } from '../../types';
 import { getCountryDropDownOptions } from '../../data';
 
 export const AddressSchema = () => {
@@ -39,7 +39,7 @@ export const AddressSchema = () => {
       },
       region: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'json',
           json: [],
@@ -47,7 +47,7 @@ export const AddressSchema = () => {
       },
       country: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'json',
           json: getCountryDropDownOptions(),

@@ -1,4 +1,4 @@
-import { FieldType } from '../../types';
+import { ControlType } from '../../types';
 import { FromSchema } from 'json-schema-to-ts';
 
 // const domainNameRegex = /^(?!-)(?:[a-zA-Z0-9-]{1,63}(?<!-)\.)+[a-zA-Z]{2,}$/;
@@ -11,8 +11,8 @@ export const FDBlacklistSchema = () => {
       domain: {
         type: 'string',
         pattern: domainNameRegex,
-        inputStyle: 'html',
-        fieldType: FieldType.code,
+        'x-control-variant': 'html',
+        'x-control': ControlType.code,
         css: { height: '600px' },
         hideLabel: true,
       },

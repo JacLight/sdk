@@ -2,7 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
 import { CollectionUI } from '../collection-ui';
-import { DataType, FieldType, FormViewSectionType } from '../../types';
+import { DataType, ControlType, FormViewSectionType } from '../../types';
 
 export const SFDiscountSchema = () => {
   return {
@@ -42,8 +42,8 @@ export const SFDiscountSchema = () => {
       },
       sku: {
         type: 'string',
-        inputStyle: 'chip',
-        fieldType: FieldType.selectionmultiple,
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.sf_product,
@@ -53,8 +53,8 @@ export const SFDiscountSchema = () => {
       },
       category: {
         type: 'string',
-        inputStyle: 'chip',
-        fieldType: FieldType.selectionmultiple,
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.category,
@@ -64,8 +64,8 @@ export const SFDiscountSchema = () => {
       },
       customer: {
         type: 'string',
-        inputStyle: 'chip',
-        fieldType: FieldType.selectionmultiple,
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.customer,
@@ -75,8 +75,8 @@ export const SFDiscountSchema = () => {
       },
       group: {
         type: 'string',
-        inputStyle: 'chip',
-        fieldType: FieldType.selectionmultiple,
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.usergroup,

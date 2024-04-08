@@ -2,7 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
 import { CollectionUI } from '../collection-ui';
-import { DataType, FieldType } from '../../types';
+import { DataType, ControlType } from '../../types';
 import { FileInfoSchema } from '../fileinfo';
 
 export const ServicePointSchema = () => {
@@ -18,14 +18,14 @@ export const ServicePointSchema = () => {
       image: FileInfoSchema(),
       description: {
         type: 'string',
-        inputStyle: 'textarea',
+        'x-control-variant': 'textarea',
       },
       capacity: {
         type: 'number',
       },
       location: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         'x-group': 'group1',
         dataSource: {
           source: 'collection',
@@ -44,7 +44,7 @@ export const ServicePointSchema = () => {
       },
       form: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.collection,
@@ -115,7 +115,7 @@ export const ServicePointItemSchema = () => {
       },
       host: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         'x-group': 'group1',
         dataSource: {
           source: 'collection',

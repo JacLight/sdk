@@ -1,7 +1,7 @@
 import {
   PermissionTypeContent,
   PermissionTypeComponent,
-  FieldType,
+  ControlType,
   RoleType,
 } from '../types';
 import { FromSchema } from 'json-schema-to-ts';
@@ -23,8 +23,8 @@ export const PermissionEntrySchema = () => {
       content: {
         type: 'string',
         hideLabel: true,
-        fieldType: FieldType.selectionmultiple,
-        inputStyle: 'chip',
+        'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
         dataSource: {
           source: 'json',
           json: Object.values(PermissionTypeContent),
@@ -32,8 +32,8 @@ export const PermissionEntrySchema = () => {
       },
       component: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
-        inputStyle: 'chip',
+        'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
         dataSource: {
           source: 'json',
           json: Object.values(PermissionTypeComponent),

@@ -22,7 +22,7 @@ export const CategorySchema = () => {
       },
       description: {
         type: 'string',
-        inputStyle: 'textarea',
+        'x-control-variant': 'textarea',
       },
       tags: {
         type: 'array',

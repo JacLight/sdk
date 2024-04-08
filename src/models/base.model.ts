@@ -1,5 +1,5 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { DataType, FieldType } from '../types';
+import { DataType, ControlType } from '../types';
 import { CommentModel } from './comment';
 import { FileInfoSchema } from './fileinfo';
 import { WorkflowSubModel } from './workflowdefinition';
@@ -13,10 +13,18 @@ export enum SortType {
 
 export enum ModelState {
   draft = 'draft',
+  new = 'new',
+  pending = 'pending',
+  inprogress = 'inprogress',
+  reviewed = 'reviewed',
+  approved = 'approved',
   published = 'published',
+  completed = 'completed',
+  hold = 'hold',
+  rejected = 'rejected',
+  cancelled = 'cancelled',
   archived = 'archived',
   deleted = 'deleted',
-  pending = 'pending',
 }
 
 export interface DataOptions {
@@ -30,6 +38,9 @@ export interface DataOptions {
   refresh?: boolean;
   enrich?: boolean;
   hasNext?: boolean;
+  excludeFields?: string[];
+  includeFields?: string[];
+  maskFields?: string[];
 }
 
 export interface BaseModelDTO<T> extends DataOptions {
@@ -64,6 +75,7 @@ export interface BaseModel<T> {
   dislikes?: number;
   rating?: number;
   ratingCount?: number;
+  views?: number;
   owner?: {
     datatype: DataType;
     id: string;
@@ -82,7 +94,7 @@ export const PostSubSchema = () => {
       summary: {
         type: 'string',
         hidden: true,
-        inputStyle: 'textarea',
+        'x-control-variant': 'textarea',
       },
       allowShare: {
         type: 'boolean',
@@ -113,8 +125,8 @@ export const PostSubSchema = () => {
         items: {
           type: 'string',
         },
-        inputStyle: 'tree',
-        fieldType: FieldType.selectionmultiple,
+        'x-control-variant': 'tree',
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.category,
@@ -128,8 +140,8 @@ export const PostSubSchema = () => {
         items: {
           type: 'string',
         },
-        inputStyle: 'tree',
-        fieldType: FieldType.selectionmultiple,
+        'x-control-variant': 'tree',
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.category,
@@ -175,7 +187,7 @@ export const StyleSubSchema = () => {
               properties: {
                 property: {
                   type: 'string',
-                  fieldType: FieldType.selectionmultiple,
+                  'x-control': ControlType.selectMany,
                   dataSource: {
                     'source': 'json',
                     'json': ['primary', 'primary-content', 'secondary', 'secondary-content', 'accent', 'neutral', 'neutral-content', 'base100', 'base-content', 'info', 'info-content', 'success', 'success-content', 'warning', 'warning-content', 'error', 'error-content'],
@@ -191,15 +203,15 @@ export const StyleSubSchema = () => {
       },
       css: {
         type: 'string',
-        fieldType: 'Code',
-        inputStyle: 'css',
+        'x-control': 'Code',
+        'x-control-variant': 'css',
         collapsible: true,
       },
       javascript: {
         type: 'string',
-        fieldType: 'Code',
+        'x-control': 'Code',
         collapsible: true,
-        inputStyle: 'javascript',
+        'x-control-variant': 'javascript',
       },
       styleLinks: {
         type: 'array',
@@ -237,8 +249,8 @@ export const RequiredRoleSubSchema = () => {
     properties: {
       read: {
         type: 'array',
-        inputStyle: 'chip',
-        fieldType: FieldType.selectionmultiple,
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.userrole,
@@ -251,8 +263,8 @@ export const RequiredRoleSubSchema = () => {
       },
       create: {
         type: 'array',
-        inputStyle: 'chip',
-        fieldType: FieldType.selectionmultiple,
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.userrole,
@@ -265,8 +277,8 @@ export const RequiredRoleSubSchema = () => {
       },
       update: {
         type: 'array',
-        inputStyle: 'chip',
-        fieldType: FieldType.selectionmultiple,
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.userrole,
@@ -279,8 +291,8 @@ export const RequiredRoleSubSchema = () => {
       },
       delete: {
         type: 'array',
-        inputStyle: 'chip',
-        fieldType: FieldType.selectionmultiple,
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.userrole,
@@ -293,8 +305,8 @@ export const RequiredRoleSubSchema = () => {
       },
       review: {
         type: 'array',
-        inputStyle: 'chip',
-        fieldType: FieldType.selectionmultiple,
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.userrole,
@@ -307,8 +319,8 @@ export const RequiredRoleSubSchema = () => {
       },
       approve: {
         type: 'array',
-        inputStyle: 'chip',
-        fieldType: FieldType.selectionmultiple,
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.userrole,

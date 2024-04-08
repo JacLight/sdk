@@ -1,6 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../defaultschema';
-import { FieldType } from '../types';
+import { ControlType } from '../types';
 import { DataType } from '../types';
 import { CollectionRule } from './collection-rule';
 import { CollectionUI } from './collection-ui';
@@ -57,7 +57,7 @@ export const MintflowNodeSchema = () => {
     properties: {
       info: {
         type: 'string',
-        fieldType: FieldType.paragraph,
+        'x-control': ControlType.paragraph,
       },
       id: {
         type: 'string',

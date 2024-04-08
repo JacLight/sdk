@@ -2,7 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection, registerDefaultData } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
 import { CollectionUI } from '../collection-ui';
-import { DataType, FieldType, FormViewSectionType } from '../../types';
+import { DataType, ControlType, FormViewSectionType } from '../../types';
 import { FileInfoSchema } from '../fileinfo';
 
 export const TicketSchema = () => {
@@ -34,12 +34,12 @@ export const TicketSchema = () => {
       },
       description: {
         type: 'string',
-        inputStyle: 'textarea',
+        'x-control-variant': 'textarea',
         rows: 4,
       },
       files: {
         type: 'array',
-        fieldType: FieldType.file,
+        'x-control': ControlType.file,
         items: FileInfoSchema(),
       },
       priority: {
@@ -60,7 +60,7 @@ export const TicketSchema = () => {
       },
       assignTo: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.user,

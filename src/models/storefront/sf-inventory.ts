@@ -2,7 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
 import { CollectionUI } from '../collection-ui';
-import { DataType, FieldType } from '../../types';
+import { DataType, ControlType } from '../../types';
 
 export const SFInventorySchema = () => {
   return {
@@ -10,7 +10,7 @@ export const SFInventorySchema = () => {
     properties: {
       product: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.sf_product,
@@ -20,7 +20,7 @@ export const SFInventorySchema = () => {
       },
       location: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.location,
@@ -48,7 +48,7 @@ export const SFInventoryTransferSchema = () => {
       },
       from: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.location,
@@ -58,7 +58,7 @@ export const SFInventoryTransferSchema = () => {
       },
       to: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.location,
@@ -74,7 +74,7 @@ export const SFInventoryTransferSchema = () => {
           properties: {
             product: {
               type: 'string',
-              fieldType: FieldType.selectionmultiple,
+              'x-control': ControlType.selectMany,
               dataSource: {
                 source: 'collection',
                 collection: DataType.sf_product,
@@ -90,7 +90,7 @@ export const SFInventoryTransferSchema = () => {
       },
       approvedBy: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.user,
@@ -112,7 +112,7 @@ export const SFInventoryIntakeSchema = () => {
       },
       receivedBy: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.user,
@@ -132,7 +132,7 @@ export const SFInventoryIntakeSchema = () => {
           properties: {
             product: {
               type: 'string',
-              fieldType: FieldType.selectionmultiple,
+              'x-control': ControlType.selectMany,
               dataSource: {
                 source: 'collection',
                 collection: DataType.sf_product,
@@ -148,7 +148,7 @@ export const SFInventoryIntakeSchema = () => {
       },
       location: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.location,

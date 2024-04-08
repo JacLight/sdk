@@ -2,7 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
 import { CollectionUI } from '../collection-ui';
-import { DataType, FieldType } from '../../types';
+import { DataType, ControlType } from '../../types';
 
 export const ReservationSchema = () => {
   return {
@@ -17,7 +17,7 @@ export const ReservationSchema = () => {
       },
       reservationDefinitionId: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.reservationdefinition,
@@ -27,7 +27,7 @@ export const ReservationSchema = () => {
       },
       event: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.event,
@@ -44,13 +44,13 @@ export const ReservationSchema = () => {
       startTime: {
         type: 'string',
         format: 'date-time',
-        inputStyle: 'time'
+        'x-control-variant': 'time'
 
       },
       endTime: {
         type: 'string',
         format: 'date-time',
-        inputStyle: 'time'
+        'x-control-variant': 'time'
       },
       customer: {
         type: 'object',
@@ -74,7 +74,7 @@ export const ReservationSchema = () => {
         group: 'hosts',
         groupLayout: 'flat',
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.service_point,

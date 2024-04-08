@@ -1,9 +1,10 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { DataType, FieldType } from '../types';
+import { DataType, ControlType } from '../types';
 import { CollectionRule } from './collection-rule';
 import { CollectionUI } from './collection-ui';
 import { registerCollection } from '../defaultschema';
 import { toTitleCase } from '../utils/index';
+import { FileInfoSchema } from './fileinfo';
 
 export const ActivityTypes: { [key: string]: string } = {
   comment: 'comment',
@@ -42,7 +43,8 @@ export const ActivitySchema = () => {
       name: {
         type: 'string',
       },
-      description: {
+      image: FileInfoSchema(),
+      value: {
         type: 'string',
       },
       status: {
@@ -50,8 +52,7 @@ export const ActivitySchema = () => {
       },
       type: {
         type: 'string',
-        inputStyle: 'chip',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'json',
           value: Object.keys(ActivityTypes).map((key: any) => ({ label: toTitleCase(key), value: key }))

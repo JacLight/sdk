@@ -1,5 +1,5 @@
 import { CollectionUI } from '../collection-ui';
-import { FieldType, FormViewSectionType, } from '../../types';
+import { ControlType, FormViewSectionType, } from '../../types';
 import { FileInfoSchema } from '../fileinfo';
 import { FromSchema } from 'json-schema-to-ts';
 
@@ -12,15 +12,15 @@ export const FDViewComponentSchema = () => {
     properties: {
       html: {
         type: 'string',
-        inputStyle: 'html',
+        'x-control-variant': 'html',
         hideLabel: true,
-        fieldType: FieldType.code,
+        'x-control': ControlType.code,
         default: demoHtml,
         css: { height: '800px' },
       },
       schema: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'json',
           json: []
@@ -28,11 +28,11 @@ export const FDViewComponentSchema = () => {
       },
       icon: {
         type: 'string',
-        fieldType: FieldType.icon,
+        'x-control': ControlType.icon,
       },
       description: {
         type: 'string',
-        inputStyle: 'textarea',
+        'x-control-variant': 'textarea',
       },
       image: FileInfoSchema(),
     },

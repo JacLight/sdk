@@ -43,19 +43,16 @@ export const getPermission = () => {
       component: [PermissionTypeComponent.view],
       menuExclude: [menuList.All.value],
     },
-
     RootUser: {
       content: [PermissionTypeContent.read, PermissionTypeContent.create],
       component: [PermissionTypeComponent.view],
       menuInclude: [menuList.All.value]
     },
-
     Owner: {
       content: Object.values(PermissionTypeContent),
       component: Object.values(PermissionTypeComponent),
       menuInclude: [menuList.All.value]
     },
-
     Publisher: {
       content: [
         PermissionTypeContent.read,
@@ -110,7 +107,6 @@ export const getPermission = () => {
       menuList.CRM.value, menuList.Storefront.value, menuList.AuraFlow.value,
       menuList.SitePages.value, menuList.Database.value],
     },
-
     ContentAdmin: {
       content: Object.values(PermissionTypeContent),
       component: [
@@ -120,23 +116,19 @@ export const getPermission = () => {
       menuInclude: [menuList.General.value, menuList.trash.value, menuList.Content.value, menuList.CRM.value, menuList.Storefront.value, menuList.Database.value, menuList.AuraFlow.value, menuList.SitePages.value],
       menuExclude: [menuList.All.value],
     },
-
     ConfigAdmin: {
       component: Object.values(PermissionTypeComponent),
       menuInclude: [menuList.General.value, menuList.trash.value, menuList.Configuration.value, menuList.Database.value, menuList.CRM.value, menuList.Storefront.value],
     },
-
     RootAdmin: {
       component: Object.values(PermissionTypeComponent),
       content: Object.values(PermissionTypeContent),
       menuInclude: [menuList.All.value]
     },
-
     RootSystem: {
       component: Object.values(PermissionTypeComponent),
       content: Object.values(PermissionTypeContent),
     },
-
     System: {
       component: Object.values(PermissionTypeComponent),
       content: Object.values(PermissionTypeContent),
@@ -244,38 +236,38 @@ export const getPermissionContent = () => {
 };
 
 export const getRolesWithContentPermission = () => {
-  const premissionRoles: any = {};
+  const permissionRoles: any = {};
   Object.values(RoleType).forEach((role: any) => {
     const permission: any = getPermissionRoleEffective(role);
     permission.content.forEach((item: string) => {
-      if (premissionRoles[item]) {
-        premissionRoles[item].add(role);
+      if (permissionRoles[item]) {
+        permissionRoles[item].add(role);
       } else {
-        premissionRoles[item] = new Set([role]);
+        permissionRoles[item] = new Set([role]);
       }
     });
   });
 
-  Object.keys(premissionRoles).forEach(
-    key => (premissionRoles[key] = Array.from(premissionRoles[key]))
+  Object.keys(permissionRoles).forEach(
+    key => (permissionRoles[key] = Array.from(permissionRoles[key]))
   );
-  return premissionRoles;
+  return permissionRoles;
 };
 
 export const getRolesWithComponentPermission = () => {
-  const premissionRoles: any = {};
+  const permissionRoles: any = {};
   Object.values(RoleType).forEach((role: any) => {
     const permission: any = getPermissionRoleEffective(role);
     permission.component.forEach((item: string) => {
-      if (premissionRoles[item]) {
-        premissionRoles[item].add(role);
+      if (permissionRoles[item]) {
+        permissionRoles[item].add(role);
       } else {
-        premissionRoles[item] = new Set([role]);
+        permissionRoles[item] = new Set([role]);
       }
     });
   });
-  Object.keys(premissionRoles).forEach(
-    key => (premissionRoles[key] = Array.from(premissionRoles[key]))
+  Object.keys(permissionRoles).forEach(
+    key => (permissionRoles[key] = Array.from(permissionRoles[key]))
   );
-  return premissionRoles;
+  return permissionRoles;
 };

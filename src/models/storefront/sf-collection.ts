@@ -2,7 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
 import { CollectionUI } from '../collection-ui';
-import { DataType, FieldType } from '../../types';
+import { DataType, ControlType } from '../../types';
 import { FileInfoSchema } from '../fileinfo';
 
 export const SFCollectionSchema = () => {
@@ -24,7 +24,7 @@ export const SFCollectionSchema = () => {
       products: {
         type: 'array',
         displayStyle: 'table',
-        inputStyle: 'picker',
+        'x-control-variant': 'picker',
         dataSource: {
           source: 'collection',
           collection: DataType.sf_product,
@@ -46,8 +46,8 @@ export const SFCollectionSchema = () => {
       },
       category: {
         type: 'string',
-        inputStyle: 'chip',
-        fieldType: FieldType.selectionmultiple,
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.category,
@@ -56,7 +56,7 @@ export const SFCollectionSchema = () => {
         },
       },
       images: {
-        fieldType: FieldType.file,
+        'x-control': ControlType.file,
         type: 'array',
         items: FileInfoSchema(),
       },

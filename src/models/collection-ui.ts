@@ -40,7 +40,7 @@ export const CollectionUIConfigSchema = () => {
       description: {
         type: 'string',
         collapsible: true,
-        fieldType: 'richtext',
+        'x-control': 'richtext',
       },
       hideHeading: {
         type: 'boolean',
@@ -92,7 +92,7 @@ const buttonSchema = (action = 'submit') => {
       },
       script: {
         type: 'string',
-        inputStyle: 'code',
+        'x-control-variant': 'code',
       }
     }
   } as const

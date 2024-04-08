@@ -1,6 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../defaultschema';
-import { DataType, FieldType } from '../types';
+import { DataType, ControlType } from '../types';
 import { CollectionRule } from './collection-rule';
 import { CollectionUI } from './collection-ui';
 
@@ -16,7 +16,7 @@ export const EscalationSchema = () => {
       },
       flow: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.mintflow,
@@ -26,7 +26,7 @@ export const EscalationSchema = () => {
       },
       notificationTemplate: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.messagetemplate,
@@ -50,7 +50,7 @@ export const EscalationSchema = () => {
             },
             flow: {
               type: 'string',
-              fieldType: FieldType.selectionmultiple,
+              'x-control': ControlType.selectMany,
               dataSource: {
                 source: 'collection',
                 collection: DataType.mintflow,
@@ -60,7 +60,7 @@ export const EscalationSchema = () => {
             },
             notificationTemplate: {
               type: 'string',
-              fieldType: FieldType.selectionmultiple,
+              'x-control': ControlType.selectMany,
               dataSource: {
                 source: 'collection',
                 collection: DataType.messagetemplate,
@@ -70,8 +70,8 @@ export const EscalationSchema = () => {
             },
             escalateTo: {
               type: 'string',
-              fieldType: FieldType.selectionmultiple,
-              inputStyle: 'chip',
+              'x-control': ControlType.selectMany,
+              'x-control-variant': 'chip',
               dataSource: {
                 source: 'collection',
                 collection: DataType.user,

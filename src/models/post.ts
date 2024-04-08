@@ -1,7 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { CollectionRule } from './collection-rule';
 import { CollectionUI } from './collection-ui';
-import { DataType, FieldType } from '../types';
+import { DataType, ControlType } from '../types';
 import { registerCollection } from '../defaultschema';
 
 export const PostSchema = () => {
@@ -26,7 +26,7 @@ export const PostSchema = () => {
       },
       template: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         groupLayout: 'flat',
         group: 'slug',
         dataSource: {
@@ -43,11 +43,12 @@ export const PostSchema = () => {
       },
       summary: {
         type: 'string',
-        inputStyle: 'textarea',
+        'x-control-variant': 'textarea',
       },
       content: {
         type: 'string',
-        fieldType: FieldType.richtext,
+        ai: true,
+        'x-control': ControlType.richtext,
       },
     },
   } as const;

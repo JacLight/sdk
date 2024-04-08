@@ -2,7 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection, registerDefaultData } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
 import { CollectionUI } from '../collection-ui';
-import { DataType, FieldType, FormViewSectionType } from '../../types';
+import { DataType, ControlType, FormViewSectionType } from '../../types';
 
 export const ReservationDefinitionSchema = () => {
   return {
@@ -20,8 +20,8 @@ export const ReservationDefinitionSchema = () => {
       },
       workDays: {
         type: 'array',
-        fieldType: FieldType.selectionmultiple,
-        inputStyle: 'chip',
+        'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
         items: {
           type: 'string',
         },
@@ -75,14 +75,14 @@ export const ReservationDefinitionSchema = () => {
           startTime: {
             type: 'string',
             // format: 'date-time',
-            inputStyle: 'time',
-            fieldType: FieldType.date,
+            'x-control-variant': 'time',
+            'x-control': ControlType.date,
           },
           endTime: {
             type: 'string',
             // format: 'date-time',
-            inputStyle: 'time',
-            fieldType: FieldType.date,
+            'x-control-variant': 'time',
+            'x-control': ControlType.date,
           },
         },
       },
@@ -96,14 +96,14 @@ export const ReservationDefinitionSchema = () => {
             startTime: {
               type: 'string',
               // format: 'time',
-              inputStyle: 'time',
-              fieldType: FieldType.date,
+              'x-control-variant': 'time',
+              'x-control': ControlType.date,
             },
             endTime: {
               type: 'string',
               // format: 'time',
-              inputStyle: 'time',
-              fieldType: FieldType.date,
+              'x-control-variant': 'time',
+              'x-control': ControlType.date,
             },
           },
         },
@@ -113,7 +113,7 @@ export const ReservationDefinitionSchema = () => {
       },
       host: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.user,
@@ -128,7 +128,7 @@ export const ReservationDefinitionSchema = () => {
       },
       event: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.event,
@@ -138,7 +138,7 @@ export const ReservationDefinitionSchema = () => {
       },
       form: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.collection,
@@ -148,7 +148,7 @@ export const ReservationDefinitionSchema = () => {
       },
       venue: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         'x-group': 'group1',
         dataSource: {
           source: 'collection',
@@ -159,7 +159,7 @@ export const ReservationDefinitionSchema = () => {
       },
       notificationTemplate: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         'x-group': 'group2',
         dataSource: {
           source: 'collection',
@@ -170,7 +170,7 @@ export const ReservationDefinitionSchema = () => {
       },
       workflow: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         'x-group': 'group2',
         dataSource: {
           source: 'collection',

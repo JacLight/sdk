@@ -1,6 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../defaultschema';
-import { DataType, FieldType } from '../types';
+import { DataType, ControlType } from '../types';
 import { CollectionRule } from './collection-rule';
 import { CollectionUI } from './collection-ui';
 
@@ -8,7 +8,7 @@ export const FileInfoSchema = () => {
   return {
     type: 'object',
     readOnly: true,
-    fieldType: FieldType.file,
+    'x-control': ControlType.file,
     properties: {
       path: {
         type: 'string',

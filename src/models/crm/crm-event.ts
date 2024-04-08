@@ -2,7 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
 import { CollectionUI } from '../collection-ui';
-import { DataType, FieldType, FormViewSectionType } from '../../types';
+import { DataType, ControlType, FormViewSectionType } from '../../types';
 import { FileInfoSchema } from '../fileinfo';
 
 export const EventSchema = () => {
@@ -23,11 +23,11 @@ export const EventSchema = () => {
       image: FileInfoSchema(),
       description: {
         type: 'string',
-        inputStyle: 'textarea',
+        'x-control-variant': 'textarea',
       },
       host: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.user,
@@ -47,7 +47,7 @@ export const EventSchema = () => {
       },
       venue: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         'x-group': 'group1',
         dataSource: {
           source: 'collection',
@@ -58,7 +58,7 @@ export const EventSchema = () => {
       },
       notificationTemplate: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         'x-group': 'group2',
         dataSource: {
           source: 'collection',
@@ -79,8 +79,8 @@ export const EventSchema = () => {
       },
       participants: {
         type: 'string',
-        inputStyle: 'chip',
-        fieldType: FieldType.selectionmultiple,
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.user,

@@ -1,6 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../defaultschema';
-import { DataType, FieldType } from '../types';
+import { DataType, ControlType } from '../types';
 import { CollectionRule } from './collection-rule';
 import { CollectionUI } from './collection-ui';
 
@@ -21,7 +21,7 @@ export const DataVizSchema = () => {
       },
       description: {
         type: 'string',
-        inputStyle: 'textarea',
+        'x-control-variant': 'textarea',
       },
       type: {
         type: 'string',
@@ -70,14 +70,14 @@ export const DataVizColumnSchema = () => {
       },
       description: {
         type: 'string',
-        inputStyle: 'textarea',
+        'x-control-variant': 'textarea',
       },
       summary: {
         type: 'string',
       },
       tableConfig: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.dataviz,
@@ -92,7 +92,7 @@ export const DataVizColumnSchema = () => {
       },
       chartConfig: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.dataviz,
@@ -127,7 +127,7 @@ export const DataVizColumnSchema = () => {
       style: {
         type: ['string', 'object'],
         hidden: true,
-        inputStyle: 'textarea',
+        'x-control-variant': 'textarea',
       },
     },
   } as const;
@@ -140,8 +140,8 @@ export const DataVizTableConfigSchema = () => {
       collection: {
         type: 'array',
         showIndex: true,
-        inputStyle: 'chip',
-        fieldType: FieldType.selectionmultiple,
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
         items: {
           hideLabel: true,
           type: 'string'
@@ -158,8 +158,8 @@ export const DataVizTableConfigSchema = () => {
       },
       code: {
         type: 'string',
-        inputStyle: 'json',
-        fieldType: FieldType.code,
+        'x-control-variant': 'json',
+        'x-control': ControlType.code,
         rules: [
           { operation: 'isFalsy', valueA: '{{exportMode}}', action: 'hide' },
         ]
@@ -201,14 +201,14 @@ export const DataVizChartConfigSchema = () => {
       },
       xSeries: {
         type: 'array',
-        inputStyle: 'chip',
+        'x-control-variant': 'chip',
         items: {
           type: 'string',
         }
       },
       ySeries: {
         type: 'array',
-        inputStyle: 'chip',
+        'x-control-variant': 'chip',
         items: {
           type: 'string',
         }

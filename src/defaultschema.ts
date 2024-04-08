@@ -28,7 +28,7 @@ export const registerCollection = (
   uischema: CollectionUI[],
   rules: CollectionRule[],
   hidden = false,
-  enableSubSchema = false
+  enableSubSchema = false,
 ) => {
   const thisCollection = {
     name: datatype,

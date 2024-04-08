@@ -2,7 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
 import { CollectionUI } from '../collection-ui';
-import { DataType, FieldType, FormViewSectionType } from '../../types';
+import { DataType, ControlType, FormViewSectionType } from '../../types';
 import { FileInfoSchema } from '../fileinfo';
 
 export const SFProductSchema = () => {
@@ -29,11 +29,11 @@ export const SFProductSchema = () => {
       description: {
         type: 'string',
         hideLabel: true,
-        fieldType: FieldType.richtext,
+        'x-control': ControlType.richtext,
       },
       brand: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.sf_brand,
@@ -53,13 +53,17 @@ export const SFProductSchema = () => {
       subscription: {
         type: 'boolean',
       },
+      sold: {
+        type: 'number',
+        hidden: true
+      },
       posts: { type: 'object', hidden: true }, //  PostSchema(),
       image: {
         type: 'string',
       },
       images: {
         type: 'array',
-        fieldType: FieldType.file,
+        'x-control': ControlType.file,
         items: FileInfoSchema(),
         hideLabel: true,
       },
@@ -97,7 +101,7 @@ export const SFProductSchema = () => {
           properties: {
             name: {
               type: 'string',
-              fieldType: FieldType.selectionmultiple,
+              'x-control': ControlType.selectMany,
               dataSource: {
                 source: 'collection',
                 collection: DataType.sf_attribute,
@@ -122,8 +126,8 @@ export const SFProductSchema = () => {
                   },
                 },
               },
-              fieldType: FieldType.selectionmultiple,
-              inputStyle: 'chip',
+              'x-control': ControlType.selectMany,
+              'x-control-variant': 'chip',
               styleClass: 'w-[60%]',
               dataSource: {
                 source: 'collection',
@@ -185,7 +189,7 @@ export const SFProductSchema = () => {
             },
             images: {
               type: 'array',
-              fieldType: FieldType.file,
+              'x-control': ControlType.file,
               items: FileInfoSchema(),
               hideLabel: true,
             },
@@ -219,7 +223,6 @@ export const SFProductSchema = () => {
       discount: { type: 'string', hidden: true },
       promotion: { type: 'string', hidden: true },
       status: { type: 'string' },
-      views: { type: 'number', fieldType: 'label' },
     },
     required: ['name', 'sku'],
   } as const;

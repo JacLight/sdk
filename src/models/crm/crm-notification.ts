@@ -2,7 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
 import { CollectionUI } from '../collection-ui';
-import { DataType, FieldType, NotificationChannels } from '../../types';
+import { DataType, ControlType, NotificationChannels } from '../../types';
 import { toTitleCase } from '../../utils';
 
 export const NotificationSchema = () => {
@@ -19,8 +19,8 @@ export const NotificationSchema = () => {
       },
       template: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
-        inputStyle: 'chip',
+        'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
         dataSource: {
           source: 'collection',
           collection: DataType.messagetemplate,
@@ -30,7 +30,7 @@ export const NotificationSchema = () => {
       },
       message: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.message,
@@ -40,8 +40,8 @@ export const NotificationSchema = () => {
       },
       channel: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
-        inputStyle: 'chip',
+        'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
         dataSource: {
           source: 'json',
           json: Object.values(NotificationChannels).map(key => ({
@@ -63,7 +63,7 @@ export const NotificationSchema = () => {
       },
       cron: {
         type: 'string',
-        fieldType: FieldType.cron,
+        'x-control': ControlType.cron,
       },
       status: {
         type: 'string',

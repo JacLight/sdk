@@ -2,7 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../defaultschema';
 import {
   DataType,
-  FieldType,
+  ControlType,
   FormViewSectionType,
   PermissionTypeComponent,
   PermissionTypeContent,
@@ -41,11 +41,16 @@ export const UserSchema = () => {
       portrait: FileInfoSchema(),
       password: {
         type: 'string',
-        inputStyle: 'password',
+        'x-control-variant': 'password',
+        hidden: true,
+        "minLength": 8,
+        "pattern": "^(?=.*[A-Za-z])(?=.*\\d).{8,}$"
       },
       confirmPassword: {
         type: 'string',
-        inputStyle: 'password',
+        hidden: true,
+        'x-control-variant': 'password',
+        rules: [{ operation: 'notEqual', valueA: '{{password}}', valueB: '{{confirmPassword}}', action: 'validate', message: 'Password and Confirm Password must be the same.' }]
       },
       lockout: {
         type: 'string',
@@ -72,7 +77,7 @@ export const UserSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.address,
-          value: 'sk',
+          value: 'name',
           label: 'name',
         },
         items: {
@@ -155,37 +160,38 @@ export const UserSchema = () => {
       },
       passwordPolicy: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.passwordpolicy,
-          value: 'sk',
+          value: 'name',
           label: 'name',
         },
       },
       groups: {
         type: 'string',
-        inputStyle: 'chip',
-        fieldType: FieldType.selectionmultiple,
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.usergroup,
-          value: 'sk',
+          value: 'name',
           label: 'name',
         },
       },
       roles: {
         type: 'string',
-        inputStyle: 'chip',
-        fieldType: FieldType.selectionmultiple,
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.userrole,
-          value: 'sk',
+          value: 'name',
           label: 'name',
         },
       },
     },
+    "required": ["password", "confirmPassword", "firstName", "lastName", "email"]
   } as const;
 };
 
@@ -207,7 +213,7 @@ export const UserGroupSchema = () => {
       },
       passwordPolicy: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.passwordpolicy,
@@ -217,8 +223,8 @@ export const UserGroupSchema = () => {
       },
       users: {
         type: 'string',
-        inputStyle: 'chip',
-        fieldType: FieldType.selectionmultiple,
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.user,
@@ -228,8 +234,8 @@ export const UserGroupSchema = () => {
       },
       roles: {
         type: 'string',
-        inputStyle: 'chip',
-        fieldType: FieldType.selectionmultiple,
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.userrole,
@@ -264,8 +270,8 @@ export const UserRoleSchema = () => {
         properties: {
           component: {
             type: 'array',
-            inputStyle: 'chip',
-            fieldType: FieldType.selectionmultiple,
+            'x-control-variant': 'chip',
+            'x-control': ControlType.selectMany,
             dataSource: {
               source: 'json',
               json: Object.values(PermissionTypeComponent).map(value => ({
@@ -279,8 +285,8 @@ export const UserRoleSchema = () => {
           },
           content: {
             type: 'array',
-            inputStyle: 'chip',
-            fieldType: FieldType.selectionmultiple,
+            'x-control-variant': 'chip',
+            'x-control': ControlType.selectMany,
             dataSource: {
               source: 'json',
               json: Object.values(PermissionTypeContent).map(value => ({
@@ -294,8 +300,8 @@ export const UserRoleSchema = () => {
           },
           menuInclude: {
             type: 'array',
-            inputStyle: 'tree',
-            fieldType: FieldType.selectionmultiple,
+            'x-control-variant': 'tree',
+            'x-control': ControlType.selectMany,
             dataSource: {
               source: 'json',
               json: Object.values(menuList),
@@ -307,8 +313,8 @@ export const UserRoleSchema = () => {
           },
           menuExclude: {
             type: 'array',
-            inputStyle: 'tree',
-            fieldType: FieldType.selectionmultiple,
+            'x-control-variant': 'tree',
+            'x-control': ControlType.selectMany,
             dataSource: {
               source: 'json',
               json: Object.values(menuList),

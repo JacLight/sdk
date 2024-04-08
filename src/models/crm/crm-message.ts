@@ -1,7 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionUI } from '../collection-ui';
-import { DataType, FieldType, FormViewSectionType } from '../../types';
+import { DataType, ControlType, FormViewSectionType } from '../../types';
 import { FileInfoSchema } from '../fileinfo';
 
 
@@ -17,7 +17,7 @@ export const MessageSchema = () => {
       },
       template: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.messagetemplate
@@ -28,9 +28,9 @@ export const MessageSchema = () => {
       },
       to: {
         type: 'array',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         hideLabel: true,
-        inputStyle: 'chip',
+        'x-control-variant': 'chip',
         items: {
           type: 'string',
         },
@@ -46,34 +46,34 @@ export const MessageSchema = () => {
         title: 'Content',
         collapsible: true,
         type: 'string',
-        fieldType: 'richtext',
+        'x-control': 'richtext',
       },
       text: {
         collapsible: true,
         title: 'Content as text',
         type: 'string',
-        inputStyle: 'textarea',
+        'x-control-variant': 'textarea',
         rows: 4,
         displayStyle: 'outlined',
       },
       source: {
         type: 'string',
-        fieldType: 'label',
+        'x-control': 'label',
       },
       status: {
         type: 'string',
-        fieldType: 'label',
+        'x-control': 'label',
       },
       type: {
         type: 'string',
       },
       tries: {
         type: 'number',
-        fieldType: 'label',
+        'x-control': 'label',
       },
       statusHistory: {
         type: 'array',
-        fieldType: 'label',
+        'x-control': 'label',
         collapsible: true,
         items: {
           type: 'object',
@@ -95,15 +95,15 @@ export const MessageSchema = () => {
         type: 'array',
         collapsible: true,
         allowDelete: true,
-        fieldType: FieldType.file,
+        'x-control': ControlType.file,
         items: FileInfoSchema(),
       },
       context: {
         type: 'array',
-        fieldType: FieldType.collection,
+        'x-control': ControlType.collection,
         collapsible: true,
         displayStyle: 'table',
-        inputStyle: 'picker',
+        'x-control-variant': 'picker',
         dataSource: {
           source: 'collection',
           collection: DataType.post,
@@ -124,7 +124,7 @@ export const MessageSchema = () => {
         },
       },
     },
-    required: ['to', 'title', 'deliveryType', 'from'],
+    required: ['to', 'subject', 'deliveryType', 'from'],
   } as const;
 };
 const ms = MessageSchema();

@@ -1,6 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../defaultschema';
-import { DataType, FieldType, TaskStatus } from '../types';
+import { DataType, ControlType, TaskStatus } from '../types';
 import { CollectionUI } from './collection-ui';
 
 export const TaskSchema = () => {
@@ -10,7 +10,7 @@ export const TaskSchema = () => {
       workflowId: {
         type: 'string',
         readOnly: true,
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.workflowdefinition,
@@ -29,7 +29,7 @@ export const TaskSchema = () => {
       },
       description: {
         type: 'string',
-        inputStyle: 'textarea',
+        'x-control-variant': 'textarea',
       },
       stageId: {
         title: 'Stage',
@@ -38,12 +38,16 @@ export const TaskSchema = () => {
       },
       note: {
         type: 'string',
-        inputStyle: 'textarea',
+        'x-control-variant': 'textarea',
       },
       assignTo: {
-        type: 'string',
-        inputStyle: 'chip',
-        fieldType: FieldType.selectionmultiple,
+        type: 'array',
+        'x-control': ControlType.selectMany,
+        hideLabel: true,
+        'x-control-variant': 'chip',
+        items: {
+          type: 'string',
+        },
         dataSource: {
           source: 'function',
           value: 'getAssignToOptions',

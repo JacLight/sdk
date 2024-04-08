@@ -1,6 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../defaultschema';
-import { DataType, FieldType } from '../types';
+import { DataType, ControlType } from '../types';
 import { CollectionRule } from './collection-rule';
 import { CollectionUI } from './collection-ui';
 
@@ -55,7 +55,7 @@ export const SettingSchema = () => {
 const getSettingItemSchema = (datatype: DataType) =>
 ({
   type: 'string',
-  fieldType: FieldType.selectionmultiple,
+  'x-control': ControlType.selectMany,
   dataSource: {
     source: 'collection',
     collection: datatype,
@@ -67,7 +67,7 @@ const getSettingItemSchema = (datatype: DataType) =>
 export const LogSchema = () => {
   return {
     type: 'object',
-    fieldType: FieldType.selectionmultiple,
+    'x-control': ControlType.selectMany,
     dataSource: {
       sourceType: { type: 'string' },
       source: { type: 'string' },

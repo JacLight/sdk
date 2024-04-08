@@ -1,5 +1,5 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { DataType, FieldType, FormViewSectionType } from '../types';
+import { DataType, ControlType, FormViewSectionType } from '../types';
 import { FileInfoSchema } from './fileinfo';
 import { getCurrencies, getLanguages, getSiteFeatureList } from '../data';
 import { CollectionRule } from './collection-rule';
@@ -21,7 +21,7 @@ export const SiteSchema = () => {
       },
       homePage: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.page,
@@ -36,7 +36,7 @@ export const SiteSchema = () => {
       },
       loginRedirect: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.page,
@@ -51,7 +51,7 @@ export const SiteSchema = () => {
       },
       logoutRedirect: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.page,
@@ -66,7 +66,7 @@ export const SiteSchema = () => {
       },
       template: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'function',
           value: 'getSiteTemplates',
@@ -74,7 +74,7 @@ export const SiteSchema = () => {
       },
       colorSwitch: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         enum: ['on', 'off'],
         default: 'off'
       },
@@ -88,7 +88,7 @@ export const SiteSchema = () => {
       },
       description: {
         type: 'string',
-        inputStyle: 'textarea',
+        'x-control-variant': 'textarea',
       },
       keywords: {
         type: 'string',
@@ -96,10 +96,14 @@ export const SiteSchema = () => {
       robots: {
         type: 'string',
       },
+      favicon: {
+        type: 'string',
+        format: 'uri',
+      },
       features: {
         type: 'string',
-        inputStyle: 'chip',
-        fieldType: FieldType.selectionmultiple,
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'json',
           json: getSiteFeatureList(),
@@ -107,7 +111,7 @@ export const SiteSchema = () => {
       },
       defaultCurrency: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'self',
           value: 'currencies',
@@ -116,16 +120,16 @@ export const SiteSchema = () => {
       },
       currencies: {
         type: 'string',
-        inputStyle: 'chip',
-        fieldType: FieldType.selectionmultiple,
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'json',
           json: getCurrencies(),
         },
       },
-      defautLanguage: {
+      defaultLanguage: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'self',
           value: 'languages',
@@ -134,8 +138,8 @@ export const SiteSchema = () => {
       },
       languages: {
         type: 'string',
-        inputStyle: 'chip',
-        fieldType: FieldType.selectionmultiple,
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'json',
           json: getLanguages(),
@@ -146,32 +150,32 @@ export const SiteSchema = () => {
         format: 'hostname',
         placeholder: 'example.com',
       },
-      favicon: {
-        type: 'string',
-        format: 'uri',
-      },
+
       logo: {
         type: 'object',
         title: 'Logo',
         hideLabel: true,
         readOnly: true,
-        fieldType: FieldType.file,
+        'x-control': ControlType.file,
         properties: {
-          ...FileInfoSchema().properties,
           hideLogo: {
             type: 'boolean',
+            group: 'size'
           },
           width: {
             type: 'number',
+            group: 'size'
           },
           height: {
+            group: 'size',
             type: 'number',
           },
+          ...FileInfoSchema().properties,
         },
       },
       mainNavigation: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.navigation,
@@ -181,7 +185,7 @@ export const SiteSchema = () => {
       },
       mobileNavigation: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.navigation,
@@ -191,7 +195,7 @@ export const SiteSchema = () => {
       },
       footerNavigation: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.navigation,
@@ -266,7 +270,7 @@ export const SiteSchema = () => {
                 },
                 attribute: {
                   type: 'string',
-                  fieldType: FieldType.selectionmultiple,
+                  'x-control': ControlType.selectMany,
                   dataSource: {
                     source: 'collection',
                     collection: DataType.sf_attribute,
@@ -305,20 +309,20 @@ export const SiteSchema = () => {
       spanProtectionComment: {
         description: 'Enable Google reCAPTCHA on contact and comment forms',
         type: 'boolean',
-        inputStyle: 'switch',
+        'x-control-variant': 'switch',
         displayStyle: 'card',
       },
       spamProtectionUser: {
         description:
           'Enable Google reCAPTCHA on login, create account and password recovery pages',
         type: 'boolean',
-        inputStyle: 'switch',
+        'x-control-variant': 'switch',
         displayStyle: 'card',
       },
       tailwindConfig: {
         type: 'string',
-        fieldType: 'code',
-        inputStyle: 'json',
+        'x-control': 'code',
+        'x-control-variant': 'json',
         css: { height: 800 }
       },
       searchBar: {
@@ -331,15 +335,20 @@ export const SiteSchema = () => {
       },
       showLogin: {
         type: 'boolean',
-        inputStyle: 'switch',
+        'x-control-variant': 'switch',
       },
       hideSiteHeader: {
         type: 'boolean',
-        inputStyle: 'switch',
+        'x-control-variant': 'switch',
       },
       hideSiteFooter: {
         type: 'boolean',
-        inputStyle: 'switch',
+        'x-control-variant': 'switch',
+      },
+      globalStyle: {
+        type: 'boolean',
+        'x-control-variant': 'switch',
+        default: true,
       },
     },
   } as const;
@@ -358,6 +367,9 @@ export const SiteUI = (): CollectionUI[] => {
               '1': '/properties/title',
             },
             {
+              '0': '/properties/favicon',
+            },
+            {
               '0': '/properties/description',
             },
             {
@@ -365,9 +377,6 @@ export const SiteUI = (): CollectionUI[] => {
             },
             {
               '0': '/properties/robots',
-            },
-            {
-              '1': '/properties/favicon',
             },
             {
               '0': '/properties/logo',
@@ -391,7 +400,7 @@ export const SiteUI = (): CollectionUI[] => {
             },
             {
               '0': '/properties/defaultCurrency',
-              '1': '/properties/defautLanguage',
+              '1': '/properties/defaultLanguage',
             },
             {
               '0': '/properties/mainNavigation',
@@ -401,6 +410,9 @@ export const SiteUI = (): CollectionUI[] => {
               '0': '/properties/hideSiteHeader',
               '1': '/properties/hideSiteFooter',
               '2': '/properties/showLogin',
+            },
+            {
+              '0': '/properties/globalStyle',
             },
             {
               '0': '/properties/searchBar',

@@ -1,5 +1,5 @@
 import { registerCollection } from '../defaultschema';
-import { CollectionType, DataType, FieldType } from '../types';
+import { CollectionType, DataType, ControlType } from '../types';
 import { CollectionRule } from './collection-rule';
 import { CollectionUI } from './collection-ui';
 
@@ -9,6 +9,7 @@ export interface CollectionModel {
   description?: string;
   type?: CollectionType;
   enablePost: boolean;
+  parent: string;
   enableVersioning?: boolean;
   enableSubSchema?: boolean;
   enableIndexing?: boolean;
@@ -17,6 +18,8 @@ export interface CollectionModel {
   subType?: string;
   workflow?: string;
   permission?: {};
+  theme: {};
+  styles: {};
   rules?: CollectionRule[];
   validations?: {};
   uischema?: CollectionUI[];
@@ -39,7 +42,7 @@ export const CollectionSchema = () => {
       },
       parent: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.collection,
@@ -49,7 +52,7 @@ export const CollectionSchema = () => {
       },
       icon: {
         type: 'string',
-        fieldType: FieldType.icon,
+        'x-control': ControlType.icon,
         group: 'title',
         groupLayout: 'flat',
       },
@@ -80,7 +83,7 @@ export const CollectionSchema = () => {
       },
       workflow: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.workflowdefinition,

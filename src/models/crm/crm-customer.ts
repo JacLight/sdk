@@ -1,7 +1,7 @@
 import { CollectionRule } from '../collection-rule';
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
-import { DataType, FieldType, FormViewSectionType } from '../../types';
+import { DataType, ControlType, FormViewSectionType } from '../../types';
 import { CollectionUI } from '../collection-ui';
 import { FileInfoSchema } from '../fileinfo';
 import { PhoneSchema } from './crm-phone';
@@ -12,7 +12,7 @@ export const CustomerSchema = () => {
     properties: {
       parent: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.customer,
@@ -33,7 +33,9 @@ export const CustomerSchema = () => {
           type: 'object',
           properties: {
             email: { type: 'string', format: 'email' },
-            status: { type: 'string', fieldType: FieldType.label },
+            status: {
+              type: 'string', 'x-control': ControlType.label
+            },
             verified: { type: 'boolean' },
           },
         },
@@ -55,11 +57,17 @@ export const CustomerSchema = () => {
       },
       password: {
         type: 'string',
-        inputStyle: 'password',
+        'x-control-variant': 'password',
+        hidden: true,
+        "minLength": 8,
+        "pattern": "^(?=.*[A-Za-z])(?=.*\\d).{8,}$"
       },
       confirmPassword: {
         type: 'string',
-        inputStyle: 'password',
+        'x-control-variant': 'password',
+        hidden: true,
+        "minLength": 8,
+        "pattern": "^(?=.*[A-Za-z])(?=.*\\d).{8,}$"
       },
       lockout: {
         type: 'string',
@@ -183,7 +191,7 @@ export const CustomerSchema = () => {
       },
       passwordPolicy: {
         type: 'string',
-        fieldType: FieldType.selectionmultiple,
+        'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.passwordpolicy,

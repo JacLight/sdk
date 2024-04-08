@@ -19,7 +19,7 @@ const BaseSchema = () => {
           summary: {
             type: 'string',
             hidden: true,
-            inputStyle: 'textarea',
+            'x-control-variant': 'textarea',
           },
           allowShare: {
             type: 'boolean',

@@ -1,7 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { CollectionRule } from './collection-rule';
 import { CollectionUI } from './collection-ui';
-import { DataType, FieldType } from '../types';
+import { DataType, ControlType } from '../types';
 import { registerCollection } from '../defaultschema';
 import { FileInfoSchema } from './fileinfo';
 
@@ -23,10 +23,11 @@ export const NavigationSchema = () => {
       slug: {
         type: 'string',
         pattern: '^[a-zA-Z_\\-0-9]*$',
+        transform: 'uri'
       },
       description: {
         type: 'string',
-        inputStyle: 'textarea',
+        'x-control-variant': 'textarea',
       },
       children: {
         type: 'array',
@@ -41,10 +42,6 @@ export const NavigationLinkSchema = () => {
   return {
     type: 'object',
     properties: {
-      linkType: {
-        type: 'string',
-        enum: ['page', 'url'], //use of page filter liket category or tags
-      },
       title: {
         type: 'string',
       },
@@ -55,15 +52,34 @@ export const NavigationLinkSchema = () => {
       description: {
         type: 'string',
       },
-      page: {
-        type: 'string',
-        fieldType: FieldType.selectionmultiple,
+      selection: {
+        type: 'array',
+        collapsible: true,
+        title: 'Selections',
+        'x-control': ControlType.collection,
+        displayStyle: 'table',
+        'x-control-variant': 'picker',
         dataSource: {
           source: 'collection',
-          value: 'name',
-          label: 'name',
-          collection: DataType.page,
+          collection: DataType.post,
         },
+        items: {
+          type: 'object',
+          properties: {
+            datatype: {
+              type: 'string',
+            },
+            id: {
+              type: 'string',
+            },
+            name: {
+              type: 'string',
+            },
+          },
+        },
+      },
+      url: {
+        type: 'string',
       },
       dropType: {
         type: 'string',
@@ -75,12 +91,9 @@ export const NavigationLinkSchema = () => {
       },
       icon: {
         type: 'string',
-        fieldType: FieldType.icon,
+        'x-control': ControlType.icon,
       },
       image: FileInfoSchema(),
-      url: {
-        type: 'string',
-      },
       params: {
         type: 'string',
       },
