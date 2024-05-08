@@ -321,7 +321,7 @@ export const PageSectionSchema = () => {
         },
         dataSource: {
           source: 'json',
-          json: ['datatype', 'category', 'tag', 'sort', 'sortType', 'maxItem']
+          json: ['data', 'datatype', 'category', 'tag', 'sort', 'sortType', 'maxItem']
         },
         description: 'Overrides selected item with value from request',
       },

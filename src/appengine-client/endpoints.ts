@@ -34,6 +34,11 @@ export const appEndpoints = {
     method: 'get',
     path: 'repository/isunique',
   },
+  find_by_attribute: {
+    name: 'find_by_attribute',
+    method: 'get',
+    path: 'repository/find-by-attribute',
+  },
   query: {
     name: 'query',
     method: 'get',
@@ -419,7 +424,36 @@ export const appEndpoints = {
     method: 'post',
     path: 'crm/flexdata/update',
   },
-
+  crm_comment_delete: {
+    name: 'crm_comment_delete',
+    method: 'delete',
+    path: 'crm/comment/delete',
+  },
+  crm_comment_create: {
+    name: 'crm_comment_create',
+    method: 'post',
+    path: 'crm/comment/create',
+  },
+  crm_comment_get: {
+    name: 'crm_comment_get',
+    method: 'get',
+    path: 'crm/comment/get',
+  },
+  crm_activity_delete: {
+    name: 'crm_activity_delete',
+    method: 'delete',
+    path: 'crm/activity/delete',
+  },
+  crm_activity_create: {
+    name: 'crm_activity_create',
+    method: 'post',
+    path: 'crm/activity/create',
+  },
+  crm_activity_get: {
+    name: 'crm_activity_get',
+    method: 'get',
+    path: 'crm/activity/get',
+  },
 };
 
 export type APIEndpointName = keyof typeof appEndpoints;

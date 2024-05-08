@@ -348,7 +348,6 @@ export const SiteSchema = () => {
       globalStyle: {
         type: 'boolean',
         'x-control-variant': 'switch',
-        default: true,
       },
     },
   } as const;

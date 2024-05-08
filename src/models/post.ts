@@ -49,6 +49,7 @@ export const PostSchema = () => {
         type: 'string',
         ai: true,
         'x-control': ControlType.richtext,
+        hideInTable: true,
       },
     },
   } as const;

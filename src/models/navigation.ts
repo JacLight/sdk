@@ -53,8 +53,7 @@ export const NavigationLinkSchema = () => {
         type: 'string',
       },
       selection: {
-        type: 'array',
-        collapsible: true,
+        type: 'object',
         title: 'Selections',
         'x-control': ControlType.collection,
         displayStyle: 'table',
@@ -63,18 +62,16 @@ export const NavigationLinkSchema = () => {
           source: 'collection',
           collection: DataType.post,
         },
-        items: {
-          type: 'object',
-          properties: {
-            datatype: {
-              type: 'string',
-            },
-            id: {
-              type: 'string',
-            },
-            name: {
-              type: 'string',
-            },
+        properties: {
+          datatype: {
+            type: 'string',
+          },
+          id: {
+            type: 'string',
+            styleClass: '!w-10'
+          },
+          name: {
+            type: 'string',
           },
         },
       },

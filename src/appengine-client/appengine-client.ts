@@ -127,7 +127,7 @@ export class AppEngineClient {
 
   async getSite() {
     //en=true enables enrichment
-    const sitePath = `${appEndpoints.query.path}/site/name/${this.appConfig.siteName}?en=true`;
+    const sitePath = `${appEndpoints.find_by_attribute.path}/site/name/${this.appConfig.siteName}?en=true`;
     const rt: any = await this.processRequest('get', sitePath, null, null, null, null);
     if (rt && Array.isArray(rt.data) && rt.data.length > 0) {
       const [site] = rt.data;
@@ -137,7 +137,7 @@ export class AppEngineClient {
   }
 
   async getSiteShared(domainName?: string, siteName?: string) {
-    const sitePath = `${appEndpoints.query.path}/site/name/${siteName}?en=true&domain=${domainName}`;
+    const sitePath = `${appEndpoints.find_by_attribute.path}/site/name/${siteName}?en=true&domain=${domainName}`;
     const rt: any = await this.processRequest('get', sitePath, null, null, null, null);
     if (rt && Array.isArray(rt.data) && rt.data.length > 0) {
       const [site] = rt.data;
@@ -159,14 +159,14 @@ export class AppEngineClient {
   }
 
 
-  async getPage(pageIds: { slug?: string, name?: string, id?: string }, pageDataType?: string, pageDataAttr?: string, pageDataValue?: string, query?: string) {
+  async getPage(siteName: string, pageIds: { slug?: string, name?: string, id?: string }, pageDataType?: string, pageDataAttr?: string, pageDataValue?: string, query?: string) {
     const pageIdType = pageIds?.id ? 'id' : pageIds?.name ? 'name' : pageIds?.slug ? 'slug' : null;
     if (!pageIdType) {
       console.debug('request -> getPage, no pageIds specified, ', pageIds);
       return null
     }
 
-    let pagePath = `${appEndpoints.get_page.path}/${pageIdType}/${pageIds[pageIdType]}`;
+    let pagePath = `${appEndpoints.get_page.path}/${siteName}/${pageIdType}/${pageIds[pageIdType]}`;
     if (pageDataType && pageDataAttr && pageDataValue) {
       pagePath = `${pagePath}/${pageDataType}/${pageDataAttr}/${pageDataValue}`;
     } else if (pageDataType) {
@@ -188,7 +188,7 @@ export class AppEngineClient {
       return null
     }
 
-    let pagePath = `${appEndpoints.get_page.path}/${pageIdType}/${pageIds[pageIdType]}`;
+    let pagePath = `${appEndpoints.get_page.path}/${domainName}/${pageIdType}/${pageIds[pageIdType]}`;
     if (pageDataType && pageDataAttr && pageDataValue) {
       pagePath = `${pagePath}/${pageDataType}/${pageDataAttr}/${pageDataValue}`;
     } else if (pageDataType) {

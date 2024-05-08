@@ -5,4 +5,5 @@ export enum TaskStatus {
   blocked,
   done,
   canceled,
+  archived
 }

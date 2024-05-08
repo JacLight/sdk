@@ -60,6 +60,7 @@ export const SFProductSchema = () => {
       posts: { type: 'object', hidden: true }, //  PostSchema(),
       image: {
         type: 'string',
+        hidden: true,
       },
       images: {
         type: 'array',
@@ -240,7 +241,7 @@ export const SFProductUI = (): CollectionUI[] => {
         {
           '0': '/properties/sku',
           '1': '/properties/brand',
-          '2': '/properties/points',
+          '2': '/properties/status',
         },
         {
           '0': '/properties/price',
@@ -253,6 +254,13 @@ export const SFProductUI = (): CollectionUI[] => {
           '2': '/properties/subscription',
         },
       ],
+    },
+    {
+      type: FormViewSectionType.section1column,
+      default: true,
+      title: 'Default',
+      collapsible: true,
+      items: [],
     },
     {
       type: FormViewSectionType.section2column,

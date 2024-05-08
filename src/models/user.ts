@@ -340,6 +340,7 @@ export const UserUI = (): CollectionUI[] => {
           items: [
             {
               '0': '/properties/portrait',
+              '1': '/properties/username',
             },
             {
               '0': '/properties/firstName',

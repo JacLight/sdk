@@ -253,6 +253,7 @@ export const CustomerUI = (): CollectionUI[] => {
           items: [
             {
               '0': '/properties/image',
+              '1': '/properties/username',
             },
             {
               '0': '/properties/email',
