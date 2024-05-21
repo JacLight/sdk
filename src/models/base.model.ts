@@ -206,12 +206,20 @@ export const StyleSubSchema = () => {
         'x-control': 'Code',
         'x-control-variant': 'css',
         collapsible: true,
+        popup: {
+          inline: true,
+          style: { width: '800px' },
+        }
       },
       javascript: {
         type: 'string',
         'x-control': 'Code',
         collapsible: true,
         'x-control-variant': 'javascript',
+        popup: {
+          inline: true,
+          style: { width: '800px' },
+        }
       },
       styleLinks: {
         type: 'array',

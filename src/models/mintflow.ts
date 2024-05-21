@@ -84,12 +84,12 @@ export const MintflowNodeSchema = () => {
       inNodePos: {
         type: 'string',
         default: 'Top',
-        enum: ['', 'Top', 'Right', 'Bottom', 'Left'],
+        enum: ['Top', 'Right', 'Bottom', 'Left', 'hidden'],
       },
       outNodePos: {
         type: 'string',
         default: 'Bottom',
-        enum: ['', 'Top', 'Right', 'Bottom', 'Left'],
+        enum: ['Top', 'Right', 'Bottom', 'Left', 'hidden'],
       },
     },
     required: ['name'],

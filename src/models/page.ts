@@ -106,6 +106,11 @@ export const PageSchema = (title = '', description = '') => {
         enum: ['append', 'locked'],
         default: 'append',
       },
+      layoutMode: {
+        type: 'string',
+        enum: ['editable', 'grid'],
+        default: 'grid',
+      },
       priority: {
         type: 'integer',
       },
@@ -365,6 +370,7 @@ export const PageUI = (): CollectionUI[] => {
             },
             {
               '0': '/properties/title',
+              '1': '/properties/dataType',
             },
             {
               '0': '/properties/description',
@@ -374,7 +380,7 @@ export const PageUI = (): CollectionUI[] => {
             },
             {
               '0': '/properties/childEditing',
-              '1': '/properties/dataType',
+              '1': '/properties/layoutMode',
             },
             {
               '0': '/properties/hidden',
