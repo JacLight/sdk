@@ -71,18 +71,23 @@ export const appEndpoints = {
   },
   search: {
     name: 'search',
-    method: 'post',
+    method: 'get',
     path: 'repository/search',
   },
   search_asset: {
     name: 'search_asset',
     method: 'post',
-    path: 'repository/search_asset',
+    path: 'repository/search-asset',
   },
   find: {
     name: 'find',
     method: 'post',
     path: 'repository/find',
+  },
+  find_asset: {
+    name: 'find_asset',
+    method: 'post',
+    path: 'repository/find-asset',
   },
   create: {
     name: 'create',
@@ -108,6 +113,11 @@ export const appEndpoints = {
     name: 'login',
     method: 'post',
     path: 'profile/customer/signin',
+  },
+  dashboard_auth: {
+    name: 'dashboard_auth',
+    method: 'get',
+    path: 'profile/customer/dashboard/auth',
   },
   login_magiclink: {
     name: 'login_magiclink',
@@ -243,6 +253,16 @@ export const appEndpoints = {
     name: 'order_update',
     method: 'post',
     path: 'storefront/order/update',
+  },
+  checkout_payment_gateways: {
+    name: 'checkout_payment_gateways',
+    method: 'get',
+    path: 'storefront/payment_gateways',
+  },
+  subscriptions_get: {
+    name: 'subscriptions_get',
+    method: 'get',
+    path: 'storefront/subscriptions/get',
   },
   upstream_call: {
     name: 'upstream_call',
@@ -453,6 +473,21 @@ export const appEndpoints = {
     name: 'crm_activity_get',
     method: 'get',
     path: 'crm/activity/get',
+  },
+  index_site: {
+    name: 'index_site',
+    method: 'get',
+    path: 'tools/index-site',
+  },
+  web_visit: {
+    name: 'web_visit',
+    method: 'post',
+    path: 'tools/web-visit',
+  },
+  web_activity: {
+    name: 'web_activity',
+    method: 'post',
+    path: 'tools/web-activity',
   },
 };
 

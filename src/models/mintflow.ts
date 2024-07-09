@@ -15,18 +15,39 @@ export const MintflowSchema = () => {
         minLength: 3,
         maxLength: 50,
         unique: true,
-        transform: 'uri'
+        transform: 'uri',
+        group: 'name',
+        displayStyle: 'outlined',
       },
       title: {
         type: 'string',
+        displayStyle: 'outlined',
+        group: 'name'
+      },
+      layoutFlow: {
+        type: 'string',
+        enum: ['vertical', 'horizontal'],
+        displayStyle: 'outlined',
+        default: 'vertical',
+        group: 'flow'
+      },
+      executionFlow: {
+        type: 'string',
+        enum: ['auto', 'flow', 'step'],
+        displayStyle: 'outlined',
+        default: 'auto',
+        group: 'flow'
+      },
+      description: {
+        displayStyle: 'outlined',
+        type: 'string',
+        'x-control-variant': 'textarea',
       },
       instances: {
         type: 'number',
         maximum: 10,
         minimum: 0,
-      },
-      description: {
-        type: 'string',
+        hidden: true,
       },
       viewport: {
         type: 'array',
@@ -46,6 +67,7 @@ export const MintflowSchema = () => {
         type: 'string',
         enum: ['draft', 'published', 'archived'],
         default: 'Draft',
+        readOnly: true,
       }
     },
   } as const;
@@ -72,6 +94,10 @@ export const MintflowNodeSchema = () => {
         minLength: 3,
         maxLength: 100,
         transform: 'uri'
+      },
+      directCall: {
+        type: 'boolean',
+        hidden: true,
       },
       title: {
         type: 'string',

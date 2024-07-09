@@ -27,6 +27,8 @@ export const SettingSchema = () => {
       smsTemplate: getSettingItemSchema(DataType.messagetemplate),
       orderEmailTemplate: getSettingItemSchema(DataType.messagetemplate),
       orderSmsTemplate: getSettingItemSchema(DataType.messagetemplate),
+      subscriptionEmailTemplate: getSettingItemSchema(DataType.messagetemplate),
+      subscriptionSmsTemplate: getSettingItemSchema(DataType.messagetemplate),
       ticketEmailTemplate: getSettingItemSchema(DataType.messagetemplate),
       ticketSmsTemplate: getSettingItemSchema(DataType.messagetemplate),
       registerEmailTemplate: getSettingItemSchema(DataType.messagetemplate),

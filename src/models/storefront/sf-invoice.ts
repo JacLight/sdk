@@ -8,52 +8,57 @@ export const SFInvoiceSchema = () => {
   return {
     type: 'object',
     properties: {
-      id: {
+      number: {
         type: 'string',
         pattern: '^[a-zA-Z_\\-0-9]*$',
         minLength: 10,
         maxLength: 10,
         unique: true,
+        transform: ['random-string::10'],
+        group: 'number'
+      },
+      po: {
+        type: 'string',
+        group: 'number'
       },
       billTo: {
         type: 'string',
         'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
-          collection: DataType.sf_vendor,
-          value: 'sk',
-          label: 'name',
+          collection: DataType.customer,
+          value: 'username',
+          label: ['username', 'email'],
         },
+        group: 'address'
       },
-      po: {
+      shipTo: {
         type: 'string',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.customer,
+          value: 'username',
+          label: ['username', 'email'],
+        },
+        group: 'address'
       },
       invoiceData: {
         type: 'string',
+        default: '{{fn:date-now}}',
+        group: 'date'
       },
       dueDate: {
         type: 'string',
+        default: '{{fn:date-now}}',
+        group: 'date'
       },
       paymentDate: {
         type: 'string',
       },
-      total: {
-        type: 'string',
-      },
-      tax: {
-        type: 'string',
-      },
-      discount: {
-        type: 'string',
-      },
-      status: {
-        type: 'string',
-      },
-      remarks: {
-        type: 'string',
-      },
       products: {
         type: 'array',
+        collapsible: true,
         dataSource: {
           source: 'collection',
           collection: DataType.sf_product,
@@ -72,6 +77,45 @@ export const SFInvoiceSchema = () => {
           },
         },
       },
+      itemCount: {
+        type: 'number',
+        readOnly: true,
+        group: 'subTotal',
+      },
+      subTotal: {
+        type: 'string',
+        group: 'subTotal',
+        readOnly: true,
+      },
+      discount: {
+        type: 'string',
+        group: 'discount'
+      },
+      discountCode: {
+        type: 'string',
+        group: 'discount'
+      },
+      tax: {
+        type: 'string',
+        group: 'discount'
+      },
+      payment: {
+        type: 'string',
+        group: 'payment'
+      },
+      total: {
+        type: 'string',
+        group: 'payment'
+      },
+      status: {
+        type: 'string',
+        group: 'status',
+      },
+      remarks: {
+        type: 'string',
+        group: 'status',
+      },
+
     },
     required: ['name', 'sku'],
   } as const;

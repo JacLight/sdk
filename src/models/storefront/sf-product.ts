@@ -16,8 +16,9 @@ export const SFProductSchema = () => {
       slug: {
         type: 'string',
         pattern: '^[a-zA-Z_\\-0-9]*$',
-        suffix: '-',
-        transform: ['uri', 'lowercase', 'suffix', 'random-string', '{{name}}'],
+        default: '{{name}}',
+        transform: ['uri', 'lowercase', 'suffix-', 'random-string'],
+        textSearch: true,
       },
       sku: {
         type: 'string',
@@ -25,11 +26,13 @@ export const SFProductSchema = () => {
         minLength: 3,
         maxLength: 50,
         unique: true,
+        textSearch: true,
       },
       description: {
         type: 'string',
         hideLabel: true,
         'x-control': ControlType.richtext,
+        textSearch: true,
       },
       brand: {
         type: 'string',
@@ -51,7 +54,14 @@ export const SFProductSchema = () => {
         type: 'boolean',
       },
       subscription: {
-        type: 'boolean',
+        type: 'string',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.sf_subscription_definition,
+          value: 'name',
+          label: 'name',
+        },
       },
       sold: {
         type: 'number',

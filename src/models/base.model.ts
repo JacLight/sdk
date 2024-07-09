@@ -81,6 +81,7 @@ export interface BaseModel<T> {
     id: string;
   },
   state?: ModelState;
+  search?: string;
 }
 
 export const PostSubSchema = () => {

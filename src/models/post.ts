@@ -19,9 +19,10 @@ export const PostSchema = () => {
         maxLength: 100,
         unique: true,
         group: 'slug',
+        default: '{{title}}',
         groupLayout: 'flat',
-        suffix: '-',
-        transform: ['uri', 'lowercase', 'suffix', 'random-string', '{{title}}'],
+        transform: ['uri', 'lowercase', 'suffix::-', 'random-string'],
+        textSearch: true,
 
       },
       template: {
@@ -44,12 +45,14 @@ export const PostSchema = () => {
       summary: {
         type: 'string',
         'x-control-variant': 'textarea',
+        textSearch: true,
       },
       content: {
         type: 'string',
         ai: true,
         'x-control': ControlType.richtext,
         hideInTable: true,
+        textSearch: true,
       },
     },
   } as const;

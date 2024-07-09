@@ -3,6 +3,7 @@ import { registerCollection } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
 import { CollectionUI } from '../collection-ui';
 import { DataType } from '../../types';
+import { AddressSchema } from '../crm/crm-address';
 
 export const SFCartSchema = () => {
   return {
@@ -12,6 +13,12 @@ export const SFCartSchema = () => {
         type: 'string',
       },
       source: {
+        type: 'string',
+      },
+      phone: {
+        type: 'string',
+      },
+      email: {
         type: 'string',
       },
       items: {
@@ -28,6 +35,31 @@ export const SFCartSchema = () => {
           },
         },
       },
+      total: {
+        type: 'number',
+      },
+      checkoutInfo: {
+        type: 'object',
+        properties: {
+          paymentMethod: {
+            type: 'string',
+          },
+          deliveryMethod: {
+            type: 'string',
+          },
+          deliveryAddress: {
+            type: 'string',
+          },
+          deliveryDate: {
+            type: 'string',
+          },
+          deliveryTime: {
+            type: 'string',
+          },
+        }
+      },
+      billingAddress: AddressSchema(),
+      shippingAddress: AddressSchema(),
     },
   } as const;
 };

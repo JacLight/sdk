@@ -19,7 +19,7 @@ export interface CollectionModel {
   workflow?: string;
   permission?: {};
   theme: {};
-  styles: {};
+  style: {};
   rules?: CollectionRule[];
   validations?: {};
   uischema?: CollectionUI[];
@@ -32,7 +32,7 @@ export const CollectionSchema = () => {
     properties: {
       name: {
         type: 'string',
-        pattern: '^[a-zA-Z_\\-0-9]*$',
+        pattern: '^[a-zA-Z_0-9]*$',
         minLength: 3,
         maxLength: 20,
         unique: true,
@@ -117,9 +117,18 @@ export const CollectionSchema = () => {
       elements: {
         hidden: true,
         type: 'array',
-
       },
       rules: {
+        hidden: true,
+        type: 'object',
+        properties: {},
+      },
+      style: {
+        hidden: true,
+        type: 'object',
+        properties: {},
+      },
+      theme: {
         hidden: true,
         type: 'object',
         properties: {},

@@ -138,7 +138,7 @@ export const DataVizTableConfigSchema = () => {
     type: 'object',
     properties: {
       collection: {
-        type: 'array',
+        type: 'string',
         showIndex: true,
         'x-control-variant': 'chip',
         'x-control': ControlType.selectMany,

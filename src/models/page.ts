@@ -28,7 +28,7 @@ export const PageSchema = (title = '', description = '') => {
         maxLength: 50,
         unique: true,
         uniqueScope: ['site'],
-        transform: 'uri'
+        transform: 'uri',
       },
       parent: {
         type: 'string',
@@ -86,8 +86,17 @@ export const PageSchema = (title = '', description = '') => {
         event: 'onBlur',
         unique: true,
         uniqueScope: ['site'],
-        suffix: '-',
-        transform: ['uri', 'lowercase', 'suffix', 'random-string', '{{title}}'],
+        value: '{{title}}',
+        transform: ['uri', 'lowercase', 'suffix::-', 'random-string:4'],
+      },
+      iconUrl: {
+        type: 'string',
+      },
+      childEditing: {
+        type: 'string',
+        enum: ['append', 'locked'],
+        default: 'append',
+        displayStyle: 'outlined',
       },
       dataType: {
         type: 'string',
@@ -98,18 +107,10 @@ export const PageSchema = (title = '', description = '') => {
           json: [],
         }
       },
-      iconUrl: {
+      idType: {
         type: 'string',
-      },
-      childEditing: {
-        type: 'string',
-        enum: ['append', 'locked'],
-        default: 'append',
-      },
-      layoutMode: {
-        type: 'string',
-        enum: ['editable', 'grid'],
-        default: 'grid',
+        enum: ['name', 'slug', 'id'],
+        displayStyle: 'outlined',
       },
       priority: {
         type: 'integer',
@@ -342,6 +343,9 @@ export const PageSectionSchema = () => {
           title: {
             type: 'string',
           },
+          description: {
+            type: 'string',
+          },
           keywords: {
             type: 'string',
           },
@@ -370,7 +374,6 @@ export const PageUI = (): CollectionUI[] => {
             },
             {
               '0': '/properties/title',
-              '1': '/properties/dataType',
             },
             {
               '0': '/properties/description',
@@ -380,7 +383,8 @@ export const PageUI = (): CollectionUI[] => {
             },
             {
               '0': '/properties/childEditing',
-              '1': '/properties/layoutMode',
+              '1': '/properties/dataType',
+              '2': '/properties/idType',
             },
             {
               '0': '/properties/hidden',

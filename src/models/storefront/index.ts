@@ -14,6 +14,7 @@ export * from './sf-discount';
 export * from './sf-marketing';
 export * from './sf-inventory';
 export * from './sf-subscription';
+export * from './sf-subscription-definition';
 export * from './sf-transaction';
 export * from './sf-wishlist';
 export * from './sf-brand';

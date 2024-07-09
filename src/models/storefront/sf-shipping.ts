@@ -176,5 +176,5 @@ registerCollection(
   SFShippingSchema(),
   SFShippingUI(),
   SFShippingRules(),
-  true
+  false
 );

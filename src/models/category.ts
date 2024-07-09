@@ -24,14 +24,8 @@ export const CategorySchema = () => {
         type: 'string',
         'x-control-variant': 'textarea',
       },
-      tags: {
-        type: 'array',
-        items: {
-          type: 'string',
-        },
-      },
       image: FileInfoSchema(),
-      categories: {
+      children: {
         type: 'array',
         hidden: true,
         items: { type: 'object' },

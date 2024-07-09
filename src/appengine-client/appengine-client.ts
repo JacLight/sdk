@@ -82,7 +82,7 @@ export class AppEngineClient {
     }
 
     if (clientInfo) {
-      header.headers['x-client-info'] = clientInfo
+      header.headers['x-client-info'] = JSON.stringify(clientInfo)
       header.headers['x-client-host'] = clientInfo['host']
       header.headers['x-client-protocol'] = clientInfo['protocol']
     }

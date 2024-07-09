@@ -45,7 +45,6 @@ export enum DataType {
   chatregister = 'chatregister',
   phone = 'phone',
   sf_attribute = 'sf_attribute',
-  sf_vendor = 'sf_vendor',
   sf_delivery = 'sf_delivery',
   sf_giftcard = 'sf_giftcard',
   sf_invoice = 'sf_invoice',
@@ -55,6 +54,7 @@ export enum DataType {
   sf_refund = 'sf_refund',
   sf_shipping = 'sf_shipping',
   sf_subscription = 'sf_subscription',
+  sf_subscription_definition = 'sf_subscription_definition',
   sf_transaction = 'sf_transaction',
   sf_wishlist = 'sf_wishlist',
   sf_brand = 'sf_brand',
@@ -79,4 +79,7 @@ export enum DataType {
   publish = 'publish',
   history = 'history',
   auraflow = 'auraflow',
+  web_visit = 'web_visit',
+  web_activity = 'web_activity',
+  site_index = 'site_index',
 }

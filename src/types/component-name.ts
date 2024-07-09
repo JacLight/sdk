@@ -49,4 +49,6 @@ export enum ComponentName {
   FinanceHome = 'FinanceHome',
   InventoryHome = 'InventoryHome',
   AuraFlow = 'AuraFlow',
+  SubscriptionHome = 'SubscriptionHome',
+  TranslationView = 'TranslationView',
 }

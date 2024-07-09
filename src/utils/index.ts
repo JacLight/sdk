@@ -289,3 +289,9 @@ export const debounce = (func: any, wait: number) => {
     timeout = setTimeout(later, wait);
   };
 }
+
+export const isValidHtmlId = (id: string) => {
+  if (!id || typeof id !== 'string') return false;
+  const idPattern = /^[A-Za-z][\w\:\-\.]*$/;
+  return idPattern.test(id);
+}

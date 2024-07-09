@@ -1,6 +1,7 @@
 export enum ControlType {
   paragraph = 'paragraph',
   container = 'container',
+  containerLayout = 'containerLayout',
   richtext = 'richtext',
   html = 'html',
   markdown = 'markdown',
@@ -33,4 +34,6 @@ export enum ControlType {
   column = 'column',
   numberRange = 'numberRange',
   ui = 'ui',
+  arrayContainer = 'arrayContainer',
+  dateRange = 'dateRange',
 }

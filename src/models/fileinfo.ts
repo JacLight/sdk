@@ -12,9 +12,16 @@ export const FileInfoSchema = () => {
     properties: {
       path: {
         type: 'string',
+        textSearch: true,
+      },
+      content: {
+        type: 'string',
+        textSearch: true,
+        hidden: true,
       },
       url: {
         type: 'string',
+        textSearch: true,
       },
     },
   } as const;
