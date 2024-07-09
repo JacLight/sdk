@@ -88,6 +88,7 @@ export const SFInvoiceSchema = () => {
         type: 'string',
         group: 'subTotal',
         readOnly: true,
+        fn: 'rowData.products.reduce((acc, item) => acc + (item.amount || 0), 0)',
       },
       discount: {
         type: 'string',
@@ -107,7 +108,9 @@ export const SFInvoiceSchema = () => {
       },
       total: {
         type: 'string',
-        group: 'payment'
+        group: 'payment',
+        readOnly: true,
+        fn: 'parseFloat(rowData.subTotal || 0) + parseFloat(rowData.tax || 0) - parseFloat(rowData.discount || 0)',
       },
       status: {
         type: 'string',
