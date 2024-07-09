@@ -75,7 +75,7 @@ export const SFInvoiceSchema = () => {
             price: { type: 'number', readOnly: true },
             quantity: { type: 'number', editable: true, default: 1, styleClass: 'w-24 text-right' },
             discount: { type: 'number', editable: true, default: 0, styleClass: 'w-32 text-right' },
-            amount: { type: 'number', readOnly: true, fn: '((rowData.quantity || 1) * (rowData.price || 0)) - (rowData.discount || 0)' },
+            amount: { type: 'number', format: 'currency', readOnly: true, fn: '((rowData.quantity || 1) * (rowData.price || 0)) - (rowData.discount || 0)' },
           },
         },
       },
@@ -89,10 +89,12 @@ export const SFInvoiceSchema = () => {
         group: 'subTotal',
         readOnly: true,
         fn: 'rowData.products.reduce((acc, item) => acc + (item.amount || 0), 0)',
+        format: 'currency',
       },
       discount: {
         type: 'string',
-        group: 'discount'
+        group: 'discount',
+        format: 'currency',
       },
       discountCode: {
         type: 'string',
@@ -100,9 +102,10 @@ export const SFInvoiceSchema = () => {
       },
       tax: {
         type: 'string',
-        group: 'discount'
+        group: 'discount',
+        format: 'currency',
       },
-      payment: {
+      paymentRef: {
         type: 'string',
         group: 'payment'
       },
@@ -111,6 +114,7 @@ export const SFInvoiceSchema = () => {
         group: 'payment',
         readOnly: true,
         fn: 'parseFloat(rowData.subTotal || 0) + parseFloat(rowData.tax || 0) - parseFloat(rowData.discount || 0)',
+        format: 'currency',
       },
       status: {
         type: 'string',
