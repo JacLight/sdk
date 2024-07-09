@@ -68,10 +68,10 @@ export const SFInvoiceSchema = () => {
         items: {
           type: 'object',
           properties: {
-            sk: { type: 'string', hidden: true },
+            sk: { type: 'string', hideInTable: true },
             sku: { type: 'string' },
             name: { type: 'string' },
-            description: { type: 'string', hidden: true },
+            description: { type: 'string', hideInTable: true },
             price: { type: 'number', readOnly: true },
             quantity: { type: 'number', editable: true, default: 1 },
             discount: { type: 'number', editable: true, default: 0 },
