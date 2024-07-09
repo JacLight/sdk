@@ -113,7 +113,7 @@ export const SFInvoiceSchema = () => {
         type: 'string',
         group: 'payment',
         readOnly: true,
-        fn: 'parseFloat(data.subTotal || 0) + parseFloat(data.tax || 0) - parseFloat(data.discount || 0)',
+        fn: 'parseFloat(rowData.products.reduce((acc, item) => acc + (item.amount || 0), 0) || 0) + parseFloat(data.tax || 0) - parseFloat(data.discount || 0)',
         format: 'currency',
       },
       status: {
