@@ -117,7 +117,7 @@ export const SFInvoiceSchema = () => {
       },
 
     },
-    required: ['name', 'sku'],
+    required: ['number'],
   } as const;
 };
 

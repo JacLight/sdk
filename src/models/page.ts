@@ -86,7 +86,7 @@ export const PageSchema = (title = '', description = '') => {
         event: 'onBlur',
         unique: true,
         uniqueScope: ['site'],
-        value: '{{title}}',
+        default: '{{title}}',
         transform: ['uri', 'lowercase', 'suffix::-', 'random-string:4'],
       },
       iconUrl: {
