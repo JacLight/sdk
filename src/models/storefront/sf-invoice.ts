@@ -73,7 +73,7 @@ export const SFInvoiceSchema = () => {
             name: { type: 'string' },
             description: { type: 'string', hideInTable: true },
             price: { type: 'number', readOnly: true },
-            quantity: { type: 'number', editable: true, default: 1, styleClass: 'w-24 text-right' },
+            quantity: { type: 'number', editable: true, default: 1, styleClass: 'w-16 text-right' },
             discount: { type: 'number', editable: true, default: 0, styleClass: 'w-32 text-right' },
             amount: { type: 'number', format: 'currency', readOnly: true, fn: '((rowData.quantity || 1) * (rowData.price || 0)) - (rowData.discount || 0)' },
           },
@@ -113,7 +113,7 @@ export const SFInvoiceSchema = () => {
         type: 'string',
         group: 'payment',
         readOnly: true,
-        fn: 'parseFloat(rowData.subTotal || 0) + parseFloat(rowData.tax || 0) - parseFloat(rowData.discount || 0)',
+        fn: 'parseFloat(data.subTotal || 0) + parseFloat(data.tax || 0) - parseFloat(data.discount || 0)',
         format: 'currency',
       },
       status: {
