@@ -10,4 +10,5 @@ export enum ConfigType {
   Kafka = 'Kafka',
   MySQL = 'MySQL',
   MongoDB = 'MongoDB',
+  Payment = 'Payment',
 }
