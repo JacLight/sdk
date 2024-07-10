@@ -43,17 +43,6 @@ export const SFInvoiceSchema = () => {
         },
         group: 'address'
       },
-      template: {
-        type: 'string',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.messagetemplate,
-          value: 'name',
-          label: ['name', 'from'],
-        },
-        group: 'template'
-      },
       invoiceData: {
         type: 'string',
         default: '{{fn:date-now}}',
@@ -130,6 +119,17 @@ export const SFInvoiceSchema = () => {
         readOnly: true,
         fn: 'parseFloat(rowData.products.reduce((acc, item) => acc + (item.amount || 0), 0) || 0) + parseFloat(data.tax || 0) - parseFloat(data.discount || 0)',
         format: 'currency',
+      },
+      template: {
+        type: 'string',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.messagetemplate,
+          value: 'name',
+          label: ['name', 'from'],
+        },
+        group: 'template'
       },
       delivery: {
         type: 'array',

@@ -19,6 +19,11 @@ export const FormSchema = () => {
       type: {
         type: 'string',
       },
+      collection: {
+      },
+      content: {
+
+      }
     },
   } as const;
 };

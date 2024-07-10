@@ -40,6 +40,7 @@ export enum DataType {
   customer = 'customer',
   calllog = 'calllog',
   form = 'form',
+  signed_document = 'signed_document',
   chatmessage = 'chatmessage',
   chatgroup = 'chatgroup',
   chatregister = 'chatregister',

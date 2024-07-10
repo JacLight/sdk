@@ -1,6 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../defaultschema';
-import { ConfigType } from '../types';
+import { ConfigType, ControlType } from '../types';
 import { DataType } from '../types';
 import { CollectionRule } from './collection-rule';
 import { CollectionUI } from './collection-ui';
@@ -21,6 +21,12 @@ export const ConfigSchema = () => {
         type: 'string',
         enum: Object.values(ConfigType),
         disabled: true,
+      },
+      useCases: {
+        type: 'array',
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
+        readOnly: true,
       },
       default: {
         type: 'boolean',

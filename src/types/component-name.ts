@@ -51,4 +51,6 @@ export enum ComponentName {
   AuraFlow = 'AuraFlow',
   SubscriptionHome = 'SubscriptionHome',
   TranslationView = 'TranslationView',
+  InvoiceHome = 'InvoiceHome',
+  SignedDocument = 'SignedDocument',
 }

@@ -329,6 +329,11 @@ export const appEndpoints = {
     method: 'post',
     path: 'crm/inbox/update',
   },
+  crm_reservations_by_email: {
+    name: 'crm_reservations_by_email',
+    method: 'get',
+    path: 'crm/reservations/by-email',
+  },
   crm_reservations_get: {
     name: 'crm_reservations_get',
     method: 'get',

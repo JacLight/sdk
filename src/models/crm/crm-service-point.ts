@@ -159,6 +159,6 @@ registerCollection(
   ServicePointItemSchema(),
   ServicePointItemUI(),
   ServicePointItemRules(),
-  true,
+  false,
   true
 );
