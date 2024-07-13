@@ -1,7 +1,7 @@
 import { registerCollection, registerDefaultData } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
 import { CollectionUI } from '../collection-ui';
-import { DataType } from '../../types';
+import { ControlType, DataType } from '../../types';
 import { FromSchema } from 'json-schema-to-ts';
 
 export const FormSchema = () => {
@@ -11,18 +11,70 @@ export const FormSchema = () => {
       name: {
         type: 'string',
         pattern: '^[a-zA-Z_\\-0-9]*$',
-        transform: 'uri',
+        transform: ['random-string::10'],
+        group: 'name',
       },
-      application: {
+      accessCode: {
         type: 'string',
+        group: 'name',
       },
-      type: {
+      startDate: {
+        type: 'string',
+        format: 'date-time',
+        group: 'date',
+      },
+      endDate: {
+        type: 'string',
+        format: 'date-time',
+        group: 'date',
+      },
+      title: {
         type: 'string',
       },
       collection: {
+        type: 'string',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.collection,
+          label: 'name',
+          value: 'name',
+          filter: {
+            property: 'type',
+            operation: 'equal',
+            value: 'Defined',
+          }
+        }
       },
-      content: {
-
+      participants: {
+        type: 'array',
+        collapsible: true,
+        description: "List of places in the document where signatures are required",
+        items: {
+          type: 'object',
+          layout: 'horizontal',
+          properties: {
+            email: {
+              type: 'string',
+              format: 'email',
+            },
+            name: {
+              type: 'string',
+            },
+            accessCode: {
+              type: 'string',
+              styleClass: 'w-20'
+            },
+            role: {
+              type: 'string',
+              styleClass: 'w-20'
+            },
+          },
+        },
+      },
+      status: {
+        type: 'string',
+        enum: ['new', 'open', 'closed', 'cancelled'],
       }
     },
   } as const;

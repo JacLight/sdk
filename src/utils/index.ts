@@ -251,6 +251,18 @@ export function styleToObject(style: string): { [key: string]: string } {
     }, {});
 }
 
+export function stringifyCSSObject(cssObject: any, indent = '') {
+  let result = '';
+  for (const [key, value] of Object.entries(cssObject)) {
+    if (typeof value === 'object') {
+      result += `${indent}${key}: {\n${stringifyCSSObject(value, indent + '  ')}${indent}}\n`;
+    } else {
+      result += `${indent}${key}: ${value};\n`;
+    }
+  }
+  return result;
+}
+
 
 export function formatBytes(bytes: number, decimals = 2): string {
   if (bytes === 0) return '0 Bytes';

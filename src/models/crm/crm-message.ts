@@ -93,8 +93,6 @@ export const MessageSchema = () => {
       },
       files: {
         type: 'array',
-        collapsible: true,
-        allowDelete: true,
         'x-control': ControlType.file,
         items: FileInfoSchema(),
       },

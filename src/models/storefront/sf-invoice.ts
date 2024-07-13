@@ -43,14 +43,14 @@ export const SFInvoiceSchema = () => {
         },
         group: 'address'
       },
-      invoiceData: {
+      invoiceDate: {
         type: 'string',
-        default: '{{fn:date-now}}',
+        default: '{{fn:new Date().toLocaleDateString()}}',
         group: 'date'
       },
       dueDate: {
         type: 'string',
-        default: '{{fn:date-now}}',
+        default: '{{fn:new Date().toLocaleDateString()}}',
         group: 'date'
       },
       paymentDate: {
@@ -92,7 +92,7 @@ export const SFInvoiceSchema = () => {
         type: 'string',
         group: 'subTotal',
         readOnly: true,
-        fn: 'rowData.products.reduce((acc, item) => acc + (item.amount || 0), 0)',
+        fn: 'data.products.reduce((acc, item) => acc + (item.amount || 0), 0)',
         format: 'currency',
       },
       discount: {
@@ -117,7 +117,7 @@ export const SFInvoiceSchema = () => {
         type: 'string',
         group: 'payment',
         readOnly: true,
-        fn: 'parseFloat(rowData.products.reduce((acc, item) => acc + (item.amount || 0), 0) || 0) + parseFloat(data.tax || 0) - parseFloat(data.discount || 0)',
+        fn: 'parseFloat(data.products.reduce((acc, item) => acc + (item.amount || 0), 0) || 0) + parseFloat(data.tax || 0) - parseFloat(data.discount || 0)',
         format: 'currency',
       },
       template: {

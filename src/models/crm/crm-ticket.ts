@@ -1,8 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection, registerDefaultData } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
-import { CollectionUI } from '../collection-ui';
-import { DataType, ControlType, FormViewSectionType } from '../../types';
+import { DataType, ControlType } from '../../types';
 import { FileInfoSchema } from '../fileinfo';
 
 export const TicketSchema = () => {
@@ -13,21 +12,30 @@ export const TicketSchema = () => {
         type: 'string',
         pattern: '^[a-zA-Z_\\-0-9]*$',
         unique: true,
-        transform: 'uri',
-        readOnly: true
+        readOnly: true,
+        transform: ['random-string::10', 'uri'],
+        group: 'status',
+      },
+      status: {
+        type: 'string',
+        enum: ['new', 'open', 'pending', 'inprogress', 'blocked', 'done', 'canceled'],
+        group: 'status',
       },
       reportedBy: {
         title: 'Name',
         type: 'string',
+        group: 'customer'
       },
       reportedByEmail: {
         title: 'Email',
         type: 'string',
         format: 'email',
+        group: 'customer'
       },
       reportedByPhone: {
         title: 'Phone',
         type: 'string',
+        group: 'customer'
       },
       title: {
         type: 'string',
@@ -45,18 +53,17 @@ export const TicketSchema = () => {
       priority: {
         type: 'string',
         enum: ['low', 'medium', 'high', 'urgent'],
+        group: 'priority',
       },
       severity: {
         type: 'string',
         enum: ['minor', 'major', 'critical', 'catastrophic'],
+        group: 'priority',
       },
       channel: {
         type: 'string',
         enum: ['web', 'phone', 'chat', 'mobile', 'api', 'other'],
-      },
-      status: {
-        type: 'string',
-        enum: ['new', 'open', 'pending', 'inprogress', 'blocked', 'done', 'canceled'],
+        group: 'priority',
       },
       assignTo: {
         type: 'string',
@@ -67,9 +74,11 @@ export const TicketSchema = () => {
           value: 'username',
           label: ['email', 'username'],
         },
+        group: 'assign',
       },
       assignBy: {
         type: 'string',
+        group: 'assign',
       },
       assignments: {
         type: 'array',
@@ -90,62 +99,6 @@ export const TicketSchema = () => {
   } as const;
 };
 
-export const TicketUI = (): CollectionUI[] => {
-  return [
-    {
-      type: FormViewSectionType.section2column,
-      items: [
-        {
-          '0': '/properties/reportedBy',
-          '1': '/properties/reportedByEmail',
-          '2': '/properties/reportedByPhone',
-        },
-      ],
-    },
-    {
-      type: FormViewSectionType.section2column,
-      items: [
-        {
-          '0': '/properties/name',
-          '1': '/properties/status',
-        },
-        {
-          '0': '/properties/title',
-        },
-        {
-          '0': '/properties/description',
-        },
-        {
-          '0': '/properties/priority',
-          '1': '/properties/severity',
-          '2': '/properties/channel',
-        },
-        {
-          '0': '/properties/assignTo',
-          '1': '/properties/assignBy',
-        },
-      ],
-    },
-    {
-      type: FormViewSectionType.section2column,
-      collapsible: true,
-      items: [
-        {
-          '0': '/properties/files',
-        },
-      ],
-    },
-    {
-      type: FormViewSectionType.section2column,
-      collapsible: true,
-      items: [
-        {
-          '0': '/properties/assignments',
-        },
-      ],
-    },
-  ];
-};
 
 const tt = TicketSchema();
 export type TicketModel = FromSchema<typeof tt>;
@@ -157,8 +110,8 @@ registerCollection(
   'Ticket',
   DataType.ticket,
   TicketSchema(),
-  TicketUI(),
-  TicketRules(),
+  null,
+  null,
   true,
   true
 );

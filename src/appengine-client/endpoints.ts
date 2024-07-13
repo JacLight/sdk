@@ -379,35 +379,25 @@ export const appEndpoints = {
     method: 'get',
     path: 'crm/service-request/get',
   },
-  crm_subscribe: {
-    name: 'crm_subscribe',
+  crm_promotion_subscribe: {
+    name: 'crm_promotion_subscribe',
     method: 'post',
-    path: 'crm/subscribe',
+    path: 'crm/promotion/subscribe',
   },
-  crm_unsubscribe: {
-    name: 'crm_unsubscribe',
+  crm_promotion_unsubscribe: {
+    name: 'crm_promotion_unsubscribe',
     method: 'post',
-    path: 'crm/unsubscribe',
+    path: 'crm/promotion/unsubscribe',
   },
-  crm_form_save_post: {
-    name: 'crm_form_save_post',
+  crm_contact_form_save_post: {
+    name: 'crm_contact_form_save_post',
     method: 'post',
-    path: 'crm/form/post',
+    path: 'crm/contact-form/post',
   },
-  crm_form_save_json: {
-    name: 'crm_form_save_json',
+  crm_contact_form_save_json: {
+    name: 'crm_contact_form_save_json',
     method: 'post',
-    path: 'crm/form/json',
-  },
-  crm_form_delete: {
-    name: 'crm_form_delete',
-    method: 'post',
-    path: 'crm/form/delete',
-  },
-  crm_form_get: {
-    name: 'crm_form_get',
-    method: 'get',
-    path: 'crm/form/get',
+    path: 'crm/contact-form/json',
   },
   crm_events_get: {
     name: 'crm_events_get',
