@@ -34,3 +34,4 @@ export * from './base.history.model';
 export * from './web-visit';
 export * from './web-activity';
 export * from './site-index';
+export * from './site-domain';

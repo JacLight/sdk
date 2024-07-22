@@ -77,10 +77,11 @@ export enum DataType {
   reservation = 'reservation',
   service_point = 'service_point',
   service_point_item = 'service_point_item',
-  publish = 'publish',
+  published = 'published',
   history = 'history',
   auraflow = 'auraflow',
   web_visit = 'web_visit',
   web_activity = 'web_activity',
   site_index = 'site_index',
+  site_domain = 'site_domain',
 }

@@ -1,10 +1,6 @@
-import { CollectionUI } from '../collection-ui';
-import { ControlType, FormViewSectionType, } from '../../types';
+import { ControlType, } from '../../types';
 import { FileInfoSchema } from '../fileinfo';
 import { FromSchema } from 'json-schema-to-ts';
-
-//TODO: add custom schema
-//TODO: add InitData
 
 export const FDViewComponentSchema = () => {
   return {
@@ -12,8 +8,8 @@ export const FDViewComponentSchema = () => {
     properties: {
       html: {
         type: 'string',
+        collapsible: true,
         'x-control-variant': 'html',
-        hideLabel: true,
         'x-control': ControlType.code,
         default: demoHtml,
         css: { height: '800px' },
@@ -25,63 +21,28 @@ export const FDViewComponentSchema = () => {
           source: 'json',
           json: []
         },
+        group: 'icon',
       },
       icon: {
         type: 'string',
+        group: 'icon',
         'x-control': ControlType.icon,
       },
       description: {
         type: 'string',
         'x-control-variant': 'textarea',
       },
-      image: FileInfoSchema(),
+      image: {
+        collapsible: true,
+        ...FileInfoSchema(),
+      }
     },
   } as const;
 };
 
-export const FDViewComponentUI = (): CollectionUI[] => {
-  return [
-    {
-      type: FormViewSectionType.sectiontab,
-      tab: [
-        {
-          title: 'Info',
-          items: [
-            {
-              '0': '/properties/name',
-              '1': '/properties/type',
-            },
-            {
-              '0': '/properties/content/properties/description',
-            },
-            {
-              '0': '/properties/content/properties/schema',
-            },
-            {
-              '0': '/properties/content/properties/image',
-              '1': '/properties/content/properties/icon',
-
-            },
-          ],
-        },
-        {
-          title: 'HTML',
-          items: [
-            {
-              '0': '/properties/content/properties/html',
-            },
-          ],
-        },
-      ],
-    },
-  ];
-};
-
-
 const demoHtml = `<div>
     <div>{{data.title}}</div>
     <div>{{data.description}}</div>
-
     <div>
         <ul>
             {{#each courses}}

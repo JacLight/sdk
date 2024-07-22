@@ -3,6 +3,7 @@ import { CollectionRule } from '../collection-rule';
 import { CollectionUI } from '../collection-ui';
 import { ControlType, DataType } from '../../types';
 import { FromSchema } from 'json-schema-to-ts';
+import { FileInfoSchema } from '../fileinfo';
 
 export const FormSchema = () => {
   return {
@@ -18,6 +19,11 @@ export const FormSchema = () => {
         type: 'string',
         group: 'name',
       },
+      status: {
+        type: 'string',
+        enum: ['new', 'sent', 'open', 'closed', 'cancelled', 'expired', 'failed'],
+        group: 'name',
+      },
       startDate: {
         type: 'string',
         format: 'date-time',
@@ -30,6 +36,10 @@ export const FormSchema = () => {
       },
       title: {
         type: 'string',
+      },
+      submitMessage: {
+        type: 'string',
+        'x-control-variant': 'textarea',
       },
       collection: {
         type: 'string',
@@ -72,10 +82,73 @@ export const FormSchema = () => {
           },
         },
       },
-      status: {
-        type: 'string',
-        enum: ['new', 'open', 'closed', 'cancelled'],
-      }
+      seo: {
+        type: 'object',
+        collapsible: 'close', // open, close, true
+        properties: {
+          title: {
+            type: 'string',
+          },
+          description: {
+            type: 'string',
+          },
+          keywords: {
+            type: 'string',
+          },
+          image: FileInfoSchema(),
+        }
+      },
+      email: {
+        type: 'object',
+        collapsible: true,
+        properties: {
+          send: {
+            type: 'boolean',
+          },
+          template: {
+            type: 'string',
+            group: 'notification',
+            'x-control': ControlType.selectMany,
+            dataSource: {
+              source: 'collection',
+              collection: DataType.messagetemplate,
+              label: 'name',
+              value: 'name',
+            }
+          },
+          message: {
+            type: 'string',
+            'x-control': ControlType.richtext,
+            description: 'You can add template variables like {{data.$collection.$name}}, replace $collection with the collection name and $name with the field name',
+          }
+        }
+      },
+      sms: {
+        type: 'object',
+        collapsible: true,
+        properties: {
+          send: {
+            type: 'boolean',
+          },
+          template: {
+            type: 'string',
+            group: 'notification',
+            'x-control': ControlType.selectMany,
+            dataSource: {
+              source: 'collection',
+              collection: DataType.messagetemplate,
+              label: 'name',
+              value: 'name',
+            }
+          },
+          message: {
+            type: 'string',
+            'x-control-variant': 'textarea',
+            max: 160,
+            description: 'You can add template variables like {{data.$collection.$name}}, replace $collection with the collection name and $name with the field name',
+          }
+        }
+      },
     },
   } as const;
 };

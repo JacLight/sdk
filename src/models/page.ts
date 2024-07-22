@@ -81,13 +81,12 @@ export const PageSchema = (title = '', description = '') => {
       },
       slug: {
         type: 'string',
-        pattern: '^[a-zA-Z_\\-0-9]*$',
-        // fn: 'return a.name.replace(/\\n/g, "")',
+        pattern: '^[a-zA-Z_\\-0-9\/]*$',
         event: 'onBlur',
         unique: true,
         uniqueScope: ['site'],
         default: '{{title}}',
-        transform: ['uri', 'lowercase', 'suffix::-', 'random-string:4'],
+        transform: ['uri', 'lowercase'],
       },
       iconUrl: {
         type: 'string',
@@ -95,6 +94,12 @@ export const PageSchema = (title = '', description = '') => {
       childEditing: {
         type: 'string',
         enum: ['append', 'locked'],
+        default: 'append',
+        displayStyle: 'outlined',
+      },
+      childNavigation: {
+        type: 'string',
+        enum: ['name', 'slug', 'id'],
         default: 'append',
         displayStyle: 'outlined',
       },
@@ -382,9 +387,12 @@ export const PageUI = (): CollectionUI[] => {
               '0': '/properties/iconUrl',
             },
             {
+              '0': '/properties/dataType',
+              '': '/properties/idType',
+            },
+            {
               '0': '/properties/childEditing',
-              '1': '/properties/dataType',
-              '2': '/properties/idType',
+              '1': '/properties/childNavigation',
             },
             {
               '0': '/properties/hidden',

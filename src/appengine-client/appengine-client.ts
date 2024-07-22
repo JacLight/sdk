@@ -69,6 +69,7 @@ export class AppEngineClient {
     clientAuthorization?: string,
     clientQuery?: any,
     clientInfo?: any,
+    orgId?: string,
   ): Promise<any> {
     let path;
     if (clientPath.startsWith('/api')) {
@@ -80,7 +81,10 @@ export class AppEngineClient {
     if (clientAuthorization) {
       header.headers['x-client-authorization'] = clientAuthorization
     }
-
+    if (orgId) {
+      header.headers['shared-org-id'] = header.headers['orgid'];
+      header.headers['orgid'] = orgId;
+    }
     if (clientInfo) {
       header.headers['x-client-info'] = JSON.stringify(clientInfo)
       header.headers['x-client-host'] = clientInfo['host']
@@ -118,7 +122,7 @@ export class AppEngineClient {
         this.token = null;
         await this.getHeaderWithToken();
         console.log('auth ok')
-        return await this.processRequest(method, clientPath, clientData, clientAuthorization, clientQuery);
+        return await this.processRequest(method, clientPath, clientData, clientAuthorization, clientQuery, orgId);
       } else {
         throw error;
       }
@@ -136,30 +140,24 @@ export class AppEngineClient {
     return null;
   }
 
-  async getSiteShared(domainName?: string, siteName?: string) {
-    const sitePath = `${appEndpoints.find_by_attribute.path}/site/name/${siteName}?en=true&domain=${domainName}`;
-    const rt: any = await this.processRequest('get', sitePath, null, null, null, null);
-    if (rt && Array.isArray(rt.data) && rt.data.length > 0) {
-      const [site] = rt.data;
-      return site;
+  async getSiteShared(domainName: string) {
+    if (domainName.indexOf(':') >= 0) {
+      domainName = domainName.substring(0, domainName.indexOf(':'))
     }
-    return null;
-  }
-
-  async getPages(siteName = this.appConfig.siteName) {
-    const query = { 'data.site': siteName }
-    let rt = await this.processRequest('post', `${appEndpoints.find.path}/page`, { query, options: { enrich: true } }, null, null, null);
-    return rt?.data
-  }
-
-  async getPagesShared(domainName: string, siteName: string) {
-    const query = { 'data.site': siteName }
-    let rt = await this.processRequest('post', `${appEndpoints.find.path}/page`, { query, options: { enrich: true } }, null, null, { domain: domainName });
-    return rt?.data
+    const sitePath = `${appEndpoints.site_by_domain_name.path}/${domainName}`;
+    return await this.processRequest('get', sitePath, null, null, null, null);
   }
 
 
   async getPage(siteName: string, pageIds: { slug?: string, name?: string, id?: string }, pageDataType?: string, pageDataAttr?: string, pageDataValue?: string, query?: string) {
+    return await this.getPageCommon(null, siteName, pageIds, pageDataType, pageDataAttr, pageDataValue, query);
+  }
+
+  async getPageShared(orgId: string, siteName: string, pageIds: { slug?: string, name?: string, id?: string }, pageDataType?: string, pageDataAttr?: string, pageDataValue?: string, query?: string) {
+    return await this.getPageCommon(orgId, siteName, pageIds, pageDataType, pageDataAttr, pageDataValue, query);
+  }
+
+  async getPageCommon(orgId: string, siteName: string, pageIds: { slug?: string, name?: string, id?: string }, pageDataType?: string, pageDataAttr?: string, pageDataValue?: string, query?: string) {
     const pageIdType = pageIds?.id ? 'id' : pageIds?.name ? 'name' : pageIds?.slug ? 'slug' : null;
     if (!pageIdType) {
       console.debug('request -> getPage, no pageIds specified, ', pageIds);
@@ -178,29 +176,7 @@ export class AppEngineClient {
     } else {
       pagePath = `${pagePath}?en=true`;
     }
-    return await this.processRequest('get', pagePath, null, null, null, null);
-  }
-
-  async getPageShared(domainName: string, pageIds: { slug?: string, name?: string, id?: string }, pageDataType?: string, pageDataAttr?: string, pageDataValue?: string, query?: string) {
-    const pageIdType = pageIds?.id ? 'id' : pageIds?.name ? 'name' : pageIds?.slug ? 'slug' : null;
-    if (!pageIdType) {
-      console.debug(`request -> getPage, no pageIds specified,  ${pageIds}  domain: ${domainName}`);
-      return null
-    }
-
-    let pagePath = `${appEndpoints.get_page.path}/${domainName}/${pageIdType}/${pageIds[pageIdType]}`;
-    if (pageDataType && pageDataAttr && pageDataValue) {
-      pagePath = `${pagePath}/${pageDataType}/${pageDataAttr}/${pageDataValue}`;
-    } else if (pageDataType) {
-      pagePath = `${pagePath}/${pageDataType}`;
-    }
-
-    if (query) {
-      pagePath = `${pagePath}?${query}&en=true&domain=${domainName}`;
-    } else {
-      pagePath = `${pagePath}?en=true&domain=${domainName}`;
-    }
-    return await this.processRequest('get', pagePath, null, null, null, { domain: domainName });
+    return await this.processRequest('get', pagePath, null, null, null, null, orgId);
   }
 
   async getPreviewPage(orgId: string, site: string, page: string, token: string) {

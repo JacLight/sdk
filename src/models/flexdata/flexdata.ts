@@ -14,12 +14,15 @@ export const FlexDataSchema = () => {
         type: 'string',
         minLength: 3,
         maxLength: 50,
+        group: 'name',
       },
       application: {
         type: 'string',
+        group: 'name',
       },
       type: {
         type: 'string',
+        group: 'name',
       },
       content: {
         type: 'object',

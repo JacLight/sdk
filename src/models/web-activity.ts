@@ -16,6 +16,9 @@ export const WebActivitySchema = () => {
       mouseY: {
         type: 'number',
       },
+      mouseAction: {
+        type: 'number',
+      },
       timestamp: {
         type: 'string',
       },

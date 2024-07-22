@@ -140,7 +140,7 @@ export const isJsonString = (str: any) => {
 };
 
 export const niceURI = (crappyURI: any) => {
-  return crappyURI?.toLowerCase().replace(/[^a-zA-Z0-9-_]/g, '-');
+  return crappyURI?.toLowerCase().replace(/[^a-zA-Z0-9-_\/]/g, '-');
 };
 
 export function findNestedKey(obj: any, key: string | number): any {

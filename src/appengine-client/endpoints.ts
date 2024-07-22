@@ -39,6 +39,11 @@ export const appEndpoints = {
     method: 'get',
     path: 'repository/find-by-attribute',
   },
+  site_by_domain_name: {
+    name: 'site_by_domain_name',
+    method: 'get',
+    path: 'repository/site-domain-name/get-site',
+  },
   query: {
     name: 'query',
     method: 'get',
@@ -99,10 +104,10 @@ export const appEndpoints = {
     method: 'post',
     path: 'repository/update',
   },
-  activities: {
-    name: 'activities',
+  get_activities: {
+    name: 'get_activities',
     method: 'get',
-    path: 'repository/activities',
+    path: 'repository/activities/get',
   },
   logout: {
     name: 'logout',

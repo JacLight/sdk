@@ -75,13 +75,17 @@ export interface BaseModel<T> {
   dislikes?: number;
   rating?: number;
   ratingCount?: number;
-  views?: number;
   owner?: {
     datatype: DataType;
     id: string;
   },
   state?: ModelState;
   search?: string;
+  create_hash?: string;
+  modified_by?: string;
+  created_by?: string;
+  views?: number;
+  last_viewed?: Date;
 }
 
 export const PostSubSchema = () => {
