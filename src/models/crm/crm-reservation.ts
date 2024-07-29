@@ -2,55 +2,26 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
 import { CollectionRule } from '../collection-rule';
 import { CollectionUI } from '../collection-ui';
-import { DataType, ControlType } from '../../types';
+import { ControlType, DataType } from '../../types';
 
 export const ReservationSchema = () => {
   return {
     type: 'object',
     properties: {
+      status: {
+        type: 'string',
+        enum: ['new', 'confirmed', 'completed', 'rescheduled', 'cancelled'],
+        group: 'name',
+        readOnly: true,
+      },
       name: {
         type: 'string',
         pattern: '^[a-zA-Z_\\-0-9]*$',
         unique: true,
         transform: 'uri',
         readOnly: true,
-      },
-      reservationDefinitionId: {
-        type: 'string',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.reservationdefinition,
-          value: 'sk',
-          label: 'name',
-        },
-      },
-      event: {
-        type: 'string',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.event,
-          value: 'sk',
-          label: 'name',
-        },
-      },
-      service: {
-        type: 'string',
-      },
-      partySize: {
-        type: 'number',
-      },
-      startTime: {
-        type: 'string',
-        format: 'date-time',
-        'x-control-variant': 'time'
-
-      },
-      endTime: {
-        type: 'string',
-        format: 'date-time',
-        'x-control-variant': 'time'
+        group: 'name',
+        title: 'Reservation ID',
       },
       customer: {
         type: 'object',
@@ -67,36 +38,50 @@ export const ReservationSchema = () => {
           },
         },
       },
-      checkedIn: {
-        type: 'boolean',
+      service: {
+        type: 'string',
+        group: 'host'
       },
-      servicePoint: {
-        group: 'hosts',
-        groupLayout: 'flat',
+      venue: {
         type: 'string',
         'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
+        'x-group': 'group1',
         dataSource: {
           source: 'collection',
-          collection: DataType.service_point,
-          value: 'sk',
+          collection: DataType.location,
+          value: 'name',
           label: 'name',
         },
+        group: 'host'
+      },
+      partySize: {
+        type: 'number',
+        hidden: true,
+        group: 'service',
+      },
+      startTime: {
+        type: 'string',
+        format: 'date-time',
+        group: 'time',
+        hidden: true,
+      },
+      endTime: {
+        type: 'string',
+        format: 'date-time',
+        group: 'time',
+        hidden: true,
+      },
+      checkedIn: {
+        type: 'boolean',
+        hidden: true,
+        group: 'time',
       },
       hosts: {
         group: 'hosts',
         groupLayout: 'flat',
         type: 'string',
-      },
-      venue: {
-        groupLayout: 'flat',
-        group: 'status',
-        type: 'string',
-      },
-      status: {
-        groupLayout: 'flat',
-        type: 'string',
-        enum: ['new', 'confirmed', 'completed', 'rescheduled', 'cancelled'],
-        group: 'status',
+        hidden: true,
       },
     },
     required: ['name'],

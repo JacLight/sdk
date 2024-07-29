@@ -1,8 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection, registerDefaultData } from '../../defaultschema';
-import { CollectionRule } from '../collection-rule';
-import { CollectionUI } from '../collection-ui';
-import { DataType, ControlType, FormViewSectionType } from '../../types';
+import { DataType, ControlType } from '../../types';
+import { FileInfoSchema } from '../fileinfo';
 
 export const ReservationDefinitionSchema = () => {
   return {
@@ -12,11 +11,126 @@ export const ReservationDefinitionSchema = () => {
         type: 'string',
         pattern: '^[a-zA-Z_\\-0-9]*$',
         unique: true,
-        transform: 'uri'
+        transform: 'uri',
+        group: 'name',
       },
       type: {
         type: 'string',
-        enum: ['queue', 'interval', 'service'],
+        group: 'name',
+        enum: ['service', 'interval', 'event', 'service-point'],
+      },
+      title: {
+        type: 'string',
+      },
+      image: FileInfoSchema(),
+      venue: {
+        type: 'string',
+        'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
+        'x-group': 'group1',
+        dataSource: {
+          source: 'collection',
+          collection: DataType.location,
+          value: 'name',
+          label: 'name',
+        },
+      },
+      description: {
+        type: 'string',
+        'x-control-variant': 'textarea',
+      },
+      event: {
+        type: 'string',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.event,
+          value: 'name',
+          label: 'name',
+        },
+        rules: [
+          { operation: 'notEqual', valueA: 'event', valueB: '{{type}}', action: 'hide' },
+        ]
+      },
+      servicePoints: {
+        type: 'array',
+        collapsible: true,
+        'x-group': 'group1',
+        'x-control-variant': 'picker',
+        displayStyle: 'table',
+        items: {
+          type: 'object',
+          showIndex: true,
+          properties: {
+            id: {
+              type: 'string',
+              hideInTable: true
+            },
+            name: {
+              type: 'string',
+              styleClass: 'w-full',
+            },
+            capacity: {
+              type: 'string',
+              styleClass: 'w-10',
+            },
+            location: {
+              styleClass: 'w-16',
+              type: 'string',
+            },
+            images: {
+              styleClass: 'w-16',
+              type: 'string',
+              hideInTable: true
+            },
+            title: {
+              styleClass: 'w-16',
+              type: 'string',
+              hideInTable: true
+            }
+          },
+        },
+        dataSource: {
+          source: 'collection',
+          collection: DataType.service_point,
+          value: 'name',
+          label: 'name',
+        },
+        rules: [
+          { operation: 'notEqual', valueA: 'service-point', valueB: '{{type}}', action: 'hide' },
+        ]
+      },
+      services: {
+        collapsible: true,
+        type: 'array',
+        items: {
+          type: 'object',
+          layout: 'horizontal',
+          properties: {
+            name: {
+              type: 'string',
+              styleClass: 'w-full',
+            },
+            duration: {
+              type: 'number',
+              styleClass: 'w-16',
+              css: { width: '60px' },
+            },
+            price: {
+              type: 'number',
+              styleClass: 'w-16',
+              css: { width: '60px' },
+            },
+            breakAfter: {
+              type: 'number',
+              styleClass: 'w-16',
+              css: { width: '60px' },
+            },
+          },
+        },
+        rules: [
+          { operation: 'in', valueA: ['service-point', 'event'], valueB: '{{type}}', action: 'hide' },
+        ]
       },
       workDays: {
         type: 'array',
@@ -30,59 +144,23 @@ export const ReservationDefinitionSchema = () => {
           json: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
         },
       },
-      services: {
-        type: 'array',
-        items: {
-          type: 'object',
-          layout: 'horizontal',
-          properties: {
-            name: {
-              type: 'string',
-              css: { width: '100%' },
-            },
-            duration: {
-              type: 'number',
-              css: { width: '60px' },
-            },
-            price: {
-              type: 'number',
-              css: { width: '60px' },
-            },
-            breakAfter: {
-              type: 'number',
-              css: { width: '60px' },
-            },
-          },
-        },
-      },
-      checkInBy: {
-        layout: 'horizontal',
-        type: 'object',
-        properties: {
-          value: {
-            type: 'number',
-          },
-          unit: {
-            type: 'string',
-            enum: ['hours', 'minutes'],
-          },
-        },
-      },
       officeHours: {
         type: 'object',
-        layout: 'horizontal',
+        collapsible: true,
+        'x-control-variant': 'time',
+        'x-control': ControlType.dateRange,
         properties: {
           startTime: {
             type: 'string',
-            // format: 'date-time',
             'x-control-variant': 'time',
             'x-control': ControlType.date,
+            group: 'time'
           },
           endTime: {
             type: 'string',
-            // format: 'date-time',
             'x-control-variant': 'time',
             'x-control': ControlType.date,
+            group: 'time'
           },
         },
       },
@@ -91,25 +169,29 @@ export const ReservationDefinitionSchema = () => {
         collapsible: true,
         items: {
           type: 'object',
-          layout: 'horizontal',
+          'x-control-variant': 'time',
+          'x-control': ControlType.dateRange,
           properties: {
             startTime: {
               type: 'string',
-              // format: 'time',
               'x-control-variant': 'time',
               'x-control': ControlType.date,
+              group: 'btime'
+
             },
             endTime: {
               type: 'string',
-              // format: 'time',
               'x-control-variant': 'time',
               'x-control': ControlType.date,
+              group: 'btime'
             },
           },
         },
       },
-      description: {
-        type: 'string',
+      checkInBy: {
+        type: 'number',
+        title: 'Check-in by (minutes)',
+        group: 'host',
       },
       host: {
         type: 'string',
@@ -120,21 +202,13 @@ export const ReservationDefinitionSchema = () => {
           value: 'email',
           label: 'email',
         },
+        group: 'host',
       },
       spots: {
         type: 'number',
         'x-group': 'group1',
         default: 1,
-      },
-      event: {
-        type: 'string',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.event,
-          value: 'sk',
-          label: 'name',
-        },
+        group: 'host',
       },
       form: {
         type: 'string',
@@ -145,17 +219,7 @@ export const ReservationDefinitionSchema = () => {
           value: 'name',
           label: 'name',
         },
-      },
-      venue: {
-        type: 'string',
-        'x-control': ControlType.selectMany,
-        'x-group': 'group1',
-        dataSource: {
-          source: 'collection',
-          collection: DataType.location,
-          value: 'name',
-          label: 'name',
-        },
+        group: 'event',
       },
       notificationTemplate: {
         type: 'string',
@@ -167,6 +231,7 @@ export const ReservationDefinitionSchema = () => {
           value: 'sk',
           label: 'name',
         },
+        group: 'workflow',
       },
       workflow: {
         type: 'string',
@@ -178,6 +243,7 @@ export const ReservationDefinitionSchema = () => {
           value: 'sk',
           label: 'name',
         },
+        group: 'workflow',
       },
     },
     required: ['name'],
@@ -185,70 +251,18 @@ export const ReservationDefinitionSchema = () => {
 };
 
 
-export const ReservationDefinitionUI = (): CollectionUI[] => {
-  return [
-    {
-      type: FormViewSectionType.section2column,
-      items: [
-        {
-          '0': '/properties/name',
-          '1': '/properties/type',
-        },
-        {
-          '0': '/properties/description',
-        },
-        {
-          '0': '/properties/services',
-        },
-        {
-          '0': '/properties/workDays',
-        },
-        {
-          '0': '/properties/officeHours',
-        },
-        {
-          '0': '/properties/blockedTime',
-        },
-        {
-          '0': '/properties/checkInBy',
-        },
-        {
-          '0': '/properties/host',
-          '1': '/properties/venue',
-          '2': '/properties/spots',
-        },
-        {
-          '0': '/properties/form',
-          '1': '/properties/event',
-        },
-        {
-          '0': '/properties/notificationTemplate',
-          '1': '/properties/workflow',
-        },
-      ],
-    },
-  ];
-}
-
-
-
 const cs = ReservationDefinitionSchema();
 export type ReservationDefinitionModel = FromSchema<typeof cs>;
 
-export const ReservationDefinitionRules = (): CollectionRule[] => {
-  return null;
-};
 registerCollection(
   'Reservation Definition',
   DataType.reservationdefinition,
   ReservationDefinitionSchema(),
-  ReservationDefinitionUI(),
-  ReservationDefinitionRules(),
+  null,
+  null,
   true
 );
 
-
-//create a reservation workflow definition with 8 stages - intake, confirmed, check-in, waiting, completed, canceled, reschedule, error
 
 const genDefaultData = () => {
   return {

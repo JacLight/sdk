@@ -41,8 +41,11 @@ export const AddressSchema = () => {
         type: 'string',
         'x-control': ControlType.selectMany,
         dataSource: {
-          source: 'json',
-          json: [],
+          value: 'getCountryRegions',
+          source: 'function',
+          filter: {
+            value: '{{address/country}}',
+          }
         },
       },
       country: {

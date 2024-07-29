@@ -1,7 +1,5 @@
-import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../defaultschema';
 import { DataType, ControlType } from '../types';
-import { CollectionRule } from './collection-rule';
 import { CollectionUI } from './collection-ui';
 import { AddressSchema } from './crm/crm-address';
 
@@ -15,21 +13,25 @@ export const LocationSchema = () => {
         minLength: 3,
         maxLength: 100,
         unique: true,
-        transform: 'uri'
+        transform: 'uri',
+        group: 'name',
       },
       type: {
         type: 'string',
-        enum: [
-          'store',
-          'mini',
-          'wearhouse',
-          'web',
-          'partner',
-          'contact-point',
-          'lockbox',
-          'dropbox',
-          'corporate',
-        ],
+        'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
+        dataSource: {
+          source: 'json',
+          json: [
+            'address',
+            'website',
+            'virtual',
+          ],
+        },
+        group: 'name',
+      },
+      title: {
+        type: 'string',
       },
       services: {
         type: 'string',
@@ -38,46 +40,36 @@ export const LocationSchema = () => {
         dataSource: {
           source: 'json',
           json: [
-            { label: 'service a', value: 'service a' },
-            { label: 'service b', value: 'service b' },
           ],
         },
       },
-      address: AddressSchema(),
+      address: {
+        type: 'object',
+        properties: AddressSchema().properties,
+        rules: [
+          { operation: 'notEqual', valueA: '{{type}}', valueB: 'address', action: 'hide' },
+        ]
+      },
+      link: {
+        type: 'string',
+        rules: [
+          { operation: 'notIn', valueA: ['virtual', 'website'], valueB: '{{type}}', action: 'hide' },
+        ]
+      },
+      accessCode: {
+        type: 'string',
+        rules: [
+          { operation: 'notIn', valueA: ['virtual', 'website'], valueB: '{{type}}', action: 'hide' },
+        ]
+      },
       status: {
         type: 'string',
+        enum: ['active', 'inactive'],
       },
     },
   } as const;
 };
 
-const dd = LocationSchema();
-export type LocationModel = FromSchema<typeof dd>;
-
-export const LocationRules = (): CollectionRule[] => {
-  return [
-    {
-      name: 'Manual Selection',
-      action: [
-        {
-          operation: 'script',
-          value: `  const regions = context.getCountryRegions(data.address.country); 
-                    schema.properties.address.properties.region.dataSource.json =  regions;`,
-        },
-      ],
-      condition: {
-        type: 'and',
-        param: [
-          {
-            value: true,
-            field1: '/properties/address/properties/country',
-            operation: 'notEmpty',
-          },
-        ],
-      },
-    },
-  ];
-};
 
 export const LocationUI = (): CollectionUI[] => {
   return null;
@@ -86,6 +78,6 @@ registerCollection(
   'Business Location',
   DataType.location,
   LocationSchema(),
-  LocationUI(),
-  LocationRules()
+  null,
+  null
 );

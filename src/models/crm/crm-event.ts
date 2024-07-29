@@ -1,8 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
-import { CollectionRule } from '../collection-rule';
-import { CollectionUI } from '../collection-ui';
-import { DataType, ControlType, FormViewSectionType } from '../../types';
+import { DataType, ControlType } from '../../types';
 import { FileInfoSchema } from '../fileinfo';
 
 export const EventSchema = () => {
@@ -13,17 +11,35 @@ export const EventSchema = () => {
         type: 'string',
         pattern: '^[a-zA-Z_\\-0-9]*$',
         unique: true,
+        group: 'status',
         transform: 'uri'
       },
-      number: {
+      type: {
         type: 'string',
-        pattern: '^[a-zA-Z_\\-0-9]*$',
-        unique: true,
+        enum: ['event', 'meeting', 'appointment'],
+        group: 'status',
       },
-      image: FileInfoSchema(),
+      status: {
+        type: 'string',
+        enum: ['draft', 'new', 'confirmed', 'completed', 'rescheduled', 'cancelled'],
+        group: 'status',
+      },
+      title: {
+        type: 'string',
+      },
       description: {
         type: 'string',
         'x-control-variant': 'textarea',
+      },
+      startTime: {
+        type: 'string',
+        format: 'date-time',
+        'group': 'time',
+      },
+      endTime: {
+        type: 'string',
+        'group': 'time',
+        format: 'date-time',
       },
       host: {
         type: 'string',
@@ -31,23 +47,15 @@ export const EventSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.user,
-          value: 'sk',
-          label: 'email',
+          value: 'email',
+          label: ['email', 'firstName', 'lastName'],
         },
-      },
-      startTime: {
-        type: 'string',
-        format: 'date-time',
-        'x-group': 'time',
-      },
-      endTime: {
-        type: 'string',
-        'x-group': 'time',
-        format: 'date-time',
+        group: 'host'
       },
       venue: {
         type: 'string',
         'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
         'x-group': 'group1',
         dataSource: {
           source: 'collection',
@@ -55,27 +63,16 @@ export const EventSchema = () => {
           value: 'name',
           label: 'name',
         },
-      },
-      notificationTemplate: {
-        type: 'string',
-        'x-control': ControlType.selectMany,
-        'x-group': 'group2',
-        dataSource: {
-          source: 'collection',
-          collection: DataType.messagetemplate,
-          value: 'sk',
-          label: 'name',
-        },
-      },
-      type: {
-        type: 'string',
-        enum: ['event', 'meeting', 'appointment'],
+        group: 'host'
       },
       generateMeetingLink: {
         type: 'boolean',
+        group: 'host',
       },
-      meetingLink: {
-        type: 'string',
+      images: {
+        type: 'array',
+        'x-control': ControlType.file,
+        items: FileInfoSchema(),
       },
       participants: {
         type: 'string',
@@ -88,78 +85,33 @@ export const EventSchema = () => {
           label: ['email', 'firstName', 'lastName'],
         },
       },
-      status: {
+      notificationTemplate: {
         type: 'string',
-        enum: ['draft', 'new', 'confirmed', 'completed', 'rescheduled', 'cancelled'],
+        'x-control': ControlType.selectMany,
+        'x-group': 'group2',
+        dataSource: {
+          source: 'collection',
+          collection: DataType.messagetemplate,
+          value: 'sk',
+          label: 'name',
+          group: 'form',
+        },
+        form: {
+          type: 'string',
+          'x-control': ControlType.selectMany,
+          dataSource: {
+            source: 'collection',
+            collection: DataType.collection,
+            value: 'name',
+            label: 'name',
+          },
+          group: 'form',
+        },
       },
     },
+    required: ['name', 'startTime', 'endTime'],
   } as const;
 };
-
-export const EventRules = (): CollectionRule[] => {
-  return [
-    {
-      name: 'Read Only Meeting Link when Generate Meeting Link is true',
-      action: [
-        {
-          operation: 'setProperty',
-          targetField: '/properties/meetingLink/readOnly',
-          valueFromField: true,
-          sourceField: '/properties/generateMeetingLink',
-        },
-      ],
-      condition: {
-        type: 'and',
-        param: [
-          {
-            value: '',
-            field1: '/properties/generateMeetingLink',
-            operation: 'notEqual',
-          },
-        ],
-      },
-    },
-  ];
-};
-
-
-export const EventUI = (): CollectionUI[] => {
-  return [
-    {
-      type: FormViewSectionType.section2column,
-      items: [
-        {
-          '0': '/properties/name',
-        },
-        {
-          '0': '/properties/description',
-        },
-        {
-          '0': '/properties/startTime',
-          '1': '/properties/endTime',
-        },
-        {
-          '0': '/properties/host',
-          '1': '/properties/venue',
-        },
-        {
-          '0': '/properties/type',
-          '1': '/properties/notificationTemplate',
-        },
-        {
-          '0': '/properties/generateMeetingLink',
-          '1': '/properties/meetingLink',
-        },
-        {
-          '0': '/properties/participants',
-        },
-        {
-          '0': '/properties/status',
-        },
-      ],
-    },
-  ];
-}
 
 
 const cs = EventSchema();
@@ -169,8 +121,8 @@ registerCollection(
   'Event',
   DataType.event,
   EventSchema(),
-  EventUI(),
-  EventRules(),
+  null,
+  null,
   true,
   true
 );

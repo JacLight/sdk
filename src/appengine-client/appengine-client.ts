@@ -1,3 +1,4 @@
+import { deepCopy } from '../utils/index'
 import { appEndpoints } from './endpoints';
 // import { decode } from "jsonwebtoken";
 // import { BaseModel } from "@models/base.model";
@@ -59,7 +60,7 @@ export class AppEngineClient {
     }
     const init = this.getBaseHeader();
     init.headers['Authorization'] = `Bearer ${this.token}`;
-    return init;
+    return deepCopy(init);
   }
 
   async processRequest(
@@ -70,6 +71,7 @@ export class AppEngineClient {
     clientQuery?: any,
     clientInfo?: any,
     orgId?: string,
+    isMultiPath?: boolean
   ): Promise<any> {
     let path;
     if (clientPath.startsWith('/api')) {
@@ -89,6 +91,10 @@ export class AppEngineClient {
       header.headers['x-client-info'] = JSON.stringify(clientInfo)
       header.headers['x-client-host'] = clientInfo['host']
       header.headers['x-client-protocol'] = clientInfo['protocol']
+    }
+
+    if (isMultiPath) {
+      header.headers['Content-Type'] = 'multipart/form-data';
     }
     const data = clientData;
     if (data) {
@@ -240,7 +246,8 @@ export class AppEngineClient {
         response.status === 202 ||
         response.statusText)
     ) {
-      return response.data;
+      console.log('response success -> ', response.status, response.statusText);
+      return Array.isArray(response) ? response : response.data;
     }
     return response;
   }

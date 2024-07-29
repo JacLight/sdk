@@ -1,7 +1,5 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../defaultschema';
-import { CollectionRule } from '../collection-rule';
-import { CollectionUI } from '../collection-ui';
 import { DataType, ControlType } from '../../types';
 import { FileInfoSchema } from '../fileinfo';
 
@@ -13,15 +11,12 @@ export const ServicePointSchema = () => {
         type: 'string',
         pattern: '^[a-zA-Z_\\-0-9]*$',
         unique: true,
-        transform: 'uri'
-      },
-      image: FileInfoSchema(),
-      description: {
-        type: 'string',
-        'x-control-variant': 'textarea',
+        transform: 'uri',
+        group: 'location',
       },
       capacity: {
         type: 'number',
+        group: 'location',
       },
       location: {
         type: 'string',
@@ -33,28 +28,41 @@ export const ServicePointSchema = () => {
           value: 'name',
           label: 'name',
         },
+        group: 'location',
+      },
+      title: {
+        type: 'string',
+      },
+      description: {
+        type: 'string',
+        'x-control-variant': 'textarea',
+      },
+      features: {
+        type: 'array',
+        collapsible: true,
+        items: {
+          type: 'string',
+        },
+      },
+      images: {
+        type: 'array',
+        'x-control': ControlType.file,
+        items: FileInfoSchema(),
       },
       startTime: {
         type: 'string',
         format: 'date-time',
+        group: 'time',
       },
       endTime: {
         type: 'string',
         format: 'date-time',
-      },
-      form: {
-        type: 'string',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.collection,
-          value: 'name',
-          label: 'name',
-        },
+        group: 'time',
       },
       status: {
         type: 'string',
         enum: ['closed', 'reserved', 'open', 'busy'],
+        group: 'form',
       },
     },
   } as const;
@@ -63,16 +71,44 @@ export const ServicePointSchema = () => {
 export const ServicePointItemSchema = () => {
   return {
     type: 'object',
+    showOwner: true,
+    ownerTypes: [DataType.reservation, DataType.event, 'walk-in'],
     properties: {
+      location: {
+        type: 'string',
+        'x-control': ControlType.selectMany,
+        'x-group': 'group1',
+        dataSource: {
+          source: 'collection',
+          collection: DataType.location,
+          value: 'name',
+          label: 'name',
+        },
+        group: 'location',
+      },
       servicePoint: {
         type: 'string',
-        readOnly: true,
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.service_point,
+          value: 'name',
+          label: 'name',
+          filter: { property: 'location', value: '{{location}}' },
+        },
+        group: 'service',
       },
       name: {
         type: 'string',
         pattern: '^[a-zA-Z_\\-0-9]*$',
         unique: true,
-        transform: 'uri'
+        transform: 'uri',
+        group: 'service',
+      },
+      status: {
+        type: 'string',
+        enum: ['upcoming', 'active', 'done', 'cancelled'],
+        group: 'service',
       },
       customer: {
         type: 'object',
@@ -89,51 +125,42 @@ export const ServicePointItemSchema = () => {
           },
         },
       },
-      source: {
+      description: {
         type: 'string',
-        enum: ['event', 'reservation', 'walk-in'],
-      },
-      reservationDefinitionId: {
-        type: 'string',
-      },
-      reservationName: {
-        type: 'string',
-      },
-      service: {
-        type: 'string',
-      },
-      location: {
-        type: 'string',
+        group: 'reservation',
+        'x-control-variant': 'textarea',
       },
       startTime: {
         type: 'string',
         format: 'date-time',
+        group: 'time',
       },
       endTime: {
         type: 'string',
+        group: 'time',
         format: 'date-time',
       },
       host: {
         type: 'string',
         'x-control': ControlType.selectMany,
-        'x-group': 'group1',
+        'x-control-variant': 'chip',
         dataSource: {
           source: 'collection',
           collection: DataType.user,
           value: 'email',
           label: ['email', 'name'],
         },
+        group: 'host',
       },
-      status: {
+      source: {
         type: 'string',
-        enum: ['upcoming', 'active', 'done', 'cancelled'],
+        enum: ['event', 'reservation', 'walk-in'],
+        group: 'host',
       },
     },
   } as const;
 };
 
-export const ServicePointRules = (): CollectionRule[] => null
-export const ServicePointUI = (): CollectionUI[] => null
 const cs = ServicePointSchema();
 export type ServicePointModel = FromSchema<typeof cs>;
 
@@ -141,15 +168,12 @@ registerCollection(
   'ServicePoint',
   DataType.service_point,
   ServicePointSchema(),
-  ServicePointUI(),
-  ServicePointRules(),
+  null, null,
   true,
   true
 );
 
 
-export const ServicePointItemRules = (): CollectionRule[] => null
-export const ServicePointItemUI = (): CollectionUI[] => null
 const csi = ServicePointItemSchema();
 export type ServicePointItemModel = FromSchema<typeof csi>;
 
@@ -157,8 +181,8 @@ registerCollection(
   'ServicePointItem',
   DataType.service_point_item,
   ServicePointItemSchema(),
-  ServicePointItemUI(),
-  ServicePointItemRules(),
+  null,
+  null,
   false,
   true
 );
