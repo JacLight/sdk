@@ -1,5 +1,5 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { registerCollection } from '../../defaultschema';
+import { registerCollection } from '../../default-schema';
 import { CollectionRule } from '../collection-rule';
 import { DataType, ControlType } from '../../types';
 

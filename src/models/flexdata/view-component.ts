@@ -1,19 +1,11 @@
 import { ControlType, } from '../../types';
-import { FileInfoSchema } from '../fileinfo';
+import { FileInfoSchema } from '../file-info';
 import { FromSchema } from 'json-schema-to-ts';
 
 export const FDViewComponentSchema = () => {
   return {
     type: 'object',
     properties: {
-      html: {
-        type: 'string',
-        collapsible: true,
-        'x-control-variant': 'html',
-        'x-control': ControlType.code,
-        default: demoHtml,
-        css: { height: '800px' },
-      },
       schema: {
         type: 'string',
         'x-control': ControlType.selectMany,
@@ -21,16 +13,18 @@ export const FDViewComponentSchema = () => {
           source: 'json',
           json: []
         },
-        group: 'icon',
-      },
-      icon: {
-        type: 'string',
-        group: 'icon',
-        'x-control': ControlType.icon,
       },
       description: {
         type: 'string',
         'x-control-variant': 'textarea',
+      },
+      html: {
+        type: 'string',
+        collapsible: true,
+        'x-control-variant': 'html',
+        'x-control': ControlType.code,
+        default: demoHtml,
+        css: { height: '800px' },
       },
       image: {
         collapsible: true,

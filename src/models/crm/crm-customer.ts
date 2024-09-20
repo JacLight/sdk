@@ -1,9 +1,9 @@
 import { CollectionRule } from '../collection-rule';
 import { FromSchema } from 'json-schema-to-ts';
-import { registerCollection } from '../../defaultschema';
+import { registerCollection } from '../../default-schema';
 import { DataType, ControlType, FormViewSectionType } from '../../types';
 import { CollectionUI } from '../collection-ui';
-import { FileInfoSchema } from '../fileinfo';
+import { FileInfoSchema } from '../file-info';
 import { PhoneSchema } from './crm-phone';
 
 export const CustomerSchema = () => {
@@ -29,6 +29,7 @@ export const CustomerSchema = () => {
       },
       emails: {
         type: 'array',
+        hideInTable: true,
         items: {
           type: 'object',
           properties: {
@@ -42,6 +43,7 @@ export const CustomerSchema = () => {
       },
       username: {
         type: 'string',
+        unique: true,
       },
       firstName: {
         type: 'string',
@@ -91,6 +93,7 @@ export const CustomerSchema = () => {
       address: {
         type: 'array',
         displayStyle: 'table',
+        hideInTable: true,
         dataSource: {
           source: 'collection',
           collection: DataType.address,
@@ -120,14 +123,17 @@ export const CustomerSchema = () => {
       },
       history: {
         type: 'array',
+        hideInTable: true,
         items: {
           type: 'object',
           properties: {
             date: {
               type: 'string',
+              group: 'history',
             },
             event: {
               type: 'string',
+              group: 'history',
             },
           },
         },
@@ -146,6 +152,7 @@ export const CustomerSchema = () => {
         hidden: true,
       },
       reminderQuestion: {
+        hideInTable: true,
         type: 'array',
         items: {
           type: 'object',
@@ -159,21 +166,8 @@ export const CustomerSchema = () => {
           },
         },
       },
-      facebook: {
-        type: 'string',
-      },
-      google: {
-        type: 'string',
-      },
-      ldap: {
-        type: 'string',
-      },
-      openId: {
-        type: 'string',
-      },
       lastLoginDate: {
         type: 'string',
-        format: 'date-time',
         disabled: true,
       },
       lastLoginIp: {
@@ -182,7 +176,6 @@ export const CustomerSchema = () => {
       },
       lastFailedLoginDate: {
         type: 'string',
-        format: 'date-time',
         disabled: true,
       },
       failedLoginAttempts: {
@@ -200,6 +193,18 @@ export const CustomerSchema = () => {
         },
       },
       image: FileInfoSchema(),
+      logo: FileInfoSchema(),
+      about: {
+        type: 'string',
+        'x-control-variant': 'textarea',
+      },
+      projects: {
+        collapsible: true,
+        type: 'array',
+        items: {
+          type: 'string',
+        },
+      },
       company: {
         type: 'string',
       },
@@ -213,12 +218,6 @@ export const CustomerSchema = () => {
         type: 'string',
       },
       birthday: {
-        type: 'string',
-      },
-      skype: {
-        type: 'string',
-      },
-      twitter: {
         type: 'string',
       },
       employeeNumber: {
@@ -239,6 +238,59 @@ export const CustomerSchema = () => {
           type: 'string',
         },
       },
+      social: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            name: {
+              type: 'string',
+              'x-control': ControlType.selectMany,
+              'x-control-variant': 'chip',
+              dataSource: {
+                source: 'json',
+                json: ['facebook', 'twitter', 'linkedin', 'instagram', 'tiktok']
+              },
+              group: 'social'
+            },
+            url: {
+              type: 'string',
+              group: 'social'
+            },
+          },
+        },
+      },
+      afflictions: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            name: {
+              type: 'string',
+              'x-control': ControlType.selectMany,
+              'x-control-variant': 'chip',
+              dataSource: {
+                source: 'json',
+                json: ['lead', 'customer', 'company', 'employee']
+              },
+              group: 'afflictions'
+            },
+            description: {
+              type: 'string',
+              group: 'afflictions'
+            },
+          },
+        },
+      },
+      leadStatus: {
+        type: 'string',
+        enum: ['in progress', 'contacted', 'qualified', 'attempted', 'unqualified', 'converted', 'closed', 'other'],
+      },
+      leadStage: {
+        type: 'string',
+        enum: ['new', 'lead', 'marketing-qualified', 'sales-qualified', 'opportunity', 'customer', 'evangelist', 'other'],
+      }
+
     },
   } as const;
 };
@@ -268,18 +320,19 @@ export const CustomerUI = (): CollectionUI[] => {
               '1': '/properties/confirmPassword',
             },
             {
+              '0': '/properties/leadStatus',
+              '1': '/properties/leadStage',
+            },
+            {
               '0': '/properties/timezone',
               '1': '/properties/language',
             },
             {
-              '0': '/properties/lastLoginDate',
-              '1': '/properties/lastLoginIp',
+              '0': '/properties/social',
             },
             {
-              '0': '/properties/lastFailedLoginDate',
-              '1': '/properties/failedLoginAttempts',
+              '0': '/properties/afflictions',
             },
-
           ],
         },
         {
@@ -309,6 +362,14 @@ export const CustomerUI = (): CollectionUI[] => {
         {
           title: 'history',
           items: [
+            {
+              '0': '/properties/lastLoginDate',
+              '1': '/properties/lastLoginIp',
+            },
+            {
+              '0': '/properties/lastFailedLoginDate',
+              '1': '/properties/failedLoginAttempts',
+            },
             {
               '0': '/properties/history',
             },

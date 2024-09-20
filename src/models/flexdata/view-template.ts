@@ -1,5 +1,6 @@
+import { ContentClassificationSchema } from '../content-classification';
 import { ControlType, } from '../../types';
-import { FileInfoSchema } from '../fileinfo';
+import { FileInfoSchema } from '../file-info';
 import { FromSchema } from 'json-schema-to-ts';
 
 export const FDViewTemplateSchema = () => {
@@ -48,7 +49,8 @@ export const FDViewTemplateSchema = () => {
       image: {
         collapsible: true,
         ...FileInfoSchema(),
-      }
+      },
+      classification: ContentClassificationSchema(),
     },
   } as const;
 };

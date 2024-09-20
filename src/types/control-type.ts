@@ -36,4 +36,5 @@ export enum ControlType {
   ui = 'ui',
   arrayContainer = 'arrayContainer',
   dateRange = 'dateRange',
+  lookup = 'lookup',
 }

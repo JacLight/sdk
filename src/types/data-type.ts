@@ -31,8 +31,9 @@ export enum DataType {
   ticket = 'ticket',
   chat = 'chat',
   call = 'call',
+  lead = 'lead',
   message = 'message',
-  notification = 'notification',
+  schedule = 'schedule',
   trash = 'trash',
   log = 'log',
   company = 'company',
@@ -84,4 +85,7 @@ export enum DataType {
   web_activity = 'web_activity',
   site_index = 'site_index',
   site_domain = 'site_domain',
+  campaign = 'campaign',
+  audience = 'audience',
+  audience_criteria = 'audience_criteria',
 }

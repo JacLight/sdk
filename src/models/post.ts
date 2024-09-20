@@ -2,7 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { CollectionRule } from './collection-rule';
 import { CollectionUI } from './collection-ui';
 import { DataType, ControlType } from '../types';
-import { registerCollection } from '../defaultschema';
+import { registerCollection } from '../default-schema';
 
 export const PostSchema = () => {
   return {

@@ -41,6 +41,8 @@ export const deepCopySimple = (obj: any) => {
 };
 
 export const isEmpty = (obj: any) => {
+  if (typeof obj === 'undefined') return true;
+  if (typeof obj === null) return true;
   if (typeof obj === 'function') return false;
   if (typeof obj === 'boolean' || typeof obj === 'number') return false;
   if (typeof obj === 'string' && obj.length > 0) return false;

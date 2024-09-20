@@ -1,5 +1,5 @@
 import { ControlType } from '../../types';
-import { FileInfoSchema } from '../fileinfo';
+import { FileInfoSchema } from '../file-info';
 import { FromSchema } from 'json-schema-to-ts';
 
 export const FDCreativeStudioSchema = () => {

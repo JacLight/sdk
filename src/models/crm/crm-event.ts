@@ -1,7 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { registerCollection } from '../../defaultschema';
+import { registerCollection } from '../../default-schema';
 import { DataType, ControlType } from '../../types';
-import { FileInfoSchema } from '../fileinfo';
+import { FileInfoSchema } from '../file-info';
 
 export const EventSchema = () => {
   return {
@@ -11,35 +11,13 @@ export const EventSchema = () => {
         type: 'string',
         pattern: '^[a-zA-Z_\\-0-9]*$',
         unique: true,
-        group: 'status',
+        group: 'name',
         transform: 'uri'
       },
       type: {
         type: 'string',
         enum: ['event', 'meeting', 'appointment'],
-        group: 'status',
-      },
-      status: {
-        type: 'string',
-        enum: ['draft', 'new', 'confirmed', 'completed', 'rescheduled', 'cancelled'],
-        group: 'status',
-      },
-      title: {
-        type: 'string',
-      },
-      description: {
-        type: 'string',
-        'x-control-variant': 'textarea',
-      },
-      startTime: {
-        type: 'string',
-        format: 'date-time',
-        'group': 'time',
-      },
-      endTime: {
-        type: 'string',
-        'group': 'time',
-        format: 'date-time',
+        group: 'name',
       },
       host: {
         type: 'string',
@@ -52,62 +30,111 @@ export const EventSchema = () => {
         },
         group: 'host'
       },
+      status: {
+        type: 'string',
+        enum: ['draft', 'new', 'confirmed', 'completed', 'rescheduled', 'cancelled'],
+        group: 'host',
+      },
+      title: {
+        type: 'string',
+      },
+      participants: {
+        type: 'array',
+        'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
+        items: {
+          type: 'object',
+          properties: {
+            email: {
+              type: 'string',
+            },
+            phone: {
+              type: 'string',
+            },
+            confirmed: {
+              type: 'boolean',
+            },
+          }
+        },
+        dataSource: {
+          source: 'function',
+          value: 'getMessageRecipients',
+        },
+      },
+      startTime: {
+        type: 'string',
+        format: 'date-time',
+        'group': 'time',
+      },
+      endTime: {
+        type: 'string',
+        'group': 'time',
+        format: 'date-time',
+      },
+      description: {
+        type: 'string',
+        collapsible: true,
+        'x-control': ControlType.richtext,
+      },
       venue: {
         type: 'string',
         'x-control': ControlType.selectMany,
         'x-control-variant': 'chip',
-        'x-group': 'group1',
+        'group': 'venue',
         dataSource: {
           source: 'collection',
           collection: DataType.location,
           value: 'name',
           label: 'name',
         },
-        group: 'host'
       },
-      generateMeetingLink: {
-        type: 'boolean',
-        group: 'host',
+      address: {
+        type: 'string',
+        rules: [
+          { operation: 'isNotEmpty', valueA: '{{venue}}', action: 'hide' },
+          { operation: 'isTruthy', valueA: '{{generateMeetingLink}}', action: 'hide' }
+        ]
+      },
+      notificationTemplate: {
+        type: 'array',
+        'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
+        'x-group': 'group2',
+        dataSource: {
+          source: 'collection',
+          collection: DataType.messagetemplate,
+          value: 'name',
+          label: 'name',
+        },
+        group: 'form',
+        items: {
+          type: 'string',
+        },
+      },
+      form: {
+        type: 'string',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.collection,
+          value: 'name',
+          label: 'name',
+        },
+        group: 'form',
       },
       images: {
         type: 'array',
         'x-control': ControlType.file,
         items: FileInfoSchema(),
+        collapsible: true,
       },
-      participants: {
-        type: 'string',
-        'x-control-variant': 'chip',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.user,
-          value: 'email',
-          label: ['email', 'firstName', 'lastName'],
-        },
+      files: {
+        type: 'array',
+        'x-control': ControlType.file,
+        items: FileInfoSchema(),
+        collapsible: true,
       },
-      notificationTemplate: {
-        type: 'string',
-        'x-control': ControlType.selectMany,
-        'x-group': 'group2',
-        dataSource: {
-          source: 'collection',
-          collection: DataType.messagetemplate,
-          value: 'sk',
-          label: 'name',
-          group: 'form',
-        },
-        form: {
-          type: 'string',
-          'x-control': ControlType.selectMany,
-          dataSource: {
-            source: 'collection',
-            collection: DataType.collection,
-            value: 'name',
-            label: 'name',
-          },
-          group: 'form',
-        },
-      },
+
     },
     required: ['name', 'startTime', 'endTime'],
   } as const;

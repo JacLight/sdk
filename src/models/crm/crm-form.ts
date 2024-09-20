@@ -1,9 +1,7 @@
-import { registerCollection, registerDefaultData } from '../../defaultschema';
-import { CollectionRule } from '../collection-rule';
-import { CollectionUI } from '../collection-ui';
+import { registerCollection, registerDefaultData } from '../../default-schema';
 import { ControlType, DataType } from '../../types';
 import { FromSchema } from 'json-schema-to-ts';
-import { FileInfoSchema } from '../fileinfo';
+import { FileInfoSchema } from '../file-info';
 
 export const FormSchema = () => {
   return {
@@ -106,15 +104,19 @@ export const FormSchema = () => {
             type: 'boolean',
           },
           template: {
-            type: 'string',
-            group: 'notification',
+            type: 'array',
             'x-control': ControlType.selectMany,
+            'x-control-variant': 'chip',
+            group: 'notification',
             dataSource: {
               source: 'collection',
               collection: DataType.messagetemplate,
               label: 'name',
               value: 'name',
-            }
+            },
+            items: {
+              type: 'string',
+            },
           },
           message: {
             type: 'string',
@@ -131,15 +133,19 @@ export const FormSchema = () => {
             type: 'boolean',
           },
           template: {
-            type: 'string',
-            group: 'notification',
+            type: 'array',
             'x-control': ControlType.selectMany,
+            'x-control-variant': 'chip',
+            group: 'notification',
             dataSource: {
               source: 'collection',
               collection: DataType.messagetemplate,
               label: 'name',
               value: 'name',
-            }
+            },
+            items: {
+              type: 'string',
+            },
           },
           message: {
             type: 'string',
@@ -156,21 +162,14 @@ export const FormSchema = () => {
 const dd = FormSchema();
 export type FormModel = FromSchema<typeof dd>;
 
-export const FormUI = (): CollectionUI[] => {
-  return null;
-};
-
-export const FormRules = (): CollectionRule[] => {
-  return null;
-};
 registerCollection(
   'CrmForm',
   DataType.form,
   FormSchema(),
-  FormUI(),
-  FormRules(),
-  true,
-  true
+  null,
+  null,
+  false,
+  false
 );
 
 const genDefaultData = () => {

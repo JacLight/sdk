@@ -1,5 +1,5 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { registerCollection } from '../defaultschema';
+import { registerCollection } from '../default-schema';
 import {
   DataType,
   ControlType,
@@ -9,7 +9,7 @@ import {
   getMenuList
 } from '../types';
 import { CollectionUI } from './collection-ui';
-import { FileInfoSchema } from './fileinfo';
+import { FileInfoSchema } from './file-info';
 import { PhoneSchema } from './crm/crm-phone';
 
 export const UserSchema = () => {
@@ -190,8 +190,12 @@ export const UserSchema = () => {
           label: 'name',
         },
       },
+      signature: {
+        type: 'string',
+        'x-control': ControlType.richtext
+      }
     },
-    "required": ["password", "confirmPassword", "firstName", "lastName", "email"]
+    "required": ["firstName", "lastName", "email"]
   } as const;
 };
 
@@ -366,7 +370,9 @@ export const UserUI = (): CollectionUI[] => {
               '0': '/properties/lastFailedLoginDate',
               '1': '/properties/failedLoginAttempts',
             },
-
+            {
+              '0': '/properties/signature',
+            },
           ],
         },
         {

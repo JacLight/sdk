@@ -2,8 +2,8 @@ import { FromSchema } from 'json-schema-to-ts';
 import { CollectionRule } from './collection-rule';
 import { CollectionUI } from './collection-ui';
 import { DataType } from '../types';
-import { registerCollection } from '../defaultschema';
-import { FileInfoSchema } from './fileinfo';
+import { registerCollection } from '../default-schema';
+import { FileInfoSchema } from './file-info';
 
 export const CategorySchema = () => {
   return {

@@ -2,15 +2,15 @@ import { FromSchema } from 'json-schema-to-ts';
 import { DataType, ControlType } from '../types';
 import { CollectionRule } from './collection-rule';
 import { CollectionUI } from './collection-ui';
-import { registerCollection } from '../defaultschema';
+import { registerCollection } from '../default-schema';
 import { toTitleCase } from '../utils/index';
-import { FileInfoSchema } from './fileinfo';
+import { FileInfoSchema } from './file-info';
 
 export const ActivityTypes: { [key: string]: string } = {
   comment: 'comment',
   like: 'like',
   dislike: 'dislike',
-  rating: 'rating',
+  rate: 'rate',
   share: 'share',
   follow: 'follow',
   view: 'view',
@@ -34,6 +34,7 @@ export const ActivityTypes: { [key: string]: string } = {
   refund: 'refund',
   subscribe: 'subscribe',
   unsubscribe: 'unsubscribe',
+  register: 'register',
 }
 
 export const ActivitySchema = () => {
@@ -47,12 +48,16 @@ export const ActivitySchema = () => {
       value: {
         type: 'string',
       },
+      comment: {
+        type: 'string',
+      },
       status: {
         type: 'string',
       },
       type: {
         type: 'string',
         'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
         dataSource: {
           source: 'json',
           value: Object.keys(ActivityTypes).map((key: any) => ({ label: toTitleCase(key), value: key }))

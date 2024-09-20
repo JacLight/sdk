@@ -1,5 +1,5 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { registerCollection } from '../../defaultschema';
+import { registerCollection } from '../../default-schema';
 import { CollectionRule } from '../collection-rule';
 import { CollectionUI } from '../collection-ui';
 import { ControlType, DataType } from '../../types';
@@ -22,6 +22,10 @@ export const ReservationSchema = () => {
         readOnly: true,
         group: 'name',
         title: 'Reservation ID',
+      },
+      definition: {
+        type: 'string',
+        group: 'name',
       },
       customer: {
         type: 'object',

@@ -1,6 +1,6 @@
-import { registerCollection } from '../defaultschema';
+import { FromSchema } from 'json-schema-to-ts';
+import { registerCollection } from '../default-schema';
 import { DataType, ControlType } from '../types';
-import { CollectionUI } from './collection-ui';
 import { AddressSchema } from './crm/crm-address';
 
 export const LocationSchema = () => {
@@ -70,10 +70,8 @@ export const LocationSchema = () => {
   } as const;
 };
 
-
-export const LocationUI = (): CollectionUI[] => {
-  return null;
-};
+const ps = LocationSchema();
+export type LocationModel = FromSchema<typeof ps>;
 registerCollection(
   'Business Location',
   DataType.location,

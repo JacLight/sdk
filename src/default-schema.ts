@@ -80,7 +80,7 @@ const createUser = (
   password: string,
   groups: string
 ): UserModel => {
-  return { firstname, lastname, email, password, groups, lockout: '' };
+  return { firstname, lastname, email, password, groups, lockout: '' } as any;
 };
 export const users: UserModel[] = [];
 users.push(createUser('imzee', 'jac', 'imzee@local.com', 'aaaaaa', 'Admin'));

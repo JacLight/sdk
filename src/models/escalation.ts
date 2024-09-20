@@ -1,5 +1,5 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { registerCollection } from '../defaultschema';
+import { registerCollection } from '../default-schema';
 import { DataType, ControlType } from '../types';
 import { CollectionRule } from './collection-rule';
 import { CollectionUI } from './collection-ui';
@@ -12,41 +12,33 @@ export const EscalationSchema = () => {
         type: 'string',
         unique: true,
         pattern: '^[a-zA-Z_\\-0-9]*$',
-        transform: 'uri'
+        transform: 'uri',
+        group: 'name',
       },
-      flow: {
+      status: {
         type: 'string',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.mintflow,
-          value: 'sk',
-          label: 'name',
-        },
-      },
-      notificationTemplate: {
-        type: 'string',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.messagetemplate,
-          value: 'sk',
-          label: 'name',
-        },
+        enum: ['new', 'active', 'inactive'],
+        group: 'name',
       },
       stages: {
         type: 'array',
+        collapsible: 'close',
         showIndex: true,
         rowSort: true,
         items: {
           type: 'object',
+          showIndex: true,
           properties: {
             escalateAfter: {
               type: 'number',
+              group: 'units',
+              default: 4,
             },
             units: {
               type: 'string',
               enum: ['minutes', 'hours', 'days'],
+              default: 'hours',
+              group: 'units',
             },
             flow: {
               type: 'string',
@@ -54,29 +46,36 @@ export const EscalationSchema = () => {
               dataSource: {
                 source: 'collection',
                 collection: DataType.mintflow,
-                value: 'sk',
+                value: 'name',
                 label: 'name',
               },
+              group: 'flow',
             },
             notificationTemplate: {
-              type: 'string',
-              'x-control': ControlType.selectMany,
-              dataSource: {
-                source: 'collection',
-                collection: DataType.messagetemplate,
-                value: 'sk',
-                label: 'name',
-              },
-            },
-            escalateTo: {
-              type: 'string',
+              type: 'array',
               'x-control': ControlType.selectMany,
               'x-control-variant': 'chip',
               dataSource: {
                 source: 'collection',
-                collection: DataType.user,
-                value: 'sk',
-                label: 'username',
+                collection: DataType.messagetemplate,
+                value: 'name',
+                label: 'name',
+              },
+              items: {
+                type: 'string',
+              },
+              group: 'flow',
+            },
+            escalateTo: {
+              type: 'array',
+              'x-control': ControlType.selectMany,
+              'x-control-variant': 'chip',
+              items: {
+                type: 'string',
+              },
+              dataSource: {
+                source: 'function',
+                value: 'getUserRecipients',
               },
             },
           },

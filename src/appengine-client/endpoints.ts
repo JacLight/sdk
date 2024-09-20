@@ -1,3 +1,5 @@
+
+
 export const appEndpoints = {
   batch_log_data: {
     name: 'batch_log_data',
@@ -277,7 +279,7 @@ export const appEndpoints = {
   upstream_get_config: {
     name: 'upstream_get_config',
     method: 'get',
-    path: 'upstream/get/config',
+    path: 'upstream/get-config',
   },
   crm_ticket_get: {
     name: 'crm_ticket_get',
@@ -323,11 +325,6 @@ export const appEndpoints = {
     name: 'crm_inbox_delete',
     method: 'delete',
     path: 'crm/inbox/delete',
-  },
-  crm_inbox_create: {
-    name: 'crm_inbox_create',
-    method: 'post',
-    path: 'crm/inbox/create',
   },
   crm_inbox_update: {
     name: 'crm_inbox_update',

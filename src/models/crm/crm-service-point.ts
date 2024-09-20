@@ -1,7 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { registerCollection } from '../../defaultschema';
+import { registerCollection } from '../../default-schema';
 import { DataType, ControlType } from '../../types';
-import { FileInfoSchema } from '../fileinfo';
+import { FileInfoSchema } from '../file-info';
 
 export const ServicePointSchema = () => {
   return {

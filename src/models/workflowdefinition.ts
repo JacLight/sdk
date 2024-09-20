@@ -1,9 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { registerCollection, registerDefaultData } from '../defaultschema';
-import { DataType, ControlType, WorkflowStatus } from '../types';
-import { CollectionRule } from './collection-rule';
+import { registerCollection, registerDefaultData } from '../default-schema';
+import { DataType, ControlType, WorkflowStageTypes } from '../types';
 import { CollectionUI } from './collection-ui';
-import { TaskSchema } from './task';
 import { ModelState } from './base.model';
 
 export const WorkflowDefinitionSchema = () => {
@@ -45,16 +43,22 @@ export const WorkflowDefinitionSchema = () => {
           value: 'sk',
           label: 'name',
         },
+        group: 'sla',
       },
       notificationTemplate: {
-        type: 'string',
+        type: 'array',
         'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
         dataSource: {
           source: 'collection',
           collection: DataType.messagetemplate,
-          value: 'sk',
+          value: 'name',
           label: 'name',
         },
+        items: {
+          type: 'string',
+        },
+        group: 'sla',
       },
       startFlow: {
         type: 'string',
@@ -62,7 +66,7 @@ export const WorkflowDefinitionSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.mintflow,
-          value: 'sk',
+          value: 'name',
           label: 'name',
         },
         group: 'flow'
@@ -73,16 +77,10 @@ export const WorkflowDefinitionSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.mintflow,
-          value: 'sk',
+          value: 'name',
           label: 'name',
         },
         group: 'flow'
-      },
-      tasks: {
-        type: 'array',
-        collapsible: true,
-        minItems: 1,
-        items: TaskSchema()
       },
       stages: {
         type: 'array',
@@ -95,55 +93,11 @@ export const WorkflowDefinitionSchema = () => {
   } as const;
 };
 
-export const WorkflowDefinitionRules = (): CollectionRule[] => {
-  return [
-    {
-      name: 'Actor Type',
-      action: [
-        {
-          operation: 'setProperty',
-          targetField: '/properties/stages/items/properties/assignTo/dataSource/collection',
-          sourceField: '/properties/stages/items/properties/assignType',
-        },
-      ],
-      condition: {
-        type: 'and',
-        param: [
-          {
-            value: true,
-            field1: '/properties/stages/items/properties/assignType',
-            operation: 'notEmpty',
-          },
-        ],
-      },
-    },
-    {
-      name: 'Task Action',
-      action: [
-        {
-          operation: 'setProperty',
-          targetField: '/properties/tasks/items/properties/assignTo/dataSource/collection',
-          sourceField: '/properties/tasks/items/properties/assignType',
-        },
-      ],
-      condition: {
-        type: 'and',
-        param: [
-          {
-            value: true,
-            field1: '/properties/tasks/items/properties/assignType',
-            operation: 'notEmpty',
-          },
-        ],
-      },
-    },
-  ]
-};
-
-
 export const WorkflowStageSchema = () => {
   return {
     type: 'object',
+    collapsible: true,
+    showIndex: true,
     properties: {
       id: {
         type: ['string', 'number'],
@@ -152,7 +106,7 @@ export const WorkflowStageSchema = () => {
       },
       type: {
         type: 'string',
-        enum: ['start', 'intermediate', 'end'],
+        enum: WorkflowStageTypes,
         group: 'type',
       },
       modelState: {
@@ -169,16 +123,16 @@ export const WorkflowStageSchema = () => {
         type: 'string',
         group: 'name',
       },
-      sla: {
+      escalation: {
         type: 'string',
         'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.escalation,
-          value: 'sk',
+          value: 'name',
           label: 'name',
         },
-        group: 'sla'
+        group: 'escalation'
       },
       flow: {
         type: 'string',
@@ -186,19 +140,23 @@ export const WorkflowStageSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.mintflow,
-          value: 'sk',
+          value: 'name',
           label: 'name',
         },
-        group: 'sla'
+        group: 'escalation'
       },
       notificationTemplate: {
-        type: 'string',
+        type: 'array',
         'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
         dataSource: {
           source: 'collection',
           collection: DataType.messagetemplate,
-          value: 'sk',
+          value: 'name',
           label: 'name',
+        },
+        items: {
+          type: 'string',
         },
         group: 'sla'
       },
@@ -223,71 +181,8 @@ export const WorkflowStageSchema = () => {
     },
   } as const;
 };
-
-export const WorkflowSubSchema = () => {
-  return {
-    type: 'object',
-    properties: {
-      workflowId: {
-        type: 'string',
-        title: 'Workflow',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.workflowdefinition,
-          value: 'sk',
-          label: 'name',
-        },
-      },
-      status: {
-        type: 'string',
-        disabled: true,
-        enum: Object.values(WorkflowStatus),
-        default: 'new'
-      },
-      note: {
-        type: 'string'
-      },
-      tasks: {
-        type: 'array',
-        items: TaskSchema(),
-        displayStyle: 'table',
-        readOnly: true,
-      },
-    },
-  } as const;
-};
-
-export const WorkflowStageRules = (): CollectionRule[] => {
-  return [
-    {
-      name: 'Actor Type',
-      action: [
-        {
-          operation: 'setProperty',
-          targetField: '/properties/assignTo/dataSource/collection',
-          sourceField: '/properties/assignType',
-        },
-      ],
-      condition: {
-        type: 'and',
-        param: [
-          {
-            value: true,
-            field1: '/properties/assignType',
-            operation: 'notEmpty',
-          },
-        ],
-      },
-    },
-  ]
-};
-
 const genDefaultData = () => {
   return {
-    tasks: [
-      { status: 'new', name: 'Check Stock', description: 'Check if item is in stock', stageId: 0 },
-    ],
     stages: [
       { id: 0, type: 'start', name: 'To Do', modelState: ModelState.new },
       { id: 0, type: 'intermediate', name: 'In Progress', modelState: ModelState.inprogress },
@@ -297,10 +192,7 @@ const genDefaultData = () => {
 };
 
 export const WorkflowDefinitionUI = (): CollectionUI[] => { return null };
-
 const wfd = WorkflowDefinitionSchema();
-const wfe = WorkflowSubSchema();
 export type WorkflowDefinitionModel = FromSchema<typeof wfd>;
-export type WorkflowSubModel = FromSchema<typeof wfe>;
-registerCollection('WorkflowDefinition', DataType.workflowdefinition, WorkflowDefinitionSchema(), WorkflowDefinitionUI(), WorkflowDefinitionRules())
+registerCollection('WorkflowDefinition', DataType.workflowdefinition, WorkflowDefinitionSchema(), null, null)
 registerDefaultData(DataType.workflowdefinition, genDefaultData)

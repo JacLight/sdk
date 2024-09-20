@@ -1,6 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { getLanguages } from '../data';
-import { registerCollection } from '../defaultschema';
+import { registerCollection } from '../default-schema';
 import { DataType, ControlType } from '../types';
 import { CollectionRule } from './collection-rule';
 import { CollectionUI } from './collection-ui';

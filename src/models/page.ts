@@ -1,9 +1,9 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { DataType, ControlType, FormViewSectionType } from '../types';
-import { CollectionRule } from './collection-rule';
 import { CollectionUI } from './collection-ui';
-import { registerCollection } from '../defaultschema';
-import { FileInfoSchema } from './fileinfo';
+import { registerCollection } from '../default-schema';
+import { FileInfoSchema } from './file-info';
+import { ContentClassificationSchema } from './content-classification';
 
 export const PageSchema = (title = '', description = '') => {
   return {
@@ -55,26 +55,17 @@ export const PageSchema = (title = '', description = '') => {
         type: 'string',
         'x-control-variant': 'textarea',
       },
-      openGraph: {
+      tracking: {
         type: 'object',
+        collapsible: 'close',
         properties: {
-          title: {
+          pixel: {
             type: 'string',
           },
-          description: {
-            type: 'string',
-            'x-control-variant': 'textarea',
-          },
-          image: {
+          googleAnalytic: {
             type: 'string',
           },
-          type: {
-            type: 'string',
-          },
-          url: {
-            type: 'string',
-          },
-        },
+        }
       },
       hidden: {
         type: 'boolean',
@@ -88,7 +79,7 @@ export const PageSchema = (title = '', description = '') => {
         default: '{{title}}',
         transform: ['uri', 'lowercase'],
       },
-      iconUrl: {
+      favicon: {
         type: 'string',
       },
       childEditing: {
@@ -100,7 +91,6 @@ export const PageSchema = (title = '', description = '') => {
       childNavigation: {
         type: 'string',
         enum: ['name', 'slug', 'id'],
-        default: 'append',
         displayStyle: 'outlined',
       },
       dataType: {
@@ -246,40 +236,6 @@ export const PageSectionSchema = () => {
           json: []
         },
       },
-      maxItems: {
-        type: 'number',
-        displayStyle: 'outlined',
-      },
-      shuffle: {
-        type: 'boolean',
-        description: 'Randomize the order of the items',
-      },
-      selection: {
-        type: 'array',
-        collapsible: true,
-        title: 'Selections',
-        'x-control': ControlType.collection,
-        displayStyle: 'table',
-        'x-control-variant': 'picker',
-        dataSource: {
-          source: 'collection',
-          collection: DataType.post,
-        },
-        items: {
-          type: 'object',
-          properties: {
-            datatype: {
-              type: 'string',
-            },
-            id: {
-              type: 'string',
-            },
-            name: {
-              type: 'string',
-            },
-          },
-        },
-      },
       category: {
         type: 'array',
         'x-control': ControlType.selectMany,
@@ -322,6 +278,12 @@ export const PageSectionSchema = () => {
           'ModifyDate Asc',
           'ModifyDate Desc',
         ],
+        group: 'sort',
+      },
+      maxItems: {
+        type: 'number',
+        displayStyle: 'outlined',
+        group: 'sort',
       },
       contextOverride: {
         type: 'array',
@@ -335,6 +297,37 @@ export const PageSectionSchema = () => {
           json: ['data', 'datatype', 'category', 'tag', 'sort', 'sortType', 'maxItem']
         },
         description: 'Overrides selected item with value from request',
+        group: 'shuffle',
+      },
+      shuffle: {
+        type: 'boolean',
+        group: 'shuffle',
+      },
+      selection: {
+        type: 'array',
+        collapsible: 'close',
+        title: 'Selections',
+        'x-control': ControlType.collection,
+        displayStyle: 'table',
+        'x-control-variant': 'picker',
+        dataSource: {
+          source: 'collection',
+          collection: DataType.post,
+        },
+        items: {
+          type: 'object',
+          properties: {
+            datatype: {
+              type: 'string',
+            },
+            id: {
+              type: 'string',
+            },
+            name: {
+              type: 'string',
+            },
+          },
+        },
       },
       dataInRequest: {
         type: 'boolean',
@@ -354,9 +347,13 @@ export const PageSectionSchema = () => {
           keywords: {
             type: 'string',
           },
+          pixel: {
+            type: 'string',
+          },
           image: FileInfoSchema(),
         }
       },
+      classification: ContentClassificationSchema(),
     },
   } as const;
 };
@@ -384,7 +381,7 @@ export const PageUI = (): CollectionUI[] => {
               '0': '/properties/description',
             },
             {
-              '0': '/properties/iconUrl',
+              '0': '/properties/favicon',
             },
             {
               '0': '/properties/dataType',
@@ -414,7 +411,7 @@ export const PageUI = (): CollectionUI[] => {
               '0': '/properties/robots',
             },
             {
-              '0': '/properties/openGraph',
+              '0': '/properties/tracking',
             },
           ],
         },
@@ -439,51 +436,6 @@ export const PageUI = (): CollectionUI[] => {
   ];
 };
 
-export const PageSectionUI = (): CollectionUI[] => {
-  return [
-    {
-      type: FormViewSectionType.section2column,
-      items: [
-        {
-          '0': '/properties/dataType',
-        },
-
-        {
-          '0': '/properties/category',
-        },
-        {
-          '0': '/properties/tag',
-        },
-        {
-          '0': '/properties/sort',
-          '1': '/properties/maxItems',
-        },
-        {
-          '0': '/properties/shuffle',
-          '1': '/properties/contextOverride',
-        },
-        {
-          '0': '/properties/dataInRequest',
-        },
-        {
-          '0': '/properties/selection',
-        },
-        {
-          '0': '/properties/seo',
-        },
-      ],
-    },
-  ];
-};
-
-export const PageRules = (): CollectionRule[] => {
-  return [];
-};
-
-export const PageSectionRules = (): CollectionRule[] => {
-  return [
-  ];
-};
 
 const pageSectionSchema = PageSectionSchema();
 const pageSchema = PageSchema();
@@ -491,4 +443,4 @@ const pageSchema = PageSchema();
 export type PageSectionModel = FromSchema<typeof pageSectionSchema>;
 export type PageModel = FromSchema<typeof pageSchema>;
 
-registerCollection('Page', DataType.page, PageSchema(), PageUI(), PageRules());
+registerCollection('Page', DataType.page, PageSchema(), PageUI(), null);

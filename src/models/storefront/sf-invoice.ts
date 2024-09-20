@@ -1,5 +1,5 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { registerCollection } from '../../defaultschema';
+import { registerCollection } from '../../default-schema';
 import { CollectionRule } from '../collection-rule';
 import { CollectionUI } from '../collection-ui';
 import { DataType, ControlType, FormViewSectionType } from '../../types';
@@ -121,13 +121,17 @@ export const SFInvoiceSchema = () => {
         format: 'currency',
       },
       template: {
-        type: 'string',
+        type: 'array',
         'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
         dataSource: {
           source: 'collection',
           collection: DataType.messagetemplate,
           value: 'name',
           label: ['name', 'from'],
+        },
+        items: {
+          type: 'string',
         },
         group: 'template'
       },

@@ -1,5 +1,5 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { registerCollection } from '../../defaultschema';
+import { registerCollection } from '../../default-schema';
 import { CollectionRule } from '../collection-rule';
 import { CollectionUI } from '../collection-ui';
 import { DataType, ControlType } from '../../types';
@@ -11,7 +11,6 @@ export const SFShippingSchema = () => {
     properties: {
       courier: {
         type: 'string',
-        hidden: true,
       },
       orderNumber: {
         type: 'string',
@@ -19,7 +18,7 @@ export const SFShippingSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.sf_order,
-          value: 'sk',
+          value: 'number',
           label: 'number',
         },
       },
@@ -36,6 +35,7 @@ export const SFShippingSchema = () => {
       to: { ...AddressSchema(), collapsible: true, title: 'To address' },
       products: {
         type: 'array',
+        hideIn: ['table'],
         collapsible: true,
         dataSource: {
           source: 'collection',
@@ -81,7 +81,7 @@ export const SFShippingSchema = () => {
           },
         },
       },
-      parcel: {
+      parcels: {
         type: 'array',
         title: 'Package and weight',
         collapsible: true,
@@ -99,38 +99,29 @@ export const SFShippingSchema = () => {
       },
       tracking: {
         type: 'string',
-        readOnly: true,
-        hidden: true,
       },
       shipDate: {
-        hidden: true,
         type: 'string',
       },
       expectedDeliveryDate: {
-        hidden: true,
         type: 'string',
       },
       deliveryDate: {
-        hidden: true,
         type: 'string',
       },
       status: {
-        hidden: true,
         type: 'string',
       },
       cost: {
-        hidden: true,
         type: 'number',
       },
       proofOfDelivery: {
-        hidden: true,
         type: 'array',
         items: {
           type: 'object',
         },
       },
       remarks: {
-        hidden: true,
         type: 'string',
       },
     },

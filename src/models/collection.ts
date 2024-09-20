@@ -1,4 +1,4 @@
-import { registerCollection } from '../defaultschema';
+import { registerCollection } from '../default-schema';
 import { CollectionType, DataType, ControlType } from '../types';
 import { CollectionRule } from './collection-rule';
 import { CollectionUI } from './collection-ui';

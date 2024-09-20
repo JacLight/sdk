@@ -1,10 +1,12 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { DataType, ControlType } from '../types';
 import { CommentModel } from './comment';
-import { FileInfoSchema } from './fileinfo';
-import { WorkflowSubModel } from './workflowdefinition';
+import { FileInfoSchema } from './file-info';
 import { ActivityModel } from './activity';
 import { MessageModel } from './crm';
+import { ContentClassificationSchema } from './content-classification';
+import { TaskModel } from './task';
+import { ScheduleModel } from './schedule';
 
 export enum SortType {
   desc = -1,
@@ -58,26 +60,29 @@ export interface BaseModel<T> {
   data?: T;
   isNew?: boolean;
   datatype?: DataType | string;
-  workflow?: WorkflowSubModel;
+  subschema?: string;
+  workflow?: TaskModel;
   post?: PostSubModel;
   style?: StyleSubModel;
   version: number;
   createdate?: Date;
   modifydate?: Date;
   author?: string;
-  subschema?: string;
   requiredRole?: RequiredRoleModel;
   comments?: CommentModel[];
   activities?: ActivityModel[];
   messages?: MessageModel[];
+  schedule?: ScheduleModel;
   shares?: number;
   likes?: number;
   dislikes?: number;
   rating?: number;
   ratingCount?: number;
   owner?: {
-    datatype: DataType;
-    id: string;
+    datatype?: DataType;
+    id?: string;
+    name?: string;
+    email?: string;
   },
   state?: ModelState;
   search?: string;
@@ -104,26 +109,22 @@ export const PostSubSchema = () => {
       allowShare: {
         type: 'boolean',
         default: true,
+        group: 'share',
       },
       allowComment: {
         type: 'boolean',
         default: true,
+        group: 'share',
       },
       allowRating: {
         type: 'boolean',
         default: true,
+        group: 'share',
       },
       showRelated: {
         type: 'boolean',
         default: true,
-      },
-      publishStart: {
-        type: 'string',
-        format: 'date-time',
-      },
-      publishEnd: {
-        type: 'string',
-        format: 'date-time',
+        group: 'share',
       },
       categories: {
         type: 'array',
@@ -156,12 +157,7 @@ export const PostSubSchema = () => {
         },
       },
       images: FileInfoSchema(),
-      pages: {
-        type: 'array',
-        items: {
-          type: 'string',
-        },
-      },
+      classification: ContentClassificationSchema(),
     },
   } as const;
 };
@@ -172,31 +168,36 @@ export const StyleSubSchema = () => {
   return {
     type: 'object',
     properties: {
-      classes: {
-        type: 'string',
-        'description': 'Classes to be applied to the element separated by space',
-      },
       theme: {
         type: 'object',
-        collapsible: true,
+        collapsible: 'close',
         properties: {
           name: {
             type: 'string',
-            'description': 'Name of the theme',
+            'x-control': ControlType.selectMany,
+            'x-control-variant': 'chip',
+            maxItems: 1,
+            dataSource: {
+              source: 'function',
+              value: 'getThemeSettingsList',
+            },
           },
-          customize: {
+          darkMode: {
+            type: 'string',
+            enum: ['auto', 'dark', 'light'],
+          },
+          energy: {
+            type: 'string',
+          },
+          settings: {
             type: 'array',
             items: {
               type: 'object',
               layout: 'horizontal',
+              showIndex: true,
               properties: {
                 property: {
                   type: 'string',
-                  'x-control': ControlType.selectMany,
-                  dataSource: {
-                    'source': 'json',
-                    'json': ['primary', 'primary-content', 'secondary', 'secondary-content', 'accent', 'neutral', 'neutral-content', 'base100', 'base-content', 'info', 'info-content', 'success', 'success-content', 'warning', 'warning-content', 'error', 'error-content'],
-                  }
                 },
                 value: {
                   type: 'string',
@@ -205,6 +206,10 @@ export const StyleSubSchema = () => {
             }
           }
         }
+      },
+      classes: {
+        type: 'string',
+        'description': 'Classes to be applied to the element separated by space',
       },
       css: {
         type: 'string',

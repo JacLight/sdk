@@ -1,5 +1,5 @@
-import { FileInfoSchema } from '../fileinfo';
-import { registerCollection } from '../../defaultschema';
+import { FileInfoSchema } from '../file-info';
+import { registerCollection } from '../../default-schema';
 import { ControlType, DataType } from '../../types';
 import { FromSchema } from 'json-schema-to-ts';
 

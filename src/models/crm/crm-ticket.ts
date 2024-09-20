@@ -1,8 +1,8 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { registerCollection, registerDefaultData } from '../../defaultschema';
+import { registerCollection, registerDefaultData } from '../../default-schema';
 import { CollectionRule } from '../collection-rule';
 import { DataType, ControlType } from '../../types';
-import { FileInfoSchema } from '../fileinfo';
+import { FileInfoSchema } from '../file-info';
 
 export const TicketSchema = () => {
   return {
@@ -21,6 +21,7 @@ export const TicketSchema = () => {
       },
       assignBy: {
         type: 'string',
+        readOnly: true,
         group: 'assign',
       },
       assignments: {

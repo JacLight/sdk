@@ -1,8 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { registerCollection } from '../../defaultschema';
-import { CollectionUI } from '../collection-ui';
-import { DataType, ControlType, FormViewSectionType } from '../../types';
-import { FileInfoSchema } from '../fileinfo';
+import { registerCollection } from '../../default-schema';
+import { DataType, ControlType } from '../../types';
+import { FileInfoSchema } from '../file-info';
 
 
 //add context to system emails can be regenerated - select the template adn add the data
@@ -12,24 +11,45 @@ export const MessageSchema = () => {
     properties: {
       deliveryType: {
         type: 'string',
-        enum: ['email', 'sms', 'whatsapp', 'slack', 'instant', 'push', 'notification', 'site-popup', 'site-dialog', 'site-alert'],
-        default: 'email',
-      },
-      template: {
-        type: 'string',
         'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
+        dataSource: {
+          source: 'json',
+          json: ['email', 'sms', 'whatsapp', 'chat', 'facebook', 'intragram', 'twitter', 'gmb', 'tiktok', 'slack', 'push', 'notification', 'site-popup', 'site-alert'],
+        },
+        default: 'email',
+        group: 'name',
+      },
+      templates: {
+        type: 'array',
+        'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
         dataSource: {
           source: 'collection',
-          collection: DataType.messagetemplate
+          collection: DataType.messagetemplate,
+          label: 'name',
+          value: 'name',
         },
+        items: {
+          type: 'string',
+        },
+        group: 'name',
       },
       from: {
         type: 'string',
+        group: 'from',
+      },
+      status: {
+        type: 'string',
+        default: 'new',
+        enum: ['new', 'pending', 'sent', 'delivered', 'read', 'failed'],
+        'x-control': 'label',
+        group: 'from',
+        readOnly: true,
       },
       to: {
         type: 'array',
         'x-control': ControlType.selectMany,
-        hideLabel: true,
         'x-control-variant': 'chip',
         items: {
           type: 'string',
@@ -38,41 +58,68 @@ export const MessageSchema = () => {
           source: 'function',
           value: 'getMessageRecipients',
         },
+        rules: [
+          { operation: 'in', valueA: ['site-popup', 'gmb', 'site-alert'], valueB: '{{deliveryType}}', action: 'hide' },
+        ],
       },
       subject: {
         type: 'string',
+        rules: [
+          { operation: 'notIn', valueA: ['email'], valueB: '{{deliveryType}}', action: 'hide' },
+        ],
+        watchedPaths: ['deliveryType'],
       },
       html: {
         title: 'Content',
-        collapsible: true,
         type: 'string',
         'x-control': 'richtext',
+        rules: [
+          { operation: 'notIn', valueA: ['email', 'site-popup'], valueB: '{{deliveryType}}', action: 'hide' },
+          { operation: 'isNotEmpty', valueA: '{{templates}}', action: 'hide' },
+        ],
+        watchedPaths: ['deliveryType'],
+        hideIn: ['table']
       },
       text: {
-        collapsible: true,
-        title: 'Content as text',
+        title: 'Content',
         type: 'string',
         'x-control-variant': 'textarea',
         rows: 4,
         displayStyle: 'outlined',
+        rules: [
+          { operation: 'in', valueA: ['email', 'site-popup'], valueB: '{{deliveryType}}', action: 'hide' },
+          { operation: 'isNotEmpty', valueA: '{{templates}}', action: 'hide' },
+        ],
+        watchedPaths: ['deliveryType'],
+        hideIn: ['table']
+      },
+      files: {
+        type: 'array',
+        title: 'Attachments',
+        collapsible: true,
+        'x-control': ControlType.file,
+        items: FileInfoSchema(),
       },
       source: {
         type: 'string',
+        hidden: true,
         'x-control': 'label',
-      },
-      status: {
-        type: 'string',
-        'x-control': 'label',
+        group: 'status',
       },
       type: {
         type: 'string',
+        group: 'status',
+        hidden: true,
       },
       tries: {
         type: 'number',
         'x-control': 'label',
+        hidden: true,
+        group: 'status',
       },
       statusHistory: {
         type: 'array',
+        hidden: true,
         'x-control': 'label',
         collapsible: true,
         items: {
@@ -91,15 +138,15 @@ export const MessageSchema = () => {
           },
         },
       },
-      files: {
-        type: 'array',
-        'x-control': ControlType.file,
-        items: FileInfoSchema(),
+      conversationId: {
+        type: 'string',
+        hidden: true,
       },
       context: {
         type: 'array',
         'x-control': ControlType.collection,
         collapsible: true,
+        hidden: true,
         displayStyle: 'table',
         'x-control-variant': 'picker',
         dataSource: {
@@ -128,50 +175,11 @@ export const MessageSchema = () => {
 const ms = MessageSchema();
 export type MessageModel = FromSchema<typeof ms>;
 
-export const MessageUI = (): CollectionUI[] => {
-  return [
-    {
-      type: FormViewSectionType.sectiontab,
-      tab: [
-        {
-          title: 'Instant Send',
-          items: [
-            {
-              '0': '/properties/from',
-              '1': '/properties/template',
-              '2': '/properties/deliveryType',
-            },
-            {
-              '0': '/properties/to',
-            },
-            {
-              '0': '/properties/subject',
-            },
-            {
-              '0': '/properties/html',
-            },
-            {
-              '0': '/properties/text',
-            },
-            {
-              '0': '/properties/files',
-            },
-            {
-              '0': '/properties/context',
-            },
-          ],
-        },
-      ],
-    },
-  ];
-};
-
-
 registerCollection(
   'Message',
   DataType.message,
   MessageSchema(),
-  MessageUI(),
+  null,
   null,
   true
 );

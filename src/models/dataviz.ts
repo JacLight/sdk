@@ -1,5 +1,5 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { registerCollection } from '../defaultschema';
+import { registerCollection } from '../default-schema';
 import { DataType, ControlType } from '../types';
 import { CollectionRule } from './collection-rule';
 import { CollectionUI } from './collection-ui';
@@ -25,8 +25,7 @@ export const DataVizSchema = () => {
       },
       type: {
         type: 'string',
-        enum: ['dashboard', 'table', 'chart'],
-        hidden: true,
+        enum: ['dashboard', 'table'],
       },
       sections: {
         hidden: true,
@@ -40,7 +39,7 @@ export const DataVizSchema = () => {
         hidden: true,
         ...DataVizTableConfigSchema()
       },
-      chat: {
+      chart: {
         hidden: true,
         ...DataVizChartConfigSchema()
       },
@@ -61,6 +60,10 @@ export const DataVizColumnSchema = () => {
   return {
     type: 'object',
     properties: {
+      id: {
+        type: 'string',
+        hidden: true,
+      },
       type: {
         type: 'string',
         hidden: true,
@@ -72,12 +75,10 @@ export const DataVizColumnSchema = () => {
         type: 'string',
         'x-control-variant': 'textarea',
       },
-      summary: {
-        type: 'string',
-      },
       tableConfig: {
         type: 'string',
         'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
         dataSource: {
           source: 'collection',
           collection: DataType.dataviz,
@@ -93,6 +94,7 @@ export const DataVizColumnSchema = () => {
       chartConfig: {
         type: 'string',
         'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
         dataSource: {
           source: 'collection',
           collection: DataType.dataviz,
@@ -109,13 +111,15 @@ export const DataVizColumnSchema = () => {
         type: 'boolean',
         default: false
       },
-      singleValue: {
+      valuesOnly: {
         type: 'string',
-        description: 'field name to show in single value format: columnName, rowId',
+        description: 'comma separated, keys',
       },
-      chartType: {
+      chartSettings: {
         type: 'string',
-        enum: ['line', 'bar', 'pie', 'doughnut', 'gauge', 'area', 'radar', 'map'],
+        'x-control': ControlType.code,
+        'x-control-variant': 'json',
+        collapsible: true,
       },
       hideTitle: {
         type: 'boolean',
@@ -125,10 +129,23 @@ export const DataVizColumnSchema = () => {
         type: 'string',
       },
       style: {
-        type: ['string', 'object'],
+        type: 'string',
+        'x-control': 'Code',
+        'x-control-variant': 'css',
+        collapsible: true,
+        popup: {
+          inline: true,
+          style: { width: '800px' },
+        },
         hidden: true,
-        'x-control-variant': 'textarea',
       },
+      views: {
+        hidden: true,
+        type: 'array',
+        items: {
+          type: 'object',
+        }
+      }
     },
   } as const;
 };
@@ -186,6 +203,22 @@ export const DataVizTableConfigSchema = () => {
         displaySize: 'small',
         rules: [{ operation: 'isTruthy', valueA: '{{exportMode}}', action: 'hide' }]
       },
+      excludes: {
+        type: 'array',
+        'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
+        items: {
+          type: 'string',
+        }
+      },
+      includes: {
+        type: 'array',
+        'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
+        items: {
+          type: 'string',
+        }
+      }
     },
   } as const;
 };
@@ -199,18 +232,28 @@ export const DataVizChartConfigSchema = () => {
         type: 'string',
         hidden: true,
       },
-      xSeries: {
-        type: 'array',
-        'x-control-variant': 'chip',
-        items: {
-          type: 'string',
+      chartType: {
+        type: 'string',
+        enum: ['line', 'bar', 'pie', 'doughnut', 'gauge', 'area', 'radar', 'map', 'funnel', 'heatmap', 'scatter', 'treemap', 'sunburst']
+      },
+      config: {
+        type: 'string',
+        'x-control': 'Code',
+        'x-control-variant': 'json',
+        collapsible: true,
+        popup: {
+          inline: true,
+          style: { width: '800px' },
         }
       },
-      ySeries: {
-        type: 'array',
-        'x-control-variant': 'chip',
-        items: {
-          type: 'string',
+      dataTemplate: {
+        type: 'string',
+        'x-control': 'Code',
+        'x-control-variant': 'json',
+        collapsible: true,
+        popup: {
+          inline: true,
+          style: { width: '800px' },
         }
       },
     }

@@ -21,7 +21,7 @@ export * from './workflowdefinition';
 export * from './trash';
 export * from './task';
 export * from './dataviz';
-export * from './fileinfo';
+export * from './file-info';
 export * from './location';
 export * from './flexdata';
 export * from './escalation';
@@ -35,3 +35,6 @@ export * from './web-visit';
 export * from './web-activity';
 export * from './site-index';
 export * from './site-domain';
+export * from './schedule';
+export * from './content-classification';
+

@@ -4,7 +4,7 @@ import { CollectionUI } from '../collection-ui';
 import {
   DataType,
 } from '../../types';
-import { registerCollection } from '../../defaultschema';
+import { registerCollection } from '../../default-schema';
 
 export const FlexDataSchema = () => {
   return {
@@ -15,6 +15,8 @@ export const FlexDataSchema = () => {
         minLength: 3,
         maxLength: 50,
         group: 'name',
+        uniqueScope: ['application'],
+        unique: true,
       },
       application: {
         type: 'string',

@@ -1,5 +1,5 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { registerCollection } from '../../defaultschema';
+import { registerCollection } from '../../default-schema';
 import { CollectionRule } from '../collection-rule';
 import { CollectionUI } from '../collection-ui';
 import { DataType, ControlType } from '../../types';
@@ -22,34 +22,23 @@ export const MessageTemplateSchema = () => {
       to: {
         type: 'array',
         'x-control': ControlType.selectMany,
-        hideLabel: true,
         'x-control-variant': 'chip',
         items: {
-          type: 'object',
-          properties: {
-            email: {
-              type: 'string',
-            },
-            phone: {
-              type: 'string',
-            },
-            id: {
-              type: 'string',
-            },
-            dataType: {
-              type: 'string',
-            },
-          },
+          type: 'string',
+        },
+        dataSource: {
+          source: 'function',
+          value: 'getMessageRecipients',
         },
       },
-      title: {
+      subject: {
         type: 'string',
       },
-      blocks: {
+      sections: {
         type: 'array',
         hidden: true,
       },
-      bodyHtml: {
+      Html: {
         type: 'string',
         'x-control': 'richtext',
         displayStyle: 'full',

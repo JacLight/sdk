@@ -1,7 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { registerCollection, registerDefaultData } from '../../defaultschema';
+import { registerCollection, registerDefaultData } from '../../default-schema';
 import { DataType, ControlType } from '../../types';
-import { FileInfoSchema } from '../fileinfo';
+import { FileInfoSchema } from '../file-info';
 
 export const ReservationDefinitionSchema = () => {
   return {
@@ -18,6 +18,10 @@ export const ReservationDefinitionSchema = () => {
         type: 'string',
         group: 'name',
         enum: ['service', 'interval', 'event', 'service-point'],
+      },
+      paymentRequired: {
+        type: 'boolean',
+        group: 'name',
       },
       title: {
         type: 'string',
@@ -99,6 +103,17 @@ export const ReservationDefinitionSchema = () => {
         rules: [
           { operation: 'notEqual', valueA: 'service-point', valueB: '{{type}}', action: 'hide' },
         ]
+      },
+      hosts: {
+        type: 'string',
+        'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
+        dataSource: {
+          source: 'collection',
+          collection: DataType.user,
+          value: 'email',
+          label: 'email',
+        },
       },
       services: {
         collapsible: true,
@@ -191,24 +206,13 @@ export const ReservationDefinitionSchema = () => {
       checkInBy: {
         type: 'number',
         title: 'Check-in by (minutes)',
-        group: 'host',
-      },
-      host: {
-        type: 'string',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.user,
-          value: 'email',
-          label: 'email',
-        },
-        group: 'host',
+        group: 'spots',
       },
       spots: {
         type: 'number',
         'x-group': 'group1',
         default: 1,
-        group: 'host',
+        group: 'spots',
       },
       form: {
         type: 'string',
@@ -219,17 +223,26 @@ export const ReservationDefinitionSchema = () => {
           value: 'name',
           label: 'name',
         },
-        group: 'event',
+        group: 'form',
+      },
+      bookingType: {
+        type: 'string',
+        enum: ['unassigned', 'round-robin'],
+        group: 'form',
       },
       notificationTemplate: {
-        type: 'string',
+        type: 'array',
         'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
         'x-group': 'group2',
         dataSource: {
           source: 'collection',
           collection: DataType.messagetemplate,
-          value: 'sk',
+          value: 'name',
           label: 'name',
+        },
+        items: {
+          type: 'string',
         },
         group: 'workflow',
       },

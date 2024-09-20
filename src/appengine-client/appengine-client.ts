@@ -155,15 +155,15 @@ export class AppEngineClient {
   }
 
 
-  async getPage(siteName: string, pageIds: { slug?: string, name?: string, id?: string }, pageDataType?: string, pageDataAttr?: string, pageDataValue?: string, query?: string) {
-    return await this.getPageCommon(null, siteName, pageIds, pageDataType, pageDataAttr, pageDataValue, query);
+  async getPage(siteName: string, pageIds: { slug?: string, name?: string, id?: string }, slugs: string[], query?: string) {
+    return await this.getPageCommon(null, siteName, pageIds, slugs, query);
   }
 
-  async getPageShared(orgId: string, siteName: string, pageIds: { slug?: string, name?: string, id?: string }, pageDataType?: string, pageDataAttr?: string, pageDataValue?: string, query?: string) {
-    return await this.getPageCommon(orgId, siteName, pageIds, pageDataType, pageDataAttr, pageDataValue, query);
+  async getPageShared(orgId: string, siteName: string, pageIds: { slug?: string, name?: string, id?: string }, slugs: string[], query?: string) {
+    return await this.getPageCommon(orgId, siteName, pageIds, slugs, query);
   }
 
-  async getPageCommon(orgId: string, siteName: string, pageIds: { slug?: string, name?: string, id?: string }, pageDataType?: string, pageDataAttr?: string, pageDataValue?: string, query?: string) {
+  async getPageCommon(orgId: string, siteName: string, pageIds: { slug?: string, name?: string, id?: string }, slugs: string[], query?: string) {
     const pageIdType = pageIds?.id ? 'id' : pageIds?.name ? 'name' : pageIds?.slug ? 'slug' : null;
     if (!pageIdType) {
       console.debug('request -> getPage, no pageIds specified, ', pageIds);
@@ -171,11 +171,11 @@ export class AppEngineClient {
     }
 
     let pagePath = `${appEndpoints.get_page.path}/${siteName}/${pageIdType}/${pageIds[pageIdType]}`;
-    if (pageDataType && pageDataAttr && pageDataValue) {
-      pagePath = `${pagePath}/${pageDataType}/${pageDataAttr}/${pageDataValue}`;
-    } else if (pageDataType) {
-      pagePath = `${pagePath}/${pageDataType}`;
-    }
+    slugs.forEach((slug) => {
+      if (slug) {
+        pagePath = `${pagePath}/${slug}`;
+      }
+    })
 
     if (query) {
       pagePath = `${pagePath}?${query}&en=true`;

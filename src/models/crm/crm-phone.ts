@@ -1,5 +1,5 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { registerCollection } from '../../defaultschema';
+import { registerCollection } from '../../default-schema';
 import { CollectionRule } from '../collection-rule';
 import { CollectionUI } from '../collection-ui';
 import { DataType } from '../../types';
@@ -11,7 +11,6 @@ export const PhoneSchema = () => {
     properties: {
       countryCode: {
         type: 'string',
-        pattern: '^[-$0-9]*$',
       },
       phone: {
         type: 'string',

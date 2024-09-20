@@ -1,10 +1,10 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { DataType, ControlType, FormViewSectionType } from '../types';
-import { FileInfoSchema } from './fileinfo';
+import { FileInfoSchema } from './file-info';
 import { getCurrencies, getLanguages, getSiteFeatureList } from '../data';
 import { CollectionRule } from './collection-rule';
 import { CollectionUI } from './collection-ui';
-import { registerCollection } from '../defaultschema';
+import { registerCollection } from '../default-schema';
 
 export const SiteSchema = () => {
   return {
@@ -64,6 +64,14 @@ export const SiteSchema = () => {
           }
         },
       },
+      theme: {
+        type: 'string',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'function',
+          value: 'getThemeSettingsList',
+        }
+      },
       template: {
         type: 'string',
         'x-control': ControlType.selectMany,
@@ -101,7 +109,7 @@ export const SiteSchema = () => {
         format: 'uri',
       },
       features: {
-        type: 'string',
+        type: 'array',
         'x-control-variant': 'chip',
         'x-control': ControlType.selectMany,
         dataSource: {
@@ -150,7 +158,6 @@ export const SiteSchema = () => {
         format: 'hostname',
         placeholder: 'example.com',
       },
-
       logo: {
         type: 'object',
         title: 'Logo',
@@ -286,25 +293,44 @@ export const SiteSchema = () => {
           },
         },
       },
-      facebook: {
-        type: 'string',
-        format: 'uri',
+      social: {
+        type: 'array',
+        collapsible: 'close',
+        items: {
+          type: 'object',
+          properties: {
+            name: {
+              type: 'string',
+              'x-control': ControlType.selectMany,
+              'x-control-variant': 'chip',
+              dataSource: {
+                source: 'json',
+                json: ['facebook', 'twitter', 'linkedin', 'instagram', 'tiktok']
+              },
+              group: 'social'
+            },
+            handle: {
+              type: 'string',
+              group: 'social'
+            },
+            url: {
+              type: 'string',
+              group: 'social'
+            },
+          },
+        },
       },
-      twitter: {
-        type: 'string',
-        format: 'uri',
-      },
-      instagram: {
-        type: 'string',
-        format: 'uri',
-      },
-      youtube: {
-        type: 'string',
-        format: 'uri',
-      },
-      tiktok: {
-        type: 'string',
-        format: 'uri',
+      tracking: {
+        type: 'object',
+        collapsible: 'close',
+        properties: {
+          pixel: {
+            type: 'string',
+          },
+          googleAnalytic: {
+            type: 'string',
+          },
+        }
       },
       spanProtectionComment: {
         description: 'Enable Google reCAPTCHA on contact and comment forms',
@@ -412,15 +438,16 @@ export const SiteUI = (): CollectionUI[] => {
             },
             {
               '0': '/properties/globalStyle',
+              '1': '/properties/colorSwitch',
+              '2': '/properties/darkMode',
             },
             {
               '0': '/properties/searchBar',
               '1': '/properties/languageSwitch',
             },
             {
-              '0': '/properties/template',
-              '1': '/properties/colorSwitch',
-              '2': '/properties/darkMode',
+              '0': '/properties/theme',
+              '1': '/properties/template',
             },
             {
               '0': '/properties/features',
@@ -428,22 +455,13 @@ export const SiteUI = (): CollectionUI[] => {
           ],
         },
         {
-          title: 'Social Links',
+          title: 'Social & Tracking',
           items: [
             {
-              '0': '/properties/facebook',
+              '0': '/properties/social',
             },
             {
-              '0': '/properties/twitter',
-            },
-            {
-              '0': '/properties/instagram',
-            },
-            {
-              '0': '/properties/youtube',
-            },
-            {
-              '0': '/properties/tiktok',
+              '0': '/properties/tracking',
             },
           ],
         },

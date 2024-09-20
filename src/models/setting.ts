@@ -1,8 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { registerCollection } from '../defaultschema';
+import { registerCollection } from '../default-schema';
 import { DataType, ControlType } from '../types';
-import { CollectionRule } from './collection-rule';
-import { CollectionUI } from './collection-ui';
 
 export const SettingSchema = () => {
   return {
@@ -14,86 +12,202 @@ export const SettingSchema = () => {
         minLength: 3,
         maxLength: 50,
         unique: true,
-        transform: 'uri'
+        title: 'Setting Name',
+        readOnly: true,
+        transform: 'uri',
+        group: 'settings',
+      },
+      orgId: {
+        type: 'string',
+        format: 'email',
+        readOnly: true,
+        group: 'settings',
       },
       systemEmail: {
         type: 'string',
         format: 'email',
+        group: 'system-info',
       },
       systemPhone: {
         type: 'string',
+        group: 'system-info',
       },
-      emailTemplate: getSettingItemSchema(DataType.messagetemplate),
-      smsTemplate: getSettingItemSchema(DataType.messagetemplate),
-      orderEmailTemplate: getSettingItemSchema(DataType.messagetemplate),
-      orderSmsTemplate: getSettingItemSchema(DataType.messagetemplate),
-      invoiceEmailTemplate: getSettingItemSchema(DataType.messagetemplate),
-      invoiceSmsTemplate: getSettingItemSchema(DataType.messagetemplate),
-      subscriptionEmailTemplate: getSettingItemSchema(DataType.messagetemplate),
-      subscriptionSmsTemplate: getSettingItemSchema(DataType.messagetemplate),
-      ticketEmailTemplate: getSettingItemSchema(DataType.messagetemplate),
-      ticketSmsTemplate: getSettingItemSchema(DataType.messagetemplate),
-      registerEmailTemplate: getSettingItemSchema(DataType.messagetemplate),
-      registerSmsTemplate: getSettingItemSchema(DataType.messagetemplate),
-      profileUpdateEmailTemplate: getSettingItemSchema(DataType.messagetemplate),
-      profileUpdateSmsTemplate: getSettingItemSchema(DataType.messagetemplate),
-      passwordChangeEmailTemplate: getSettingItemSchema(DataType.messagetemplate),
-      passwordChangeSmsTemplate: getSettingItemSchema(DataType.messagetemplate),
-      passwordResetEmailTemplate: getSettingItemSchema(DataType.messagetemplate),
-      passwordResetSmsTemplate: getSettingItemSchema(DataType.messagetemplate),
-      workflowEmailTemplate: getSettingItemSchema(DataType.messagetemplate),
-      workflowSmsTemplate: getSettingItemSchema(DataType.messagetemplate),
-      inSmsGateway: getSettingItemSchema(DataType.config),
-      outSmsGateway: getSettingItemSchema(DataType.config),
-      inEmailGateway: getSettingItemSchema(DataType.config),
-      outEmailGateway: getSettingItemSchema(DataType.config),
-      siteDashboard: getSettingItemSchema(DataType.dataviz),
-      storeDashboard: getSettingItemSchema(DataType.dataviz),
-      crmDashboard: getSettingItemSchema(DataType.dataviz),
-      mintflowDashboard: getSettingItemSchema(DataType.dataviz),
-      workflowDashboard: getSettingItemSchema(DataType.dataviz),
+      address: getSettingItemSchema(DataType.location, 'address', 'name', undefined, { property: 'type', value: 'address' }),
+      domainAccountId: {
+        type: 'string',
+        readOnly: true,
+        group: 'domain',
+      },
+      domainContactId: {
+        type: 'string',
+        readOnly: true,
+        group: 'domain',
+      },
+      emailTemplate: getSettingItemSchema(DataType.messagetemplate, 'email'),
+      smsTemplate: getSettingItemSchema(DataType.messagetemplate, 'email'),
+      registerEmailTemplate: getSettingItemSchema(DataType.messagetemplate, 'register'),
+      registerSmsTemplate: getSettingItemSchema(DataType.messagetemplate, 'register'),
+      profileUpdateEmailTemplate: getSettingItemSchema(DataType.messagetemplate, 'profile'),
+      profileUpdateSmsTemplate: getSettingItemSchema(DataType.messagetemplate, 'profile'),
+      passwordChangeEmailTemplate: getSettingItemSchema(DataType.messagetemplate, 'change'),
+      passwordChangeSmsTemplate: getSettingItemSchema(DataType.messagetemplate, 'change'),
+      passwordResetEmailTemplate: getSettingItemSchema(DataType.messagetemplate, 'password'),
+      passwordResetSmsTemplate: getSettingItemSchema(DataType.messagetemplate, 'password'),
+      inSmsGateway: getSettingItemSchema(DataType.config, 'in-sms'),
+      outSmsGateway: getSettingItemSchema(DataType.config, 'in-sms'),
+      inEmailGateway: getSettingItemSchema(DataType.config, 'in-email'),
+      outEmailGateway: getSettingItemSchema(DataType.config, 'in-email'),
+      notificationTemplates: {
+        type: 'array',
+        collapsible: 'close',
+        items: {
+          type: 'object',
+          collapsible: 'true',
+          properties: {
+            name: {
+              type: 'string',
+              'x-control': ControlType.selectMany,
+              dataSource: {
+                source: 'collection',
+                collection: DataType.collection,
+                value: 'name',
+                label: 'name',
+              },
+              group: 'data',
+            },
+            subName: {
+              type: 'string',
+              group: 'data',
+            },
+            emailTemplate: {
+              type: 'string',
+              'x-control': ControlType.selectMany,
+              dataSource: {
+                source: 'collection',
+                collection: DataType.messagetemplate,
+                value: 'name',
+                label: 'name',
+              },
+              items: {
+                type: 'string',
+              },
+              group: 'template',
+            },
+            smsTemplate: {
+              type: 'string',
+              'x-control': ControlType.selectMany,
+              dataSource: {
+                source: 'collection',
+                collection: DataType.messagetemplate,
+                value: 'name',
+                label: 'name',
+              },
+              items: {
+                type: 'string',
+              },
+              group: 'template',
+            },
+            webTemplate: {
+              type: 'string',
+              'x-control': ControlType.selectMany,
+              dataSource: {
+                source: 'collection',
+                collection: DataType.messagetemplate,
+                value: 'name',
+                label: 'name',
+              },
+              items: {
+                type: 'string',
+              },
+              group: 'template',
+            },
+          },
+        }
+      },
+      dashboards: {
+        type: 'array',
+        collapsible: 'close',
+        items: {
+          type: 'object',
+          showIndex: true,
+          properties: {
+            name: {
+              type: 'string',
+              'x-control': ControlType.selectMany,
+              enum: ['site', 'store', 'crm', 'ticket', 'mintflow', 'workflow', 'lead', 'event', 'campaign', 'social', 'dashboard'],
+              group: 'dashboard',
+            },
+            dashboard: {
+              ...getSettingItemSchema(DataType.dataviz, 'dashboard', 'name', ['title', 'name'], { property: 'type', value: 'dashboard' }),
+            },
+          },
+        }
+      },
+      themeSettings: {
+        type: 'array',
+        collapsible: 'close',
+        items: {
+          type: 'object',
+          title: '{{name}}',
+          collapsible: 'close',
+          properties: {
+            name: {
+              type: 'string',
+              maxItems: 1,
+              dataSource: {
+                source: 'function',
+                value: 'getThemeSettingsList',
+              },
+            },
+            darkMode: {
+              type: 'string',
+              enum: ['auto', 'dark', 'light'],
+            },
+            energy: {
+              type: 'string',
+            },
+            settings: {
+              type: 'array',
+              layout: 'horizontal',
+              items: {
+                type: 'object',
+                layout: 'horizontal',
+                showIndex: true,
+                properties: {
+                  property: {
+                    type: 'string',
+                  },
+                  value: {
+                    type: 'string',
+                  },
+                },
+              }
+            }
+          }
+        }
+      }
     },
   } as const;
 };
 
-const getSettingItemSchema = (datatype: DataType) =>
+const getSettingItemSchema = (datatype: DataType, group = '', valueKey = 'sk', labelKey?: string | string[], filter?: any) =>
 ({
   type: 'string',
   'x-control': ControlType.selectMany,
   dataSource: {
     source: 'collection',
     collection: datatype,
-    value: 'sk',
-    label: 'name',
+    value: valueKey,
+    label: labelKey || 'name',
+    filter
   },
+  group: group,
 } as const);
 
-export const LogSchema = () => {
-  return {
-    type: 'object',
-    'x-control': ControlType.selectMany,
-    dataSource: {
-      sourceType: { type: 'string' },
-      source: { type: 'string' },
-      logType: { type: 'string' },
-      logMessage: { type: 'string' },
-      status: { type: 'string' },
-    },
-  } as const;
-};
 
-const ush = LogSchema();
 const usgh = SettingSchema();
 
 type SettingModel = FromSchema<typeof usgh>;
-type LogModel = FromSchema<typeof ush>;
-
-const SettingUI = (): CollectionUI[] => {
-  return null;
-};
-const SettingRules = (): CollectionRule[] => {
-  return [];
-};
 
 type BaseSettingType = keyof typeof usgh.properties;
 const BaseSettingKeys: { [key in BaseSettingType]?: BaseSettingType } = {};
@@ -103,9 +217,6 @@ Object.keys(usgh.properties).forEach(
 );
 export {
   SettingModel,
-  LogModel,
-  SettingUI,
-  SettingRules,
   BaseSettingType,
   BaseSettingKeys,
 };
@@ -114,7 +225,6 @@ registerCollection(
   'Setting',
   DataType.setting,
   SettingSchema(),
-  SettingUI(),
-  SettingRules()
+  null,
+  null
 );
-registerCollection('Log', DataType.log, LogSchema(), null, null);

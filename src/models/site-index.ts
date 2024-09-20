@@ -1,6 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { DataType } from '../types';
-import { registerCollection } from '../defaultschema';
+import { registerCollection } from '../default-schema';
 
 export const SiteIndexSchema = () => {
   return {
