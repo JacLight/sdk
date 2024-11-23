@@ -29,6 +29,14 @@ export const CompanySchema = () => {
       active: {
         type: 'boolean',
       },
+      email: {
+        type: 'string',
+        format: 'email',
+      },
+      verifiedEmail: {
+        type: 'string',
+        hidden: true,
+      },
       sites: {
         type: 'array',
         items: {

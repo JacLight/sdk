@@ -31,19 +31,13 @@ export const SFOrderSchema = () => {
           'processing',
           'shipped',
           'delivered',
+          'returned',
           'refunded',
           'cancelled',
         ],
       },
       name: {
         type: 'string',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.user,
-          value: 'sk',
-          label: 'username',
-        },
       },
       email: {
         type: 'string',

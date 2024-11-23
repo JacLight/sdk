@@ -202,68 +202,314 @@ export const siteCategories = [
 ]
 export const designEmotions = ['happy', 'warm', 'welcoming', 'neutral', 'Professional', 'trustworthy', 'Exciting', 'energetic', 'Calm', 'peaceful']
 export const designStyles = ['modern', 'classic', 'retro', 'vintage', 'futuristic', 'minimalist', 'grunge', 'art/deco', 'bohemian', 'shabby/chic', 'industrial', 'mid-century', 'scandinavian', 'contemporary']
-export const siteSectionsTypes = [
-    "Home",
-    "Header",
-    "Header with Logo",
-    "Header with Navigation and Logo",
-    "Navigation",
-    "Hero Section",
-    "About Us",
-    "Services Overview",
-    "Product Showcase",
-    "Testimonials",
-    "Portfolio Display",
-    "Case Studies",
-    "Blog Section",
-    "News Updates",
-    "Contact Form",
-    "Contact Form with Map",
-    "Call to Action (CTA)",
-    "FAQs",
-    "Footer",
-    "Footer with Navigation",
-    "Footer with Logo",
-    "Footer with Logo and Navigation",
-    "Footer with Contact Information",
-    "Subscription Form",
-    "Team Members",
-    "Gallery",
-    "Event Calendar",
-    "Newsletter Signup",
-    "Social Proof",
-    "Client Logos",
-    "Media Mentions",
-    "Features Highlight",
-    "Benefits Explanation",
-    "Pricing Table",
-    "Legal Information",
-    "Press/Media Coverage",
-    "Map",
-    "Review Summary",
-    "Promotional Banner",
-    "Feature Comparison Chart",
-    "Video Introduction",
-    "Interactive Elements",
-    "Product/Service Features",
-    "Contact Information",
-    "Search Bar",
-    "Login/Register",
-    "Resource Downloads",
-    "Customer Support",
-    "Awards and Certifications",
-    "User Testimonials",
-    "Product Demos",
-    "Blog Categories",
-    "Case Study Summaries",
-    "Related Articles",
-    "Project Thumbnails",
-    "Service Descriptions",
-    "Product Descriptions",
-    "Photo Slider",
-    "Lead Capture Form",
-    "Limited Time Offers"
-]
+export const siteSectionTypes = [
+    {
+        name: "home",
+        use: "hero",
+        incompatible_with: []
+    },
+    {
+        name: "header",
+        use: "navigation",
+        incompatible_with: ["header-with-logo", "header-with-navigation-and-logo"]
+    },
+    {
+        name: "header-with-logo",
+        use: "navigation",
+        incompatible_with: ["header", "header-with-navigation-and-logo"]
+    },
+    {
+        name: "header-with-navigation-and-logo",
+        use: "navigation",
+        incompatible_with: ["header", "header-with-logo"]
+    },
+    {
+        name: "navigation",
+        use: "navigation",
+        incompatible_with: ["header-with-navigation-and-logo"]
+    },
+    {
+        name: "hero-section",
+        use: "hero",
+        incompatible_with: []
+    },
+    {
+        name: "about-us",
+        use: "informational",
+        incompatible_with: []
+    },
+    {
+        name: "services-overview",
+        use: "informational",
+        incompatible_with: []
+    },
+    {
+        name: "product-showcase",
+        use: "portfolio",
+        incompatible_with: []
+    },
+    {
+        name: "testimonials",
+        use: "feedback",
+        incompatible_with: []
+    },
+    {
+        name: "portfolio-display",
+        use: "portfolio",
+        incompatible_with: []
+    },
+    {
+        name: "case-studies",
+        use: "informational",
+        incompatible_with: []
+    },
+    {
+        name: "blog-section",
+        use: "informational",
+        incompatible_with: []
+    },
+    {
+        name: "news-updates",
+        use: "informational",
+        incompatible_with: []
+    },
+    {
+        name: "contact-form",
+        use: "feedback",
+        incompatible_with: ["contact-form-with-map"]
+    },
+    {
+        name: "contact-form-with-map",
+        use: "feedback",
+        incompatible_with: ["contact-form"]
+    },
+    {
+        name: "call-to-action",
+        use: "engagement",
+        incompatible_with: []
+    },
+    {
+        name: "faqs",
+        use: "informational",
+        incompatible_with: []
+    },
+    {
+        name: "footer",
+        use: "footer",
+        incompatible_with: [
+            "footer-with-navigation",
+            "footer-with-logo",
+            "footer-with-logo-and-navigation",
+            "footer-with-contact-information"
+        ]
+    },
+    {
+        name: "footer-with-navigation",
+        use: "footer",
+        incompatible_with: ["footer", "footer-with-logo", "footer-with-logo-and-navigation", "footer-with-contact-information"]
+    },
+    {
+        name: "footer-with-logo",
+        use: "footer",
+        incompatible_with: ["footer", "footer-with-navigation", "footer-with-logo-and-navigation", "footer-with-contact-information"]
+    },
+    {
+        name: "footer-with-logo-and-navigation",
+        use: "footer",
+        incompatible_with: ["footer", "footer-with-navigation", "footer-with-logo", "footer-with-contact-information"]
+    },
+    {
+        name: "footer-with-contact-information",
+        use: "footer",
+        incompatible_with: ["footer", "footer-with-navigation", "footer-with-logo", "footer-with-logo-and-navigation"]
+    },
+    {
+        name: "subscription-form",
+        use: "feedback",
+        incompatible_with: []
+    },
+    {
+        name: "team-members",
+        use: "informational",
+        incompatible_with: []
+    },
+    {
+        name: "gallery",
+        use: "portfolio",
+        incompatible_with: []
+    },
+    {
+        name: "event-calendar",
+        use: "informational",
+        incompatible_with: []
+    },
+    {
+        name: "newsletter-signup",
+        use: "feedback",
+        incompatible_with: []
+    },
+    {
+        name: "social-proof",
+        use: "feedback",
+        incompatible_with: []
+    },
+    {
+        name: "client-logos",
+        use: "portfolio",
+        incompatible_with: []
+    },
+    {
+        name: "media-mentions",
+        use: "informational",
+        incompatible_with: []
+    },
+    {
+        name: "features-highlight",
+        use: "portfolio",
+        incompatible_with: []
+    },
+    {
+        name: "benefits-explanation",
+        use: "informational",
+        incompatible_with: []
+    },
+    {
+        name: "pricing-table",
+        use: "informational",
+        incompatible_with: []
+    },
+    {
+        name: "legal-information",
+        use: "informational",
+        incompatible_with: []
+    },
+    {
+        name: "press-media-coverage",
+        use: "informational",
+        incompatible_with: []
+    },
+    {
+        name: "map",
+        use: "informational",
+        incompatible_with: []
+    },
+    {
+        name: "review-summary",
+        use: "feedback",
+        incompatible_with: []
+    },
+    {
+        name: "promotional-banner",
+        use: "engagement",
+        incompatible_with: []
+    },
+    {
+        name: "feature-comparison-chart",
+        use: "informational",
+        incompatible_with: []
+    },
+    {
+        name: "video-introduction",
+        use: "hero",
+        incompatible_with: []
+    },
+    {
+        name: "interactive-elements",
+        use: "engagement",
+        incompatible_with: []
+    },
+    {
+        name: "product-service-features",
+        use: "portfolio",
+        incompatible_with: []
+    },
+    {
+        name: "contact-information",
+        use: "informational",
+        incompatible_with: []
+    },
+    {
+        name: "search-bar",
+        use: "navigation",
+        incompatible_with: []
+    },
+    {
+        name: "login-register",
+        use: "engagement",
+        incompatible_with: []
+    },
+    {
+        name: "resource-downloads",
+        use: "engagement",
+        incompatible_with: []
+    },
+    {
+        name: "customer-support",
+        use: "feedback",
+        incompatible_with: []
+    },
+    {
+        name: "awards-certifications",
+        use: "portfolio",
+        incompatible_with: []
+    },
+    {
+        name: "user-testimonials",
+        use: "feedback",
+        incompatible_with: []
+    },
+    {
+        name: "product-demos",
+        use: "portfolio",
+        incompatible_with: []
+    },
+    {
+        name: "blog-categories",
+        use: "informational",
+        incompatible_with: []
+    },
+    {
+        name: "case-study-summaries",
+        use: "informational",
+        incompatible_with: []
+    },
+    {
+        name: "related-articles",
+        use: "informational",
+        incompatible_with: []
+    },
+    {
+        name: "project-thumbnails",
+        use: "portfolio",
+        incompatible_with: []
+    },
+    {
+        name: "service-descriptions",
+        use: "portfolio",
+        incompatible_with: []
+    },
+    {
+        name: "product-descriptions",
+        use: "portfolio",
+        incompatible_with: []
+    },
+    {
+        name: "photo-slider",
+        use: "portfolio",
+        incompatible_with: []
+    },
+    {
+        name: "lead-capture-form",
+        use: "feedback",
+        incompatible_with: []
+    },
+    {
+        name: "limited-time-offers",
+        use: "engagement",
+        incompatible_with: []
+    }
+];
+
 
 //Site Category and Recommended Sections/required sections -- ai can pick others
 //use can request to add or remove sections

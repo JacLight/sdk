@@ -1,6 +1,5 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
-import { CollectionRule } from '../collection-rule';
 import { CollectionUI } from '../collection-ui';
 import { DataType, ControlType, FormViewSectionType } from '../../types';
 
@@ -11,10 +10,10 @@ export const SFInvoiceSchema = () => {
       number: {
         type: 'string',
         pattern: '^[a-zA-Z_\\-0-9]*$',
-        minLength: 10,
-        maxLength: 10,
+        minLength: 8,
+        maxLength: 8,
         unique: true,
-        transform: ['random-string::10'],
+        transform: ['random-string::8'],
         group: 'number'
       },
       po: {
@@ -221,15 +220,11 @@ export const SFInvoiceUI = (): CollectionUI[] => {
 
 const is = SFInvoiceSchema();
 export type SFInvoiceModel = FromSchema<typeof is>;
-
-export const SFInvoiceRules = (): CollectionRule[] => {
-  return null;
-};
 registerCollection(
   'Store Invoice',
   DataType.sf_invoice,
   SFInvoiceSchema(),
-  [],
-  SFInvoiceRules(),
+  null,
+  null,
   true
 );

@@ -1,0 +1,13 @@
+USER-SUPPLIED VALUES:
+controller:
+  config:
+    compute-full-forward-for: "false"
+    use-forward-headers: "false"
+    use-proxy-protocol: "false"
+  publishService:
+    enabled: true
+  replicaCount: 2
+  service:
+    annotations:
+      service.beta.kubernetes.io/do-loadbalancer-enable-proxy-protocol: false
+    externalTrafficPolicy: Cluster

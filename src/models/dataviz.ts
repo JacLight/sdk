@@ -123,7 +123,18 @@ export const DataVizColumnSchema = () => {
       },
       hideTitle: {
         type: 'boolean',
-        default: false
+        default: false,
+        group: 'display'
+      },
+      showTable: {
+        type: 'boolean',
+        default: true,
+        group: 'display'
+      },
+      showChart: {
+        type: 'boolean',
+        default: true,
+        group: 'display'
       },
       classes: {
         type: 'string',
@@ -146,6 +157,7 @@ export const DataVizColumnSchema = () => {
           type: 'object',
         }
       }
+
     },
   } as const;
 };

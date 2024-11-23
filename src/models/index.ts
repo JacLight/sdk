@@ -37,4 +37,6 @@ export * from './site-index';
 export * from './site-domain';
 export * from './schedule';
 export * from './content-classification';
+export * from './workspace';
+export * from './workspace-item';
 

@@ -50,6 +50,7 @@ export class AppEngineClient {
         'Content-Type': 'application/json',
         orgid: this.appConfig.orgId,
         domainAsOrg: this.appConfig.domainAsOrg,
+        'shared-org-id': this.appConfig.orgId
       },
     };
   }
@@ -70,7 +71,6 @@ export class AppEngineClient {
     clientAuthorization?: string,
     clientQuery?: any,
     clientInfo?: any,
-    orgId?: string,
     isMultiPath?: boolean
   ): Promise<any> {
     let path;
@@ -82,10 +82,6 @@ export class AppEngineClient {
     const header: any = await this.getHeaderWithToken();
     if (clientAuthorization) {
       header.headers['x-client-authorization'] = clientAuthorization
-    }
-    if (orgId) {
-      header.headers['shared-org-id'] = header.headers['orgid'];
-      header.headers['orgid'] = orgId;
     }
     if (clientInfo) {
       header.headers['x-client-info'] = JSON.stringify(clientInfo)
@@ -128,61 +124,34 @@ export class AppEngineClient {
         this.token = null;
         await this.getHeaderWithToken();
         console.log('auth ok')
-        return await this.processRequest(method, clientPath, clientData, clientAuthorization, clientQuery, orgId);
+        return await this.processRequest(method, clientPath, clientData, clientAuthorization, clientQuery, clientInfo, isMultiPath);
       } else {
         throw error;
       }
     }
   }
 
-  async getSite() {
-    //en=true enables enrichment
-    const sitePath = `${appEndpoints.find_by_attribute.path}/site/name/${this.appConfig.siteName}?en=true`;
-    const rt: any = await this.processRequest('get', sitePath, null, null, null, null);
-    if (rt && Array.isArray(rt.data) && rt.data.length > 0) {
-      const [site] = rt.data;
-      return site;
-    }
-    return null;
+  async getSite(hostName: string) {
+    const sharedHost = this.appConfig.domainAsOrg ? this.appConfig.orgId : ''
+    let sitePath = `${appEndpoints.get_site.path}/${this.appConfig.siteName}/${hostName}${sharedHost ? '?shared-host=' + sharedHost : ''}`;
+    return await this.processRequest('get', sitePath)
   }
 
-  async getSiteShared(domainName: string) {
-    if (domainName.indexOf(':') >= 0) {
-      domainName = domainName.substring(0, domainName.indexOf(':'))
-    }
-    const sitePath = `${appEndpoints.site_by_domain_name.path}/${domainName}`;
-    return await this.processRequest('get', sitePath, null, null, null, null);
-  }
-
-
-  async getPage(siteName: string, pageIds: { slug?: string, name?: string, id?: string }, slugs: string[], query?: string) {
-    return await this.getPageCommon(null, siteName, pageIds, slugs, query);
-  }
-
-  async getPageShared(orgId: string, siteName: string, pageIds: { slug?: string, name?: string, id?: string }, slugs: string[], query?: string) {
-    return await this.getPageCommon(orgId, siteName, pageIds, slugs, query);
-  }
-
-  async getPageCommon(orgId: string, siteName: string, pageIds: { slug?: string, name?: string, id?: string }, slugs: string[], query?: string) {
-    const pageIdType = pageIds?.id ? 'id' : pageIds?.name ? 'name' : pageIds?.slug ? 'slug' : null;
-    if (!pageIdType) {
-      console.debug('request -> getPage, no pageIds specified, ', pageIds);
-      return null
-    }
-
-    let pagePath = `${appEndpoints.get_page.path}/${siteName}/${pageIdType}/${pageIds[pageIdType]}`;
-    slugs.forEach((slug) => {
-      if (slug) {
-        pagePath = `${pagePath}/${slug}`;
-      }
-    })
-
+  async getPage(hostName: string, siteName: string, paths: string, query?: string, clientInfo?: any) {
+    const sharedHost = this.appConfig.domainAsOrg ? this.appConfig.orgId : ''
+    let pagePath = `${appEndpoints.get_page.path}/${hostName}/${siteName}${paths ? '/' + paths : ''}`;
     if (query) {
-      pagePath = `${pagePath}?${query}&en=true`;
+      pagePath = `${pagePath}?${query}&en=true${sharedHost ? '&shared-host=' + sharedHost : ''}`;
     } else {
-      pagePath = `${pagePath}?en=true`;
+      pagePath = `${pagePath}?en=true${sharedHost ? '&shared-host=' + sharedHost : ''}`;
     }
-    return await this.processRequest('get', pagePath, null, null, null, null, orgId);
+
+    if (clientInfo) {
+      clientInfo['host'] = hostName
+    } else {
+      clientInfo = { host: hostName }
+    }
+    return await this.processRequest('get', pagePath, null, null, null, clientInfo);
   }
 
   async getPreviewPage(orgId: string, site: string, page: string, token: string) {

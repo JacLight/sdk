@@ -70,7 +70,7 @@ const BaseSchema = () => {
       shares: { type: 'number' },
       likes: { type: 'number' },
       dislikes: { type: 'number' },
-      rating: { type: 'number' },
+      averageRating: { type: 'number' },
       ratingCount: { type: 'number' },
     },
   } as const

@@ -11,4 +11,5 @@ export enum ConfigType {
   MySQL = 'MySQL',
   MongoDB = 'MongoDB',
   Payment = 'Payment',
+  SocialMedia = 'SocialMedia',
 }

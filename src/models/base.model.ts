@@ -43,6 +43,7 @@ export interface DataOptions {
   excludeFields?: string[];
   includeFields?: string[];
   maskFields?: string[];
+  random?: boolean;
 }
 
 export interface BaseModelDTO<T> extends DataOptions {
@@ -72,11 +73,12 @@ export interface BaseModel<T> {
   comments?: CommentModel[];
   activities?: ActivityModel[];
   messages?: MessageModel[];
+  schedules?: ScheduleModel[];
   schedule?: ScheduleModel;
   shares?: number;
   likes?: number;
   dislikes?: number;
-  rating?: number;
+  averageRating?: number;
   ratingCount?: number;
   owner?: {
     datatype?: DataType;
@@ -87,6 +89,7 @@ export interface BaseModel<T> {
   state?: ModelState;
   search?: string;
   create_hash?: string;
+  reactions?: any[];
   modified_by?: string;
   created_by?: string;
   views?: number;

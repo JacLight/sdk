@@ -373,7 +373,11 @@ export const SiteSchema = () => {
       },
       globalStyle: {
         type: 'boolean',
-        'x-control-variant': 'switch',
+        'x-control-variant': 'publish',
+      },
+      publishedPagesOnly: {
+        type: 'boolean',
+        'x-control-variant': 'publish',
       },
     },
   } as const;
@@ -438,16 +442,17 @@ export const SiteUI = (): CollectionUI[] => {
             },
             {
               '0': '/properties/globalStyle',
+              '1': '/properties/publishedPagesOnly',
+            },
+            {
+              '0': '/properties/searchBar',
               '1': '/properties/colorSwitch',
               '2': '/properties/darkMode',
             },
             {
-              '0': '/properties/searchBar',
-              '1': '/properties/languageSwitch',
-            },
-            {
               '0': '/properties/theme',
               '1': '/properties/template',
+              '2': '/properties/languageSwitch',
             },
             {
               '0': '/properties/features',

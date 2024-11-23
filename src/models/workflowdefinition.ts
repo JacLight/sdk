@@ -1,6 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection, registerDefaultData } from '../default-schema';
-import { DataType, ControlType, WorkflowStageTypes } from '../types';
+import { DataType, ControlType, WorkflowStageTypes, TaskStatus } from '../types';
 import { CollectionUI } from './collection-ui';
 import { ModelState } from './base.model';
 
@@ -22,29 +22,7 @@ export const WorkflowDefinitionSchema = () => {
       description: {
         type: 'string',
       },
-      startModelState: {
-        type: 'string',
-        enum: Object.values(ModelState),
-        group: 'modelState',
-        default: 'new'
-      },
-      endModelState: {
-        type: 'string',
-        enum: Object.values(ModelState),
-        group: 'modelState',
-        default: 'completed'
-      },
-      sla: {
-        type: 'string',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.escalation,
-          value: 'sk',
-          label: 'name',
-        },
-        group: 'sla',
-      },
+
       notificationTemplate: {
         type: 'array',
         'x-control': ControlType.selectMany,
@@ -59,6 +37,18 @@ export const WorkflowDefinitionSchema = () => {
           type: 'string',
         },
         group: 'sla',
+      },
+      sla: {
+        type: 'string',
+        title: 'SLA',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.escalation,
+          value: 'sk',
+          label: 'name',
+        },
+        group: 'flow',
       },
       startFlow: {
         type: 'string',
@@ -88,6 +78,20 @@ export const WorkflowDefinitionSchema = () => {
         minItems: 2,
         items: WorkflowStageSchema(),
       },
+      collections: {
+        type: 'array',
+        'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
+        dataSource: {
+          source: 'collection',
+          collection: DataType.collection,
+          label: 'name',
+          value: 'name',
+        },
+        items: {
+          type: 'string',
+        }
+      }
     },
     required: ['name', 'stages']
   } as const;
@@ -104,24 +108,36 @@ export const WorkflowStageSchema = () => {
         'x-control': ControlType.uuid,
         readOnly: true
       },
-      type: {
-        type: 'string',
-        enum: WorkflowStageTypes,
-        group: 'type',
-      },
-      modelState: {
-        type: 'string',
-        enum: Object.values(ModelState),
-        default: ModelState.inprogress,
-        group: 'type',
-      },
       name: {
         type: 'string',
         group: 'name',
       },
-      event: {
+      type: {
         type: 'string',
+        enum: Object.keys(WorkflowStageTypes).filter(k => isNaN(Number(k))),
         group: 'name',
+      },
+      modelState: {
+        type: 'string',
+        'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
+        dataSource: {
+          source: 'json',
+          json: Object.values(ModelState),
+        },
+        default: ModelState.inprogress,
+        group: 'type',
+      },
+      modelStatus: {
+        type: 'string',
+        'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
+        dataSource: {
+          source: 'json',
+          json: Object.keys(TaskStatus).filter(k => isNaN(Number(k))),
+        },
+        default: ModelState.inprogress,
+        group: 'type',
       },
       escalation: {
         type: 'string',
@@ -163,7 +179,6 @@ export const WorkflowStageSchema = () => {
       assignTo: {
         type: 'array',
         'x-control': ControlType.selectMany,
-        hideLabel: true,
         'x-control-variant': 'chip',
         items: {
           type: 'string',
@@ -173,10 +188,25 @@ export const WorkflowStageSchema = () => {
           value: 'getAssignToOptions',
         },
       },
-      items: {
+      inputs: {
         type: 'array',
-        collapsible: true,
-        hidden: true,
+        collapsible: 'close',
+        items: {
+          type: 'object',
+          layout: 'horizontal',
+          properties: {
+            name: {
+              type: 'string',
+            },
+            type: {
+              type: 'string',
+              enum: ['string', 'number', 'boolean', 'date', 'date-time', 'time'],
+            },
+            required: {
+              type: 'boolean',
+            },
+          }
+        }
       },
     },
   } as const;

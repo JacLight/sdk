@@ -1,7 +1,5 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { DataType, ControlType } from '../types';
-import { CollectionRule } from './collection-rule';
-import { CollectionUI } from './collection-ui';
 import { registerCollection } from '../default-schema';
 import { toTitleCase } from '../utils/index';
 import { FileInfoSchema } from './file-info';
@@ -10,7 +8,7 @@ export const ActivityTypes: { [key: string]: string } = {
   comment: 'comment',
   like: 'like',
   dislike: 'dislike',
-  rate: 'rate',
+  rating: 'rating',
   share: 'share',
   follow: 'follow',
   view: 'view',
@@ -35,6 +33,7 @@ export const ActivityTypes: { [key: string]: string } = {
   subscribe: 'subscribe',
   unsubscribe: 'unsubscribe',
   register: 'register',
+  reaction: 'reaction',
 }
 
 export const ActivitySchema = () => {
@@ -69,18 +68,12 @@ export const ActivitySchema = () => {
 
 const ts = ActivitySchema();
 export type ActivityModel = FromSchema<typeof ts>;
-export const ActivityUI = (): CollectionUI[] => {
-  return null;
-};
-export const ActivityRules = (): CollectionRule[] => {
-  return [];
-};
 registerCollection(
   'Activity',
   DataType.activity,
   ActivitySchema(),
-  ActivityUI(),
-  ActivityRules()
+  null,
+  null
 );
 
 

@@ -21,9 +21,8 @@ export const PostSchema = () => {
         group: 'slug',
         default: '{{title}}',
         groupLayout: 'flat',
-        transform: ['uri', 'lowercase', 'suffix::-', 'random-string'],
+        transform: ['uri', 'lowercase'],
         textSearch: true,
-
       },
       template: {
         type: 'string',

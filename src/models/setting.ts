@@ -57,6 +57,7 @@ export const SettingSchema = () => {
       outSmsGateway: getSettingItemSchema(DataType.config, 'in-sms'),
       inEmailGateway: getSettingItemSchema(DataType.config, 'in-email'),
       outEmailGateway: getSettingItemSchema(DataType.config, 'in-email'),
+      pushGateway: getSettingItemSchema(DataType.config, 'push-gateway'),
       notificationTemplates: {
         type: 'array',
         collapsible: 'close',
@@ -75,7 +76,7 @@ export const SettingSchema = () => {
               },
               group: 'data',
             },
-            subName: {
+            variant: {
               type: 'string',
               group: 'data',
             },
@@ -121,6 +122,37 @@ export const SettingSchema = () => {
               },
               group: 'template',
             },
+          },
+        }
+      },
+      socialMediaSync: {
+        type: 'array',
+        collapsible: 'close',
+        items: {
+          type: 'object',
+          layout: 'horizontal',
+          properties: {
+            platform: {
+              type: 'string',
+              'x-control': ControlType.selectMany,
+              enum: ['facebook', 'twitter', 'linkedin', 'instagram', 'youtube', 'pinterest', 'tiktok', 'snapchat', 'whatsapp', 'email', 'sms'],
+            },
+            accountId: {
+              type: 'string',
+            },
+            sync: {
+              type: 'array',
+              'x-control': ControlType.selectMany,
+              'x-control-variant': 'chip',
+              items: {
+                type: 'string',
+              },
+              dataSource: {
+                source: 'function',
+                json: ['all', 'post', 'feed', 'messages', 'reactions', 'engagement', 'comments', 'notifications', 'insights', 'leads', 'ads'],
+              }
+            },
+            config: getSettingItemSchema(DataType.config, '')
           },
         }
       },

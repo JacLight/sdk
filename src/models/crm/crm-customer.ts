@@ -34,10 +34,8 @@ export const CustomerSchema = () => {
           type: 'object',
           properties: {
             email: { type: 'string', format: 'email' },
-            status: {
-              type: 'string', 'x-control': ControlType.label
-            },
-            verified: { type: 'boolean' },
+            status: { type: 'string', 'x-control': ControlType.label },
+            verified: { type: 'boolean', hidden: true },
           },
         },
       },

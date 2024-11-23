@@ -40,6 +40,7 @@ export const AddressSchema = () => {
       region: {
         type: 'string',
         'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
         dataSource: {
           value: 'getCountryRegions',
           source: 'function',
@@ -51,6 +52,7 @@ export const AddressSchema = () => {
       country: {
         type: 'string',
         'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
         dataSource: {
           source: 'json',
           json: getCountryDropDownOptions(),

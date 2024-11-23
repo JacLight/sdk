@@ -1,6 +1,5 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
-import { CollectionRule } from '../collection-rule';
 import { CollectionUI } from '../collection-ui';
 import { DataType, ControlType, FormViewSectionType } from '../../types';
 import { FileInfoSchema } from '../file-info';
@@ -170,7 +169,9 @@ export const SFProductSchema = () => {
             price: {
               type: 'number',
             },
-            stock: { type: 'number' },
+            stock: {
+              type: 'number'
+            },
             options: {
               type: 'array',
               title: 'Options',
@@ -230,10 +231,13 @@ export const SFProductSchema = () => {
           },
         },
       },
-      defaultImage: { type: 'string', hidden: true },
-      discount: { type: 'string', hidden: true },
-      promotion: { type: 'string', hidden: true },
-      status: { type: 'string' },
+      discount: {
+        type: 'string',
+      },
+      status: {
+        type: 'string',
+        enum: ['draft', 'new', 'pre-order', 'available', 'sold-out', 'discontinued', 'not-for-sale'],
+      },
     },
     required: ['name', 'sku'],
   } as const;
@@ -255,12 +259,12 @@ export const SFProductUI = (): CollectionUI[] => {
         },
         {
           '0': '/properties/price',
-          '1': '/properties/points',
+          '1': '/properties/discount',
           '2': '/properties/cost',
         },
         {
           '0': '/properties/tax',
-          '1': '/properties/available',
+          '1': '/properties/points',
           '2': '/properties/subscription',
         },
       ],
@@ -336,16 +340,7 @@ export const SFProductUI = (): CollectionUI[] => {
         },
       ],
     },
-    // {
-    //   type: FormViewSectionType.section2column,
-    //   default: true,
-    //   collapsible: true,
-    // }
   ];
-};
-
-export const SFProductRules = (): CollectionRule[] => {
-  return null
 };
 
 const dd = SFProductSchema();
@@ -356,7 +351,7 @@ registerCollection(
   DataType.sf_product,
   SFProductSchema(),
   SFProductUI(),
-  SFProductRules(),
+  null,
   false,
   true
 );

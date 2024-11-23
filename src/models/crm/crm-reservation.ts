@@ -10,18 +10,20 @@ export const ReservationSchema = () => {
     properties: {
       status: {
         type: 'string',
+        default: 'new',
+        'x-control': 'label',
+        readOnly: true,
         enum: ['new', 'confirmed', 'completed', 'rescheduled', 'cancelled'],
         group: 'name',
-        readOnly: true,
       },
       name: {
         type: 'string',
         pattern: '^[a-zA-Z_\\-0-9]*$',
         unique: true,
-        transform: 'uri',
         readOnly: true,
         group: 'name',
         title: 'Reservation ID',
+        transform: ['random-string::8', 'uri'],
       },
       definition: {
         type: 'string',
@@ -33,12 +35,15 @@ export const ReservationSchema = () => {
         properties: {
           name: {
             type: 'string',
+            inputRequired: true,
           },
           email: {
             type: 'string',
+            inputRequired: true,
           },
           phone: {
             type: 'string',
+            inputRequired: true,
           },
         },
       },
@@ -61,31 +66,26 @@ export const ReservationSchema = () => {
       },
       partySize: {
         type: 'number',
-        hidden: true,
         group: 'service',
       },
       startTime: {
         type: 'string',
         format: 'date-time',
         group: 'time',
-        hidden: true,
       },
       endTime: {
         type: 'string',
         format: 'date-time',
         group: 'time',
-        hidden: true,
       },
       checkedIn: {
         type: 'boolean',
-        hidden: true,
         group: 'time',
       },
       hosts: {
         group: 'hosts',
         groupLayout: 'flat',
         type: 'string',
-        hidden: true,
       },
     },
     required: ['name'],

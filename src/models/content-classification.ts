@@ -1,10 +1,11 @@
-import { ControlType, designEmotions, designStyles, siteCategories, siteSectionsTypes } from '../types';
+import { ControlType, designEmotions, designStyles, siteCategories, siteSectionTypes } from '../types';
 
 export const ContentClassificationSchema = () => {
   return {
     type: 'object',
     collapsible: 'close', // open, close, true
     'ai-buttons': true,
+    hidden: true,
     properties: {
       useCase: {
         type: 'array',
@@ -21,7 +22,7 @@ export const ContentClassificationSchema = () => {
               hideLabel: true,
               dataSource: {
                 source: 'json',
-                json: siteSectionsTypes
+                json: siteSectionTypes.map((type) => ({ label: type.name, value: type.name }))
               },
             },
             rating: {

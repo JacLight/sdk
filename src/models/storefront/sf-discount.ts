@@ -1,8 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
-import { CollectionRule } from '../collection-rule';
-import { CollectionUI } from '../collection-ui';
-import { DataType, ControlType, FormViewSectionType } from '../../types';
+import { DataType, ControlType } from '../../types';
 
 export const SFDiscountSchema = () => {
   return {
@@ -11,37 +9,65 @@ export const SFDiscountSchema = () => {
       name: {
         type: 'string',
         transform: 'uri',
+        group: 'general',
+      },
+      status: {
+        type: 'string',
+        enum: ['draft', 'active', 'inactive'],
+        group: 'general',
+      },
+      type: {
+        type: 'string',
+        enum: ['coupon', 'sale'],
+        group: 'type',
       },
       code: {
         type: 'string',
-        pattern: '^[a-zA-Z_\\-0-9]*$'
+        pattern: '^[a-zA-Z_\\-0-9]*$',
+        group: 'type',
+        rules: [
+          { operation: 'notEqual', valueA: '{{type}}', valueB: 'coupon', action: 'hide' },
+        ]
       },
-      active: {
+      noCombination: {
         type: 'boolean',
+        rules: [
+          { operation: 'notEqual', valueA: '{{type}}', valueB: 'coupon', action: 'hide' },
+        ],
+        group: 'type',
+      },
+      valueType: {
+        type: 'string',
+        enum: ['amount', 'percentage'],
+        group: 'discount',
+      },
+      value: {
+        type: 'number',
+        group: 'discount',
+      },
+      startDate: {
+        type: 'string',
+        format: 'date-time',
+        group: 'start',
+      },
+      endDate: {
+        type: 'string',
+        format: 'date-time',
+        group: 'start',
       },
       description: {
         type: 'string',
       },
-      start: {
-        type: 'string',
-        format: 'date-time',
-      },
-      end: {
-        type: 'string',
-        format: 'date-time',
-      },
-      discountType: {
-        type: 'string',
-        enum: ['amount', 'percentage'],
-      },
-      discount: {
+      usageLimit: {
         type: 'number',
+        group: 'limits',
       },
-      usePerUser: {
+      usageCount: {
         type: 'number',
+        group: 'limits',
       },
       sku: {
-        type: 'string',
+        type: 'array',
         'x-control-variant': 'chip',
         'x-control': ControlType.selectMany,
         dataSource: {
@@ -52,7 +78,7 @@ export const SFDiscountSchema = () => {
         },
       },
       category: {
-        type: 'string',
+        type: 'array',
         'x-control-variant': 'chip',
         'x-control': ControlType.selectMany,
         dataSource: {
@@ -63,7 +89,7 @@ export const SFDiscountSchema = () => {
         },
       },
       customer: {
-        type: 'string',
+        type: 'array',
         'x-control-variant': 'chip',
         'x-control': ControlType.selectMany,
         dataSource: {
@@ -74,7 +100,7 @@ export const SFDiscountSchema = () => {
         },
       },
       group: {
-        type: 'string',
+        type: 'array',
         'x-control-variant': 'chip',
         'x-control': ControlType.selectMany,
         dataSource: {
@@ -91,59 +117,11 @@ export const SFDiscountSchema = () => {
 const ms = SFDiscountSchema();
 export type SFDiscountModel = FromSchema<typeof ms>;
 
-export const SFDiscountUI = (): CollectionUI[] => {
-  return [
-    {
-      type: FormViewSectionType.section2column,
-      items: [
-        {
-          '0': '/properties/name',
-          '1': '/properties/code',
-          '2': '/properties/active',
-        },
-        {
-          '0': '/properties/description',
-        },
-        {
-          '0': '/properties/start',
-          '1': '/properties/end',
-        },
-        {
-          '0': '/properties/discountType',
-          '1': '/properties/discount',
-          '2': '/properties/usePerUser',
-        },
-      ],
-    },
-    {
-      type: FormViewSectionType.sectiontable,
-      collapsible: true,
-      title: 'Allowed Uses',
-      items: [
-        {
-          '0': '/properties/sku',
-        },
-        {
-          '0': '/properties/category',
-        },
-        {
-          '0': '/properties/group',
-        },
-        {
-          '0': '/properties/customer',
-        },
-      ],
-    },
-  ]
-};
-export const SFDiscountRules = (): CollectionRule[] => {
-  return null;
-};
 registerCollection(
   'Store Discount',
   DataType.sf_discount,
   SFDiscountSchema(),
-  SFDiscountUI(),
-  SFDiscountRules(),
+  null,
+  null,
   true
 );

@@ -38,6 +38,18 @@ export const SFCartSchema = () => {
       total: {
         type: 'number',
       },
+      discounts: {
+        type: 'array',
+        properties: {
+          code: {
+            type: 'string',
+          },
+          value: {
+            type: 'number',
+          },
+        }
+
+      },
       checkoutInfo: {
         type: 'object',
         properties: {

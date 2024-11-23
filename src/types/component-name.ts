@@ -54,5 +54,6 @@ export enum ComponentName {
   InvoiceHome = 'InvoiceHome',
   SignedDocument = 'SignedDocument',
   CRMForm = 'CRMForm',
+  Workspace = 'Workspace',
 
 }

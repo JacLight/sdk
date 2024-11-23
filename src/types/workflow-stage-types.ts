@@ -1,6 +1,8 @@
 export enum WorkflowStageTypes {
-  new,
-  intermediate,
-  done,
-  error,
+  new = 'new',
+  start = 'start',
+  intermediate = 'intermediate',
+  end = 'done',
+  wait = 'wait',
+  error = 'error',
 }

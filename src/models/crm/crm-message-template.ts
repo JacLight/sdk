@@ -34,6 +34,19 @@ export const MessageTemplateSchema = () => {
       subject: {
         type: 'string',
       },
+      deliveryType: {
+        type: 'string',
+        'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
+        dataSource: {
+          source: 'json',
+          json: ['email', 'sms', 'facebook', 'instagram', 'tiktok', 'twitter', 'linkedin', 'whatsapp', 'gbp', 'slack', 'pinterest', 'chat', 'push', 'notification', 'sitePopup', 'siteAlert'],
+        },
+        default: 'email',
+      },
+      subtype: {
+        type: 'string',
+      },
       sections: {
         type: 'array',
         hidden: true,

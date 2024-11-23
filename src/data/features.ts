@@ -6,6 +6,11 @@ export const getSiteFeatureList = () => {
             description: 'Turn your site into an online store',
         },
         {
+            value: 'blog',
+            label: 'Blog',
+            description: 'Enable blog function on your site',
+        },
+        {
             value: "account",
             label: "Account",
             description: "Allow users to create accounts and login to your site",
@@ -31,6 +36,11 @@ export const getSiteFeatureList = () => {
             description: 'Enable live chat on your site',
         },
         {
+            value: 'community',
+            label: 'Community',
+            description: 'Enable community function on your site',
+        },
+        {
             value: 'conferencing',
             label: 'Conferencing',
             description: 'Enable live video conferencing and meetings on your site',
@@ -41,24 +51,9 @@ export const getSiteFeatureList = () => {
             description: 'Enable ticket support system, appointment booking, event scheduling and calendar function on your site',
         },
         {
-            value: 'reservation',
-            label: 'Reservation',
-            description: 'Enable reservation and booking system on your site',
-        },
-        {
             value: 'calendar',
             label: 'Calendar',
             description: 'Enable calendar function on your site',
         },
-        {
-            value: 'doc',
-            label: 'Documentation',
-            description: 'Enable documentation and knowledge base on your site',
-        },
-        {
-            value: 'live-chat',
-            label: 'Live Chat',
-            description: 'Enable live chat on your site',
-        }
     ]
 }

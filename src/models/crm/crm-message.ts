@@ -3,8 +3,6 @@ import { registerCollection } from '../../default-schema';
 import { DataType, ControlType } from '../../types';
 import { FileInfoSchema } from '../file-info';
 
-
-//add context to system emails can be regenerated - select the template adn add the data
 export const MessageSchema = () => {
   return {
     type: 'object',
@@ -15,7 +13,7 @@ export const MessageSchema = () => {
         'x-control-variant': 'chip',
         dataSource: {
           source: 'json',
-          json: ['email', 'sms', 'whatsapp', 'chat', 'facebook', 'intragram', 'twitter', 'gmb', 'tiktok', 'slack', 'push', 'notification', 'site-popup', 'site-alert'],
+          json: ['email', 'sms', 'facebook', 'instagram', 'tiktok', 'twitter', 'linkedin', 'whatsapp', 'gbp', 'slack', 'pinterest', 'chat', 'push', 'notification', 'sitePopup', 'siteAlert'],
         },
         default: 'email',
         group: 'name',
@@ -38,11 +36,23 @@ export const MessageSchema = () => {
       from: {
         type: 'string',
         group: 'from',
+        'x-control': ControlType.selectMany,
+        'x-control-variant': 'combo',
+        items: {
+          type: 'string',
+        },
+        dataSource: {
+          source: 'store',
+          value: 'from-accounts',
+        },
+        rules: [
+          { operation: 'notIn', valueA: ['email', 'whatsapp', 'chat', 'slack', 'push'], valueB: '{{deliveryType}}', action: 'hide' },
+        ],
       },
       status: {
         type: 'string',
         default: 'new',
-        enum: ['new', 'pending', 'sent', 'delivered', 'read', 'failed'],
+        enum: ['new', 'pending', 'active', 'sent', 'delivered', 'read', 'failed', 'scheduled', 'draft'],
         'x-control': 'label',
         group: 'from',
         readOnly: true,
@@ -57,15 +67,17 @@ export const MessageSchema = () => {
         dataSource: {
           source: 'function',
           value: 'getMessageRecipients',
+          filter: {
+            property: 'deliveryTypes',
+            operation: 'in',
+            value: '{{deliveryType}}'
+          }
         },
-        rules: [
-          { operation: 'in', valueA: ['site-popup', 'gmb', 'site-alert'], valueB: '{{deliveryType}}', action: 'hide' },
-        ],
       },
       subject: {
         type: 'string',
         rules: [
-          { operation: 'notIn', valueA: ['email'], valueB: '{{deliveryType}}', action: 'hide' },
+          { operation: 'in', valueA: ['email'], valueB: '{{deliveryType}}', action: 'set-property', property: [{ key: 'inputRequired', value: true }] },
         ],
         watchedPaths: ['deliveryType'],
       },
@@ -74,8 +86,7 @@ export const MessageSchema = () => {
         type: 'string',
         'x-control': 'richtext',
         rules: [
-          { operation: 'notIn', valueA: ['email', 'site-popup'], valueB: '{{deliveryType}}', action: 'hide' },
-          { operation: 'isNotEmpty', valueA: '{{templates}}', action: 'hide' },
+          { operation: 'notIn', valueA: ['email', 'sitePopup'], valueB: '{{deliveryType}}', action: 'hide' },
         ],
         watchedPaths: ['deliveryType'],
         hideIn: ['table']
@@ -88,7 +99,6 @@ export const MessageSchema = () => {
         displayStyle: 'outlined',
         rules: [
           { operation: 'in', valueA: ['email', 'site-popup'], valueB: '{{deliveryType}}', action: 'hide' },
-          { operation: 'isNotEmpty', valueA: '{{templates}}', action: 'hide' },
         ],
         watchedPaths: ['deliveryType'],
         hideIn: ['table']
@@ -167,9 +177,12 @@ export const MessageSchema = () => {
             },
           },
         },
+        reference: {
+          type: 'string',
+          hidden: true,
+        }
       },
     },
-    required: ['to', 'subject', 'deliveryType', 'from'],
   } as const;
 };
 const ms = MessageSchema();

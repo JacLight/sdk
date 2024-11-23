@@ -88,4 +88,7 @@ export enum DataType {
   campaign = 'campaign',
   audience = 'audience',
   audience_criteria = 'audience_criteria',
+  social_activity = 'social_activity',
+  workspace = 'workspace',
+  workspace_item = 'workspace_item',
 }

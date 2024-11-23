@@ -11,16 +11,6 @@ export const appEndpoints = {
     method: 'get',
     path: 'repository/get',
   },
-  get_page: {
-    name: 'get_page',
-    method: 'get',
-    path: 'repository/page',
-  },
-  get_page_section: {
-    name: 'get_page_section',
-    method: 'get',
-    path: 'repository/page-section',
-  },
   get_collection: {
     name: 'get_collection',
     method: 'get',
@@ -41,10 +31,20 @@ export const appEndpoints = {
     method: 'get',
     path: 'repository/find-by-attribute',
   },
-  site_by_domain_name: {
-    name: 'site_by_domain_name',
+  get_site: {
+    name: 'get_site',
     method: 'get',
-    path: 'repository/site-domain-name/get-site',
+    path: 'site/get-site',
+  },
+  get_page: {
+    name: 'get_page',
+    method: 'get',
+    path: 'site/page',
+  },
+  get_page_section: {
+    name: 'get_page_section',
+    method: 'get',
+    path: 'site/page-section',
   },
   query: {
     name: 'query',
@@ -256,11 +256,6 @@ export const appEndpoints = {
     method: 'get',
     path: 'storefront/orders/get',
   },
-  order_update: {
-    name: 'order_update',
-    method: 'post',
-    path: 'storefront/order/update',
-  },
   checkout_payment_gateways: {
     name: 'checkout_payment_gateways',
     method: 'get',
@@ -381,25 +376,20 @@ export const appEndpoints = {
     method: 'get',
     path: 'crm/service-request/get',
   },
-  crm_promotion_subscribe: {
-    name: 'crm_promotion_subscribe',
+  crm_contact_form_post: {
+    name: 'crm_contact_form_post',
     method: 'post',
-    path: 'crm/promotion/subscribe',
+    path: 'crm/contact-form/post',
+  },
+  crm_contact_form_json: {
+    name: 'crm_contact_form_json',
+    method: 'post',
+    path: 'crm/contact-form/json',
   },
   crm_promotion_unsubscribe: {
     name: 'crm_promotion_unsubscribe',
     method: 'post',
     path: 'crm/promotion/unsubscribe',
-  },
-  crm_contact_form_save_post: {
-    name: 'crm_contact_form_save_post',
-    method: 'post',
-    path: 'crm/contact-form/post',
-  },
-  crm_contact_form_save_json: {
-    name: 'crm_contact_form_save_json',
-    method: 'post',
-    path: 'crm/contact-form/json',
   },
   crm_events_get: {
     name: 'crm_events_get',
@@ -456,20 +446,20 @@ export const appEndpoints = {
     method: 'get',
     path: 'crm/comment/get',
   },
-  crm_activity_delete: {
-    name: 'crm_activity_delete',
-    method: 'delete',
-    path: 'crm/activity/delete',
-  },
-  crm_activity_create: {
-    name: 'crm_activity_create',
+  crm_activity_manage: {
+    name: 'crm_activity_manage',
     method: 'post',
-    path: 'crm/activity/create',
+    path: 'crm/activity/manage',
   },
-  crm_activity_get: {
-    name: 'crm_activity_get',
+  crm_activity_by_customer: {
+    name: 'crm_activity_by_customer',
     method: 'get',
-    path: 'crm/activity/get',
+    path: 'crm/activity/by-customer',
+  },
+  crm_activity_by_resource: {
+    name: 'crm_activity_by_resource',
+    method: 'get',
+    path: 'crm/activity/by-resource',
   },
   index_site: {
     name: 'index_site',

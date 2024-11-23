@@ -3,7 +3,6 @@ import { DataType, ControlType, FormViewSectionType } from '../types';
 import { CollectionUI } from './collection-ui';
 import { registerCollection } from '../default-schema';
 import { FileInfoSchema } from './file-info';
-import { ContentClassificationSchema } from './content-classification';
 
 export const PageSchema = (title = '', description = '') => {
   return {
@@ -89,9 +88,7 @@ export const PageSchema = (title = '', description = '') => {
         displayStyle: 'outlined',
       },
       childNavigation: {
-        type: 'string',
-        enum: ['name', 'slug', 'id'],
-        displayStyle: 'outlined',
+        type: 'boolean',
       },
       dataType: {
         type: 'string',
@@ -101,11 +98,6 @@ export const PageSchema = (title = '', description = '') => {
           source: 'json',
           json: [],
         }
-      },
-      idType: {
-        type: 'string',
-        enum: ['name', 'slug', 'id'],
-        displayStyle: 'outlined',
       },
       priority: {
         type: 'integer',
@@ -201,15 +193,15 @@ export const PageSectionSchema = () => {
         hidden: true,
       },
       style: {
-        type: 'string' || 'object',
+        type: 'string',
         hidden: true,
       },
       classes: {
-        type: 'string' || 'array',
+        type: 'string',
         hidden: true,
       },
       config: {
-        type: 'string' || 'array' || 'object',
+        type: 'string',
         hidden: true,
       },
       content: {
@@ -297,11 +289,11 @@ export const PageSectionSchema = () => {
           json: ['data', 'datatype', 'category', 'tag', 'sort', 'sortType', 'maxItem']
         },
         description: 'Overrides selected item with value from request',
-        group: 'shuffle',
+        group: 'random',
       },
-      shuffle: {
+      random: {
         type: 'boolean',
-        group: 'shuffle',
+        group: 'random',
       },
       selection: {
         type: 'array',
@@ -353,7 +345,7 @@ export const PageSectionSchema = () => {
           image: FileInfoSchema(),
         }
       },
-      classification: ContentClassificationSchema(),
+      // classification: ContentClassificationSchema(),
     },
   } as const;
 };
@@ -385,15 +377,12 @@ export const PageUI = (): CollectionUI[] => {
             },
             {
               '0': '/properties/dataType',
-              '': '/properties/idType',
-            },
-            {
-              '0': '/properties/childEditing',
-              '1': '/properties/childNavigation',
+              '': '/properties/childEditing',
             },
             {
               '0': '/properties/hidden',
               '1': '/properties/hideScrollToTop',
+              '2': '/properties/childNavigation',
             },
             {
               '0': '/properties/animateScroll',
