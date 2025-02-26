@@ -1,5 +1,5 @@
 {
-  "version": "0.120.3",
+  "version": "0.120.4",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -90,7 +90,8 @@
     "uuid": "^9.0.1"
   },
   "publishConfig": {
-    "@jaclight:registry": "https://npm.pkg.github.com"
+    "@jaclight:registry": "https://npm.pkg.github.com",
+    "access": "public"
   },
   "repository": {
     "type": "git",
