@@ -40,6 +40,10 @@ export const ChatMessageSchema = () => {
         ...UserSchema(),
         hidden: true,
       },
+      configId: {
+        type: 'string',
+        hidden: true,
+      }
     },
   } as const;
 };

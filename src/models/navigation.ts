@@ -47,7 +47,10 @@ export const NavigationLinkSchema = () => {
       },
       slug: {
         type: 'string',
-        transform: 'uri'
+        transform: 'uri',
+        rules: [
+          { operation: 'isNotEmpty', valueA: '{{selection}}', action: 'hide' }
+        ]
       },
       description: {
         type: 'string',
@@ -55,9 +58,7 @@ export const NavigationLinkSchema = () => {
       selection: {
         type: 'object',
         title: 'Selections',
-        'x-control': ControlType.collection,
-        displayStyle: 'table',
-        'x-control-variant': 'picker',
+        'x-control': ControlType.lookup,
         dataSource: {
           source: 'collection',
           collection: DataType.post,

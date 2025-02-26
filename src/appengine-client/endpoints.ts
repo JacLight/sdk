@@ -259,7 +259,7 @@ export const appEndpoints = {
   checkout_payment_gateways: {
     name: 'checkout_payment_gateways',
     method: 'get',
-    path: 'storefront/payment_gateways',
+    path: 'storefront/payment-gateways',
   },
   subscriptions_get: {
     name: 'subscriptions_get',

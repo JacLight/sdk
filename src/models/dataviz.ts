@@ -198,7 +198,8 @@ export const DataVizTableConfigSchema = () => {
         inputType: 'textarea',
         displayStyle: 'outlined',
         displaySize: 'small',
-        rules: [{ operation: 'isTruthy', valueA: '{{exportMode}}', action: 'hide' }]
+        rules: [{ "operation": "isTruthy", "valueA": "{{exportMode}}", "action": "hide" }]
+        // rules: [{ "operation": "isNotEmpty", "valueA": "{{contentType}}", "action": "set-property", "property":[{"key": "x-control", "property": "{{contentType}}"},{"key": "x-control-variant", "property": "{{language}}"}] }]
       },
       group: {
         type: 'string',

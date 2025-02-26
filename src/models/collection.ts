@@ -118,6 +118,11 @@ export const CollectionSchema = () => {
         hidden: true,
         type: 'array',
       },
+      schema: {
+        hidden: true,
+        type: 'object',
+        properties: {},
+      },
       rules: {
         hidden: true,
         type: 'object',

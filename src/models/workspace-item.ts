@@ -23,18 +23,32 @@ export const WorkspaceItemSchema = () => {
         type: 'string',
         enum: workspaceItems,
       },
+      datatype: {
+        type: 'string',
+        hidden: true,
+      },
       data: {
         type: 'array',
         items: {
-          datatype: {
-            type: 'string',
+          type: 'object',
+          properties: {
+            datatype: {
+              type: 'string',
+            },
+            id: {
+              type: 'string',
+            },
+            title: {
+              type: 'string',
+            },
+            summary: {
+              type: 'string',
+            },
+            assignTo: {
+              type: 'string',
+            }
           },
-          id: {
-            type: 'string',
-          },
-          title: {
-            type: 'string',
-          },
+          required: ['datatype', 'id', 'title']
         }
       },
       files: {

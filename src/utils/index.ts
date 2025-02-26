@@ -8,9 +8,14 @@ export const toTitleCase = (str: string) => {
 };
 
 export const toSentenceCase = (str: string) => {
-  if (!str) return str;
-  if (typeof str !== 'string') return str;
-  const result = str.replace(/([A-Z])/g, ' $1');
+  if (!str || typeof str !== 'string') return str;
+
+  // Match an uppercase letter that is followed by a lowercase letter or preceded by a lowercase letter.
+  const result = str.replace(/([a-z])([A-Z])|([A-Z])([A-Z][a-z])/g, (_, p1, p2, p3, p4) => {
+    return p1 && p2 ? `${p1} ${p2}` : `${p3} ${p4}`;
+  });
+
+  // Capitalize the first character and return the result
   return result.charAt(0).toUpperCase() + result.slice(1);
 };
 

@@ -52,12 +52,12 @@ export const SFProductSchema = () => {
       tax: {
         type: 'boolean',
       },
-      subscription: {
+      plan: {
         type: 'string',
         'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
-          collection: DataType.sf_subscription_definition,
+          collection: DataType.sf_subscription_plan,
           value: 'name',
           label: 'name',
         },
@@ -265,7 +265,7 @@ export const SFProductUI = (): CollectionUI[] => {
         {
           '0': '/properties/tax',
           '1': '/properties/points',
-          '2': '/properties/subscription',
+          '2': '/properties/plan',
         },
       ],
     },

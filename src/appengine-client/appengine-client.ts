@@ -91,19 +91,20 @@ export class AppEngineClient {
 
     if (isMultiPath) {
       header.headers['Content-Type'] = 'multipart/form-data';
+    } else {
+      if (clientData) {
+        clientData.clientQuery = clientQuery;
+      }
     }
-    const data = clientData;
-    if (data) {
-      data.clientQuery = clientQuery;
-    }
+
     method = method.toLowerCase();
     console.log('request starting  -> ', method, clientPath, path);
     let rt;
     try {
       if (method === 'post') {
-        rt = await this.axios.post(path, data, header);
+        rt = await this.axios.post(path, clientData, header);
       } else if (method === 'put') {
-        rt = await this.axios.put(path, data, header);
+        rt = await this.axios.put(path, clientData, header);
       } else if (method === 'get') {
         rt = await this.axios.get(path, header);
       } else if (method === 'delete') {

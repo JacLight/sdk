@@ -12,6 +12,7 @@ export const SFSubscriptionSchema = () => {
         type: 'string',
         group: 'status',
         readOnly: true,
+        enum: ['new', 'active', 'inactive', 'cancelled', 'expired'],
       },
       referenceId: {
         type: 'string',
@@ -33,7 +34,7 @@ export const SFSubscriptionSchema = () => {
         group: 'name',
         readOnly: true,
       },
-      nextRenewalDate: {
+      renewalDate: {
         type: 'string',
         group: 'date'
       },
@@ -56,6 +57,20 @@ export const SFSubscriptionSchema = () => {
           },
         },
       },
+      benefits: {
+        collapsible: true,
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            name: { type: 'string' },
+            description: { type: 'string' },
+          },
+        },
+      },
+      email: {
+        type: 'string',
+      },
       renewals: {
         collapsible: true,
         type: 'array',
@@ -63,14 +78,27 @@ export const SFSubscriptionSchema = () => {
           type: 'object',
           properties: {
             date: { type: 'string' },
+            plan: { type: 'string' },
             amount: { type: 'number' },
             paymentRef: { type: 'string' },
             paymentGateway: { type: 'string' },
-            nextRenewalDate: { type: 'string' },
+            renewalDate: { type: 'string' },
           },
         },
         isTrial: {
           type: 'boolean',
+        },
+        autoRenew: {
+          type: 'boolean',
+        },
+        endDate: {
+          type: 'string',
+        },
+        cancelReason: {
+          type: 'string',
+        },
+        cancelDate: {
+          type: 'string',
         },
         trial: {
           collapsible: true,
@@ -83,8 +111,12 @@ export const SFSubscriptionSchema = () => {
               ref: { type: 'string' },
             },
           },
-        }
+        },
       },
+      remarks: {
+        type: 'string',
+        'x-control-variant': 'textarea',
+      }
     },
   } as const;
 };

@@ -1,6 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../default-schema';
-import { DataType } from '../types';
+import { ControlType, DataType } from '../types';
 import { CollectionRule } from './collection-rule';
 import { CollectionUI } from './collection-ui';
 
@@ -23,7 +23,7 @@ export const CompanySchema = () => {
         maxLength: 20,
         unique: true,
       },
-      maxusers: {
+      maxUsers: {
         type: 'number',
       },
       active: {
@@ -43,6 +43,47 @@ export const CompanySchema = () => {
           type: 'string',
         },
       },
+      plan: {
+        type: 'string',
+        dataSource: {
+          source: 'json',
+          json: [
+            { value: 'free', label: 'Free' },
+            { value: 'basic', label: 'Basic' },
+            { value: 'pro', label: 'Pro' },
+            { value: 'team', label: 'Team' },
+            { value: 'enterprise', label: 'Enterprise' },
+          ]
+        }
+      },
+      status: {
+        type: 'string',
+        enum: ['trial', 'active', 'grace', 'inactive', 'suspended', 'expired', 'deleted'],
+      },
+      interest: {
+        type: 'string',
+        'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
+        dataSource: {
+          source: 'json',
+          json: [
+            { value: 'website', label: 'Website, blog, etc' },
+            { value: 'mobile-app', label: 'Mobile App' },
+            { value: 'e-commerce', label: 'E-Commerce/POS' },
+            { value: 'learning-management', label: 'Learning Management' },
+            { value: 'live-chat', label: 'Live Chat & AI Chatbot' },
+            { value: 'social-media', label: 'Social Media Management' },
+            { value: 'forms', label: 'Forms & Survey' },
+            { value: 'crm', label: 'CRM, Sales, Leads & Ticket Support' },
+            { value: 'email-marketing', label: 'Email Marketing' },
+            { value: 'event-management', label: 'Booking, Event, Reservation' },
+            { value: 'project-management', label: 'Project Management' },
+            { value: 'analytics', label: 'Analytics & Dashboard' },
+            { value: 'creative-studio', label: 'Creative Studio' },
+            { value: 'automation', label: 'Process Automation & Workflow' },
+          ]
+        }
+      }
     },
   } as const;
 };
@@ -63,3 +104,4 @@ registerCollection(
   CompanyUI(),
   CompanyRules()
 );
+``

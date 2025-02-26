@@ -114,6 +114,13 @@ export const PageSchema = (title = '', description = '') => {
           type: 'object',
         }
       },
+      actions: {
+        type: 'array',
+        hidden: true,
+        items: {
+          type: 'object',
+        }
+      },
       initData: {
         type: 'object',
         hidden: true,
@@ -158,6 +165,10 @@ export const PageSchema = (title = '', description = '') => {
         type: 'boolean',
         // description: 'Hide scroll to top button',
       },
+      clientData: {
+        type: 'object',
+        hidden: true,
+      }
     },
     required: ['name', 'slug', 'site'],
   } as const;
@@ -320,11 +331,6 @@ export const PageSectionSchema = () => {
             },
           },
         },
-      },
-      dataInRequest: {
-        type: 'boolean',
-        description: "map's request params to data fetch /datatype/keyword/search, /datatype/attribute/value, /datatype/id, /datatype can also be set as query parameter ?datatype=xxx&...",
-        hidden: true,
       },
       seo: {
         type: 'object',

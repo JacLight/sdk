@@ -28,6 +28,9 @@ export const SFOrderSchema = () => {
         type: 'string',
         enum: [
           'new',
+          'paid',
+          'paid-partial',
+          'confirmed',
           'processing',
           'shipped',
           'delivered',

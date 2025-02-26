@@ -56,7 +56,7 @@ export enum DataType {
   sf_refund = 'sf_refund',
   sf_shipping = 'sf_shipping',
   sf_subscription = 'sf_subscription',
-  sf_subscription_definition = 'sf_subscription_definition',
+  sf_subscription_plan = 'sf_subscription_plan',
   sf_transaction = 'sf_transaction',
   sf_wishlist = 'sf_wishlist',
   sf_brand = 'sf_brand',

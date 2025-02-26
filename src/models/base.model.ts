@@ -94,6 +94,7 @@ export interface BaseModel<T> {
   created_by?: string;
   views?: number;
   last_viewed?: Date;
+  client?: string;
 }
 
 export const PostSubSchema = () => {

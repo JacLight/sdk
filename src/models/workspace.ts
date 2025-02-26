@@ -29,11 +29,22 @@ export const WorkspaceSchema = () => {
         items: {
           type: 'object',
           properties: {
-            title: {
+            email: {
               type: 'string',
             },
-            description: {
+            name: {
               type: 'string',
+            },
+            slogan: {
+              type: 'string',
+            },
+            status: {
+              type: 'string',
+              enum: ['new', 'invited', 'active', 'inactive'],
+            },
+            accessType: {
+              type: 'string',
+              enum: ['guest', 'member', 'admin'],
             }
           },
         }
@@ -46,6 +57,7 @@ export const WorkspaceSchema = () => {
             id: {
               type: 'string',
               hidden: true,
+              transform: ['random-string::6'],
             },
             title: {
               type: 'string',
@@ -68,6 +80,8 @@ export const WorkspaceSchema = () => {
               type: 'string',
               hidden: true,
               group: 'status',
+              enum: ['draft', 'not-started', 'in-progress', 'completed', 'blocked', 'cancelled'],
+              default: 'new',
             },
             dueDate: {
               type: 'string',
@@ -88,6 +102,8 @@ export const WorkspaceSchema = () => {
                   status: {
                     type: 'string',
                     group: 'status',
+                    enum: ['draft', 'not-started', 'in-progress', 'completed', 'blocked', 'cancelled'],
+                    default: 'new',
                   },
                   dueDate: {
                     type: 'string',
@@ -116,6 +132,17 @@ export const WorkspaceSchema = () => {
       },
       isPrivate: {
         type: 'boolean',
+      },
+      intakeForm: {
+        type: 'string',
+        'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
+        dataSource: {
+          source: 'collection',
+          collection: DataType.collection,
+          value: 'name',
+          label: 'name',
+        },
       },
     }
   } as const;

@@ -1,8 +1,9 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { ControlType, DataType } from '../../types';
+import { FileInfoSchema } from '../file-info';
 
-export const SFSubscriptionDefinitionSchema = () => {
+export const SFSubscriptionPlanSchema = () => {
   return {
     type: 'object',
     properties: {
@@ -20,6 +21,10 @@ export const SFSubscriptionDefinitionSchema = () => {
         group: 'name'
       },
       price: {
+        type: 'number',
+        group: 'pricing'
+      },
+      displayPrice: {
         type: 'number',
         group: 'pricing'
       },
@@ -51,9 +56,21 @@ export const SFSubscriptionDefinitionSchema = () => {
         },
         dataSource: {
           source: 'collection',
-          collection: DataType.sf_subscription_definition,
+          collection: DataType.sf_subscription_plan,
           value: 'name',
           label: ['name', 'title'],
+        },
+      },
+      features: {
+        collapsible: true,
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            name: { type: 'string' },
+            value: { type: 'string' },
+            description: { type: 'string' },
+          },
         },
       },
       description: {
@@ -81,19 +98,23 @@ export const SFSubscriptionDefinitionSchema = () => {
           },
         },
       },
-
+      images: {
+        type: 'array',
+        'x-control': ControlType.file,
+        items: FileInfoSchema(),
+      }
     },
   } as const;
 };
 
-const dd = SFSubscriptionDefinitionSchema();
-export type SFSubscriptionDefinitionModel = FromSchema<typeof dd>;
+const dd = SFSubscriptionPlanSchema();
+export type SFSubscriptionPlanModel = FromSchema<typeof dd>;
 
 
 registerCollection(
-  'Store Subscription',
-  DataType.sf_subscription_definition,
-  SFSubscriptionDefinitionSchema(),
+  'Store Subscription Plan',
+  DataType.sf_subscription_plan,
+  SFSubscriptionPlanSchema(),
   null,
   null,
   false

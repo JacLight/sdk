@@ -117,6 +117,21 @@ export const SiteSchema = () => {
           json: getSiteFeatureList(),
         },
       },
+      chatConfig: {
+        type: 'string',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.flexdata,
+          value: 'sk',
+          label: ['name', 'sk'],
+          filter: {
+            property: 'application',
+            operation: 'equal',
+            value: 'chat-config',
+          }
+        },
+      },
       defaultCurrency: {
         type: 'string',
         'x-control': ControlType.selectMany,
@@ -396,6 +411,10 @@ export const SiteUI = (): CollectionUI[] => {
               '1': '/properties/title',
             },
             {
+              '0': '/properties/domain',
+              '1': '/properties/homePage',
+            },
+            {
               '0': '/properties/favicon',
             },
             {
@@ -415,10 +434,6 @@ export const SiteUI = (): CollectionUI[] => {
         {
           title: 'Settings',
           items: [
-            {
-              '0': '/properties/domain',
-              '1': '/properties/homePage',
-            },
             {
               '0': '/properties/loginRedirect',
               '1': '/properties/logoutRedirect',
@@ -453,6 +468,9 @@ export const SiteUI = (): CollectionUI[] => {
               '0': '/properties/theme',
               '1': '/properties/template',
               '2': '/properties/languageSwitch',
+            },
+            {
+              '0': '/properties/chatConfig',
             },
             {
               '0': '/properties/features',
