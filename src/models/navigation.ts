@@ -55,6 +55,11 @@ export const NavigationLinkSchema = () => {
       description: {
         type: 'string',
       },
+      type: {
+        type: 'string',
+        enum: ['url', 'content', 'custom']
+
+      },
       selection: {
         type: 'object',
         title: 'Selections',
@@ -75,17 +80,25 @@ export const NavigationLinkSchema = () => {
             type: 'string',
           },
         },
+        rules: [
+          { operation: 'notEqual', valueA: '{{type}}', valueB: 'content', action: 'hide' }
+        ]
       },
       url: {
         type: 'string',
+        rules: [
+          { operation: 'equal', valueA: '{{type}}', valueB: 'content', action: 'hide' },
+        ]
       },
       dropType: {
         type: 'string',
-        enum: ['list', 'compact', 'column']
+        enum: ['list', 'compact', 'column'],
+        group: 'drop',
       },
       display: {
         type: 'string',
-        enum: ['link', 'block', 'card', 'action', 'separator']
+        enum: ['link', 'block', 'card', 'action', 'separator'],
+        group: 'drop',
       },
       icon: {
         type: 'string',
