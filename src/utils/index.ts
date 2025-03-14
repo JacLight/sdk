@@ -1,3 +1,5 @@
+import { twMerge } from "tailwind-merge";
+
 export const toTitleCase = (str: string) => {
   if (!str) return str;
   if (typeof str !== 'string') return str;
@@ -238,7 +240,7 @@ export function combineObjectArray(arr1: AnyObject[], arr2: AnyObject[], uniqueK
 }
 
 export function classNames(...classes: any) {
-  return classes.filter(Boolean).join(' ')
+  return twMerge(classes.filter(Boolean).join(' '))
 }
 
 export function styleToObject(style: string): { [key: string]: string } {

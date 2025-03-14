@@ -1,5 +1,5 @@
 {
-  "version": "0.120.5",
+  "version": "0.2.0",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -87,15 +87,16 @@
     "json-schema-to-ts": "^3.0.0",
     "jsonpath-plus": "^5.0.7",
     "lodash.isobjectlike": "^4.0.0",
+    "tailwind-merge": "^3.0.2",
     "uuid": "^9.0.1"
   },
-"publishConfig": {
-  "registry": "https://npm.pkg.github.com",
-  "access": "public"
-},
-"repository": {
-  "type": "git",
-  "url": "https://github.com/JacLight/sdk.git"
-},
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JacLight/sdk.git"
+  },
   "packageManager": "yarn@4.0.2"
 }
