@@ -358,10 +358,10 @@ export const PageUI = (): CollectionUI[] => {
 };
 
 
-const pageSectionSchema = PageSectionSchema();
+const pageDataSchema = PageDataSchema();
 const pageSchema = PageSchema();
 
-export type PageSectionModel = FromSchema<typeof pageSectionSchema>;
+export type PageDataModel = FromSchema<typeof pageDataSchema>;
 export type PageModel = FromSchema<typeof pageSchema>;
 
 registerCollection('Page', DataType.page, PageSchema(), PageUI(), null);
