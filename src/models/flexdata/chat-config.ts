@@ -1,4 +1,5 @@
-import { ControlType, DataType, FileInfoSchema } from "@jaclight/dbsdk";
+import { FileInfoSchema } from '@models/file-info';
+import { ControlType } from '../../types/control-type';
 import { FromSchema } from 'json-schema-to-ts';
 
 export const chatConfigSchema = {

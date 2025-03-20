@@ -2,7 +2,6 @@ import { FromSchema } from 'json-schema-to-ts';
 import { DataType, ControlType, FormViewSectionType } from '../types';
 import { CollectionUI } from './collection-ui';
 import { registerCollection } from '../default-schema';
-import { FileInfoSchema } from './file-info';
 
 export const PageSchema = (title = '', description = '') => {
   return {
@@ -102,11 +101,6 @@ export const PageSchema = (title = '', description = '') => {
       priority: {
         type: 'integer',
       },
-      sections: {
-        type: 'array',
-        hidden: true,
-        items: PageSectionSchema(),
-      },
       animations: {
         type: 'array',
         hidden: true,
@@ -174,59 +168,11 @@ export const PageSchema = (title = '', description = '') => {
   } as const;
 };
 
-export const PageSectionSchema = () => {
+export const PageDataSchema = () => {
   return {
     type: 'object',
     displayStyle: 'card',
     properties: {
-      id: {
-        type: 'string',
-        pattern: '^[a-zA-Z_\\-0-9]*$',
-        minLength: 3,
-        maxLength: 50,
-        unique: true,
-        hidden: true,
-      },
-      startRow: {
-        type: 'number',
-        hidden: true,
-      },
-      startCol: {
-        type: 'string',
-        hidden: true,
-      },
-      colSpan: {
-        type: 'string',
-        hidden: true,
-      },
-      rowSpan: {
-        type: 'number',
-        hidden: true,
-      },
-      style: {
-        type: 'string',
-        hidden: true,
-      },
-      classes: {
-        type: 'string',
-        hidden: true,
-      },
-      config: {
-        type: 'string',
-        hidden: true,
-      },
-      content: {
-        type: 'string',
-        hidden: true,
-      },
-      component: {
-        type: 'string',
-        hidden: true,
-      },
-      close: {
-        type: 'boolean',
-        hidden: true,
-      },
       dataType: {
         type: 'array',
         'x-control': ControlType.selectMany,
@@ -245,7 +191,7 @@ export const PageSectionSchema = () => {
         items: {
           type: 'string'
         },
-        'x-control-variant': 'tree',
+        'x-control-variant': 'combo',
         dataSource: {
           source: 'collection',
           collection: DataType.category,
@@ -332,26 +278,6 @@ export const PageSectionSchema = () => {
           },
         },
       },
-      seo: {
-        type: 'object',
-        collapsible: 'close', // open, close, true
-        properties: {
-          title: {
-            type: 'string',
-          },
-          description: {
-            type: 'string',
-          },
-          keywords: {
-            type: 'string',
-          },
-          pixel: {
-            type: 'string',
-          },
-          image: FileInfoSchema(),
-        }
-      },
-      // classification: ContentClassificationSchema(),
     },
   } as const;
 };
