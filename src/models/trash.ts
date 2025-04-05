@@ -7,6 +7,7 @@ import { registerCollection } from '../default-schema';
 export const TrashSchema = () => {
   return {
     type: 'object',
+    acitons: ['delete', 'restore'],
     properties: {
       name: {
         type: 'string',

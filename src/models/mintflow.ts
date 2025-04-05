@@ -49,19 +49,8 @@ export const MintflowSchema = () => {
         minimum: 0,
         hidden: true,
       },
-      viewport: {
-        type: 'array',
-        hidden: true,
-      },
-      nodes: {
-        type: 'array',
-        items: MintflowNodeSchema(),
-        hidden: true,
-      },
-      edges: {
-        type: 'array',
-        items: MintflowNodeSchema(),
-        hidden: true,
+      flow: {
+        type: 'object'
       },
       status: {
         type: 'string',

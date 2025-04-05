@@ -98,6 +98,10 @@ export const PageSchema = (title = '', description = '') => {
           json: [],
         }
       },
+      content: {
+        type: 'object',
+        hidden: true,
+      },
       priority: {
         type: 'integer',
       },
@@ -181,8 +185,10 @@ export const PageDataSchema = () => {
           type: 'string'
         },
         dataSource: {
-          source: 'json',
-          json: []
+          source: 'collection',
+          collection: DataType.collection,
+          value: 'name',
+          label: 'name',
         },
       },
       category: {
@@ -255,13 +261,11 @@ export const PageDataSchema = () => {
       selection: {
         type: 'array',
         collapsible: 'close',
-        title: 'Selections',
         'x-control': ControlType.collection,
-        displayStyle: 'table',
         'x-control-variant': 'picker',
         dataSource: {
           source: 'collection',
-          collection: DataType.post,
+          collection: '{{dataType}}',
         },
         items: {
           type: 'object',
@@ -277,6 +281,9 @@ export const PageDataSchema = () => {
             },
           },
         },
+        // rules: [
+        //   { operation: 'notEmpty', valueA: '{{collection}}', action: 'set-property', property: [{ key: 'dataSource.collection', value: '{{dataType}}' }] },
+        // ]
       },
     },
   } as const;
