@@ -113,20 +113,24 @@ export const PostSubSchema = () => {
       allowShare: {
         type: 'boolean',
         default: true,
+        labelPostion: 'top',
         group: 'share',
       },
       allowComment: {
         type: 'boolean',
         default: true,
+        labelPostion: 'top',
         group: 'share',
       },
       allowRating: {
         type: 'boolean',
+        labelPostion: 'top',
         default: true,
         group: 'share',
       },
       showRelated: {
         type: 'boolean',
+        labelPostion: 'top',
         default: true,
         group: 'share',
       },

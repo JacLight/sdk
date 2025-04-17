@@ -11,24 +11,9 @@ export const getSiteFeatureList = () => {
             description: 'Enable blog function on your site',
         },
         {
-            value: "account",
-            label: "Account",
-            description: "Allow users to create accounts and login to your site",
-        },
-        {
-            value: 'site-builder',
-            label: 'Site Builder',
-            description: 'Build your micro sites and landing pages with a drag and drop editor',
-        },
-        {
             value: 'forms',
             label: 'Forms',
             description: 'Allow users to create and host forms on your site',
-        },
-        {
-            value: 'creative-studio',
-            label: 'Creative Studio',
-            description: 'Enables the creative studio suite for your site, where user can create and edit graphics, videos, and more',
         },
         {
             value: 'live-chat',
@@ -38,22 +23,20 @@ export const getSiteFeatureList = () => {
         {
             value: 'community',
             label: 'Community',
-            description: 'Enable community function on your site',
+            description: 'Mordern forum and community system',
+            pages: ['forum', 'forum-detail', 'forum-replies', 'forum-create', 'forum-edit', 'forum-categories']
         },
         {
-            value: 'conferencing',
-            label: 'Conferencing',
-            description: 'Enable live video conferencing and meetings on your site',
+            value: 'ticket-support',
+            label: 'Ticket Support',
+            description: 'Enable ticket support on your site',
+            pages: ['new ticket', 'ticket-detail', 'ticket-replies', 'tickets']
         },
         {
-            value: 'crm',
-            label: 'CRM',
-            description: 'Enable ticket support system, appointment booking, event scheduling and calendar function on your site',
-        },
-        {
-            value: 'calendar',
-            label: 'Calendar',
-            description: 'Enable calendar function on your site',
+            value: 'reservations',
+            label: 'Reservations',
+            description: 'Enable reservation system on your site',
+            pages: ['service-menu', 'service-calender', 'service-menu-item-detail', 'service-menu-item-booking', 'service-menu-booking-confirmation', 'service-menu-booking-cancellation', 'service-menu-booking-reschedule',]
         },
     ]
 }

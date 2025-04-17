@@ -1,6 +1,5 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { DataType, ControlType, FormViewSectionType } from '../types';
-import { CollectionUI } from './collection-ui';
+import { DataType, ControlType } from '../types';
 import { registerCollection } from '../default-schema';
 
 export const PageSchema = (title = '', description = '') => {
@@ -80,13 +79,10 @@ export const PageSchema = (title = '', description = '') => {
       favicon: {
         type: 'string',
       },
-      childEditing: {
-        type: 'string',
-        enum: ['append', 'locked'],
-        default: 'append',
-        displayStyle: 'outlined',
-      },
       childNavigation: {
+        type: 'boolean',
+      },
+      inheritParent: {
         type: 'boolean',
       },
       dataType: {
@@ -281,87 +277,20 @@ export const PageDataSchema = () => {
             },
           },
         },
-        // rules: [
-        //   { operation: 'notEmpty', valueA: '{{collection}}', action: 'set-property', property: [{ key: 'dataSource.collection', value: '{{dataType}}' }] },
-        // ]
       },
     },
+    'x-layout': {
+      main: {
+        type: 'tab',
+        id: 'main',
+        items: [
+          { id: 'Info', title: 'Info' },
+          { id: 'seo', title: 'SEO' },
+          { id: 'breakpoint', title: 'Breakpoint' },
+        ]
+      }
+    }
   } as const;
-};
-
-export const PageUI = (): CollectionUI[] => {
-  return [
-    {
-      type: FormViewSectionType.sectiontab,
-      tab: [
-        {
-          title: 'Info',
-          items: [
-            {
-              '0': '/properties/site',
-              '1': '/properties/parent',
-            },
-            {
-              '0': '/properties/name',
-              '1': '/properties/slug',
-            },
-            {
-              '0': '/properties/title',
-            },
-            {
-              '0': '/properties/description',
-            },
-            {
-              '0': '/properties/favicon',
-            },
-            {
-              '0': '/properties/dataType',
-              '': '/properties/childEditing',
-            },
-            {
-              '0': '/properties/hidden',
-              '1': '/properties/hideScrollToTop',
-              '2': '/properties/childNavigation',
-            },
-            {
-              '0': '/properties/animateScroll',
-              '1': '/properties/animateContent',
-            },
-          ],
-        },
-        {
-          title: 'SEO',
-          items: [
-            {
-              '0': '/properties/keywords',
-            },
-            {
-              '0': '/properties/robots',
-            },
-            {
-              '0': '/properties/tracking',
-            },
-          ],
-        },
-        {
-          title: 'Breakpoints',
-          items: [
-            {
-              '0': '/properties/minWidth',
-              '1': '/properties/maxWidth',
-            },
-            {
-              '0': '/properties/minHeight',
-              '1': '/properties/maxHeight',
-            },
-            {
-              '0': '/properties/breakpoints',
-            },
-          ],
-        },
-      ],
-    },
-  ];
 };
 
 
@@ -371,4 +300,4 @@ const pageSchema = PageSchema();
 export type PageDataModel = FromSchema<typeof pageDataSchema>;
 export type PageModel = FromSchema<typeof pageSchema>;
 
-registerCollection('Page', DataType.page, PageSchema(), PageUI(), null);
+registerCollection('Page', DataType.page, PageSchema(), null, null);

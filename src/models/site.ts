@@ -1,10 +1,9 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { DataType, ControlType, FormViewSectionType } from '../types';
-import { FileInfoSchema } from './file-info';
+import { DataType, ControlType } from '../types';
 import { getCurrencies, getLanguages, getSiteFeatureList } from '../data';
 import { CollectionRule } from './collection-rule';
-import { CollectionUI } from './collection-ui';
 import { registerCollection } from '../default-schema';
+import { FileInfoSchema } from './file-info';
 
 export const SiteSchema = () => {
   return {
@@ -17,7 +16,21 @@ export const SiteSchema = () => {
         maxLength: 50,
         unique: true,
         transform: 'uri',
-        readOnly: true
+        readOnly: true,
+        layoutGroup: 'info',
+        group: 'name',
+      },
+      title: {
+        type: 'string',
+        layoutGroup: 'info',
+        group: 'name',
+      },
+      domain: {
+        type: 'string',
+        format: 'hostname',
+        placeholder: 'example.com',
+        layoutGroup: 'info',
+        group: 'domain',
       },
       homePage: {
         type: 'string',
@@ -33,145 +46,27 @@ export const SiteSchema = () => {
             value: '{{name}}',
           }
         },
-      },
-      loginRedirect: {
-        type: 'string',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.page,
-          value: 'name',
-          label: 'name',
-          filter: {
-            property: 'site',
-            operation: 'equal',
-            value: '{{name}}',
-          }
-        },
-      },
-      logoutRedirect: {
-        type: 'string',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.page,
-          value: 'name',
-          label: 'name',
-          filter: {
-            property: 'site',
-            operation: 'equal',
-            value: '{{name}}',
-          }
-        },
-      },
-      theme: {
-        type: 'string',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'function',
-          value: 'getThemeSettingsList',
-        }
-      },
-      template: {
-        type: 'string',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'function',
-          value: 'getSiteTemplates',
-        }
-      },
-      colorSwitch: {
-        type: 'string',
-        'x-control': ControlType.selectMany,
-        enum: ['on', 'off'],
-        default: 'off'
-      },
-      darkMode: {
-        type: 'string',
-        enum: ['auto', 'switch', 'on', 'off'],
-        default: 'auto'
-      },
-      title: {
-        type: 'string',
+        group: 'domain',
+        layoutGroup: 'info',
       },
       description: {
         type: 'string',
         'x-control-variant': 'textarea',
+        layoutGroup: 'info',
       },
       keywords: {
+        'x-control-variant': 'textarea',
         type: 'string',
-      },
-      robots: {
-        type: 'string',
+        layoutGroup: 'info',
       },
       favicon: {
         type: 'string',
         format: 'uri',
+        layoutGroup: 'info',
       },
-      features: {
-        type: 'array',
-        'x-control-variant': 'chip',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'json',
-          json: getSiteFeatureList(),
-        },
-      },
-      chatConfig: {
+      robots: {
         type: 'string',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.flexdata,
-          value: 'sk',
-          label: ['name', 'sk'],
-          filter: {
-            property: 'application',
-            operation: 'equal',
-            value: 'chat-config',
-          }
-        },
-      },
-      defaultCurrency: {
-        type: 'string',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'self',
-          value: 'currencies',
-          label: 'currencies',
-        },
-      },
-      currencies: {
-        type: 'string',
-        'x-control-variant': 'chip',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'json',
-          json: getCurrencies(),
-        },
-      },
-      defaultLanguage: {
-        type: 'string',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'self',
-          value: 'languages',
-          label: 'languages',
-        },
-      },
-      languages: {
-        type: 'string',
-        'x-control-variant': 'chip',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'json',
-          json: getLanguages(),
-        },
-      },
-      domain: {
-        type: 'string',
-        format: 'hostname',
-        placeholder: 'example.com',
+        layoutGroup: 'info',
       },
       logo: {
         type: 'object',
@@ -194,36 +89,176 @@ export const SiteSchema = () => {
           },
           ...FileInfoSchema().properties,
         },
+        layoutGroup: 'info',
       },
-      mainNavigation: {
+      loginRedirect: {
         type: 'string',
         'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
-          collection: DataType.navigation,
-          value: 'sk',
+          collection: DataType.page,
+          value: 'name',
           label: 'name',
+          filter: {
+            property: 'site',
+            operation: 'equal',
+            value: '{{name}}',
+          }
         },
+        layoutGroup: 'settings',
+        group: 'login',
       },
-      mobileNavigation: {
+      logoutRedirect: {
         type: 'string',
         'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
-          collection: DataType.navigation,
-          value: 'sk',
+          collection: DataType.page,
+          value: 'name',
           label: 'name',
+          filter: {
+            property: 'site',
+            operation: 'equal',
+            value: '{{name}}',
+          }
         },
+        layoutGroup: 'settings',
+        group: 'login',
       },
-      footerNavigation: {
+      defaultCurrency: {
+        type: 'string',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'self',
+          value: 'currencies',
+          label: 'currencies',
+        },
+        layoutGroup: 'settings',
+        group: 'currencies',
+      },
+      currencies: {
+        type: 'string',
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'json',
+          json: getCurrencies(),
+        },
+        layoutGroup: 'settings',
+        group: 'currencies',
+      },
+      defaultLanguage: {
+        type: 'string',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'self',
+          value: 'languages',
+          label: 'languages',
+        },
+        layoutGroup: 'settings',
+        group: 'languages',
+      },
+      languages: {
+        type: 'string',
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'json',
+          json: getLanguages(),
+        },
+        layoutGroup: 'settings',
+        group: 'languages',
+      },
+      languageSwitch: {
+        type: 'string',
+        enum: ['icons', 'full', 'none'],
+        layoutGroup: 'settings',
+        group: 'search',
+      },
+      searchBar: {
+        type: 'string',
+        enum: ['top', 'bottom', 'none'],
+        layoutGroup: 'settings',
+        group: 'search',
+      },
+      showLogin: {
+        type: 'boolean',
+        'x-control-variant': 'switch',
+        layoutGroup: 'settings',
+        group: 'switch',
+      },
+      globalStyle: {
+        type: 'boolean',
+        'x-control-variant': 'switch',
+        group: 'switch',
+      },
+      publishedPagesOnly: {
+        type: 'boolean',
+        'x-control-variant': 'switch',
+        group: 'switch',
+      },
+      theme: {
+        type: 'string',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'function',
+          value: 'getThemeSettingsList',
+        },
+        layoutGroup: 'settings',
+        group: 'theme',
+      },
+      template: {
+        type: 'string',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'function',
+          value: 'getSiteTemplates',
+        },
+        layoutGroup: 'settings',
+        group: 'theme',
+      },
+      colorSwitch: {
+        type: 'string',
+        'x-control': ControlType.selectMany,
+        enum: ['on', 'off'],
+        default: 'off',
+        layoutGroup: 'settings',
+        group: 'theme',
+      },
+      darkMode: {
+        type: 'string',
+        enum: ['auto', 'switch', 'on', 'off'],
+        default: 'auto',
+        group: 'theme',
+        layoutGroup: 'settings',
+      },
+      chatConfig: {
         type: 'string',
         'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
-          collection: DataType.navigation,
+          collection: DataType.flexdata,
           value: 'sk',
-          label: 'name',
+          label: ['name', 'sk'],
+          filter: {
+            property: 'application',
+            operation: 'equal',
+            value: 'chat-config',
+          }
         },
+        group: 'chat',
+        layoutGroup: 'settings',
+      },
+      features: {
+        type: 'array',
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'json',
+          json: getSiteFeatureList(),
+        },
+        group: 'features',
+        layoutGroup: 'settings',
       },
       storefront: {
         type: 'object',
@@ -307,12 +342,14 @@ export const SiteSchema = () => {
             },
           },
         },
+        layoutGroup: 'store',
       },
       social: {
         type: 'array',
         collapsible: 'close',
         items: {
           type: 'object',
+          layout: 'horizontal',
           properties: {
             name: {
               type: 'string',
@@ -334,6 +371,7 @@ export const SiteSchema = () => {
             },
           },
         },
+        layoutGroup: 'social',
       },
       tracking: {
         type: 'object',
@@ -345,171 +383,37 @@ export const SiteSchema = () => {
           googleAnalytic: {
             type: 'string',
           },
-        }
+        },
+        layoutGroup: 'social',
       },
       spanProtectionComment: {
         description: 'Enable Google reCAPTCHA on contact and comment forms',
         type: 'boolean',
         'x-control-variant': 'switch',
-        displayStyle: 'card',
+        layoutGroup: 'spam',
       },
       spamProtectionUser: {
         description:
           'Enable Google reCAPTCHA on login, create account and password recovery pages',
         type: 'boolean',
         'x-control-variant': 'switch',
-        displayStyle: 'card',
-      },
-      tailwindConfig: {
-        type: 'string',
-        'x-control': 'code',
-        'x-control-variant': 'json',
-        css: { height: 800 }
-      },
-      searchBar: {
-        type: 'string',
-        enum: ['top', 'bottom', 'none'],
-      },
-      languageSwitch: {
-        type: 'string',
-        enum: ['icons', 'full', 'none'],
-      },
-      showLogin: {
-        type: 'boolean',
-        'x-control-variant': 'switch',
-      },
-      hideSiteHeader: {
-        type: 'boolean',
-        'x-control-variant': 'switch',
-      },
-      hideSiteFooter: {
-        type: 'boolean',
-        'x-control-variant': 'switch',
-      },
-      globalStyle: {
-        type: 'boolean',
-        'x-control-variant': 'publish',
-      },
-      publishedPagesOnly: {
-        type: 'boolean',
-        'x-control-variant': 'publish',
+        layoutGroup: 'spam',
       },
     },
+    'x-layout': {
+      main: {
+        type: 'tab',
+        id: 'main',
+        items: [
+          { id: 'Info', title: 'Info' },
+          { id: 'settings', title: 'Settings' },
+          { id: 'social', title: 'Socila & Tracking' },
+          { id: 'span', title: 'Spam Protection' },
+          { id: 'store', title: 'Storefront' },
+        ]
+      }
+    }
   } as const;
-};
-
-export const SiteUI = (): CollectionUI[] => {
-  return [
-    {
-      type: FormViewSectionType.sectiontab,
-      tab: [
-        {
-          title: 'Info',
-          items: [
-            {
-              '0': '/properties/name',
-              '1': '/properties/title',
-            },
-            {
-              '0': '/properties/domain',
-              '1': '/properties/homePage',
-            },
-            {
-              '0': '/properties/favicon',
-            },
-            {
-              '0': '/properties/description',
-            },
-            {
-              '0': '/properties/keywords',
-            },
-            {
-              '0': '/properties/robots',
-            },
-            {
-              '0': '/properties/logo',
-            },
-          ],
-        },
-        {
-          title: 'Settings',
-          items: [
-            {
-              '0': '/properties/loginRedirect',
-              '1': '/properties/logoutRedirect',
-            },
-            {
-              '0': '/properties/currencies',
-              '1': '/properties/languages',
-            },
-            {
-              '0': '/properties/defaultCurrency',
-              '1': '/properties/defaultLanguage',
-            },
-            {
-              '0': '/properties/mainNavigation',
-              '1': '/properties/footerNavigation',
-            },
-            {
-              '0': '/properties/hideSiteHeader',
-              '1': '/properties/hideSiteFooter',
-              '2': '/properties/showLogin',
-            },
-            {
-              '0': '/properties/globalStyle',
-              '1': '/properties/publishedPagesOnly',
-            },
-            {
-              '0': '/properties/searchBar',
-              '1': '/properties/colorSwitch',
-              '2': '/properties/darkMode',
-            },
-            {
-              '0': '/properties/theme',
-              '1': '/properties/template',
-              '2': '/properties/languageSwitch',
-            },
-            {
-              '0': '/properties/chatConfig',
-            },
-            {
-              '0': '/properties/features',
-            },
-          ],
-        },
-        {
-          title: 'Social & Tracking',
-          items: [
-            {
-              '0': '/properties/social',
-            },
-            {
-              '0': '/properties/tracking',
-            },
-          ],
-        },
-        {
-          title: 'Spam Protection',
-          items: [
-            {
-              '0': '/properties/spamProtectionUser',
-            },
-            {
-              '0': '/properties/spanProtectionComment',
-            },
-          ],
-        },
-        {
-          title: 'Storefront',
-          items: [
-            {
-              '0': '/properties/storefront',
-            },
-          ],
-        },
-      ],
-    },
-  ];
 };
 
 const dd = SiteSchema();
@@ -518,4 +422,4 @@ export type SiteModel = FromSchema<typeof dd>;
 export const SiteRules = (): CollectionRule[] => {
   return [];
 };
-registerCollection('Site', DataType.site, SiteSchema(), SiteUI(), SiteRules());
+registerCollection('Site', DataType.site, SiteSchema(), null, null);

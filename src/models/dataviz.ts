@@ -176,45 +176,30 @@ export const DataVizTableConfigSchema = () => {
           type: 'string'
         },
         dataSource: {
-          source: 'json',
-          json: []
+          source: 'collection',
+          value: 'collection',
+          valueField: 'name',
+          labelField: 'name',
         },
-      },
-      exportMode: {
-        type: 'boolean',
-        groupLayout: 'flat',
-        styleClass: 'w-48',
+        group: 'collection',
       },
       code: {
         type: 'string',
         'x-control-variant': 'json',
         'x-control': ControlType.code,
-        rules: [
-          { operation: 'isFalsy', valueA: '{{exportMode}}', action: 'hide' },
-        ]
       },
       match: {
         type: 'string',
-        inputType: 'textarea',
-        displayStyle: 'outlined',
-        displaySize: 'small',
-        rules: [{ "operation": "isTruthy", "valueA": "{{exportMode}}", "action": "hide" }]
-        // rules: [{ "operation": "isNotEmpty", "valueA": "{{contentType}}", "action": "set-property", "property":[{"key": "x-control", "property": "{{contentType}}"},{"key": "x-control-variant", "property": "{{language}}"}] }]
+        hideLabel: true,
       },
       group: {
         type: 'string',
-        inputType: 'textarea',
-        displayStyle: 'outlined',
-        displaySize: 'small',
-        rules: [{ operation: 'isTruthy', valueA: '{{exportMode}}', action: 'hide' }]
+        hideLabel: true,
 
       },
       sort: {
         type: 'string',
-        inputType: 'textarea',
-        displayStyle: 'outlined',
-        displaySize: 'small',
-        rules: [{ operation: 'isTruthy', valueA: '{{exportMode}}', action: 'hide' }]
+        hideLabel: true,
       },
       excludes: {
         type: 'array',
@@ -222,7 +207,8 @@ export const DataVizTableConfigSchema = () => {
         'x-control-variant': 'chip',
         items: {
           type: 'string',
-        }
+        },
+        hideLabel: true,
       },
       includes: {
         type: 'array',
@@ -230,8 +216,9 @@ export const DataVizTableConfigSchema = () => {
         'x-control-variant': 'chip',
         items: {
           type: 'string',
-        }
-      }
+        },
+        hideLabel: true,
+      },
     },
   } as const;
 };
