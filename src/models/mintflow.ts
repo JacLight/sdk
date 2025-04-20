@@ -19,6 +19,12 @@ export const MintflowSchema = () => {
         group: 'name',
         displayStyle: 'outlined',
       },
+      appType: {
+        type: 'string',
+        enum: ['web', 'mobile', 'presentation'],
+        default: 'web',
+        group: 'name'
+      },
       title: {
         type: 'string',
         displayStyle: 'outlined',

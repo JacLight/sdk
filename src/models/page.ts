@@ -54,7 +54,6 @@ export const PageSchema = (title = '', description = '') => {
       },
       tracking: {
         type: 'object',
-        collapsible: 'close',
         properties: {
           pixel: {
             type: 'string',
@@ -164,6 +163,16 @@ export const PageSchema = (title = '', description = '') => {
         hidden: true,
       }
     },
+    'x-layout': {
+      main: {
+        type: 'tab',
+        id: 'main',
+        items: [
+          { id: 'Info', title: 'Info' },
+          { id: 'seo', title: 'SEO' },
+        ]
+      }
+    },
     required: ['name', 'slug', 'site'],
   } as const;
 };
@@ -187,7 +196,7 @@ export const PageDataSchema = () => {
           label: 'name',
         },
       },
-      category: {
+      categories: {
         type: 'array',
         'x-control': ControlType.selectMany,
         items: {
@@ -202,7 +211,7 @@ export const PageDataSchema = () => {
           children: 'children',
         },
       },
-      tag: {
+      tags: {
         type: 'array',
         'x-control-variant': 'chip',
         'x-control': ControlType.selectMany,
@@ -256,40 +265,37 @@ export const PageDataSchema = () => {
       },
       selection: {
         type: 'array',
+        styling: {
+          container: 'px-0'
+        },
         collapsible: 'close',
-        'x-control': ControlType.collection,
-        'x-control-variant': 'picker',
         dataSource: {
           source: 'collection',
-          collection: '{{dataType}}',
+          value: '{{dataType}}',
         },
+        operations: ['pick', 'delete'],
         items: {
+          styling: {
+            container: 'px-0'
+          },
           type: 'object',
           properties: {
             datatype: {
               type: 'string',
+              group: 'select',
             },
             id: {
               type: 'string',
+              group: 'select',
             },
             name: {
               type: 'string',
+              group: 'select',
             },
           },
         },
       },
     },
-    'x-layout': {
-      main: {
-        type: 'tab',
-        id: 'main',
-        items: [
-          { id: 'Info', title: 'Info' },
-          { id: 'seo', title: 'SEO' },
-          { id: 'breakpoint', title: 'Breakpoint' },
-        ]
-      }
-    }
   } as const;
 };
 

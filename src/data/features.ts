@@ -1,42 +1,61 @@
 export const getSiteFeatureList = () => {
     return [
         {
-            value: 'e-commerce',
-            label: 'E-Commerce',
-            description: 'Turn your site into an online store',
-        },
-        {
-            value: 'blog',
+            name: 'blog',
             label: 'Blog',
             description: 'Enable blog function on your site',
+            enable: true,
+            'path': '/blog',
         },
         {
-            value: 'forms',
+            enable: true,
+            name: 'e-commerce',
+            label: 'E-Commerce',
+            description: 'Turn your site into an online store',
+            path: '/store',
+        },
+        {
+            name: 'forms',
             label: 'Forms',
             description: 'Allow users to create and host forms on your site',
+            enable: false,
+            'path': '/forms',
         },
         {
-            value: 'live-chat',
+            name: 'live-chat',
             label: 'Live Chat',
             description: 'Enable live chat on your site',
+            enable: false,
+            'path': '/support/live-chat',
         },
         {
-            value: 'community',
-            label: 'Community',
-            description: 'Mordern forum and community system',
-            pages: ['forum', 'forum-detail', 'forum-replies', 'forum-create', 'forum-edit', 'forum-categories']
-        },
-        {
-            value: 'ticket-support',
+            name: 'ticket-support',
             label: 'Ticket Support',
             description: 'Enable ticket support on your site',
-            pages: ['new ticket', 'ticket-detail', 'ticket-replies', 'tickets']
+            enable: false,
+            'path': '/support/tickets',
         },
         {
-            value: 'reservations',
+            name: 'reservations',
             label: 'Reservations',
             description: 'Enable reservation system on your site',
-            pages: ['service-menu', 'service-calender', 'service-menu-item-detail', 'service-menu-item-booking', 'service-menu-booking-confirmation', 'service-menu-booking-cancellation', 'service-menu-booking-reschedule',]
+            enable: false,
+            'path': '/reservations',
         },
+        {
+            name: 'documentation',
+            label: 'Documentation',
+            description: 'Enable documentation system on your site',
+            enable: false,
+            'path': '/docs',
+        },
+        {
+            name: 'community',
+            label: 'Community',
+            description: 'Mordern forum and community system',
+            enable: false,
+            'path': '/community',
+        },
+
     ]
 }

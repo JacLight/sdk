@@ -53,11 +53,13 @@ export const SiteSchema = () => {
         type: 'string',
         'x-control-variant': 'textarea',
         layoutGroup: 'info',
+        hideSocialControl: true,
       },
       keywords: {
         'x-control-variant': 'textarea',
         type: 'string',
         layoutGroup: 'info',
+        hideSocialControl: true,
       },
       favicon: {
         type: 'string',
@@ -125,6 +127,17 @@ export const SiteSchema = () => {
         layoutGroup: 'settings',
         group: 'login',
       },
+      currencies: {
+        type: 'array',
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'json',
+          json: getCurrencies(),
+        },
+        layoutGroup: 'settings',
+        group: 'currencies',
+      },
       defaultCurrency: {
         type: 'string',
         'x-control': ControlType.selectMany,
@@ -136,16 +149,16 @@ export const SiteSchema = () => {
         layoutGroup: 'settings',
         group: 'currencies',
       },
-      currencies: {
-        type: 'string',
+      languages: {
+        type: 'array',
         'x-control-variant': 'chip',
         'x-control': ControlType.selectMany,
         dataSource: {
           source: 'json',
-          json: getCurrencies(),
+          json: getLanguages(),
         },
         layoutGroup: 'settings',
-        group: 'currencies',
+        group: 'languages',
       },
       defaultLanguage: {
         type: 'string',
@@ -154,17 +167,6 @@ export const SiteSchema = () => {
           source: 'self',
           value: 'languages',
           label: 'languages',
-        },
-        layoutGroup: 'settings',
-        group: 'languages',
-      },
-      languages: {
-        type: 'string',
-        'x-control-variant': 'chip',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'json',
-          json: getLanguages(),
         },
         layoutGroup: 'settings',
         group: 'languages',
@@ -251,17 +253,43 @@ export const SiteSchema = () => {
       },
       features: {
         type: 'array',
-        'x-control-variant': 'chip',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'json',
-          json: getSiteFeatureList(),
-        },
+        hideLabel: true,
+        default: getSiteFeatureList(),
         group: 'features',
-        layoutGroup: 'settings',
+        layoutGroup: 'features',
+        operations: [],
+        items: {
+          'hideLabel': true,
+          type: 'object',
+          layout: 'horizontal',
+          properties: {
+            enable: {
+              type: 'boolean',
+              group: 'feature',
+              styling: {
+                container: 'w-24'
+              }
+            },
+            name: {
+              type: 'string',
+              group: 'feature',
+              styling: {
+                container: 'w-full'
+              }
+            },
+            path: {
+              type: 'string',
+              group: 'feature',
+              styling: {
+                container: 'w-full'
+              }
+            },
+          },
+        },
       },
       storefront: {
         type: 'object',
+        hideLabel: true,
         properties: {
           cart: {
             type: 'string',
@@ -281,6 +309,9 @@ export const SiteSchema = () => {
           showSearch: {
             type: 'boolean',
             group: 'search',
+            styling: {
+              container: 'w-24'
+            }
           },
           filter: {
             type: 'string',
@@ -295,8 +326,6 @@ export const SiteSchema = () => {
             items: {
               type: 'object',
               hideLabel: true,
-              showIndex: true,
-              collapsible: true,
               properties: {
                 source: {
                   type: 'string',
@@ -344,6 +373,19 @@ export const SiteSchema = () => {
         },
         layoutGroup: 'store',
       },
+      tracking: {
+        type: 'object',
+        collapsible: 'open',
+        properties: {
+          pixel: {
+            type: 'string',
+          },
+          googleAnalytic: {
+            type: 'string',
+          },
+        },
+        layoutGroup: 'social',
+      },
       social: {
         type: 'array',
         collapsible: 'close',
@@ -373,19 +415,6 @@ export const SiteSchema = () => {
         },
         layoutGroup: 'social',
       },
-      tracking: {
-        type: 'object',
-        collapsible: 'close',
-        properties: {
-          pixel: {
-            type: 'string',
-          },
-          googleAnalytic: {
-            type: 'string',
-          },
-        },
-        layoutGroup: 'social',
-      },
       spanProtectionComment: {
         description: 'Enable Google reCAPTCHA on contact and comment forms',
         type: 'boolean',
@@ -405,10 +434,11 @@ export const SiteSchema = () => {
         type: 'tab',
         id: 'main',
         items: [
-          { id: 'Info', title: 'Info' },
+          { id: 'info', title: 'Info' },
           { id: 'settings', title: 'Settings' },
+          { id: 'features', title: 'Features' },
           { id: 'social', title: 'Socila & Tracking' },
-          { id: 'span', title: 'Spam Protection' },
+          { id: 'spam', title: 'Spam Protection' },
           { id: 'store', title: 'Storefront' },
         ]
       }
