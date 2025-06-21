@@ -1,7 +1,5 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
-import { CollectionRule } from '../collection-rule';
-import { CollectionUI } from '../collection-ui';
 import { ControlType, DataType } from '../../types';
 
 export const SFTransactionSchema = () => {
@@ -90,17 +88,10 @@ export const SFTransactionSchema = () => {
 const ms = SFTransactionSchema();
 export type SFTransactionModel = FromSchema<typeof ms>;
 
-export const SFTransactionUI = (): CollectionUI[] => {
-  return null;
-};
-export const SFTransactionRules = (): CollectionRule[] => {
-  return null;
-};
+
 registerCollection(
   'Store Transaction',
   DataType.sf_transaction,
   SFTransactionSchema(),
-  SFTransactionUI(),
-  SFTransactionRules(),
   true
 );

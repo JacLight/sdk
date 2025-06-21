@@ -1,8 +1,8 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../default-schema';
 import { ControlType, DataType } from '../types';
-import { CollectionRule } from './collection-rule';
-import { CollectionUI } from './collection-ui';
+
+
 
 export const CompanySchema = () => {
   return {
@@ -14,7 +14,7 @@ export const CompanySchema = () => {
         minLength: 3,
         maxLength: 100,
         unique: true,
-        transform: 'uri'
+        transform: 'uri',
       },
       database: {
         type: 'string',
@@ -26,8 +26,20 @@ export const CompanySchema = () => {
       maxUsers: {
         type: 'number',
       },
+      balance: {
+        type: 'number',
+      },
+      spendLimit: {
+        type: 'number',
+      },
+      limits: {
+        type: 'number',
+      },
       active: {
         type: 'boolean',
+      },
+      spendRate: {
+        type: 'number',
       },
       email: {
         type: 'string',
@@ -53,12 +65,47 @@ export const CompanySchema = () => {
             { value: 'pro', label: 'Pro' },
             { value: 'team', label: 'Team' },
             { value: 'enterprise', label: 'Enterprise' },
-          ]
-        }
+          ],
+        },
+      },
+      planHistory: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            plan: {
+              type: 'string',
+              group: 'plan',
+            },
+            startDate: {
+              type: 'string',
+              format: 'date-time',
+              group: 'plan',
+            },
+            endDate: {
+              type: 'string',
+              format: 'date-time',
+              group: 'plan',
+            },
+            status: {
+              type: 'string',
+              enum: ['active', 'expired', 'cancelled', 'pending'],
+              group: 'plan',
+            },
+          },
+        },
       },
       status: {
         type: 'string',
-        enum: ['trial', 'active', 'grace', 'inactive', 'suspended', 'expired', 'deleted'],
+        enum: [
+          'trial',
+          'active',
+          'grace',
+          'inactive',
+          'suspended',
+          'expired',
+          'deleted',
+        ],
       },
       interest: {
         type: 'string',
@@ -81,9 +128,9 @@ export const CompanySchema = () => {
             { value: 'analytics', label: 'Analytics & Dashboard' },
             { value: 'creative-studio', label: 'Creative Studio' },
             { value: 'automation', label: 'Process Automation & Workflow' },
-          ]
-        }
-      }
+          ],
+        },
+      },
     },
   } as const;
 };
@@ -91,17 +138,9 @@ export const CompanySchema = () => {
 const dd = CompanySchema();
 export type CompanyModel = FromSchema<typeof dd>;
 
-export const CompanyUI = (): CollectionUI[] => {
-  return null;
-};
-export const CompanyRules = (): CollectionRule[] => {
-  return [];
-};
 registerCollection(
   'Company',
   DataType.company,
   CompanySchema(),
-  CompanyUI(),
-  CompanyRules()
 );
-``
+``;

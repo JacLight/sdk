@@ -1,7 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { DataType } from '../types';
-import { CollectionRule } from './collection-rule';
-import { CollectionUI } from './collection-ui';
+
+
 import { registerCollection } from '../default-schema';
 
 export const TagSchema = () => {

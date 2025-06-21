@@ -1,8 +1,8 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../default-schema';
 import { DataType, ControlType } from '../types';
-import { CollectionRule } from './collection-rule';
-import { CollectionUI } from './collection-ui';
+
+
 
 export const FileInfoSchema = () => {
   return {
@@ -19,6 +19,7 @@ export const FileInfoSchema = () => {
       },
       url: {
         type: 'string',
+        'x-render': 'file',
       },
       isPublic: {
         type: 'boolean',

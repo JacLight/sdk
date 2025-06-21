@@ -14,9 +14,14 @@ export const MessageTemplateSchema = () => {
         minLength: 3,
         maxLength: 50,
         unique: true,
-        transform: 'uri'
+        transform: 'uri',
+        group: 'name',
       },
       from: {
+        type: 'string',
+        group: 'name',
+      },
+      subject: {
         type: 'string',
       },
       to: {
@@ -31,8 +36,17 @@ export const MessageTemplateSchema = () => {
           value: 'getMessageRecipients',
         },
       },
-      subject: {
+      datatype: {
         type: 'string',
+        group: 'datatype',
+      },
+      variant: {
+        type: 'string',
+        group: 'datatype',
+      },
+      subtype: {
+        type: 'string',
+        group: 'datatype',
       },
       deliveryType: {
         type: 'string',
@@ -40,18 +54,28 @@ export const MessageTemplateSchema = () => {
         'x-control-variant': 'chip',
         dataSource: {
           source: 'json',
-          json: ['email', 'sms', 'facebook', 'instagram', 'tiktok', 'twitter', 'linkedin', 'whatsapp', 'gbp', 'slack', 'pinterest', 'chat', 'push', 'notification', 'sitePopup', 'siteAlert'],
+          json: [
+            'email',
+            'sms',
+            'facebook',
+            'instagram',
+            'tiktok',
+            'twitter',
+            'linkedin',
+            'whatsapp',
+            'gbp',
+            'slack',
+            'pinterest',
+            'chat',
+            'push',
+            'notification',
+            'sitePopup',
+            'siteAlert',
+          ],
         },
         default: 'email',
       },
-      subtype: {
-        type: 'string',
-      },
-      sections: {
-        type: 'array',
-        hidden: true,
-      },
-      Html: {
+      html: {
         type: 'string',
         'x-control': 'richtext',
         displayStyle: 'full',
@@ -61,6 +85,9 @@ export const MessageTemplateSchema = () => {
         type: 'string',
         'x-control-variant': 'textarea',
         hidden: true,
+      },
+      thumbnail: {
+        type: 'string',
       },
     },
   } as const;

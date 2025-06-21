@@ -1,7 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
-import { CollectionUI } from '../collection-ui';
-import { DataType, ControlType, FormViewSectionType } from '../../types';
+import { DataType, ControlType } from '../../types';
 import { FileInfoSchema } from '../file-info';
 
 export const SFProductSchema = () => {
@@ -11,6 +10,7 @@ export const SFProductSchema = () => {
       name: {
         type: 'string',
         label: 'Title',
+        group: 'name',
       },
       slug: {
         type: 'string',
@@ -18,6 +18,7 @@ export const SFProductSchema = () => {
         default: '{{name}}',
         transform: ['uri', 'lowercase', 'suffix-', 'random-string'],
         textSearch: true,
+        group: 'slug',
       },
       sku: {
         type: 'string',
@@ -26,12 +27,19 @@ export const SFProductSchema = () => {
         maxLength: 50,
         unique: true,
         textSearch: true,
+        group: 'slug',
       },
-      description: {
-        type: 'string',
-        hideLabel: true,
-        'x-control': ControlType.richtext,
-        textSearch: true,
+      price: {
+        type: 'number',
+        group: 'price',
+      },
+      cost: {
+        type: 'number',
+        group: 'price',
+      },
+      tax: {
+        type: 'boolean',
+        group: 'price',
       },
       brand: {
         type: 'string',
@@ -42,15 +50,7 @@ export const SFProductSchema = () => {
           value: 'name',
           label: 'name',
         },
-      },
-      price: {
-        type: 'number',
-      },
-      cost: {
-        type: 'number',
-      },
-      tax: {
-        type: 'boolean',
+        group: 'status',
       },
       plan: {
         type: 'string',
@@ -61,12 +61,55 @@ export const SFProductSchema = () => {
           value: 'name',
           label: 'name',
         },
+        group: 'status',
+      },
+      status: {
+        type: 'string',
+        group: 'status',
+        enum: [
+          'draft',
+          'new',
+          'pre-order',
+          'available',
+          'sold-out',
+          'discontinued',
+          'not-for-sale',
+        ],
+      },
+      stock: {
+        type: 'number',
+        group: 'stock',
+      },
+      available: {
+        type: 'boolean',
+        group: 'stock',
+      },
+      isbn: {
+        type: 'string',
+        group: 'stock',
+      },
+      discount: {
+        type: 'string',
+        group: 'discount',
+      },
+      points: {
+        type: 'number',
+        group: 'discount',
+      },
+      download: {
+        type: 'string',
+        group: 'discount',
+      },
+      description: {
+        type: 'string',
+        hideLabel: true,
+        'x-control': ControlType.richtext,
+        textSearch: true,
       },
       sold: {
         type: 'number',
-        hidden: true
+        hidden: true,
       },
-      posts: { type: 'object', hidden: true }, //  PostSchema(),
       image: {
         type: 'string',
         hidden: true,
@@ -77,34 +120,32 @@ export const SFProductSchema = () => {
         items: FileInfoSchema(),
         hideLabel: true,
       },
-      isbn: {
-        type: 'string',
-      },
-      stock: { type: 'number' },
       parcel: {
         type: 'object',
-        layout: 'horizontal',
+        collapsible: true,
         properties: {
           weight: {
             type: 'number',
+            group: 'weight',
           },
           length: {
             type: 'number',
+            group: 'weight',
           },
           height: {
             type: 'number',
+            group: 'weight',
           },
           width: {
             type: 'number',
+            group: 'weight',
           },
         },
       },
-      points: { type: 'number' },
-      available: { type: 'boolean' },
       attributes: {
         type: 'array',
-        hideLabel: true,
         showIndex: true,
+        collapsible: true,
         items: {
           type: 'object',
           layout: 'horizontal',
@@ -118,6 +159,7 @@ export const SFProductSchema = () => {
                 value: 'name',
                 label: 'name',
               },
+              group: 'attribute',
             },
             options: {
               type: 'array',
@@ -136,6 +178,7 @@ export const SFProductSchema = () => {
                   },
                 },
               },
+              group: 'attribute',
               'x-control': ControlType.selectMany,
               'x-control-variant': 'chip',
               styleClass: 'w-[60%]',
@@ -158,7 +201,7 @@ export const SFProductSchema = () => {
         type: 'array',
         hideLabel: true,
         showIndex: true,
-        // displayStyle: 'card',
+        collapsible: true,
         items: {
           type: 'object',
           properties: {
@@ -170,7 +213,7 @@ export const SFProductSchema = () => {
               type: 'number',
             },
             stock: {
-              type: 'number'
+              type: 'number',
             },
             options: {
               type: 'array',
@@ -212,6 +255,7 @@ export const SFProductSchema = () => {
         type: 'array',
         displayStyle: 'table',
         hideLabel: true,
+        collapsible: true,
         dataSource: {
           source: 'collection',
           collection: DataType.sf_product,
@@ -221,126 +265,22 @@ export const SFProductSchema = () => {
           properties: {
             sk: {
               type: 'string',
+              group: 'bundle',
             },
             sku: {
               type: 'string',
+              group: 'bundle',
             },
             name: {
               type: 'string',
+              group: 'bundle',
             },
           },
         },
       },
-      discount: {
-        type: 'string',
-      },
-      status: {
-        type: 'string',
-        enum: ['draft', 'new', 'pre-order', 'available', 'sold-out', 'discontinued', 'not-for-sale'],
-      },
     },
     required: ['name', 'sku'],
   } as const;
-};
-
-export const SFProductUI = (): CollectionUI[] => {
-  return [
-    {
-      type: FormViewSectionType.section2column,
-      items: [
-        {
-          '0': '/properties/name',
-          '1': '/properties/slug',
-        },
-        {
-          '0': '/properties/sku',
-          '1': '/properties/brand',
-          '2': '/properties/status',
-        },
-        {
-          '0': '/properties/price',
-          '1': '/properties/discount',
-          '2': '/properties/cost',
-        },
-        {
-          '0': '/properties/tax',
-          '1': '/properties/points',
-          '2': '/properties/plan',
-        },
-      ],
-    },
-    {
-      type: FormViewSectionType.section1column,
-      default: true,
-      title: 'Default',
-      collapsible: true,
-      items: [],
-    },
-    {
-      type: FormViewSectionType.section2column,
-      title: 'Description',
-      collapsible: true,
-      items: [
-        {
-          '0': '/properties/description',
-        },
-      ],
-    },
-    {
-      type: FormViewSectionType.section2column,
-      collapsible: true,
-      title: 'Images',
-      items: [
-        {
-          '0': '/properties/images',
-        },
-      ],
-    },
-    {
-      type: FormViewSectionType.section2column,
-      collapsible: true,
-      title: 'Inventory',
-      items: [
-        {
-          '0': '/properties/stock',
-          '1': '/properties/isbn',
-        },
-        {
-          '0': '/properties/parcel',
-        },
-      ],
-    },
-    {
-      type: FormViewSectionType.section2column,
-      collapsible: true,
-      title: 'Attributes',
-      items: [
-        {
-          '0': '/properties/attributes',
-        },
-      ],
-    },
-    {
-      type: FormViewSectionType.section2column,
-      collapsible: true,
-      title: 'Variations',
-      items: [
-        {
-          '0': '/properties/variations',
-        },
-      ],
-    },
-    {
-      type: FormViewSectionType.section2column,
-      collapsible: true,
-      title: 'Bundle',
-      items: [
-        {
-          '0': '/properties/bundle',
-        },
-      ],
-    },
-  ];
 };
 
 const dd = SFProductSchema();
@@ -350,7 +290,7 @@ registerCollection(
   'Store Product',
   DataType.sf_product,
   SFProductSchema(),
-  SFProductUI(),
+  null,
   null,
   false,
   true

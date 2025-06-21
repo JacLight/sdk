@@ -1,7 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../default-schema';
 import { DataType, ControlType, TaskStatus } from '../types';
-import { CollectionUI } from './collection-ui';
+
 
 export const TaskSchema = () => {
   return {

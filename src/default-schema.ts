@@ -2,8 +2,6 @@ import { DataType, CollectionType, JsonSchemaCustom } from './types';
 import { RoleType } from './types';
 import {
   BaseModel,
-  CollectionRule,
-  CollectionUI,
   PageModel,
   UserGroupModel,
   UserModel,
@@ -25,8 +23,6 @@ export const registerCollection = (
   title: string,
   datatype: DataType,
   schema: JsonSchemaCustom | any,
-  uischema: CollectionUI[],
-  rules: CollectionRule[],
   hidden = false,
   enableSubSchema = false,
 ) => {

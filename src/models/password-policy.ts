@@ -1,8 +1,8 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../default-schema';
 import { DataType } from '../types';
-import { CollectionRule } from './collection-rule';
-import { CollectionUI } from './collection-ui';
+
+
 
 export const PasswordPolicySchema = () => {
   return {

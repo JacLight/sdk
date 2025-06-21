@@ -1,8 +1,6 @@
-import { CollectionRule } from '../collection-rule';
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
-import { DataType, ControlType, FormViewSectionType } from '../../types';
-import { CollectionUI } from '../collection-ui';
+import { DataType, ControlType} from '../../types';
 import { FileInfoSchema } from '../file-info';
 import { PhoneSchema } from './crm-phone';
 
@@ -29,7 +27,7 @@ export const CustomerSchema = () => {
       },
       emails: {
         type: 'array',
-        hideInTable: true,
+        hideIn: ['table'],
         items: {
           type: 'object',
           properties: {
@@ -59,15 +57,15 @@ export const CustomerSchema = () => {
         type: 'string',
         'x-control-variant': 'password',
         hidden: true,
-        "minLength": 8,
-        "pattern": "^(?=.*[A-Za-z])(?=.*\\d).{8,}$"
+        minLength: 8,
+        pattern: '^(?=.*[A-Za-z])(?=.*\\d).{8,}$',
       },
       confirmPassword: {
         type: 'string',
         'x-control-variant': 'password',
         hidden: true,
-        "minLength": 8,
-        "pattern": "^(?=.*[A-Za-z])(?=.*\\d).{8,}$"
+        minLength: 8,
+        pattern: '^(?=.*[A-Za-z])(?=.*\\d).{8,}$',
       },
       lockout: {
         type: 'string',
@@ -91,7 +89,7 @@ export const CustomerSchema = () => {
       address: {
         type: 'array',
         displayStyle: 'table',
-        hideInTable: true,
+        hideIn: ['table'],
         dataSource: {
           source: 'collection',
           collection: DataType.address,
@@ -121,7 +119,7 @@ export const CustomerSchema = () => {
       },
       history: {
         type: 'array',
-        hideInTable: true,
+        hideIn: ['table'],
         items: {
           type: 'object',
           properties: {
@@ -150,7 +148,7 @@ export const CustomerSchema = () => {
         hidden: true,
       },
       reminderQuestion: {
-        hideInTable: true,
+        hideIn: ['table'],
         type: 'array',
         items: {
           type: 'object',
@@ -247,13 +245,19 @@ export const CustomerSchema = () => {
               'x-control-variant': 'chip',
               dataSource: {
                 source: 'json',
-                json: ['facebook', 'twitter', 'linkedin', 'instagram', 'tiktok']
+                json: [
+                  'facebook',
+                  'twitter',
+                  'linkedin',
+                  'instagram',
+                  'tiktok',
+                ],
               },
-              group: 'social'
+              group: 'social',
             },
             url: {
               type: 'string',
-              group: 'social'
+              group: 'social',
             },
           },
         },
@@ -269,126 +273,59 @@ export const CustomerSchema = () => {
               'x-control-variant': 'chip',
               dataSource: {
                 source: 'json',
-                json: ['lead', 'customer', 'company', 'employee']
+                json: ['lead', 'customer', 'company', 'employee'],
               },
-              group: 'afflictions'
+              group: 'afflictions',
             },
             description: {
               type: 'string',
-              group: 'afflictions'
+              group: 'afflictions',
             },
           },
         },
       },
       leadStatus: {
         type: 'string',
-        enum: ['in progress', 'contacted', 'qualified', 'attempted', 'unqualified', 'converted', 'closed', 'other'],
+        enum: [
+          'in progress',
+          'contacted',
+          'qualified',
+          'attempted',
+          'unqualified',
+          'converted',
+          'closed',
+          'other',
+        ],
       },
       leadStage: {
         type: 'string',
-        enum: ['new', 'lead', 'marketing-qualified', 'sales-qualified', 'opportunity', 'customer', 'evangelist', 'other'],
-      }
-
+        enum: [
+          'new',
+          'lead',
+          'marketing-qualified',
+          'sales-qualified',
+          'opportunity',
+          'customer',
+          'evangelist',
+          'other',
+        ],
+      },
+      balance: {
+        type: 'number',
+        default: 0, 
+      },
     },
   } as const;
 };
 
-export const CustomerUI = (): CollectionUI[] => {
-  return [
-    {
-      type: FormViewSectionType.sectiontab,
-      tab: [
-        {
-          title: 'Profile',
-          items: [
-            {
-              '0': '/properties/image',
-              '1': '/properties/username',
-            },
-            {
-              '0': '/properties/email',
-              '1': '/properties/phone',
-            },
-            {
-              '0': '/properties/firstName',
-              '1': '/properties/lastName',
-            },
-            {
-              '0': '/properties/password',
-              '1': '/properties/confirmPassword',
-            },
-            {
-              '0': '/properties/leadStatus',
-              '1': '/properties/leadStage',
-            },
-            {
-              '0': '/properties/timezone',
-              '1': '/properties/language',
-            },
-            {
-              '0': '/properties/social',
-            },
-            {
-              '0': '/properties/afflictions',
-            },
-          ],
-        },
-        {
-          title: 'Address',
-          items: [
-            {
-              '0': '/properties/address',
-            },
-          ],
-        },
-        {
-          title: 'Phones',
-          items: [
-            {
-              '0': '/properties/phones',
-            },
-          ],
-        },
-        {
-          title: 'Subscriptions',
-          items: [
-            {
-              '0': '/properties/subscriptions',
-            },
-          ],
-        },
-        {
-          title: 'history',
-          items: [
-            {
-              '0': '/properties/lastLoginDate',
-              '1': '/properties/lastLoginIp',
-            },
-            {
-              '0': '/properties/lastFailedLoginDate',
-              '1': '/properties/failedLoginAttempts',
-            },
-            {
-              '0': '/properties/history',
-            },
-          ],
-        },
-      ],
-    },
-  ];
-};
-
-export const CustomerRules = (): CollectionRule[] => {
-  return null;
-};
 const ush = CustomerSchema();
 export type CustomerModel = FromSchema<typeof ush>;
 registerCollection(
   'Customer',
   DataType.customer,
   CustomerSchema(),
-  CustomerUI(),
-  CustomerRules(),
+  null,
+  null,
   false,
   true
 );

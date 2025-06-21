@@ -14,11 +14,11 @@ export const SFInvoiceSchema = () => {
         maxLength: 8,
         unique: true,
         transform: ['random-string::8'],
-        group: 'number'
+        group: 'number',
       },
       po: {
         type: 'string',
-        group: 'number'
+        group: 'number',
       },
       billTo: {
         type: 'string',
@@ -29,7 +29,7 @@ export const SFInvoiceSchema = () => {
           value: 'username',
           label: ['username', 'email'],
         },
-        group: 'address'
+        group: 'address',
       },
       shipTo: {
         type: 'string',
@@ -40,17 +40,17 @@ export const SFInvoiceSchema = () => {
           value: 'username',
           label: ['username', 'email'],
         },
-        group: 'address'
+        group: 'address',
       },
       invoiceDate: {
         type: 'string',
         default: '{{fn:new Date().toLocaleDateString()}}',
-        group: 'date'
+        group: 'date',
       },
       dueDate: {
         type: 'string',
         default: '{{fn:new Date().toLocaleDateString()}}',
-        group: 'date'
+        group: 'date',
       },
       paymentDate: {
         type: 'string',
@@ -71,14 +71,30 @@ export const SFInvoiceSchema = () => {
           type: 'object',
           showIndex: true,
           properties: {
-            sk: { type: 'string', hideInTable: true },
+            sk: { type: 'string', hideIn: ['table'] },
             sku: { type: 'string' },
             name: { type: 'string' },
-            description: { type: 'string', hideInTable: true },
+            description: { type: 'string', hideIn: ['table'] },
             price: { type: 'number', readOnly: true },
-            quantity: { type: 'number', editable: true, default: 1, styleClass: 'w-16 text-right' },
-            discount: { type: 'number', editable: true, default: 0, styleClass: 'w-32 text-right' },
-            amount: { type: 'number', format: 'currency', readOnly: true, fn: '((rowData.quantity || 1) * (rowData.price || 0)) - (rowData.discount || 0)' },
+            quantity: {
+              type: 'number',
+              editable: true,
+              default: 1,
+              styleClass: 'w-16 text-right',
+            },
+            discount: {
+              type: 'number',
+              editable: true,
+              default: 0,
+              styleClass: 'w-32 text-right',
+            },
+            amount: {
+              type: 'number',
+              format: 'currency',
+              readOnly: true,
+              fn:
+                '((rowData.quantity || 1) * (rowData.price || 0)) - (rowData.discount || 0)',
+            },
           },
         },
       },
@@ -101,7 +117,7 @@ export const SFInvoiceSchema = () => {
       },
       discountCode: {
         type: 'string',
-        group: 'discount'
+        group: 'discount',
       },
       tax: {
         type: 'string',
@@ -110,13 +126,14 @@ export const SFInvoiceSchema = () => {
       },
       paymentRef: {
         type: 'string',
-        group: 'payment'
+        group: 'payment',
       },
       total: {
         type: 'string',
         group: 'payment',
         readOnly: true,
-        fn: 'parseFloat(data.products.reduce((acc, item) => acc + (item.amount || 0), 0) || 0) + parseFloat(data.tax || 0) - parseFloat(data.discount || 0)',
+        fn:
+          'parseFloat(data.products.reduce((acc, item) => acc + (item.amount || 0), 0) || 0) + parseFloat(data.tax || 0) - parseFloat(data.discount || 0)',
         format: 'currency',
       },
       template: {
@@ -132,7 +149,7 @@ export const SFInvoiceSchema = () => {
         items: {
           type: 'string',
         },
-        group: 'template'
+        group: 'template',
       },
       delivery: {
         type: 'array',
@@ -141,7 +158,10 @@ export const SFInvoiceSchema = () => {
         group: 'template',
         dataSource: {
           source: 'json',
-          json: ["Email", "SMS", "WhatsApp"].map((item) => ({ value: item, label: item })),
+          json: ['Email', 'SMS', 'WhatsApp'].map(item => ({
+            value: item,
+            label: item,
+          })),
         },
       },
       paymentMethods: {
@@ -154,7 +174,7 @@ export const SFInvoiceSchema = () => {
           collection: DataType.config,
           value: 'name',
           label: ['name', 'from'],
-          filter: { property: 'type', value: 'payment' }
+          filter: { property: 'type', value: 'payment' },
         },
       },
       status: {
@@ -165,7 +185,6 @@ export const SFInvoiceSchema = () => {
         type: 'string',
         group: 'status',
       },
-
     },
     required: ['number'],
   } as const;

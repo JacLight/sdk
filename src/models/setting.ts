@@ -32,7 +32,7 @@ export const SettingSchema = () => {
         type: 'string',
         group: 'system-info',
       },
-      address: getSettingItemSchema(DataType.location, 'address', 'name', undefined, { property: 'type', value: 'address' }),
+      address: getSettingItemSchema(DataType.location, 'address', 'name', undefined, { property: 'data.type', value: 'address' }),
       domainAccountId: {
         type: 'string',
         readOnly: true,
@@ -170,7 +170,7 @@ export const SettingSchema = () => {
               group: 'dashboard',
             },
             dashboard: {
-              ...getSettingItemSchema(DataType.dataviz, 'dashboard', 'name', ['title', 'name'], { property: 'type', value: 'dashboard' }),
+              ...getSettingItemSchema(DataType.dataviz, 'dashboard', 'name', ['title', 'name'], { property: 'data.type', value: 'dashboard' }),
             },
           },
         }
@@ -229,8 +229,8 @@ const getSettingItemSchema = (datatype: DataType, group = '', valueKey = 'sk', l
   dataSource: {
     source: 'collection',
     collection: datatype,
-    value: valueKey,
-    label: labelKey || 'name',
+    valueField: valueKey,
+    labelField: labelKey || 'name',
     filter
   },
   group: group,

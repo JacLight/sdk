@@ -1,7 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { DataType, ControlType } from '../types';
 import { getCurrencies, getLanguages, getSiteFeatureList } from '../data';
-import { CollectionRule } from './collection-rule';
+
 import { registerCollection } from '../default-schema';
 import { FileInfoSchema } from './file-info';
 
@@ -44,7 +44,7 @@ export const SiteSchema = () => {
             property: 'site',
             operation: 'equal',
             value: '{{name}}',
-          }
+          },
         },
         group: 'domain',
         layoutGroup: 'info',
@@ -79,11 +79,11 @@ export const SiteSchema = () => {
         properties: {
           hideLogo: {
             type: 'boolean',
-            group: 'size'
+            group: 'size',
           },
           width: {
             type: 'number',
-            group: 'size'
+            group: 'size',
           },
           height: {
             group: 'size',
@@ -105,7 +105,7 @@ export const SiteSchema = () => {
             property: 'site',
             operation: 'equal',
             value: '{{name}}',
-          }
+          },
         },
         layoutGroup: 'settings',
         group: 'login',
@@ -122,7 +122,7 @@ export const SiteSchema = () => {
             property: 'site',
             operation: 'equal',
             value: '{{name}}',
-          }
+          },
         },
         layoutGroup: 'settings',
         group: 'login',
@@ -246,7 +246,7 @@ export const SiteSchema = () => {
             property: 'application',
             operation: 'equal',
             value: 'chat-config',
-          }
+          },
         },
         group: 'chat',
         layoutGroup: 'settings',
@@ -259,7 +259,7 @@ export const SiteSchema = () => {
         layoutGroup: 'features',
         operations: [],
         items: {
-          'hideLabel': true,
+          hideLabel: true,
           type: 'object',
           layout: 'horizontal',
           properties: {
@@ -267,22 +267,44 @@ export const SiteSchema = () => {
               type: 'boolean',
               group: 'feature',
               styling: {
-                container: 'w-24'
-              }
+                container: 'w-24',
+                'container-array': 'w-24',
+              },
             },
             name: {
               type: 'string',
               group: 'feature',
               styling: {
-                container: 'w-full'
-              }
+                container: 'w-full',
+                'container-array': 'w-32 flex-shrink-0',
+              },
+              readOnly: true,
             },
             path: {
               type: 'string',
               group: 'feature',
               styling: {
-                container: 'w-full'
-              }
+                container: 'w-full',
+              },
+            },
+            page: {
+              type: 'string',
+              group: 'feature',
+              styling: {
+                container: 'w-full',
+              },
+              'x-control': ControlType.selectMany,
+              dataSource: {
+                source: 'collection',
+                value: 'page',
+                filter:  {
+                  property: 'site',
+                  operation: 'equal',
+                  value: '{{name}}',
+                },
+                valueField: 'name',
+                labelField: 'name',
+              },
             },
           },
         },
@@ -310,8 +332,8 @@ export const SiteSchema = () => {
             type: 'boolean',
             group: 'search',
             styling: {
-              container: 'w-24'
-            }
+              container: 'w-24',
+            },
           },
           filter: {
             type: 'string',
@@ -321,7 +343,12 @@ export const SiteSchema = () => {
           filters: {
             type: 'array',
             rules: [
-              { operation: 'equal', valueA: '{{/properties/storefront/properties/filter}}', valueB: 'none', action: 'hide' },
+              {
+                operation: 'equal',
+                valueA: '{{/properties/storefront/properties/filter}}',
+                valueB: 'none',
+                action: 'hide',
+              },
             ],
             items: {
               type: 'object',
@@ -329,7 +356,14 @@ export const SiteSchema = () => {
               properties: {
                 source: {
                   type: 'string',
-                  enum: ['price', 'category', 'brand', 'tags', 'rating', 'attribute'],
+                  enum: [
+                    'price',
+                    'category',
+                    'brand',
+                    'tags',
+                    'rating',
+                    'attribute',
+                  ],
                   group: 'name',
                 },
                 name: {
@@ -338,21 +372,62 @@ export const SiteSchema = () => {
                 },
                 display: {
                   type: 'string',
-                  enum: ['checkbox', 'select', 'radio', 'range-input', 'range-slider'],
+                  enum: [
+                    'checkbox',
+                    'select',
+                    'radio',
+                    'range-input',
+                    'range-slider',
+                  ],
                   group: 'display',
                   rules: [
-                    { operation: 'equal', valueA: 'attribute', valueB: '{{source}}', action: 'hide' },
-                    { operation: 'notEqual', valueA: 'price', valueB: '{{source}}', action: 'set-property', property: [{ key: 'enum', value: ['checkbox', 'select', 'radio'] }] },
-                    { operation: 'equal', valueA: 'price', valueB: '{{source}}', action: 'set-property', property: [{ key: 'enum', value: ['checkbox', 'select', 'radio', 'range-input', 'range-slider'] }] },
-                  ]
+                    {
+                      operation: 'equal',
+                      valueA: 'attribute',
+                      valueB: '{{source}}',
+                      action: 'hide',
+                    },
+                    {
+                      operation: 'notEqual',
+                      valueA: 'price',
+                      valueB: '{{source}}',
+                      action: 'set-property',
+                      property: [
+                        { key: 'enum', value: ['checkbox', 'select', 'radio'] },
+                      ],
+                    },
+                    {
+                      operation: 'equal',
+                      valueA: 'price',
+                      valueB: '{{source}}',
+                      action: 'set-property',
+                      property: [
+                        {
+                          key: 'enum',
+                          value: [
+                            'checkbox',
+                            'select',
+                            'radio',
+                            'range-input',
+                            'range-slider',
+                          ],
+                        },
+                      ],
+                    },
+                  ],
                 },
                 minIncrement: {
                   type: 'number',
                   group: 'display',
                   default: 100,
                   rules: [
-                    { operation: 'notEqual', valueA: 'price', valueB: '{{source}}', action: 'hide' },
-                  ]
+                    {
+                      operation: 'notEqual',
+                      valueA: 'price',
+                      valueB: '{{source}}',
+                      action: 'hide',
+                    },
+                  ],
                 },
                 attribute: {
                   type: 'string',
@@ -364,7 +439,12 @@ export const SiteSchema = () => {
                     label: 'name',
                   },
                   rules: [
-                    { operation: 'notEqual', valueA: '{{source}}', valueB: 'attribute', action: 'hide' },
+                    {
+                      operation: 'notEqual',
+                      valueA: '{{source}}',
+                      valueB: 'attribute',
+                      action: 'hide',
+                    },
                   ],
                 },
               },
@@ -399,17 +479,23 @@ export const SiteSchema = () => {
               'x-control-variant': 'chip',
               dataSource: {
                 source: 'json',
-                json: ['facebook', 'twitter', 'linkedin', 'instagram', 'tiktok']
+                json: [
+                  'facebook',
+                  'twitter',
+                  'linkedin',
+                  'instagram',
+                  'tiktok',
+                ],
               },
-              group: 'social'
+              group: 'social',
             },
             handle: {
               type: 'string',
-              group: 'social'
+              group: 'social',
             },
             url: {
               type: 'string',
-              group: 'social'
+              group: 'social',
             },
           },
         },
@@ -440,9 +526,9 @@ export const SiteSchema = () => {
           { id: 'social', title: 'Socila & Tracking' },
           { id: 'spam', title: 'Spam Protection' },
           { id: 'store', title: 'Storefront' },
-        ]
-      }
-    }
+        ],
+      },
+    },
   } as const;
 };
 

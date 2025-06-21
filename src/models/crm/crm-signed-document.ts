@@ -103,7 +103,7 @@ export const SignedDocumentSchema = () => {
           type: 'object',
           showIndex: true,
           properties: {
-            sk: { type: 'string', hideInTable: true },
+            sk: { type: 'string', hideIn: ['table'] },
             name: { type: 'string' },
             email: { type: 'string' },
             expiry: { type: 'string', styleClass: 'w-20' },

@@ -4,7 +4,6 @@ import { CommentModel } from './comment';
 import { FileInfoSchema } from './file-info';
 import { ActivityModel } from './activity';
 import { MessageModel } from './crm';
-import { ContentClassificationSchema } from './content-classification';
 import { TaskModel } from './task';
 import { ScheduleModel } from './schedule';
 
@@ -74,6 +73,7 @@ export interface BaseModel<T> {
   activities?: ActivityModel[];
   messages?: MessageModel[];
   schedules?: ScheduleModel[];
+  rules?: any[];
   schedule?: ScheduleModel;
   shares?: number;
   likes?: number;
@@ -165,7 +165,6 @@ export const PostSubSchema = () => {
         },
       },
       images: FileInfoSchema(),
-      classification: ContentClassificationSchema(),
     },
   } as const;
 };
@@ -217,27 +216,19 @@ export const StyleSubSchema = () => {
       },
       classes: {
         type: 'string',
-        'description': 'Classes to be applied to the element separated by space',
+        'x-control-variant': 'textarea',
       },
       css: {
         type: 'string',
-        'x-control': 'Code',
+        'x-control':  ControlType.code,
         'x-control-variant': 'css',
         collapsible: true,
-        popup: {
-          inline: true,
-          style: { width: '800px' },
-        }
       },
       javascript: {
         type: 'string',
-        'x-control': 'Code',
+        'x-control':  ControlType.code,
         collapsible: true,
         'x-control-variant': 'javascript',
-        popup: {
-          inline: true,
-          style: { width: '800px' },
-        }
       },
       styleLinks: {
         type: 'array',
@@ -250,6 +241,9 @@ export const StyleSubSchema = () => {
           format: 'uri',
           type: 'string',
         },
+        styling:{
+          container: 'px-0',
+        }
       },
       scriptLinks: {
         collapsible: true,
@@ -262,6 +256,10 @@ export const StyleSubSchema = () => {
           type: 'string',
           format: 'uri',
         },
+        styling:{
+          container: 'px-0',
+          layout: 'px-0',
+        }
       },
     },
   } as const;

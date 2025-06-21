@@ -1,8 +1,8 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../default-schema';
 import { DataType, FormViewSectionType } from '../types';
-import { CollectionRule } from './collection-rule';
-import { CollectionUI } from './collection-ui';
+
+
 
 export const CommentSchema = () => {
   return {
@@ -29,36 +29,13 @@ export const CommentSchema = () => {
   } as const;
 };
 
-export const CommentUI = (): CollectionUI[] => {
-  return [
-    {
-      type: FormViewSectionType.section2column,
-      title: 'Comments',
-      items: [
-        {
-          '0': '/properties/comment',
-        },
-        {
-          '0': '/properties/ratings',
-          '1': '/properties/likes',
-          '2': '/properties/dislikes',
-        },
-      ]
-    },
-  ];
-};
 
 
 const cos = CommentSchema();
 export type CommentModel = FromSchema<typeof cos>;
 
-export const CommentRules = (): CollectionRule[] => {
-  return [];
-};
 registerCollection(
   'Comment',
   DataType.comment,
   CommentSchema(),
-  CommentUI(),
-  CommentRules(),
 );

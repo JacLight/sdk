@@ -49,7 +49,7 @@ export const ReservationSchema = () => {
       },
       service: {
         type: 'string',
-        group: 'host'
+        group: 'host',
       },
       venue: {
         type: 'string',
@@ -62,7 +62,7 @@ export const ReservationSchema = () => {
           value: 'name',
           label: 'name',
         },
-        group: 'host'
+        group: 'host',
       },
       partySize: {
         type: 'number',
@@ -86,6 +86,45 @@ export const ReservationSchema = () => {
         group: 'hosts',
         groupLayout: 'flat',
         type: 'string',
+      },
+      reminders: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            time: {
+              type: 'number',
+              description: 'Time before the event to send the reminder',
+              group:'time',
+            },
+            timeType: {
+              type: 'number',
+              enum: ['day', 'hour', 'minute'],
+              group:'time',
+            },
+            method: {
+              type: 'string',
+              enum: ['email', 'sms'],
+              group:'method',
+            },
+            template: {
+              type: 'string',
+              'x-control': ControlType.selectMany,
+              dataSource: {
+                source: 'collection',
+                collection: DataType.messagetemplate,
+                valueField: 'name',
+                labelField: 'name',
+              },
+              group:'method',
+            },
+            message: {
+              type: 'string',
+              'x-control': ControlType.richtext,
+            },
+          },
+          required: ['time', 'method'],
+        },
       },
     },
     required: ['name'],

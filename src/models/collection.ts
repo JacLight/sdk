@@ -1,7 +1,6 @@
+import rules from 'src/rules';
 import { registerCollection } from '../default-schema';
 import { CollectionType, DataType, ControlType } from '../types';
-import { CollectionRule } from './collection-rule';
-import { CollectionUI } from './collection-ui';
 
 export interface CollectionModel {
   name: string;
@@ -17,12 +16,11 @@ export interface CollectionModel {
   mainType?: string;
   subType?: string;
   workflow?: string;
+  rules?: string[];
   permission?: {};
   theme: {};
   style: {};
-  rules?: CollectionRule[];
   validations?: {};
-  uischema?: CollectionUI[];
   schema?: any;
 }
 
@@ -93,6 +91,18 @@ export const CollectionSchema = () => {
         group: 'workflow',
         groupLayout: 'flat',
       },
+      rules: {
+        type: 'array',
+        'x-control': ControlType.selectMany,
+        'x-control-variant': 'combo',
+        dataSource: {
+          source: 'collection',
+          collection: DataType.flexdata,
+          valueField: 'name',
+          labelField: 'name',
+          filter: {'data.application': 'rule-engine'}
+        },
+      },
       enableVersioning: {
         type: 'boolean',
         group: 'group1',
@@ -119,11 +129,6 @@ export const CollectionSchema = () => {
         type: 'array',
       },
       schema: {
-        hidden: true,
-        type: 'object',
-        properties: {},
-      },
-      rules: {
         hidden: true,
         type: 'object',
         properties: {},

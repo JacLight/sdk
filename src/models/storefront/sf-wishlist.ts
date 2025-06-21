@@ -1,7 +1,5 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
-import { CollectionRule } from '../collection-rule';
-import { CollectionUI } from '../collection-ui';
 import { DataType } from '../../types';
 
 export const SFWishlistSchema = () => {
@@ -38,17 +36,9 @@ export const SFWishlistSchema = () => {
 const ms = SFWishlistSchema();
 export type SFWishlistModel = FromSchema<typeof ms>;
 
-export const SFWishlistUI = (): CollectionUI[] => {
-  return null;
-};
-export const SFWishlistRules = (): CollectionRule[] => {
-  return null;
-};
 registerCollection(
   'Store Wishlist',
   DataType.sf_wishlist,
   SFWishlistSchema(),
-  SFWishlistUI(),
-  SFWishlistRules(),
   true
 );

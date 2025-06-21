@@ -2,8 +2,8 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../default-schema';
 import { ControlType } from '../types';
 import { DataType } from '../types';
-import { CollectionRule } from './collection-rule';
-import { CollectionUI } from './collection-ui';
+
+
 
 export const MintflowSchema = () => {
   return {
@@ -18,12 +18,6 @@ export const MintflowSchema = () => {
         transform: 'uri',
         group: 'name',
         displayStyle: 'outlined',
-      },
-      appType: {
-        type: 'string',
-        enum: ['web', 'mobile', 'presentation'],
-        default: 'web',
-        group: 'name'
       },
       title: {
         type: 'string',

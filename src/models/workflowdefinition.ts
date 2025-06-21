@@ -1,7 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection, registerDefaultData } from '../default-schema';
 import { DataType, ControlType, WorkflowStageTypes, TaskStatus } from '../types';
-import { CollectionUI } from './collection-ui';
+
 import { ModelState } from './base.model';
 
 export const WorkflowDefinitionSchema = () => {

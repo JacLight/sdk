@@ -25,6 +25,7 @@ export * from './file-info';
 export * from './location';
 export * from './flexdata';
 export * from './escalation';
+export * from './usage';
 export * from './translation';
 export * from './collection-rule';
 export * from './collection-ui';
@@ -36,7 +37,7 @@ export * from './web-activity';
 export * from './site-index';
 export * from './site-domain';
 export * from './schedule';
-export * from './content-classification';
 export * from './workspace';
 export * from './workspace-item';
-
+export * from './automation';
+export * from './social-activity';

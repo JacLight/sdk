@@ -1,6 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { CollectionRule } from './collection-rule';
-import { CollectionUI } from './collection-ui';
+
+
 import { DataType, ControlType } from '../types';
 import { registerCollection } from '../default-schema';
 import { FileInfoSchema } from './file-info';
@@ -54,6 +54,7 @@ export const NavigationLinkSchema = () => {
       },
       description: {
         type: 'string',
+        'x-control-variant': 'textarea',
       },
       type: {
         type: 'string',

@@ -62,6 +62,10 @@ export const ActivitySchema = () => {
           value: Object.keys(ActivityTypes).map((key: any) => ({ label: toTitleCase(key), value: key }))
         }
       },
+      meta:{
+        type: 'object',
+        hidden: true,
+      }
     },
   } as const;
 };

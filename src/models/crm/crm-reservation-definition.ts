@@ -53,8 +53,13 @@ export const ReservationDefinitionSchema = () => {
           label: 'name',
         },
         rules: [
-          { operation: 'notEqual', valueA: 'event', valueB: '{{type}}', action: 'hide' },
-        ]
+          {
+            operation: 'notEqual',
+            valueA: 'event',
+            valueB: '{{type}}',
+            action: 'hide',
+          },
+        ],
       },
       servicePoints: {
         type: 'array',
@@ -68,7 +73,7 @@ export const ReservationDefinitionSchema = () => {
           properties: {
             id: {
               type: 'string',
-              hideInTable: true
+              hideIn: ['table'],
             },
             name: {
               type: 'string',
@@ -85,13 +90,13 @@ export const ReservationDefinitionSchema = () => {
             images: {
               styleClass: 'w-16',
               type: 'string',
-              hideInTable: true
+              hideIn: ['table'],
             },
             title: {
               styleClass: 'w-16',
               type: 'string',
-              hideInTable: true
-            }
+              hideIn: ['table'],
+            },
           },
         },
         dataSource: {
@@ -101,8 +106,13 @@ export const ReservationDefinitionSchema = () => {
           label: 'name',
         },
         rules: [
-          { operation: 'notEqual', valueA: 'service-point', valueB: '{{type}}', action: 'hide' },
-        ]
+          {
+            operation: 'notEqual',
+            valueA: 'service-point',
+            valueB: '{{type}}',
+            action: 'hide',
+          },
+        ],
       },
       hosts: {
         type: 'string',
@@ -120,32 +130,43 @@ export const ReservationDefinitionSchema = () => {
         type: 'array',
         items: {
           type: 'object',
-          layout: 'horizontal',
           properties: {
             name: {
               type: 'string',
-              styleClass: 'w-full',
+            },
+            categories: {
+              type: 'string',
+            },
+            images: {
+              type: 'array',
+              'x-control': ControlType.file,
+            },
+            description: {
+              type: 'string',
+              'x-control-variant': 'textarea',
             },
             duration: {
               type: 'number',
-              styleClass: 'w-16',
-              css: { width: '60px' },
+              group: 'time',
             },
             price: {
               type: 'number',
-              styleClass: 'w-16',
-              css: { width: '60px' },
+              group: 'time',
             },
             breakAfter: {
               type: 'number',
-              styleClass: 'w-16',
-              css: { width: '60px' },
+              group: 'time',
             },
           },
         },
         rules: [
-          { operation: 'in', valueA: ['service-point', 'event'], valueB: '{{type}}', action: 'hide' },
-        ]
+          {
+            operation: 'in',
+            valueA: ['service-point', 'event'],
+            valueB: '{{type}}',
+            action: 'hide',
+          },
+        ],
       },
       workDays: {
         type: 'array',
@@ -156,7 +177,15 @@ export const ReservationDefinitionSchema = () => {
         },
         dataSource: {
           source: 'json',
-          json: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+          json: [
+            'Monday',
+            'Tuesday',
+            'Wednesday',
+            'Thursday',
+            'Friday',
+            'Saturday',
+            'Sunday',
+          ],
         },
       },
       officeHours: {
@@ -169,13 +198,13 @@ export const ReservationDefinitionSchema = () => {
             type: 'string',
             'x-control-variant': 'time',
             'x-control': ControlType.date,
-            group: 'time'
+            group: 'time',
           },
           endTime: {
             type: 'string',
             'x-control-variant': 'time',
             'x-control': ControlType.date,
-            group: 'time'
+            group: 'time',
           },
         },
       },
@@ -191,14 +220,13 @@ export const ReservationDefinitionSchema = () => {
               type: 'string',
               'x-control-variant': 'time',
               'x-control': ControlType.date,
-              group: 'btime'
-
+              group: 'btime',
             },
             endTime: {
               type: 'string',
               'x-control-variant': 'time',
               'x-control': ControlType.date,
-              group: 'btime'
+              group: 'btime',
             },
           },
         },
@@ -263,7 +291,6 @@ export const ReservationDefinitionSchema = () => {
   } as const;
 };
 
-
 const cs = ReservationDefinitionSchema();
 export type ReservationDefinitionModel = FromSchema<typeof cs>;
 
@@ -275,7 +302,6 @@ registerCollection(
   null,
   true
 );
-
 
 const genDefaultData = () => {
   return {

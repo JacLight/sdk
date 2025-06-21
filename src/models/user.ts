@@ -8,7 +8,7 @@ import {
   PermissionTypeContent,
   getMenuList
 } from '../types';
-import { CollectionUI } from './collection-ui';
+
 import { FileInfoSchema } from './file-info';
 import { PhoneSchema } from './crm/crm-phone';
 
