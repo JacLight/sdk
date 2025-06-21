@@ -75,9 +75,6 @@ export type ActivityModel = FromSchema<typeof ts>;
 registerCollection(
   'Activity',
   DataType.activity,
-  ActivitySchema(),
-  null,
-  null
+  ActivitySchema()
 );
-
 

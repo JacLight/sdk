@@ -256,7 +256,5 @@ export {
 registerCollection(
   'Setting',
   DataType.setting,
-  SettingSchema(),
-  null,
-  null
+  SettingSchema()
 );

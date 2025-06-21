@@ -55,16 +55,8 @@ const ps = PermissionSchema();
 const pes = PermissionEntrySchema();
 export type PermissionModel = FromSchema<typeof ps>;
 export type PermissionEntryModel = FromSchema<typeof pes>;
-export const PermissionUI = (): CollectionUI[] => {
-  return null;
-};
-export const PermissionRules = (): CollectionRule[] => {
-  return [];
-};
 registerCollection(
   'Permission',
   DataType.permission,
-  PermissionSchema(),
-  PermissionUI(),
-  PermissionRules()
+  PermissionSchema()
 );

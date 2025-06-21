@@ -48,38 +48,9 @@ export const TranslationSchema = () => {
 const dd = TranslationSchema();
 export type TranslationModel = FromSchema<typeof dd>;
 
-export const TranslationRules = (): CollectionRule[] => {
-  return [
-    {
-      name: 'Manual Selection',
-      action: [
-        {
-          operation: 'script',
-          value: `  const regions = context.getCountryRegions(data.address.country); 
-                    schema.properties.address.properties.region.dataSource.json =  regions;`,
-        },
-      ],
-      condition: {
-        type: 'and',
-        param: [
-          {
-            value: true,
-            field1: '/properties/address/properties/country',
-            operation: 'notEmpty',
-          },
-        ],
-      },
-    },
-  ];
-};
 
-export const TranslationUI = (): CollectionUI[] => {
-  return null;
-};
 registerCollection(
   'Translation',
   DataType.translation,
-  TranslationSchema(),
-  TranslationUI(),
-  TranslationRules()
+  TranslationSchema()
 );

@@ -148,8 +148,4 @@ registerCollection(
   'Event',
   DataType.event,
   EventSchema(),
-  null,
-  null,
-  true,
-  true
 );

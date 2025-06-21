@@ -653,8 +653,4 @@ registerCollection(
   'Automation',
   DataType.automation,
   AutomationSchema(),
-  null,
-  null,
-  false,
-  false
 );

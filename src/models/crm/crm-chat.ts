@@ -1,7 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
-import { CollectionRule } from '../collection-rule';
-import { CollectionUI } from '../collection-ui';
+
+
 import { DataType } from '../../types';
 import { UserSchema } from '../user';
 
@@ -87,25 +87,8 @@ export const ChatGroupSchema = () => {
 const ccs = ChatGroupSchema();
 export type ChatGroupModel = FromSchema<typeof ccs>;
 
-export const ChatUI = (): CollectionUI[] => {
-  return null;
-};
-export const ChatRules = (): CollectionRule[] => {
-  return null;
-};
 registerCollection(
   'Chat Message',
   DataType.chatmessage,
-  ChatMessageSchema(),
-  ChatUI(),
-  ChatRules(),
-  true
-);
-registerCollection(
-  'Chat Group',
-  DataType.chatgroup,
-  ChatGroupSchema(),
-  ChatUI(),
-  ChatRules(),
-  true
+  ChatMessageSchema()
 );

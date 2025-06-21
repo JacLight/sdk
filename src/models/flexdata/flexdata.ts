@@ -1,6 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { CollectionRule } from '../collection-rule';
-import { CollectionUI } from '../collection-ui';
+
+
 import {
   DataType,
 } from '../../types';
@@ -38,18 +38,8 @@ export const FlexDataSchema = () => {
 const rt = FlexDataSchema();
 export type FlexDataModel = FromSchema<typeof rt>;
 
-export const FlexDataUI = (): CollectionUI[] => {
-  return null;
-};
-export const FlexDataRules = (): CollectionRule[] => {
-  return [];
-};
 registerCollection(
   'FlexData',
   DataType.flexdata,
   FlexDataSchema(),
-  FlexDataUI(),
-  FlexDataRules(),
-  false,
-  true
 );

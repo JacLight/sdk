@@ -429,9 +429,5 @@ export namespace CampaignModels {
 registerCollection(
   'Campaign',
   DataType.campaign,
-  CampaignSchema(),
-  null,
-  null,
-  false,
-  false
+  CampaignSchema()
 );

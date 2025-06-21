@@ -85,7 +85,4 @@ registerCollection(
   'lead',
   DataType.lead,
   LeadSchema(),
-  null,
-  null,
-  true
 );

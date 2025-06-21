@@ -39,6 +39,5 @@ export type SFWishlistModel = FromSchema<typeof ms>;
 registerCollection(
   'Store Wishlist',
   DataType.sf_wishlist,
-  SFWishlistSchema(),
-  true
+  SFWishlistSchema,
 );

@@ -289,9 +289,5 @@ export type SFProductModel = FromSchema<typeof dd>;
 registerCollection(
   'Store Product',
   DataType.sf_product,
-  SFProductSchema(),
-  null,
-  null,
-  false,
-  true
+  SFProductSchema()
 );

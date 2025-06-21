@@ -1,7 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
-import { CollectionRule } from '../collection-rule';
-import { CollectionUI } from '../collection-ui';
+
+
 import { DataType } from '../../types';
 import { FileInfoSchema } from '../file-info';
 
@@ -85,17 +85,8 @@ export const SFBrandSchema = () => {
 const ms = SFBrandSchema();
 export type SFBrandModel = FromSchema<typeof ms>;
 
-export const SFBrandUI = (): CollectionUI[] => {
-  return null
-};
-export const SFBrandRules = (): CollectionRule[] => {
-  return null;
-};
 registerCollection(
   'Store Brand',
   DataType.sf_brand,
   SFBrandSchema(),
-  SFBrandUI(),
-  SFBrandRules(),
-  true
 );

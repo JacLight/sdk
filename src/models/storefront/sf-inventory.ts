@@ -1,7 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
-import { CollectionRule } from '../collection-rule';
-import { CollectionUI } from '../collection-ui';
+
+
 import { DataType, ControlType } from '../../types';
 
 export const SFInventorySchema = () => {
@@ -162,22 +162,31 @@ export const SFInventoryIntakeSchema = () => {
 
 const is = SFInventorySchema();
 export type SFInventoryModel = FromSchema<typeof is>;
-export const SFInventoryUI = (): CollectionUI[] => null
-export const SFInventoryRules = (): CollectionRule[] => null
 
 
 const iis = SFInventoryIntakeSchema();
 export type SFInventoryIntakeModel = FromSchema<typeof iis>;
-export const SFInventoryIntakeUI = (): CollectionUI[] => null
-export const SFInventoryIntakeRules = (): CollectionRule[] => null
 
 
 const its = SFInventoryTransferSchema();
 export type SFInventoryTransferModel = FromSchema<typeof its>;
-export const SFInventoryTransferUI = (): CollectionUI[] => null
-export const SFInventoryTransferRules = (): CollectionRule[] => null
 
 
-registerCollection('Store Inventory', DataType.sf_inventory, SFInventorySchema(), SFInventoryUI(), SFInventoryRules());
-registerCollection('Store Inventory', DataType.sf_inventory_intake, SFInventoryIntakeSchema(), SFInventoryIntakeUI(), SFInventoryIntakeRules());
-registerCollection('Store Inventory', DataType.sf_inventory_transfer, SFInventoryTransferSchema(), SFInventoryTransferUI(), SFInventoryTransferRules());
+registerCollection(
+  'Store Inventory',
+  DataType.sf_inventory,
+  SFInventorySchema()
+);
+
+registerCollection(
+  'Store Inventory',
+  DataType.sf_inventory_transfer,
+  SFInventoryIntakeSchema()
+);
+
+
+registerCollection(
+  'Store Inventory',
+  DataType.sf_inventory_intake,
+  SFInventoryIntakeSchema()
+);

@@ -3,7 +3,6 @@ import { registerCollection } from '../default-schema';
 import {
   DataType,
   ControlType,
-  FormViewSectionType,
   PermissionTypeComponent,
   PermissionTypeContent,
   getMenuList
@@ -334,78 +333,6 @@ export const UserRoleSchema = () => {
   } as const;
 };
 
-export const UserUI = (): CollectionUI[] => {
-  return [
-    {
-      type: FormViewSectionType.sectiontab,
-      tab: [
-        {
-          title: 'User',
-          items: [
-            {
-              '0': '/properties/portrait',
-              '1': '/properties/username',
-            },
-            {
-              '0': '/properties/firstName',
-              '1': '/properties/lastName',
-            },
-            {
-              '0': '/properties/email',
-              '1': '/properties/phone',
-            },
-            {
-              '0': '/properties/password',
-              '1': '/properties/confirmPassword',
-            },
-            {
-              '0': '/properties/timezone',
-              '1': '/properties/language',
-            },
-            {
-              '0': '/properties/lastLoginDate',
-              '1': '/properties/lastLoginIp',
-            },
-            {
-              '0': '/properties/lastFailedLoginDate',
-              '1': '/properties/failedLoginAttempts',
-            },
-            {
-              '0': '/properties/signature',
-            },
-          ],
-        },
-        {
-          title: 'Address',
-          items: [
-            {
-              '0': '/properties/address',
-            },
-          ],
-        },
-        {
-          title: 'Phones',
-          items: [
-            {
-              '0': '/properties/phones',
-            },
-          ],
-        },
-        {
-          title: 'Groups & Roles',
-          items: [
-            {
-              '0': '/properties/groups',
-            },
-            {
-              '0': '/properties/roles',
-            },
-          ],
-        },
-      ],
-    },
-  ];
-};
 
 const ush = UserSchema();
 const usgh = UserGroupSchema();
@@ -415,18 +342,18 @@ export type UserModel = FromSchema<typeof ush>;
 export type UserGroupModel = FromSchema<typeof usgh>;
 export type UserRoleModel = FromSchema<typeof usrh>;
 
-registerCollection('User', DataType.user, UserSchema(), UserUI(), null);
+registerCollection(
+  'User',
+  DataType.user,
+  UserSchema()
+)
+
 registerCollection(
   'User Group',
   DataType.usergroup,
-  UserGroupSchema(),
-  null,
-  null
-);
-registerCollection(
+  UserGroupSchema()
+);registerCollection(
   'User Role',
   DataType.userrole,
-  UserRoleSchema(),
-  null,
-  null
+  UserRoleSchema()
 );

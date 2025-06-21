@@ -45,8 +45,4 @@ registerCollection(
   'Web Activity',
   DataType.web_activity,
   WebActivitySchema(),
-  [],
-  [],
-  false,
-  false
 );

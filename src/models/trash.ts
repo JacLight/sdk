@@ -33,16 +33,8 @@ export const TrashSchema = () => {
 
 const ts = TrashSchema();
 export type TrashModel = FromSchema<typeof ts>;
-export const TrashUI = (): CollectionUI[] => {
-  return null;
-};
-export const TrashRules = (): CollectionRule[] => {
-  return [];
-};
 registerCollection(
   'Trash',
   DataType.trash,
-  TrashSchema(),
-  TrashUI(),
-  TrashRules()
+  TrashSchema()
 );

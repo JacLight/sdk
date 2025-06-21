@@ -1,7 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
-import { CollectionRule } from '../collection-rule';
-import { CollectionUI } from '../collection-ui';
+
+
 import { ControlType, DataType } from '../../types';
 
 export const ReservationSchema = () => {
@@ -134,17 +134,8 @@ export const ReservationSchema = () => {
 const cs = ReservationSchema();
 export type ReservationModel = FromSchema<typeof cs>;
 
-export const ReservationUI = (): CollectionUI[] => {
-  return null;
-};
-export const ReservationRules = (): CollectionRule[] => {
-  return null;
-};
 registerCollection(
   'Reservation',
   DataType.reservation,
   ReservationSchema(),
-  ReservationUI(),
-  ReservationRules(),
-  true
 );

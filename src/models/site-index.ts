@@ -36,8 +36,4 @@ registerCollection(
   'Web Traffic',
   DataType.site_index,
   SiteIndexSchema(),
-  [],
-  [],
-  false,
-  false
 );

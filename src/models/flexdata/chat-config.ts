@@ -1,5 +1,5 @@
 import { FileInfoSchema } from '@models/file-info';
-import { ControlType } from '../../types/control-type';
+import { ControlType , DataType} from '../../types';
 import { FromSchema } from 'json-schema-to-ts';
 
 export const chatConfigSchema = {

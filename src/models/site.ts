@@ -535,7 +535,8 @@ export const SiteSchema = () => {
 const dd = SiteSchema();
 export type SiteModel = FromSchema<typeof dd>;
 
-export const SiteRules = (): CollectionRule[] => {
-  return [];
-};
-registerCollection('Site', DataType.site, SiteSchema(), null, null);
+registerCollection(
+  'Site',
+  DataType.site,
+  SiteSchema()
+);

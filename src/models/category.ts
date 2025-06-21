@@ -38,7 +38,5 @@ export type CategoryModel = FromSchema<typeof rt>;
 registerCollection(
   'Category',
   DataType.category,
-  CategorySchema(),
-  CategoryUI(),
-  CategoryRules()
+  CategorySchema()
 );

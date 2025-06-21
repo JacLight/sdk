@@ -120,8 +120,5 @@ export type SFDiscountModel = FromSchema<typeof ms>;
 registerCollection(
   'Store Discount',
   DataType.sf_discount,
-  SFDiscountSchema(),
-  null,
-  null,
-  true
+  SFDiscountSchema()
 );

@@ -298,9 +298,6 @@ registerCollection(
   'Reservation Definition',
   DataType.reservationdefinition,
   ReservationDefinitionSchema(),
-  null,
-  null,
-  true
 );
 
 const genDefaultData = () => {

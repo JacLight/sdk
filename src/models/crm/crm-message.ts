@@ -192,7 +192,4 @@ registerCollection(
   'Message',
   DataType.message,
   MessageSchema(),
-  null,
-  null,
-  true
 );

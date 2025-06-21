@@ -115,7 +115,4 @@ registerCollection(
   'Store Subscription Plan',
   DataType.sf_subscription_plan,
   SFSubscriptionPlanSchema(),
-  null,
-  null,
-  false
 );

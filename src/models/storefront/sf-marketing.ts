@@ -1,7 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
-import { CollectionRule } from '../collection-rule';
-import { CollectionUI } from '../collection-ui';
+
+
 import { DataType } from '../../types';
 
 export const SFMarketingSchema = () => {
@@ -43,17 +43,8 @@ export const SFMarketingSchema = () => {
 const ms = SFMarketingSchema();
 export type SFMarketingModel = FromSchema<typeof ms>;
 
-export const SFMarketingUI = (): CollectionUI[] => {
-  return null;
-};
-export const SFMarketingRules = (): CollectionRule[] => {
-  return null;
-};
 registerCollection(
   'Store Marketing',
   DataType.sf_marketing,
   SFMarketingSchema(),
-  SFMarketingUI(),
-  SFMarketingRules(),
-  true
 );

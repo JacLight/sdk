@@ -1,6 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection, registerDefaultData } from '../../default-schema';
-import { CollectionRule } from '../collection-rule';
+
 import { DataType, ControlType } from '../../types';
 import { FileInfoSchema } from '../file-info';
 
@@ -97,17 +97,10 @@ export const TicketSchema = () => {
 const tt = TicketSchema();
 export type TicketModel = FromSchema<typeof tt>;
 
-export const TicketRules = (): CollectionRule[] => {
-  return null;
-};
 registerCollection(
   'Ticket',
   DataType.ticket,
-  TicketSchema(),
-  null,
-  null,
-  true,
-  true
+  TicketSchema()
 );
 
 const genDefaultData = () => {

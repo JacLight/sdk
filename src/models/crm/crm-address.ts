@@ -1,7 +1,5 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
-import { CollectionRule } from '../collection-rule';
-import { CollectionUI } from '../collection-ui';
 import { DataType, ControlType } from '../../types';
 import { getCountryDropDownOptions } from '../../data';
 
@@ -72,43 +70,11 @@ export const AddressSchema = () => {
   } as const;
 };
 
-export const AddressRules = (): CollectionRule[] => {
-  return [
-    {
-      name: 'Manual Selection',
-      action: [
-        {
-          operation: 'script',
-          value:
-            ' schema.properties.region.dataSource.json = context.getCountryRegions(data.country) ',
-          targetField: '/properties/region',
-          sourceField: '/properties/country',
-        },
-      ],
-      condition: {
-        type: 'and',
-        param: [
-          {
-            value: true,
-            field1: '/properties/country',
-            operation: 'notEmpty',
-          },
-        ],
-      },
-    },
-  ];
-};
 
 const dd = AddressSchema();
 export type AddressModel = FromSchema<typeof dd>;
-export const AddressUI = (): CollectionUI[] => {
-  return null;
-};
 registerCollection(
   'Address',
   DataType.address,
   AddressSchema(),
-  AddressUI(),
-  AddressRules(),
-  true
 );

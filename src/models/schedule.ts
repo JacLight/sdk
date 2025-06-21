@@ -198,8 +198,4 @@ registerCollection(
   'Schedule',
   DataType.schedule,
   ScheduleSchema(),
-  null,
-  null,
-  false,
-  false,
 );

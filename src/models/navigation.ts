@@ -123,16 +123,8 @@ const rtlink = NavigationLinkSchema();
 const rt = NavigationSchema();
 export type NavigationLinkModel = FromSchema<typeof rtlink>;
 export type NavigationModel = FromSchema<typeof rt>;
-export const NavigationUI = (): CollectionUI[] => {
-  return null;
-};
-export const NavigationRules = (): CollectionRule[] => {
-  return [];
-};
 registerCollection(
   'Navigation',
   DataType.navigation,
-  NavigationSchema(),
-  NavigationUI(),
-  NavigationRules()
+  NavigationSchema()
 );

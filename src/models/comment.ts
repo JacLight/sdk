@@ -1,6 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../default-schema';
-import { DataType, FormViewSectionType } from '../types';
+import { DataType } from '../types';
 
 
 

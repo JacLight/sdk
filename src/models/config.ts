@@ -3,8 +3,6 @@ import { registerCollection } from '../default-schema';
 import { ConfigType, ControlType } from '../types';
 import { DataType } from '../types';
 
-
-
 export const ConfigSchema = () => {
   return {
     type: 'object',
@@ -45,16 +43,8 @@ export const ConfigSchema = () => {
 
 const rt = ConfigSchema();
 export type ConfigModel = FromSchema<typeof rt>;
-export const ConfigUI = (): CollectionUI[] => {
-  return null;
-};
-export const ConfigRules = (): CollectionRule[] => {
-  return [];
-};
 registerCollection(
   'Config',
   DataType.config,
   ConfigSchema(),
-  ConfigUI(),
-  ConfigRules()
 );

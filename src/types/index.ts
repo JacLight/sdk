@@ -3,7 +3,6 @@ export * from './control-type';
 export * from './jsonschema';
 export * from './collection-type';
 export * from './component-name';
-export * from './formview-section-type';
 export * from './page-section-type';
 export * from './permission-type';
 export * from './role-type';

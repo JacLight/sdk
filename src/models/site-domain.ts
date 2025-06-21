@@ -35,8 +35,4 @@ registerCollection(
   'Site Domain',
   DataType.site_domain,
   SiteDomainSchema(),
-  [],
-  [],
-  true,
-  false
 );

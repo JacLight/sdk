@@ -23,8 +23,6 @@ export const registerCollection = (
   title: string,
   datatype: DataType,
   schema: JsonSchemaCustom | any,
-  hidden = false,
-  enableSubSchema = false,
 ) => {
   const thisCollection = {
     name: datatype,
@@ -35,13 +33,10 @@ export const registerCollection = (
     enableWorkflow: true,
     enableVersioning: true,
     enableIndexing: true,
-    enableSubSchema,
+    enableSubSchema:true,
     permission: {},
-    rules: rules,
     validations: {},
     schema: schema,
-    uischema: uischema,
-    hidden,
   };
 
   concreteCollections.set(

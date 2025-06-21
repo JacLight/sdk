@@ -1,7 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
-import { CollectionRule } from '../collection-rule';
-import { CollectionUI } from '../collection-ui';
+
+
 import { DataType } from '../../types';
 import { FileInfoSchema } from '../file-info';
 
@@ -44,17 +44,8 @@ export const SFReceiptSchema = () => {
 const ms = SFReceiptSchema();
 export type SFReceiptModel = FromSchema<typeof ms>;
 
-export const SFReceiptUI = (): CollectionUI[] => {
-  return null;
-};
-export const SFReceiptRules = (): CollectionRule[] => {
-  return null;
-};
 registerCollection(
   'Store Receipt',
   DataType.sf_receipt,
   SFReceiptSchema(),
-  SFReceiptUI(),
-  SFReceiptRules(),
-  true
 );

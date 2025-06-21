@@ -75,7 +75,5 @@ export type LocationModel = FromSchema<typeof ps>;
 registerCollection(
   'Business Location',
   DataType.location,
-  LocationSchema(),
-  null,
-  null
+  LocationSchema()
 );

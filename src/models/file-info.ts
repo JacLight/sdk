@@ -80,18 +80,9 @@ export const FileInfoSchema = () => {
 const cos = FileInfoSchema();
 export type FileInfoModel = FromSchema<typeof cos>;
 
-export const FileInfoUI = (): CollectionUI[] => {
-  return null;
-};
-export const FileInfoRules = (): CollectionRule[] => {
-  return [];
-};
 
 registerCollection(
   'File',
   DataType.fileinfo,
   FileInfoSchema(),
-  FileInfoUI(),
-  FileInfoRules(),
-  true
 );

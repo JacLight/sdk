@@ -115,10 +115,11 @@ export const TaskSchema = () => {
 };
 
 
-export const TaskUI = (): CollectionUI[] => {
-  return null;
-};
 
 const ts = TaskSchema();
 export type TaskModel = FromSchema<typeof ts>;
-registerCollection('Task', DataType.task, TaskSchema(), TaskUI(), null);
+registerCollection(
+  'Task',
+  DataType.task,
+  TaskSchema()
+)

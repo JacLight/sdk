@@ -126,8 +126,4 @@ registerCollection(
   'CrmForm',
   DataType.signed_document,
   SignedDocumentSchema(),
-  null,
-  null,
-  false,
-  false
 );

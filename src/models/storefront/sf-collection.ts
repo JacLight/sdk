@@ -1,7 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
-import { CollectionRule } from '../collection-rule';
-import { CollectionUI } from '../collection-ui';
+
+
 import { DataType, ControlType } from '../../types';
 import { FileInfoSchema } from '../file-info';
 
@@ -66,17 +66,8 @@ export const SFCollectionSchema = () => {
 const ms = SFCollectionSchema();
 export type SFCollectionModel = FromSchema<typeof ms>;
 
-export const SFCollectionUI = (): CollectionUI[] => {
-  return null
-};
-export const SFCollectionRules = (): CollectionRule[] => {
-  return null;
-};
 registerCollection(
   'Store Collection',
   DataType.sf_collection,
   SFCollectionSchema(),
-  SFCollectionUI(),
-  SFCollectionRules(),
-  true
 );

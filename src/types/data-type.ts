@@ -4,7 +4,7 @@ export enum DataType {
   page = 'page',
   category = 'category',
   tag = 'tag',
-  taggroup = 'taggroup',
+  tag_group = 'tag_group',
   comment = 'comment',
   site = 'site',
   navigation = 'navigation',

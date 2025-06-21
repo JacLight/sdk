@@ -1,7 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
-import { CollectionRule } from '../collection-rule';
-import { CollectionUI } from '../collection-ui';
+
+
 import { DataType, ControlType } from '../../types';
 
 export const MessageTemplateSchema = () => {
@@ -96,17 +96,8 @@ export const MessageTemplateSchema = () => {
 const dd = MessageTemplateSchema();
 export type MessageTemplateModel = FromSchema<typeof dd>;
 
-export const MessageTemplateUI = (): CollectionUI[] => {
-  return null;
-};
-export const MessageTemplateRules = (): CollectionRule[] => {
-  return null;
-};
 registerCollection(
   'MessageTemplate',
   DataType.messagetemplate,
   MessageTemplateSchema(),
-  MessageTemplateUI(),
-  MessageTemplateRules(),
-  true
 );

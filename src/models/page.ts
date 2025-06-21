@@ -393,4 +393,8 @@ const pageSchema = PageSchema();
 export type PageDataModel = FromSchema<typeof pageDataSchema>;
 export type PageModel = FromSchema<typeof pageSchema>;
 
-registerCollection('Page', DataType.page, PageSchema(), null, null);
+registerCollection(
+  'Page',
+  DataType.page,
+  PageSchema()
+);

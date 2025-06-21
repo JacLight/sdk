@@ -1,7 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
-import { CollectionUI } from '../collection-ui';
-import { DataType, ControlType, FormViewSectionType } from '../../types';
+import { DataType, ControlType } from '../../types';
 
 export const SFInvoiceSchema = () => {
   return {
@@ -190,60 +189,11 @@ export const SFInvoiceSchema = () => {
   } as const;
 };
 
-export const SFInvoiceUI = (): CollectionUI[] => {
-  return [
-    {
-      type: FormViewSectionType.section2column,
-      items: [
-        {
-          '0': '/properties/billTo',
-        },
-        {
-          '0': '/properties/id',
-          '1': '/properties/po',
-        },
-        {
-          '0': '/properties/invoiceData',
-          '1': '/properties/dueDate',
-          '2': '/properties/paymentDate',
-        },
-      ],
-    },
-    {
-      type: FormViewSectionType.section2column,
-      title: 'Items',
-      collapsible: true,
-      items: [
-        {
-          '0': '/properties/items',
-        },
-      ],
-    },
-    {
-      type: FormViewSectionType.section2column,
-      title: 'Summary',
-      items: [
-        {
-          '0': '/properties/tax',
-          '1': '/properties/discount',
-          '2': '/properties/total',
-        },
-        {
-          '0': '/properties/status',
-          '1': '/properties/remarks',
-        },
-      ],
-    },
-  ];
-};
 
 const is = SFInvoiceSchema();
 export type SFInvoiceModel = FromSchema<typeof is>;
 registerCollection(
   'Store Invoice',
   DataType.sf_invoice,
-  SFInvoiceSchema(),
-  null,
-  null,
-  true
+  SFInvoiceSchema()
 );

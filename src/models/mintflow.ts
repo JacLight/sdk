@@ -117,17 +117,9 @@ export type MintflowModel = FromSchema<typeof ps>;
 const ps1 = MintflowNodeSchema();
 export type MintflowNodeModel = FromSchema<typeof ps1>;
 
-export const MintflowUI = (): CollectionUI[] => {
-  return null;
-};
-export const MintflowRules = (): CollectionRule[] => {
-  return [];
-};
 
 registerCollection(
   'Mintflow',
   DataType.mintflow,
-  MintflowSchema(),
-  MintflowUI(),
-  MintflowRules()
+  MintflowSchema()
 );

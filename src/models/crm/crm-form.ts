@@ -166,10 +166,6 @@ registerCollection(
   'CrmForm',
   DataType.form,
   FormSchema(),
-  null,
-  null,
-  false,
-  false
 );
 
 const genDefaultData = () => {

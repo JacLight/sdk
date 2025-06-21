@@ -273,17 +273,9 @@ const ddxxy = DataVizChartConfigSchema();
 export type DataVizChartConfigModel = FromSchema<typeof ddxxy>;
 
 
-export const DataVizUI = (): CollectionUI[] => {
-  return null;
-};
-export const DataVizRules = (): CollectionRule[] => {
-  return null;
-};
 
 registerCollection(
   'DataViz',
   DataType.dataviz,
-  DataVizSchema(),
-  DataVizUI(),
-  DataVizRules()
+  DataVizSchema()
 );

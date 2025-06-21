@@ -155,8 +155,4 @@ registerCollection(
   'Workspace',
   DataType.workspace,
   WorkspaceSchema(),
-  [],
-  [],
-  false,
-  false
 );

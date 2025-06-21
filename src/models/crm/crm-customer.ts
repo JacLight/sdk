@@ -324,8 +324,4 @@ registerCollection(
   'Customer',
   DataType.customer,
   CustomerSchema(),
-  null,
-  null,
-  false,
-  true
 );

@@ -1,7 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
-import { CollectionRule } from '../collection-rule';
-import { CollectionUI } from '../collection-ui';
+
+
 import { DataType } from '../../types';
 import { FileInfoSchema } from '../file-info';
 
@@ -39,17 +39,8 @@ export const SFRefundSchema = () => {
 const ms = SFRefundSchema();
 export type SFRefundModel = FromSchema<typeof ms>;
 
-export const SFRefundUI = (): CollectionUI[] => {
-  return null;
-};
-export const SFRefundRules = (): CollectionRule[] => {
-  return null;
-};
 registerCollection(
   'Store Refund',
   DataType.sf_refund,
   SFRefundSchema(),
-  SFRefundUI(),
-  SFRefundRules(),
-  true
 );

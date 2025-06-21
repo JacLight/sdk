@@ -78,8 +78,4 @@ registerCollection(
   'Web visit',
   DataType.web_visit,
   WebVisitSchema(),
-  [],
-  [],
-  false,
-  false
 );

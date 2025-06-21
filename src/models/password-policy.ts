@@ -65,16 +65,8 @@ export const PasswordPolicySchema = () => {
 const pps = PasswordPolicySchema();
 export type PasswordPolicyModel = FromSchema<typeof pps>;
 
-export const PasswordPolicyUI = (): CollectionUI[] => {
-  return null;
-};
-export const PasswordPolicyRules = (): CollectionRule[] => {
-  return [];
-};
 registerCollection(
   'PasswordPolicy',
   DataType.passwordpolicy,
-  PasswordPolicySchema(),
-  PasswordPolicyUI(),
-  PasswordPolicyRules()
+  PasswordPolicySchema()
 );

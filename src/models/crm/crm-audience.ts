@@ -289,8 +289,4 @@ registerCollection(
   'Audience',
   DataType.audience,
   AudienceSchema(),
-  null,
-  null,
-  false,
-  false
 );

@@ -1,4 +1,3 @@
-import rules from 'src/rules';
 import { registerCollection } from '../default-schema';
 import { CollectionType, DataType, ControlType } from '../types';
 
@@ -166,24 +165,15 @@ export const CollectionViewSchema = CollectionSchema;
 registerCollection(
   'AuraFlow',
   DataType.auraflow,
-  CollectionSchema(),
-  null,
-  null
-);
-registerCollection(
+  CollectionSchema()
+);registerCollection(
   'Collection',
   DataType.collection,
-  CollectionSchema(),
-  null,
-  null
-);
-registerCollection(
+  CollectionSchema()
+);registerCollection(
   'SubSchema',
   DataType.subschema,
-  CollectionSchema(),
-  null,
-  null
+  CollectionSchema()
 );
-
 
 

@@ -168,9 +168,6 @@ registerCollection(
   'ServicePoint',
   DataType.service_point,
   ServicePointSchema(),
-  null, null,
-  true,
-  true
 );
 
 
@@ -181,8 +178,4 @@ registerCollection(
   'ServicePointItem',
   DataType.service_point_item,
   ServicePointItemSchema(),
-  null,
-  null,
-  false,
-  true
 );

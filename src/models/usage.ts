@@ -54,4 +54,8 @@ export const UsageSchema = () => {
 const ush = UsageSchema();
 
 export type UsageModel = FromSchema<typeof ush>;
-registerCollection('Usage', DataType.usage, UsageSchema(), null, null);
+registerCollection(
+  'Usage',
+  DataType.usage,
+  UsageSchema()
+);

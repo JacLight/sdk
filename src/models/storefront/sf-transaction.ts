@@ -92,6 +92,5 @@ export type SFTransactionModel = FromSchema<typeof ms>;
 registerCollection(
   'Store Transaction',
   DataType.sf_transaction,
-  SFTransactionSchema(),
-  true
+  SFTransactionSchema,
 );

@@ -1,6 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
-import { CollectionRule } from '../collection-rule';
+
 import { DataType, ControlType } from '../../types';
 
 export const SFAttributeSchema = () => {
@@ -90,14 +90,8 @@ export const SFAttributeSchema = () => {
 const ms = SFAttributeSchema();
 export type SFAttributeModel = FromSchema<typeof ms>;
 
-export const SFAttributeRules = (): CollectionRule[] => {
-  return null;
-};
 registerCollection(
   'Store Attribute',
   DataType.sf_attribute,
   SFAttributeSchema(),
-  null,
-  SFAttributeRules(),
-  true
 );

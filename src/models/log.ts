@@ -31,4 +31,8 @@ export const LogSchema = () => {
 const ush = LogSchema();
 
 export type LogModel = FromSchema<typeof ush>;
-registerCollection('Log', DataType.log, LogSchema(), null, null);
+registerCollection(
+  'Log',
+  DataType.log,
+  LogSchema()
+);

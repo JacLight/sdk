@@ -143,4 +143,3 @@ registerCollection(
   DataType.company,
   CompanySchema(),
 );
-``;

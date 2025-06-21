@@ -499,8 +499,4 @@ registerCollection(
   'SocialActivity',
   DataType.social_activity,
   SocialActivitySchema(),
-  null,
-  null,
-  false,
-  false
 );

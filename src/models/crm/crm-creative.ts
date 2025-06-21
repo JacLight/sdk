@@ -271,8 +271,4 @@ registerCollection(
   'Creative',
   DataType.creative, // Using post as the closest existing data type for creative content
   CreativeSchema(),
-  null,
-  null,
-  false,
-  false
 );

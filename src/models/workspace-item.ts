@@ -75,8 +75,4 @@ registerCollection(
   'WorkspaceItem',
   DataType.workspace_item,
   WorkspaceItemSchema(),
-  [],
-  [],
-  false,
-  false
 );

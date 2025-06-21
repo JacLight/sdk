@@ -130,19 +130,9 @@ export const PostSchema = () => {
 const rt = PostSchema();
 export type PostModel = FromSchema<typeof rt>;
 
-export const PostUI = (): CollectionUI[] => {
-  return null;
-};
-export const PostRules = (): CollectionRule[] => {
-  return [];
-};
 registerCollection(
   'Post',
   DataType.post,
   PostSchema(),
-  PostUI(),
-  PostRules(),
-  false,
-  true
 );
 

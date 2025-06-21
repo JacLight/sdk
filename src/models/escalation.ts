@@ -85,20 +85,12 @@ export const EscalationSchema = () => {
   } as const;
 };
 
-export const EscalationRules = (): CollectionRule[] => {
-  return [];
-};
 
-export const EscalationUI = (): CollectionUI[] => {
-  return null;
-};
 
 const ts = EscalationSchema();
 export type EscalationModel = FromSchema<typeof ts>;
 registerCollection(
   'Escalation',
   DataType.escalation,
-  EscalationSchema(),
-  EscalationUI(),
-  EscalationRules()
+  EscalationSchema()
 );

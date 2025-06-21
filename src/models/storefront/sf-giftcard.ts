@@ -1,8 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
-import { CollectionRule } from '../collection-rule';
-import { CollectionUI } from '../collection-ui';
-import { DataType, ControlType, FormViewSectionType } from '../../types';
+import { DataType, ControlType } from '../../types';
 
 export const SFGiftCardSchema = () => {
   return {
@@ -109,76 +107,8 @@ export const SFGiftCardSchema = () => {
 const ms = SFGiftCardSchema();
 export type SFGiftCardModel = FromSchema<typeof ms>;
 
-export const SFGiftCardUI = (): CollectionUI[] => {
-  return [
-    {
-      type: FormViewSectionType.section2column,
-      items: [
-        {
-          '0': '/properties/name',
-          '1': '/properties/forSale',
-        },
-        {
-          '0': '/properties/serial',
-          '1': '/properties/batch',
-          '2': '/properties/code',
-        },
-        {
-          '0': '/properties/amount',
-          '1': '/properties/amountUsed',
-          '2': '/properties/noOfUse',
-        },
-        {
-          '0': '/properties/type',
-          '1': '/properties/status',
-          '2': '/properties/noOfUse',
-        },
-      ],
-    },
-    {
-      type: FormViewSectionType.sectiontable,
-      collapsible: true,
-      title: 'Allowed Uses',
-      items: [
-        {
-          '0': '/properties/sku',
-        },
-        {
-          '0': '/properties/category',
-        },
-        {
-          '0': '/properties/group',
-        },
-        {
-          '0': '/properties/customer',
-        },
-      ],
-    },
-    {
-      type: FormViewSectionType.sectiontable,
-      collapsible: true,
-      title: 'Use History',
-      items: [
-        {
-          '0': '/properties/boughtBy',
-          '1': '/properties/boughtDate',
-          '2': '/properties/agent',
-        },
-        {
-          '0': '/properties/uses',
-        },
-      ],
-    },
-  ]
-};
-export const SFGiftCardRules = (): CollectionRule[] => {
-  return null;
-};
 registerCollection(
   'Store Gift Card',
   DataType.sf_giftcard,
   SFGiftCardSchema(),
-  SFGiftCardUI(),
-  SFGiftCardRules(),
-  true
 );

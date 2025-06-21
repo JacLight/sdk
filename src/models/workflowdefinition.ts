@@ -221,8 +221,11 @@ const genDefaultData = () => {
   }
 };
 
-export const WorkflowDefinitionUI = (): CollectionUI[] => { return null };
 const wfd = WorkflowDefinitionSchema();
 export type WorkflowDefinitionModel = FromSchema<typeof wfd>;
-registerCollection('WorkflowDefinition', DataType.workflowdefinition, WorkflowDefinitionSchema(), null, null)
+registerCollection(
+  'WorkflowDefinition',
+  DataType.workflowdefinition,
+  WorkflowDefinitionSchema()
+);
 registerDefaultData(DataType.workflowdefinition, genDefaultData)
