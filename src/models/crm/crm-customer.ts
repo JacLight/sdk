@@ -1,6 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
-import { DataType, ControlType} from '../../types';
+import { DataType, ControlType } from '../../types';
 import { FileInfoSchema } from '../file-info';
 import { PhoneSchema } from './crm-phone';
 
@@ -312,7 +312,26 @@ export const CustomerSchema = () => {
       },
       balance: {
         type: 'number',
-        default: 0, 
+        default: 0,
+      },
+      audit: {
+        type: 'object',
+        hidden: true,
+        properties: {
+          lastLogin: {
+            type: 'string',
+            disabled: true,
+          },
+          lastUpdated: {
+            type: 'string',
+            format: 'date-time',
+            disabled: true,
+          },
+          meta: {
+            type: 'object',
+            hidden: true,
+          },
+        },
       },
     },
   } as const;
@@ -320,8 +339,4 @@ export const CustomerSchema = () => {
 
 const ush = CustomerSchema();
 export type CustomerModel = FromSchema<typeof ush>;
-registerCollection(
-  'Customer',
-  DataType.customer,
-  CustomerSchema(),
-);
+registerCollection('Customer', DataType.customer, CustomerSchema());

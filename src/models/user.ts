@@ -192,6 +192,25 @@ export const UserSchema = () => {
       signature: {
         type: 'string',
         'x-control': ControlType.richtext
+      },
+      audit:{
+        type: 'object',
+        hidden: true,
+        properties: {
+          lastLogin: {
+            type: 'string',
+            disabled: true,
+          },
+          lastUpdated: {
+            type: 'string',
+            format: 'date-time',
+            disabled: true,
+          },
+          meta: {
+            type: 'object',
+            hidden: true,
+          }
+        },
       }
     },
     "required": ["firstName", "lastName", "email"]
@@ -334,13 +353,166 @@ export const UserRoleSchema = () => {
 };
 
 
+export const ApiKeySchema = () => {
+  return {
+    type: 'object',
+    properties: {
+      name: {
+        type: 'string',
+        minLength: 3,
+        maxLength: 100,
+        description: 'Human-readable name for the API key'
+      },
+      description: {
+        type: 'string',
+        maxLength: 500,
+        description: 'Optional description of the API key purpose'
+      },
+      keyHash: {
+        type: 'string',
+        hidden: true,
+        description: 'Hashed version of the API key for verification'
+      },
+      keyPrefix: {
+        type: 'string',
+        disabled: true,
+        maxLength: 8,
+        description: 'First few characters for identification (e.g., ak_1234...)'
+      },
+      scopes: {
+        type: 'array',
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'json',
+          json: [
+            { label: 'Read', value: 'read' },
+            { label: 'Write', value: 'write' },
+            { label: 'Delete', value: 'delete' },
+            { label: 'Admin', value: 'admin' },
+            { label: 'Integration', value: 'integration' },
+            { label: 'Webhook', value: 'webhook' }
+          ]
+        },
+        items: {
+          type: 'string'
+        },
+        description: 'Permissions/scopes for this API key'
+      },
+      rateLimit: {
+        type: 'object',
+        properties: {
+          requestsPerMinute: {
+            type: 'number',
+            minimum: 1,
+            maximum: 10000,
+            default: 100
+          },
+          requestsPerHour: {
+            type: 'number',
+            minimum: 1,
+            maximum: 100000,
+            default: 1000
+          },
+          requestsPerDay: {
+            type: 'number',
+            minimum: 1,
+            maximum: 1000000,
+            default: 10000
+          }
+        },
+        description: 'Rate limiting configuration'
+      },
+      status: {
+        type: 'string',
+        'x-control': ControlType.selectSingle,
+        dataSource: {
+          source: 'json',
+          json: [
+            { label: 'Active', value: 'active' },
+            { label: 'Inactive', value: 'inactive' },
+            { label: 'Revoked', value: 'revoked' }
+          ]
+        },
+        default: 'active',
+        description: 'Current status of the API key'
+      },
+      expiresAt: {
+        type: 'string',
+        format: 'date-time',
+        description: 'Expiration date for the API key'
+      },
+      lastUsedAt: {
+        type: 'string',
+        format: 'date-time',
+        disabled: true,
+        description: 'Last time this API key was used'
+      },
+      usageStats: {
+        type: 'object',
+        hidden: true,
+        properties: {
+          totalRequests: {
+            type: 'number',
+            default: 0,
+            disabled: true
+          },
+          lastMonthRequests: {
+            type: 'number',
+            default: 0,
+            disabled: true
+          },
+          lastDayRequests: {
+            type: 'number',
+            default: 0,
+            disabled: true
+          },
+          lastHourRequests: {
+            type: 'number',
+            default: 0,
+            disabled: true
+          }
+        },
+        description: 'Usage statistics for rate limiting and analytics'
+      },
+      metadata: {
+        type: 'object',
+        description: 'Additional key-specific metadata'
+      },
+      audit: {
+        type: 'object',
+        hidden: true,
+        properties: {
+          lastUsed: {
+            type: 'string',
+            format: 'date-time',
+            disabled: true,
+          },
+          lastUpdated: {
+            type: 'string',
+            format: 'date-time',
+            disabled: true,
+          },
+          meta: {
+            type: 'object',
+            hidden: true,
+          }
+        },
+      }
+    },
+    required: ['name', 'keyHash', 'scopes']
+  } as const;
+};
+
 const ush = UserSchema();
 const usgh = UserGroupSchema();
 const usrh = UserRoleSchema();
+const aksh = ApiKeySchema();
 
 export type UserModel = FromSchema<typeof ush>;
 export type UserGroupModel = FromSchema<typeof usgh>;
 export type UserRoleModel = FromSchema<typeof usrh>;
+export type ApiKeyModel = FromSchema<typeof aksh>;
 
 registerCollection(
   'User',
@@ -356,4 +528,10 @@ registerCollection(
   'User Role',
   DataType.userrole,
   UserRoleSchema()
+);
+
+registerCollection(
+  'API Key',
+  DataType.apikey,
+  ApiKeySchema()
 );

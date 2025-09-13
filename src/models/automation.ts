@@ -23,7 +23,15 @@ export const AutomationSchema = () => {
       },
       category: {
         type: 'string',
-        enum: ['lead_generation', 'nurturing', 'sales', 'customer_service', 'marketing', 'onboarding', 'retention'],
+        enum: [
+          'lead_generation',
+          'nurturing',
+          'sales',
+          'customer_service',
+          'marketing',
+          'onboarding',
+          'retention',
+        ],
         'x-control': ControlType.selectMany,
         maxItems: 1,
         group: 'basic',
@@ -91,6 +99,96 @@ export const AutomationSchema = () => {
   } as const;
 };
 
+export const AutomationExecutionSchema = () => {
+  return {
+    type: 'object',
+    required: ['id', 'automationId', 'status', 'createdAt'],
+    properties: {
+      id: {
+        type: 'string',
+        description: 'Execution unique identifier',
+      },
+      automationId: {
+        type: 'string',
+        description: 'Associated automation workflow ID',
+      },
+      status: {
+        type: 'string',
+        enum: ['pending', 'running', 'completed', 'failed', 'cancelled'],
+        default: 'pending',
+        description: 'Current execution status',
+      },
+      startedAt: {
+        type: 'string',
+        format: 'date-time',
+        description: 'Execution start timestamp',
+      },
+      completedAt: {
+        type: 'string',
+        format: 'date-time',
+        description: 'Execution completion timestamp',
+      },
+      steps: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            stepId: {
+              type: 'string',
+              description: 'Step unique identifier',
+            },
+            status: {
+              type: 'string',
+              enum: ['pending', 'running', 'completed', 'failed'],
+              description: 'Current step execution status',
+            },
+            startedAt: {
+              type: 'string',
+              format: 'date-time',
+              description: 'Step start timestamp',
+            },
+            completedAt: {
+              type: 'string',
+              format: 'date-time',
+              description: 'Step completion timestamp',
+            },
+          },
+          description: 'Execution steps with their statuses',
+        },
+        description: 'List of steps executed in this automation',
+      },
+      errors: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            message: {
+              type: 'string',
+              description: 'Error message',
+            },
+            stepId: {
+              type: 'string',
+              description: 'Step where the error occurred',
+            },
+            timestamp: {
+              type: 'string',
+              format: 'date-time',
+              description: 'Error occurrence timestamp',
+            },
+          },
+          description: 'List of errors encountered during execution',
+        },
+        description: 'Errors encountered during execution',
+      },
+      context: {
+        type: 'object',
+        additionalProperties: true,
+        description: 'Flexible context for execution',
+      },
+    },
+  } as const;
+};
+
 export const AutomationStepSchema = () => {
   return {
     type: 'object',
@@ -149,7 +247,21 @@ export const TriggerConditionSchema = () => {
       },
       operator: {
         type: 'string',
-        enum: ['equals', 'not_equals', 'contains', 'not_contains', 'greater_than', 'less_than', 'exists', 'not_exists', 'in_last', 'after_date', 'before_date', 'between', 'regex_match'],
+        enum: [
+          'equals',
+          'not_equals',
+          'contains',
+          'not_contains',
+          'greater_than',
+          'less_than',
+          'exists',
+          'not_exists',
+          'in_last',
+          'after_date',
+          'before_date',
+          'between',
+          'regex_match',
+        ],
         description: 'Comparison operator',
       },
       value: {
@@ -278,7 +390,12 @@ export const TimeBasedLogicSchema = () => {
       },
       type: {
         type: 'string',
-        enum: ['reply_tracking', 'engagement_tracking', 'behavior_tracking', 'deadline_tracking'],
+        enum: [
+          'reply_tracking',
+          'engagement_tracking',
+          'behavior_tracking',
+          'deadline_tracking',
+        ],
         description: 'Type of time-based logic',
       },
       config: {
@@ -627,30 +744,52 @@ export const LoopConfigSchema = () => {
 
 export namespace AutomationModels {
   export type AutomationModel = FromSchema<ReturnType<typeof AutomationSchema>>;
-  export type AutomationStepModel = FromSchema<ReturnType<typeof AutomationStepSchema>>;
-  export type TriggerConditionModel = FromSchema<ReturnType<typeof TriggerConditionSchema>>;
-  export type WorkflowConnectionModel = FromSchema<ReturnType<typeof WorkflowConnectionSchema>>;
+  export type AutomationExecutionModel = FromSchema<ReturnType<typeof AutomationExecutionSchema>>;
+  export type AutomationStepModel = FromSchema<
+    ReturnType<typeof AutomationStepSchema>
+  >;
+  export type TriggerConditionModel = FromSchema<
+    ReturnType<typeof TriggerConditionSchema>
+  >;
+  export type WorkflowConnectionModel = FromSchema<
+    ReturnType<typeof WorkflowConnectionSchema>
+  >;
   export type SubFlowModel = FromSchema<ReturnType<typeof SubFlowSchema>>;
-  export type FlowControlModel = FromSchema<ReturnType<typeof FlowControlSchema>>;
-  export type TimeBasedLogicModel = FromSchema<ReturnType<typeof TimeBasedLogicSchema>>;
-  export type ReplyTrackingConfigModel = FromSchema<ReturnType<typeof ReplyTrackingConfigSchema>>;
-  export type EngagementTrackingConfigModel = FromSchema<ReturnType<typeof EngagementTrackingConfigSchema>>;
-  export type BehaviorTrackingConfigModel = FromSchema<ReturnType<typeof BehaviorTrackingConfigSchema>>;
+  export type FlowControlModel = FromSchema<
+    ReturnType<typeof FlowControlSchema>
+  >;
+  export type TimeBasedLogicModel = FromSchema<
+    ReturnType<typeof TimeBasedLogicSchema>
+  >;
+  export type ReplyTrackingConfigModel = FromSchema<
+    ReturnType<typeof ReplyTrackingConfigSchema>
+  >;
+  export type EngagementTrackingConfigModel = FromSchema<
+    ReturnType<typeof EngagementTrackingConfigSchema>
+  >;
+  export type BehaviorTrackingConfigModel = FromSchema<
+    ReturnType<typeof BehaviorTrackingConfigSchema>
+  >;
   export type BehaviorModel = FromSchema<ReturnType<typeof BehaviorSchema>>;
-  export type AIOptimizationModel = FromSchema<ReturnType<typeof AIOptimizationSchema>>;
+  export type AIOptimizationModel = FromSchema<
+    ReturnType<typeof AIOptimizationSchema>
+  >;
   export type ABTestingModel = FromSchema<ReturnType<typeof ABTestingSchema>>;
-  export type ABTestVariantModel = FromSchema<ReturnType<typeof ABTestVariantSchema>>;
-  export type AutomationAnalyticsModel = FromSchema<ReturnType<typeof AutomationAnalyticsSchema>>;
+  export type ABTestVariantModel = FromSchema<
+    ReturnType<typeof ABTestVariantSchema>
+  >;
+  export type AutomationAnalyticsModel = FromSchema<
+    ReturnType<typeof AutomationAnalyticsSchema>
+  >;
   export type PositionModel = FromSchema<ReturnType<typeof PositionSchema>>;
-  export type DelayConfigModel = FromSchema<ReturnType<typeof DelayConfigSchema>>;
+  export type DelayConfigModel = FromSchema<
+    ReturnType<typeof DelayConfigSchema>
+  >;
   export type TimeframeModel = FromSchema<ReturnType<typeof TimeframeSchema>>;
   export type RetryLogicModel = FromSchema<ReturnType<typeof RetryLogicSchema>>;
   export type LoopConfigModel = FromSchema<ReturnType<typeof LoopConfigSchema>>;
   export type ScheduleModel = FromSchema<ReturnType<typeof AutomationSchema>>;
 }
 
-registerCollection(
-  'Automation',
-  DataType.automation,
-  AutomationSchema(),
-);
+registerCollection('Automation', DataType.automation, AutomationSchema());
+registerCollection('AutomationExecution', DataType.automation_execution, AutomationExecutionSchema());

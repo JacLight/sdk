@@ -24,6 +24,9 @@ export const SiteDomainSchema = () => {
         type: 'string',
         enum: ['new', 'pending', 'active', 'inactive'],
       },
+      hostOrg:{
+        type: 'string',
+      }
     },
   } as const;
 };

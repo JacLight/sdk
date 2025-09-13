@@ -59,7 +59,6 @@ export const NavigationLinkSchema = () => {
       type: {
         type: 'string',
         enum: ['url', 'content', 'custom']
-
       },
       selection: {
         type: 'object',

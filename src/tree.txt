@@ -1,0 +1,158 @@
+Models definitions are here /Users/imzee/projects/sdk/src/models
+
+├── WidgetStore.ts
+├── appengine-client
+│   ├── appengine-client.ts
+│   ├── endpoints.ts
+│   └── index.ts
+├── data
+│   ├── countries
+│   │   ├── continents.ts
+│   │   ├── countries.2to3.ts
+│   │   ├── countries.3to2.ts
+│   │   ├── countries.ts
+│   │   ├── countries_subdivisions.ts
+│   │   ├── countries_translations.ts
+│   │   ├── index.ts
+│   │   ├── languages.ts
+│   │   └── search.ts
+│   ├── features.ts
+│   └── index.ts
+├── default-schema.ts
+├── index.ts
+├── models
+│   ├── activity.ts
+│   ├── automation.ts
+│   ├── base.history.model.ts
+│   ├── base.model.ts
+│   ├── base.publish.model.ts
+│   ├── base.schema.full.ts
+│   ├── base.trash.model.ts
+│   ├── category.ts
+│   ├── collection.ts
+│   ├── comment.ts
+│   ├── company.ts
+│   ├── config.ts
+│   ├── crm
+│   │   ├── crm-address.ts
+│   │   ├── crm-audience.ts
+│   │   ├── crm-call-log.ts
+│   │   ├── crm-campaign.ts
+│   │   ├── crm-chat.ts
+│   │   ├── crm-creative.ts
+│   │   ├── crm-customer.ts
+│   │   ├── crm-event.ts
+│   │   ├── crm-form.ts
+│   │   ├── crm-lead.ts
+│   │   ├── crm-message-template.ts
+│   │   ├── crm-message.ts
+│   │   ├── crm-phone.ts
+│   │   ├── crm-reservation-definition.ts
+│   │   ├── crm-reservation.ts
+│   │   ├── crm-service-point.ts
+│   │   ├── crm-signed-document.ts
+│   │   ├── crm-ticket.ts
+│   │   └── index.ts
+│   ├── dataviz.ts
+│   ├── escalation.ts
+│   ├── file-info.ts
+│   ├── flexdata
+│   │   ├── blacklist.ts
+│   │   ├── chat-config.ts
+│   │   ├── creativestudio.ts
+│   │   ├── flexdata.ts
+│   │   ├── index.ts
+│   │   ├── site-template.ts
+│   │   ├── view-component.ts
+│   │   └── view-template.ts
+│   ├── index.ts
+│   ├── location.ts
+│   ├── log.ts
+│   ├── mintflow.ts
+│   ├── navigation.ts
+│   ├── page.ts
+│   ├── password-policy.ts
+│   ├── permission.ts
+│   ├── post.ts
+│   ├── schedule.ts
+│   ├── script.ts
+│   ├── setting.ts
+│   ├── site-domain.ts
+│   ├── site-index.ts
+│   ├── site.ts
+│   ├── social-activity.ts
+│   ├── storefront
+│   │   ├── index.ts
+│   │   ├── sf-attribute.ts
+│   │   ├── sf-brand.ts
+│   │   ├── sf-cart.ts
+│   │   ├── sf-collection.ts
+│   │   ├── sf-discount.ts
+│   │   ├── sf-giftcard.ts
+│   │   ├── sf-inventory.ts
+│   │   ├── sf-invoice.ts
+│   │   ├── sf-marketing.ts
+│   │   ├── sf-order.ts
+│   │   ├── sf-product.ts
+│   │   ├── sf-promotion.ts
+│   │   ├── sf-receipt.ts
+│   │   ├── sf-refund.ts
+│   │   ├── sf-return.ts
+│   │   ├── sf-shipping.ts
+│   │   ├── sf-subscription-plan.ts
+│   │   ├── sf-subscription.ts
+│   │   ├── sf-transaction.ts
+│   │   └── sf-wishlist.ts
+│   ├── tag.ts
+│   ├── task.ts
+│   ├── translation.ts
+│   ├── trash.ts
+│   ├── usage.ts
+│   ├── user.ts
+│   ├── web-activity.ts
+│   ├── web-visit.ts
+│   ├── workflowdefinition.ts
+│   ├── workspace-item.ts
+│   └── workspace.ts
+├── rules
+│   ├── almanac.js
+│   ├── condition.js
+│   ├── debug.js
+│   ├── engine-default-operators.js
+│   ├── engine.js
+│   ├── errors.js
+│   ├── fact.js
+│   ├── index.js
+│   ├── operator.js
+│   ├── rule-result.js
+│   ├── rule.js
+│   ├── rules-types.ts
+│   └── types
+│       ├── index.d.ts
+│       └── index.test-d.ts
+├── sdk-tree.txt
+├── types
+│   ├── collection-type.ts
+│   ├── component-name.ts
+│   ├── component-type.ts
+│   ├── config-type.ts
+│   ├── control-type.ts
+│   ├── data-type.ts
+│   ├── index.ts
+│   ├── jsonschema
+│   │   ├── index.ts
+│   │   ├── jsonSchema4.ts
+│   │   └── jsonSchemaCustom.ts
+│   ├── menu-list.ts
+│   ├── notification-channels.ts
+│   ├── page-section-type.ts
+│   ├── permission-type.ts
+│   ├── role-type.ts
+│   ├── search-response.ts
+│   ├── system-status.ts
+│   ├── task-status.ts
+│   └── workflow-stage-types.ts
+└── utils
+    └── index.ts
+
+13 directories, 142 files

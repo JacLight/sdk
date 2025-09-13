@@ -154,11 +154,10 @@ export const MessageSchema = () => {
       },
       context: {
         type: 'array',
-        'x-control': ControlType.collection,
+        'x-control': ControlType.table,
+        operations: ['pick', 'remove'],
         collapsible: true,
         hidden: true,
-        displayStyle: 'table',
-        'x-control-variant': 'picker',
         dataSource: {
           source: 'collection',
           collection: DataType.post,

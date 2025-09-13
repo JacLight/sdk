@@ -2,8 +2,6 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../default-schema';
 import { ControlType, DataType } from '../types';
 
-
-
 export const CompanySchema = () => {
   return {
     type: 'object',

@@ -1,7 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 
-
 import { DataType, ControlType } from '../../types';
 import { FileInfoSchema } from '../file-info';
 
@@ -12,7 +11,7 @@ export const SFCollectionSchema = () => {
       name: {
         type: 'string',
         pattern: '^[a-zA-Z_\\-0-9]*$',
-        transform: 'uri'
+        transform: 'uri',
       },
       title: {
         type: 'string',
@@ -23,8 +22,8 @@ export const SFCollectionSchema = () => {
       agents: { type: 'string' },
       products: {
         type: 'array',
-        displayStyle: 'table',
-        'x-control-variant': 'picker',
+        'x-control': ControlType.table,
+        operations: ['pick', 'add', 'remove'],
         dataSource: {
           source: 'collection',
           collection: DataType.sf_product,
@@ -69,5 +68,5 @@ export type SFCollectionModel = FromSchema<typeof ms>;
 registerCollection(
   'Store Collection',
   DataType.sf_collection,
-  SFCollectionSchema(),
+  SFCollectionSchema()
 );

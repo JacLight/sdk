@@ -163,7 +163,7 @@ const dd = FormSchema();
 export type FormModel = FromSchema<typeof dd>;
 
 registerCollection(
-  'CrmForm',
+  'CRM Form',
   DataType.form,
   FormSchema(),
 );

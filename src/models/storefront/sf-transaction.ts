@@ -41,6 +41,7 @@ export const SFTransactionSchema = () => {
           { operation: 'equal', valueA: '{{invoiceType}}', valueB: 'other', action: 'set-property', property: [{ key: 'x-control', value: 'text' }, { key: 'x-control-variant', value: '' }, { key: 'fetchData', value: '' }] },
         ]
       },
+      
       currency: {
         type: 'string',
         group: 'name',
@@ -64,6 +65,9 @@ export const SFTransactionSchema = () => {
         type: 'string',
         enum: ['new', 'pending', 'paid', 'failed', 'mismatch', 'cancelled', 'refunded'],
         group: 'status',
+      },
+      email: {
+        type: 'string',
       },
       gateway: {
         type: 'string',
@@ -92,5 +96,5 @@ export type SFTransactionModel = FromSchema<typeof ms>;
 registerCollection(
   'Store Transaction',
   DataType.sf_transaction,
-  SFTransactionSchema,
+  SFTransactionSchema(),
 );

@@ -64,8 +64,8 @@ export const ReservationDefinitionSchema = () => {
       servicePoints: {
         type: 'array',
         collapsible: true,
-        'x-group': 'group1',
-        'x-control-variant': 'picker',
+        'x-control': ControlType.table,
+        operations: ['pick', 'add', 'remove'],
         displayStyle: 'table',
         items: {
           type: 'object',

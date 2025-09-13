@@ -3,10 +3,34 @@ import { registerCollection } from '../default-schema';
 import { DataType, ControlType } from '../types';
 import { ModelState } from './base.model';
 
-const scheduleOptions = [{ label: 'Send', value: 'send' }, { label: 'Publish', value: 'publish' }, { label: 'Unpublish', value: 'unpublish' }, { label: 'Delete', value: 'delete' }, { label: 'Run', value: 'run' }, { label: 'Stop', value: 'stop' }, { label: 'Start', value: 'start' }, { label: 'Update Status', value: 'update-status' }, { label: 'Update State', value: 'update-state' }];
+const scheduleOptions = [
+  { label: 'Send', value: 'send' },
+  { label: 'Publish', value: 'publish' },
+  { label: 'Unpublish', value: 'unpublish' },
+  { label: 'Delete', value: 'delete' },
+  { label: 'Run', value: 'run' },
+  { label: 'Stop', value: 'stop' },
+  { label: 'Start', value: 'start' },
+  { label: 'Update Status', value: 'update-status' },
+  { label: 'Update State', value: 'update-state' },
+];
 
-const statusOptions = ['new', 'active', 'pending', 'sent', 'delivered', 'read', 'failed', 'scheduled', 'draft'].map((item) => ({ label: item, value: item, optionOwner: 'update-state' }));
-const stateOptions = Object.keys(ModelState).map((item) => ({ label: item, value: item, optionOwner: 'update-state' }));
+const statusOptions = [
+  'new',
+  'active',
+  'pending',
+  'sent',
+  'delivered',
+  'read',
+  'failed',
+  'scheduled',
+  'draft',
+].map(item => ({ label: item, value: item, optionOwner: 'update-state' }));
+const stateOptions = Object.keys(ModelState).map(item => ({
+  label: item,
+  value: item,
+  optionOwner: 'update-state',
+}));
 
 export const ScheduleSchema = () => {
   return {
@@ -26,15 +50,15 @@ export const ScheduleSchema = () => {
         type: 'string',
         enum: ['simple', 'cron'],
         group: 'status',
-        default: 'simple'
+        default: 'simple',
       },
       targets: {
         type: 'array',
         collapsible: 'close',
         title: 'Selections',
-        'x-control': ControlType.collection,
-        displayStyle: 'table',
-        'x-control-variant': 'picker',
+        hideLabel: true,
+        'x-control': ControlType.table,
+        operations: ['pick', 'remove'],
         dataSource: {
           source: 'collection',
           collection: DataType.post,
@@ -87,16 +111,21 @@ export const ScheduleSchema = () => {
               filter: {
                 property: 'optionOwner',
                 operation: 'in',
-                value: '{{action}}'
-              }
+                value: '{{action}}',
+              },
             },
             group: 'action',
           },
         },
         watchedPaths: ['type'],
         rules: [
-          { operation: 'notEqual', valueA: '{{type}}', valueB: 'simple', action: 'hide' },
-        ]
+          {
+            operation: 'notEqual',
+            valueA: '{{type}}',
+            valueB: 'simple',
+            action: 'hide',
+          },
+        ],
       },
       end: {
         type: 'object',
@@ -125,16 +154,21 @@ export const ScheduleSchema = () => {
               filter: {
                 property: 'optionOwner',
                 operation: 'in',
-                value: '{{action}}'
-              }
+                value: '{{action}}',
+              },
             },
             group: 'action',
           },
         },
         watchedPaths: ['type'],
         rules: [
-          { operation: 'notEqual', valueA: '{{type}}', valueB: 'simple', action: 'hide' },
-        ]
+          {
+            operation: 'notEqual',
+            valueA: '{{type}}',
+            valueB: 'simple',
+            action: 'hide',
+          },
+        ],
       },
       cron: {
         type: 'object',
@@ -163,16 +197,21 @@ export const ScheduleSchema = () => {
               filter: {
                 property: 'optionOwner',
                 operation: 'in',
-                value: '{{action}}'
-              }
+                value: '{{action}}',
+              },
             },
             group: 'action',
           },
         },
         watchedPaths: ['type'],
         rules: [
-          { operation: 'notEqual', valueA: '{{type}}', valueB: 'cron', action: 'hide' },
-        ]
+          {
+            operation: 'notEqual',
+            valueA: '{{type}}',
+            valueB: 'cron',
+            action: 'hide',
+          },
+        ],
       },
       lastRun: {
         type: 'string',
@@ -193,9 +232,4 @@ export const ScheduleSchema = () => {
 const dd = ScheduleSchema();
 export type ScheduleModel = FromSchema<typeof dd>;
 
-
-registerCollection(
-  'Schedule',
-  DataType.schedule,
-  ScheduleSchema(),
-);
+registerCollection('Schedule', DataType.schedule, ScheduleSchema());

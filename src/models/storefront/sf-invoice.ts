@@ -64,8 +64,8 @@ export const SFInvoiceSchema = () => {
           source: 'collection',
           collection: DataType.sf_product,
         },
-        'x-control-variant': 'picker',
-        displayStyle: 'table',
+        'x-control': ControlType.table,
+        operations: ['pick', 'add','remove'],
         items: {
           type: 'object',
           showIndex: true,

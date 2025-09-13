@@ -23,6 +23,7 @@ export enum DataType {
   usage = 'usage',
   setting = 'setting',
   automation = 'automation',
+  automation_execution = 'automation_execution',
   dataviz = 'dataviz',
   mintflow = 'mintflow',
   mintflownode = 'mintflownode',
@@ -94,4 +95,5 @@ export enum DataType {
   social_activity = 'social_activity',
   workspace = 'workspace',
   workspace_item = 'workspace_item',
+  apikey = 'apikey',
 }

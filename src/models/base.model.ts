@@ -28,13 +28,6 @@ export enum ModelState {
   deleted = 'deleted',
 }
 
-export interface AuditLog {
-  timestamp: Date;
-  action: string;
-  user: string;
-  description: string;
-  changes?: any[];
-}
 
 export interface DataOptions {
   sort?: any;
@@ -103,7 +96,6 @@ export interface BaseModel<T> {
   views?: number;
   last_viewed?: Date;
   client?: string;
-  auditLog?:AuditLog[];
 }
 
 export const PostSubSchema = () => {

@@ -2,7 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 
 
-import { DataType } from '../../types';
+import { ControlType, DataType } from '../../types';
 import { FileInfoSchema } from '../file-info';
 
 export const SFBrandSchema = () => {
@@ -22,8 +22,8 @@ export const SFBrandSchema = () => {
       },
       products: {
         type: 'array',
-        'x-control-variant': 'picker',
-        displayStyle: 'table',
+        'x-control': ControlType.table,
+        operations: ['pick', 'add', 'remove'],
         dataSource: {
           source: 'collection',
           collection: DataType.sf_product,
@@ -43,8 +43,8 @@ export const SFBrandSchema = () => {
       logo: FileInfoSchema(),
       contacts: {
         type: 'array',
-        'x-control-variant': 'picker',
-        displayStyle: 'table',
+        'x-control': ControlType.table,
+        operations: ['pick', 'add', 'remove'],
         dataSource: {
           source: 'collection',
           collection: DataType.address,
