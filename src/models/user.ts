@@ -168,7 +168,7 @@ export const UserSchema = () => {
         },
       },
       groups: {
-        type: 'string',
+        type: 'array',
         'x-control-variant': 'chip',
         'x-control': ControlType.selectMany,
         dataSource: {
@@ -177,9 +177,12 @@ export const UserSchema = () => {
           value: 'name',
           label: 'name',
         },
+        items: {
+          type: 'string',
+        },
       },
       roles: {
-        type: 'string',
+        type: 'array',
         'x-control-variant': 'chip',
         'x-control': ControlType.selectMany,
         dataSource: {
@@ -187,6 +190,9 @@ export const UserSchema = () => {
           collection: DataType.userrole,
           value: 'name',
           label: 'name',
+        },
+        items: {
+          type: 'string',
         },
       },
       signature: {

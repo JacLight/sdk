@@ -20,18 +20,6 @@ export const SiteSchema = () => {
         layoutGroup: 'info',
         group: 'name',
       },
-      title: {
-        type: 'string',
-        layoutGroup: 'info',
-        group: 'name',
-      },
-      domain: {
-        type: 'string',
-        format: 'hostname',
-        placeholder: 'example.com',
-        layoutGroup: 'info',
-        group: 'domain',
-      },
       homePage: {
         type: 'string',
         'x-control': ControlType.selectMany,
@@ -46,8 +34,28 @@ export const SiteSchema = () => {
             value: '{{name}}',
           },
         },
-        group: 'domain',
+        group: 'name',
         layoutGroup: 'info',
+      },
+      title: {
+        type: 'string',
+        layoutGroup: 'info',
+        group: 'title',
+      },
+      domain: {
+        type: 'string',
+        format: 'hostname',
+        placeholder: 'example.com',
+        layoutGroup: 'info',
+        group: 'domain',
+      },
+      hostName: {
+        type: 'string',
+        format: 'hostname',
+        placeholder: 'example.com',
+        layoutGroup: 'info',
+        readOnly: true,
+        group: 'domain',
       },
       description: {
         type: 'string',
@@ -297,7 +305,7 @@ export const SiteSchema = () => {
               dataSource: {
                 source: 'collection',
                 value: 'page',
-                filter:  {
+                filter: {
                   property: 'site',
                   operation: 'equal',
                   value: '{{name}}',
@@ -514,6 +522,16 @@ export const SiteSchema = () => {
         'x-control-variant': 'switch',
         layoutGroup: 'spam',
       },
+      devEnvironment: {
+        type: 'object ',
+        hidden: true,
+        properties: {},
+      },
+      hosting: {
+        type: 'array',
+        hidden: true,
+        properties: {},
+      },
     },
     'x-layout': {
       main: {
@@ -535,8 +553,4 @@ export const SiteSchema = () => {
 const dd = SiteSchema();
 export type SiteModel = FromSchema<typeof dd>;
 
-registerCollection(
-  'Site',
-  DataType.site,
-  SiteSchema()
-);
+registerCollection('Site', DataType.site, SiteSchema());

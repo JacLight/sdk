@@ -48,12 +48,12 @@ export const SFTransactionSchema = () => {
         dataBind: 'invoiceNumber.data.currency',
       },
       amount: {
-        type: 'string',
+        type: 'number',
         group: 'name',
         dataBind: 'invoiceNumber.data.amount',
       },
       tax: {
-        type: 'string',
+        type: 'number',
         group: 'name',
         dataBind: 'invoiceNumber.data.tax',
       },

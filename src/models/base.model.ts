@@ -68,6 +68,7 @@ export interface BaseModel<T> {
   version: number;
   createdate?: Date;
   modifydate?: Date;
+  publishedDate?: Date;
   author?: string;
   requiredRole?: RequiredRoleModel;
   comments?: CommentModel[];

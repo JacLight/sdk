@@ -16,7 +16,7 @@ export const WorkspaceSchema = () => {
       icon: {
         type: 'string',
         group: 'title',
-        'x-control': ControlType.icon
+        'x-control': ControlType.icon,
       },
       title: {
         type: 'string',
@@ -45,9 +45,9 @@ export const WorkspaceSchema = () => {
             accessType: {
               type: 'string',
               enum: ['guest', 'member', 'admin'],
-            }
+            },
           },
-        }
+        },
       },
       goals: {
         type: 'array',
@@ -61,7 +61,7 @@ export const WorkspaceSchema = () => {
             },
             title: {
               type: 'string',
-              'inputRequired': true,
+              inputRequired: true,
             },
             description: {
               type: 'string',
@@ -70,7 +70,7 @@ export const WorkspaceSchema = () => {
             color: {
               type: 'string',
               'x-control': ControlType.color,
-              'inputRequired': true,
+              inputRequired: true,
             },
             progress: {
               type: 'string',
@@ -80,7 +80,14 @@ export const WorkspaceSchema = () => {
               type: 'string',
               hidden: true,
               group: 'status',
-              enum: ['draft', 'not-started', 'in-progress', 'completed', 'blocked', 'cancelled'],
+              enum: [
+                'draft',
+                'not-started',
+                'in-progress',
+                'completed',
+                'blocked',
+                'cancelled',
+              ],
               default: 'new',
             },
             dueDate: {
@@ -102,7 +109,14 @@ export const WorkspaceSchema = () => {
                   status: {
                     type: 'string',
                     group: 'status',
-                    enum: ['draft', 'not-started', 'in-progress', 'completed', 'blocked', 'cancelled'],
+                    enum: [
+                      'draft',
+                      'not-started',
+                      'in-progress',
+                      'completed',
+                      'blocked',
+                      'cancelled',
+                    ],
                     default: 'new',
                   },
                   dueDate: {
@@ -110,11 +124,14 @@ export const WorkspaceSchema = () => {
                     'x-control': ControlType.date,
                     group: 'status',
                   },
+                  report: {
+                    type: 'string',
+                  },
                 },
               },
             },
           },
-        }
+        },
       },
       pinnedItems: {
         type: 'array',
@@ -128,7 +145,7 @@ export const WorkspaceSchema = () => {
               type: 'string',
             },
           },
-        }
+        },
       },
       isPrivate: {
         type: 'boolean',
@@ -144,15 +161,11 @@ export const WorkspaceSchema = () => {
           label: 'name',
         },
       },
-    }
+    },
   } as const;
 };
 
 const rt = WorkspaceSchema();
 export type WorkspaceModel = FromSchema<typeof rt>;
 
-registerCollection(
-  'Workspace',
-  DataType.workspace,
-  WorkspaceSchema(),
-);
+registerCollection('Workspace', DataType.workspace, WorkspaceSchema());

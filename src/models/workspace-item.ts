@@ -63,7 +63,7 @@ export const WorkspaceItemSchema = () => {
       },
       status: {
         type: 'string',
-      }
+      },
     }
   } as const;
 };

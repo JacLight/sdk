@@ -1,5 +1,5 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { registerCollection, registerDefaultData } from '../../default-schema';
+import { registerCollection } from '../../default-schema';
 import { DataType, ControlType } from '../../types';
 import { FileInfoSchema } from '../file-info';
 
@@ -27,18 +27,6 @@ export const ReservationDefinitionSchema = () => {
         type: 'string',
       },
       image: FileInfoSchema(),
-      venue: {
-        type: 'string',
-        'x-control': ControlType.selectMany,
-        'x-control-variant': 'chip',
-        'x-group': 'group1',
-        dataSource: {
-          source: 'collection',
-          collection: DataType.location,
-          value: 'name',
-          label: 'name',
-        },
-      },
       description: {
         type: 'string',
         'x-control-variant': 'textarea',
@@ -114,6 +102,19 @@ export const ReservationDefinitionSchema = () => {
           },
         ],
       },
+      venue: {
+        type: 'string',
+        'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
+        'x-group': 'group1',
+        dataSource: {
+          source: 'collection',
+          collection: DataType.location,
+          value: 'name',
+          label: 'name',
+        },
+        group: 'location',
+      },
       hosts: {
         type: 'string',
         'x-control': ControlType.selectMany,
@@ -124,6 +125,7 @@ export const ReservationDefinitionSchema = () => {
           value: 'email',
           label: 'email',
         },
+        group: 'location',
       },
       services: {
         collapsible: true,
@@ -133,18 +135,13 @@ export const ReservationDefinitionSchema = () => {
           properties: {
             name: {
               type: 'string',
+              group: 'category',
             },
             categories: {
               type: 'string',
+              group: 'category',
             },
-            images: {
-              type: 'array',
-              'x-control': ControlType.file,
-            },
-            description: {
-              type: 'string',
-              'x-control-variant': 'textarea',
-            },
+
             duration: {
               type: 'number',
               group: 'time',
@@ -156,6 +153,14 @@ export const ReservationDefinitionSchema = () => {
             breakAfter: {
               type: 'number',
               group: 'time',
+            },
+            images: {
+              type: 'array',
+              'x-control': ControlType.file,
+            },
+            description: {
+              type: 'string',
+              'x-control-variant': 'textarea',
             },
           },
         },
@@ -190,10 +195,17 @@ export const ReservationDefinitionSchema = () => {
       },
       officeHours: {
         type: 'object',
-        collapsible: true,
-        'x-control-variant': 'time',
-        'x-control': ControlType.dateRange,
         properties: {
+          timezone: {
+            type: 'string',
+            'x-control': ControlType.selectMany,
+            dataSource: {
+              source: 'function',
+              value: 'timezones',
+            },
+            default: '{{fn:Intl.DateTimeFormat().resolvedOptions().timeZone}}',
+            group: 'time',
+          },
           startTime: {
             type: 'string',
             'x-control-variant': 'time',
@@ -210,7 +222,6 @@ export const ReservationDefinitionSchema = () => {
       },
       blockedTime: {
         type: 'array',
-        collapsible: true,
         items: {
           type: 'object',
           'x-control-variant': 'time',
@@ -297,30 +308,5 @@ export type ReservationDefinitionModel = FromSchema<typeof cs>;
 registerCollection(
   'Reservation Definition',
   DataType.reservationdefinition,
-  ReservationDefinitionSchema(),
+  ReservationDefinitionSchema()
 );
-
-const genDefaultData = () => {
-  return {
-    tasks: [
-      {
-        status: 'new',
-        name: 'Reservation',
-        description: 'Workflow for reservation',
-        stageId: 0,
-      },
-    ],
-    stages: [
-      { id: 0, type: 'start', name: 'intake', assignTo: 'reservation-host' },
-      { id: 1, type: 'intermediate', name: 'confirmed' },
-      { id: 2, type: 'intermediate', name: 'checkedIn' },
-      { id: 3, type: 'intermediate', name: 'waiting' },
-      { id: 4, type: 'intermediate', name: 'completed' },
-      { id: 5, type: 'end', name: 'canceled' },
-      { id: 6, type: 'end', name: 'reschedule' },
-      { id: 7, type: 'end', name: 'error' },
-    ],
-  };
-};
-
-registerDefaultData(DataType.reservationdefinition, genDefaultData);

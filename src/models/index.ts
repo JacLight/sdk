@@ -39,3 +39,4 @@ export * from './workspace';
 export * from './workspace-item';
 export * from './automation';
 export * from './social-activity';
+export * from './dev-environment';

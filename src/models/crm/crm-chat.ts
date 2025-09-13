@@ -1,7 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 
-
 import { DataType } from '../../types';
 import { UserSchema } from '../user';
 
@@ -10,6 +9,9 @@ export const ChatMessageSchema = () => {
     type: 'object',
     properties: {
       content: {
+        type: 'string',
+      },
+      chatId: {
         type: 'string',
       },
       from: {
@@ -43,7 +45,7 @@ export const ChatMessageSchema = () => {
       configId: {
         type: 'string',
         hidden: true,
-      }
+      },
     },
   } as const;
 };
@@ -87,8 +89,4 @@ export const ChatGroupSchema = () => {
 const ccs = ChatGroupSchema();
 export type ChatGroupModel = FromSchema<typeof ccs>;
 
-registerCollection(
-  'Chat Message',
-  DataType.chatmessage,
-  ChatMessageSchema()
-);
+registerCollection('Chat Message', DataType.chatmessage, ChatMessageSchema());

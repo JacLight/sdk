@@ -14,6 +14,17 @@ export const AutomationSchema = () => {
         group: 'basic',
         description: 'Automation workflow name',
       },
+      slug: {
+        type: 'string',
+        pattern: '^[a-zA-Z_\\-0-9]*$',
+        minLength: 3,
+        maxLength: 100,
+        unique: true,
+        default: '{{name}}',
+        transform: ['uri', 'lowercase'],
+        group: 'basic',
+        description: 'Unique slug identifier',
+      },
       description: {
         type: 'string',
         maxLength: 1000,
@@ -742,9 +753,53 @@ export const LoopConfigSchema = () => {
   } as const;
 };
 
+export const AutomationLogSchema = () => {
+  return {
+    type: 'object',
+    required: ['id', 'automationId', 'stepId', 'message', 'timestamp'],
+    properties: {
+      automationId: {
+        type: 'string',
+        description: 'Associated automation workflow ID',
+      },
+      trackingId: {
+        type: 'string',
+        description: 'Associated tracking ID (e.g., contact ID)',
+      },
+      stepId: {
+        type: 'string',
+        description: 'Associated step ID',
+      },
+      eventType: {
+        type: 'string',
+        description: 'Event type that initiated the log entry',
+      },
+      message: {
+        type: 'string',
+        description: 'Log message content',
+      },
+      metadata: {
+        type: 'object',
+        additionalProperties: true,
+      },
+      source: {
+        type: 'string',
+        description: 'Source system or module generating the log',
+      },
+      context: {
+        type: 'object',
+        additionalProperties: true,
+        description: 'Flexible context for log entry',
+      },
+    },
+  } as const;
+};
+
 export namespace AutomationModels {
   export type AutomationModel = FromSchema<ReturnType<typeof AutomationSchema>>;
-  export type AutomationExecutionModel = FromSchema<ReturnType<typeof AutomationExecutionSchema>>;
+  export type AutomationExecutionModel = FromSchema<
+    ReturnType<typeof AutomationExecutionSchema>
+  >;
   export type AutomationStepModel = FromSchema<
     ReturnType<typeof AutomationStepSchema>
   >;
@@ -785,6 +840,7 @@ export namespace AutomationModels {
   export type DelayConfigModel = FromSchema<
     ReturnType<typeof DelayConfigSchema>
   >;
+  export type AutomationLogModel = FromSchema<ReturnType<typeof AutomationLogSchema>>;
   export type TimeframeModel = FromSchema<ReturnType<typeof TimeframeSchema>>;
   export type RetryLogicModel = FromSchema<ReturnType<typeof RetryLogicSchema>>;
   export type LoopConfigModel = FromSchema<ReturnType<typeof LoopConfigSchema>>;
@@ -792,4 +848,14 @@ export namespace AutomationModels {
 }
 
 registerCollection('Automation', DataType.automation, AutomationSchema());
-registerCollection('AutomationExecution', DataType.automation_execution, AutomationExecutionSchema());
+registerCollection(
+  'AutomationExecution',
+  DataType.automation_execution,
+  AutomationExecutionSchema()
+);
+registerCollection(
+  'AutomationLog',
+  DataType.automation_log,
+  AutomationLogSchema()
+);
+

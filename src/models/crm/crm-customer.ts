@@ -53,6 +53,10 @@ export const CustomerSchema = () => {
       title: {
         type: 'string',
       },
+      accountType: {
+        type: 'string',
+        options: ['subscriber', 'contact', 'customer'],
+      },
       password: {
         type: 'string',
         'x-control-variant': 'password',

@@ -42,6 +42,7 @@ export const FormSchema = () => {
       collection: {
         type: 'string',
         'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
         dataSource: {
           source: 'collection',
           collection: DataType.collection,

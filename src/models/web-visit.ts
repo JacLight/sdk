@@ -61,6 +61,9 @@ export const WebVisitSchema = () => {
       url: {
         type: 'string',
       },
+      siteName:{
+        type: 'string',
+      },
       domain: {
         type: 'string',
       },

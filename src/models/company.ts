@@ -66,6 +66,10 @@ export const CompanySchema = () => {
           ],
         },
       },
+      nextRenewalDate: {
+        type: 'string',
+        format: 'date-time',
+      },
       planHistory: {
         type: 'array',
         items: {
@@ -87,7 +91,14 @@ export const CompanySchema = () => {
             },
             status: {
               type: 'string',
-              enum: ['active', 'expired', 'cancelled', 'pending'],
+              enum: [
+                'active',
+                'expired',
+                'cancelled',
+                'pending',
+                'inactive',
+                'future',
+              ],
               group: 'plan',
             },
           },
@@ -136,8 +147,4 @@ export const CompanySchema = () => {
 const dd = CompanySchema();
 export type CompanyModel = FromSchema<typeof dd>;
 
-registerCollection(
-  'Company',
-  DataType.company,
-  CompanySchema(),
-);
+registerCollection('Company', DataType.company, CompanySchema());

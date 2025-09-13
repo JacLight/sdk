@@ -1,6 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
-
+import { FileInfoSchema } from '../file-info';
 
 import { DataType, ControlType } from '../../types';
 
@@ -75,16 +75,45 @@ export const MessageTemplateSchema = () => {
         },
         default: 'email',
       },
+      contentJSON: {
+        type: 'object',
+        properties: {},
+        hidden: true,
+      },
       html: {
         type: 'string',
         'x-control': 'richtext',
         displayStyle: 'full',
-        hidden: true,
+        hideIn: ['table'],
+        rules: [
+          {
+            operation: 'notIn',
+            valueA: ['email', 'sitePopup', 'siteAlert'],
+            valueB: '{{deliveryType}}',
+            action: 'hide',
+          },
+        ],
       },
       text: {
         type: 'string',
         'x-control-variant': 'textarea',
-        hidden: true,
+        socialControl: true,
+        hideIn: ['table'],
+      },
+      files: {
+        type: 'array',
+        title: 'Attachments',
+        collapsible: true,
+        'x-control': ControlType.file,
+        items: FileInfoSchema(),
+        rules: [
+          {
+            operation: 'in',
+            valueA: ['sms', 'push', 'notification'],
+            valueB: '{{deliveryType}}',
+            action: 'hide',
+          },
+        ],
       },
       thumbnail: {
         type: 'string',
@@ -99,5 +128,5 @@ export type MessageTemplateModel = FromSchema<typeof dd>;
 registerCollection(
   'MessageTemplate',
   DataType.messagetemplate,
-  MessageTemplateSchema(),
+  MessageTemplateSchema()
 );

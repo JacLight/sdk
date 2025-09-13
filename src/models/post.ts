@@ -18,6 +18,15 @@ export const PostSchema = () => {
         groupLayout: 'flat',
         description: 'The type of content this represents',
       },
+      writingMode:{
+        type: 'string',
+        enum: ['markdown', 'richtext', 'editor'],
+        'x-control': ControlType.selectMany,
+        default: 'editor',
+        group: 'template',
+        groupLayout: 'flat',
+        description: 'The writing mode for the content field',
+      },
       template: {
         type: 'string',
         'x-control': ControlType.selectMany,
@@ -60,9 +69,17 @@ export const PostSchema = () => {
       },
       content: {
         type: 'string',
-        ai: true,
         'x-control': ControlType.richtext,
         hideIn: ['table']
+      },
+      contentJSON: {
+        type: 'object',
+        hidden: true,
+      },
+      markdown: {
+        type: 'string',
+        'x-control': ControlType.code,
+        hidden: true,
       },
       parent: {
         type: 'string',

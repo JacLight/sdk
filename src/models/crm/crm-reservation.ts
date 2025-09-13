@@ -1,7 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 
-
 import { ControlType, DataType } from '../../types';
 
 export const ReservationSchema = () => {
@@ -45,6 +44,29 @@ export const ReservationSchema = () => {
             type: 'string',
             inputRequired: true,
           },
+        },
+      },
+      invites: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            name: {
+              type: 'string',
+              inputRequired: true,
+            },
+            email: {
+              type: 'string',
+              format: 'email',
+              inputRequired: true,
+            },
+            status: {
+              type: 'string',
+              enum: ['pending', 'accepted', 'declined'],
+              default: 'pending',
+            },
+          },
+          required: ['name','email'],
         },
       },
       service: {
@@ -95,17 +117,17 @@ export const ReservationSchema = () => {
             time: {
               type: 'number',
               description: 'Time before the event to send the reminder',
-              group:'time',
+              group: 'time',
             },
             timeType: {
               type: 'number',
               enum: ['day', 'hour', 'minute'],
-              group:'time',
+              group: 'time',
             },
             method: {
               type: 'string',
               enum: ['email', 'sms'],
-              group:'method',
+              group: 'method',
             },
             template: {
               type: 'string',
@@ -116,7 +138,7 @@ export const ReservationSchema = () => {
                 valueField: 'name',
                 labelField: 'name',
               },
-              group:'method',
+              group: 'method',
             },
             message: {
               type: 'string',
@@ -134,8 +156,4 @@ export const ReservationSchema = () => {
 const cs = ReservationSchema();
 export type ReservationModel = FromSchema<typeof cs>;
 
-registerCollection(
-  'Reservation',
-  DataType.reservation,
-  ReservationSchema(),
-);
+registerCollection('Reservation', DataType.reservation, ReservationSchema());

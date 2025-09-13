@@ -2,7 +2,6 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../default-schema';
 import { DataType, ControlType, TaskStatus } from '../types';
 
-
 export const TaskSchema = () => {
   return {
     type: 'object',
@@ -12,17 +11,17 @@ export const TaskSchema = () => {
         pattern: '^[a-zA-Z_\\-0-9]*$',
         unique: true,
         transform: ['random-string::10', 'uri'],
-        group: 'status'
+        group: 'status',
       },
       status: {
         type: 'string',
         enum: Object.keys(TaskStatus),
-        group: 'status'
+        group: 'status',
       },
       dueDate: {
         type: 'string',
         format: 'date-time',
-        group: 'status'
+        group: 'status',
       },
       title: {
         type: 'string',
@@ -35,7 +34,7 @@ export const TaskSchema = () => {
         title: 'Stage',
         type: 'number',
         disabled: true,
-        group: 'stage'
+        group: 'stage',
       },
       workflowId: {
         type: 'string',
@@ -47,12 +46,12 @@ export const TaskSchema = () => {
           value: 'sk',
           label: 'name',
         },
-        group: 'stage'
+        group: 'stage',
       },
       workflowName: {
         type: 'string',
         readOnly: true,
-        group: 'stage'
+        group: 'stage',
       },
       assignTo: {
         type: 'array',
@@ -80,46 +79,43 @@ export const TaskSchema = () => {
           properties: {
             stageId: {
               type: 'number',
-              group: 'status'
+              group: 'status',
             },
             status: {
               type: 'string',
-              group: 'status'
+              group: 'status',
             },
             dueDate: {
               type: 'string',
               format: 'date-time',
-              group: 'status'
+              group: 'status',
             },
             modified: {
               type: 'string',
               format: 'date-time',
-              group: 'assign'
+              group: 'assign',
             },
             modifiedBy: {
               type: 'string',
-              group: 'assign'
+              group: 'assign',
+            },
+            report: {
+              type: 'string',
             },
             assignTo: {
               type: 'string',
-              group: 'assign'
+              group: 'assign',
             },
             note: {
               type: 'string',
             },
-          }
-        }
+          },
+        },
       },
     },
   } as const;
 };
 
-
-
 const ts = TaskSchema();
 export type TaskModel = FromSchema<typeof ts>;
-registerCollection(
-  'Task',
-  DataType.task,
-  TaskSchema()
-)
+registerCollection('Task', DataType.task, TaskSchema());
