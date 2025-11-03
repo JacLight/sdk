@@ -18,6 +18,7 @@ export enum DataType {
   workflowdefinition = 'workflowdefinition',
   task = 'task',
   usergroup = 'usergroup',
+  user_invitation = 'user_invitation',
   creative = 'creative',
   dev_environment = 'dev_environment',
   permission = 'permission',

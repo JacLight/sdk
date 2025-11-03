@@ -163,35 +163,37 @@ export const SFProductSchema = () => {
             },
             options: {
               type: 'array',
-              hideLabel: true,
               items: {
                 type: 'object',
                 properties: {
                   label: {
                     type: 'string',
+                    group: 'option',
                   },
                   value: {
                     type: 'string',
+                    group: 'option',
                   },
                   param: {
                     type: 'string',
+                    group: 'option',
                   },
                 },
               },
               group: 'attribute',
               'x-control': ControlType.selectMany,
               'x-control-variant': 'chip',
-              styleClass: 'w-[60%]',
               dataSource: {
                 source: 'collection',
                 collection: DataType.sf_attribute,
                 filter: {
                   property: 'name',
                   operation: 'equal',
-                  value: '{{/properties/attributes/items/properties/name}}',
+                  value: '{{name}}',
                 },
                 value: 'options',
                 label: 'options',
+                valueAsOption: true,
               },
             },
           },
@@ -208,12 +210,15 @@ export const SFProductSchema = () => {
             sku: {
               type: 'string',
               disabled: true,
+              group: 'sku',
             },
             price: {
               type: 'number',
+              group: 'sku',
             },
             stock: {
               type: 'number',
+              group: 'sku',
             },
             options: {
               type: 'array',
@@ -227,14 +232,17 @@ export const SFProductSchema = () => {
                   name: {
                     type: 'string',
                     disabled: true,
+                    group: 'option',
                   },
                   label: {
                     type: 'string',
                     disabled: true,
+                    group: 'option',
                   },
                   value: {
                     type: 'string',
                     disabled: true,
+                    group: 'option',
                   },
                 },
               },
@@ -251,6 +259,34 @@ export const SFProductSchema = () => {
           },
         },
       },
+      extraInfo: {
+        type: 'array',
+        displayStyle: 'table',
+        hideLabel: true,
+        collapsible: true,
+        operations: ['pick', 'add', 'edit', 'delete'],
+        dataSource: {
+          source: 'collection',
+          collection: DataType.post,
+        },
+        items: {
+          type: 'object',
+          properties: {
+            title: {
+              group: 'bundle',
+              type: 'string',
+            },
+            id: {
+              type: 'string',
+              group: 'bundle',
+            },
+            content: {
+              type: 'string',
+              'x-control': ControlType.richtext,
+            },
+          },
+        },
+      },
       bundle: {
         type: 'array',
         displayStyle: 'table',
@@ -260,6 +296,7 @@ export const SFProductSchema = () => {
           source: 'collection',
           collection: DataType.sf_product,
         },
+        operations: ['pick'],
         items: {
           type: 'object',
           properties: {
@@ -286,8 +323,4 @@ export const SFProductSchema = () => {
 const dd = SFProductSchema();
 export type SFProductModel = FromSchema<typeof dd>;
 
-registerCollection(
-  'Store Product',
-  DataType.sf_product,
-  SFProductSchema()
-);
+registerCollection('Store Product', DataType.sf_product, SFProductSchema());

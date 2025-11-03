@@ -50,14 +50,15 @@ export const LocationSchema = () => {
           { operation: 'notEqual', valueA: '{{type}}', valueB: 'address', action: 'hide' },
         ]
       },
-      link: {
+      meetingLink: {
         type: 'string',
         rules: [
           { operation: 'notIn', valueA: ['virtual', 'website'], valueB: '{{type}}', action: 'hide' },
         ]
       },
-      accessCode: {
+      description: {
         type: 'string',
+        'x-control-variant': 'textarea',
         rules: [
           { operation: 'notIn', valueA: ['virtual', 'website'], valueB: '{{type}}', action: 'hide' },
         ]

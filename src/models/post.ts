@@ -20,7 +20,7 @@ export const PostSchema = () => {
       },
       writingMode:{
         type: 'string',
-        enum: ['markdown', 'richtext', 'editor'],
+        enum: ['richtext', 'editor', 'blockNote','markdown'],
         'x-control': ControlType.selectMany,
         default: 'editor',
         group: 'template',
@@ -71,10 +71,6 @@ export const PostSchema = () => {
         type: 'string',
         'x-control': ControlType.richtext,
         hideIn: ['table']
-      },
-      contentJSON: {
-        type: 'object',
-        hidden: true,
       },
       markdown: {
         type: 'string',

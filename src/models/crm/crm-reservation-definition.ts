@@ -199,6 +199,7 @@ export const ReservationDefinitionSchema = () => {
           timezone: {
             type: 'string',
             'x-control': ControlType.selectMany,
+            'x-control-variant': 'chip',
             dataSource: {
               source: 'function',
               value: 'timezones',
@@ -268,6 +269,13 @@ export const ReservationDefinitionSchema = () => {
         type: 'string',
         enum: ['unassigned', 'round-robin'],
         group: 'form',
+      },
+      meetingInfo: {
+        type: 'string',
+        'x-control-variant': 'textarea',
+      },
+      meetingLink: {
+        type: 'string',
       },
       notificationTemplate: {
         type: 'array',

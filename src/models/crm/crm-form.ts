@@ -10,7 +10,11 @@ export const FormSchema = () => {
       name: {
         type: 'string',
         pattern: '^[a-zA-Z_\\-0-9]*$',
-        transform: ['random-string::10'],
+        transform: ['lowercase'],
+        inputRequired: true,
+        unique: true,
+        description:
+          'Unique name that identifies the form, can only contain letters, numbers, underscores and dashes',
         group: 'name',
       },
       accessCode: {
@@ -19,7 +23,15 @@ export const FormSchema = () => {
       },
       status: {
         type: 'string',
-        enum: ['new', 'sent', 'open', 'closed', 'cancelled', 'expired', 'failed'],
+        enum: [
+          'new',
+          'sent',
+          'open',
+          'closed',
+          'cancelled',
+          'expired',
+          'failed',
+        ],
         group: 'name',
       },
       startDate: {
@@ -39,6 +51,9 @@ export const FormSchema = () => {
         type: 'string',
         'x-control-variant': 'textarea',
       },
+      schema: {
+        type: 'object',
+      },
       collection: {
         type: 'string',
         'x-control': ControlType.selectMany,
@@ -52,13 +67,14 @@ export const FormSchema = () => {
             property: 'type',
             operation: 'equal',
             value: 'Defined',
-          }
-        }
+          },
+        },
       },
       participants: {
         type: 'array',
         collapsible: true,
-        description: "List of places in the document where signatures are required",
+        description:
+          'List of places in the document where signatures are required',
         items: {
           type: 'object',
           layout: 'horizontal',
@@ -72,11 +88,11 @@ export const FormSchema = () => {
             },
             accessCode: {
               type: 'string',
-              styleClass: 'w-20'
+              styleClass: 'w-20',
             },
             role: {
               type: 'string',
-              styleClass: 'w-20'
+              styleClass: 'w-20',
             },
           },
         },
@@ -95,66 +111,37 @@ export const FormSchema = () => {
             type: 'string',
           },
           image: FileInfoSchema(),
-        }
+        },
       },
-      email: {
-        type: 'object',
-        collapsible: true,
-        properties: {
-          send: {
-            type: 'boolean',
-          },
-          template: {
-            type: 'array',
-            'x-control': ControlType.selectMany,
-            'x-control-variant': 'chip',
-            group: 'notification',
-            dataSource: {
-              source: 'collection',
-              collection: DataType.messagetemplate,
-              label: 'name',
-              value: 'name',
-            },
-            items: {
-              type: 'string',
-            },
-          },
-          message: {
-            type: 'string',
-            'x-control': ControlType.richtext,
-            description: 'You can add template variables like {{data.$collection.$name}}, replace $collection with the collection name and $name with the field name',
-          }
-        }
+      templates: {
+        type: 'array',
+        'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
+        group: 'notification',
+        dataSource: {
+          source: 'collection',
+          collection: DataType.messagetemplate,
+          label: 'name',
+          value: 'name',
+        },
+        items: {
+          type: 'string',
+        },
       },
-      sms: {
-        type: 'object',
+      emailTemplate: {
         collapsible: true,
-        properties: {
-          send: {
-            type: 'boolean',
-          },
-          template: {
-            type: 'array',
-            'x-control': ControlType.selectMany,
-            'x-control-variant': 'chip',
-            group: 'notification',
-            dataSource: {
-              source: 'collection',
-              collection: DataType.messagetemplate,
-              label: 'name',
-              value: 'name',
-            },
-            items: {
-              type: 'string',
-            },
-          },
-          message: {
-            type: 'string',
-            'x-control-variant': 'textarea',
-            max: 160,
-            description: 'You can add template variables like {{data.$collection.$name}}, replace $collection with the collection name and $name with the field name',
-          }
-        }
+        type: 'string',
+        'x-control': ControlType.richtext,
+        description:
+          'You can add template variables like {{data.$collection.$name}}, replace $collection with the collection name and $name with the field name',
+      },
+      smsTemplate: {
+        collapsible: true,
+        type: 'string',
+        'x-control-variant': 'textarea',
+        max: 160,
+        description:
+          'You can add template variables like {{data.$collection.$name}}, replace $collection with the collection name and $name with the field name',
       },
     },
   } as const;
@@ -163,11 +150,7 @@ export const FormSchema = () => {
 const dd = FormSchema();
 export type FormModel = FromSchema<typeof dd>;
 
-registerCollection(
-  'CRM Form',
-  DataType.form,
-  FormSchema(),
-);
+registerCollection('CRM Form', DataType.form, FormSchema());
 
 const genDefaultData = () => {
   return { status: 'new', priority: 'low', severity: 'minor', stage: 0 };

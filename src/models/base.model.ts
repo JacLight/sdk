@@ -33,7 +33,7 @@ export interface DataOptions {
   sort?: any;
   sortType?: SortType;
   modelState?: ModelState | ModelState[];
-  lastItem?: string;
+  lastItem?: number;
   page?: number;
   pageSize?: number;
   lastPage?: number;
@@ -156,14 +156,13 @@ export const PostSubSchema = () => {
         items: {
           type: 'string',
         },
-        'x-control-variant': 'tree',
+        'x-control-variant': 'combo',
         'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
-          collection: DataType.category,
+          collection: DataType.tag,
           value: 'name',
           label: 'name',
-          children: 'children',
         },
       },
       images: FileInfoSchema(),

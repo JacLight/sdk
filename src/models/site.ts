@@ -5,6 +5,23 @@ import { getCurrencies, getLanguages, getSiteFeatureList } from '../data';
 import { registerCollection } from '../default-schema';
 import { FileInfoSchema } from './file-info';
 
+const getAccountFeatures = () => [
+  { label: 'Overview', value: 'overview' },
+  { label: 'Addresses', value: 'addresses' },
+  { label: 'Reservations', value: 'reservations' },
+  { label: 'Tickets', value: 'tickets' },
+  { label: 'Orders', value: 'orders' },
+  { label: 'Profile', value: 'profile' },
+  { label: 'Projects', value: 'projects' },
+  { label: 'Sites', value: 'sites' },
+  { label: 'Stats', value: 'stats' },
+  { label: 'Files', value: 'files' },
+  { label: 'Payments', value: 'payments' },
+  { label: 'Messages', value: 'messages' },
+  { label: 'Notifications', value: 'notifications' },
+  { label: 'Help', value: 'help' },
+];
+
 export const SiteSchema = () => {
   return {
     type: 'object',
@@ -261,79 +278,48 @@ export const SiteSchema = () => {
       },
       features: {
         type: 'array',
-        hideLabel: true,
-        default: getSiteFeatureList(),
-        group: 'features',
-        layoutGroup: 'features',
+        'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
+        options: getSiteFeatureList(),
+        layoutGroup: 'settings',
         operations: [],
         items: {
-          hideLabel: true,
-          type: 'object',
-          layout: 'horizontal',
-          properties: {
-            enable: {
-              type: 'boolean',
-              group: 'feature',
-              styling: {
-                container: 'w-24',
-                'container-array': 'w-24',
-              },
-            },
-            name: {
-              type: 'string',
-              group: 'feature',
-              styling: {
-                container: 'w-full',
-                'container-array': 'w-32 flex-shrink-0',
-              },
-              readOnly: true,
-            },
-            path: {
-              type: 'string',
-              group: 'feature',
-              styling: {
-                container: 'w-full',
-              },
-            },
-            page: {
-              type: 'string',
-              group: 'feature',
-              styling: {
-                container: 'w-full',
-              },
-              'x-control': ControlType.selectMany,
-              dataSource: {
-                source: 'collection',
-                value: 'page',
-                filter: {
-                  property: 'site',
-                  operation: 'equal',
-                  value: '{{name}}',
-                },
-                valueField: 'name',
-                labelField: 'name',
-              },
-            },
-          },
+          type: 'string',
         },
       },
       storefront: {
         type: 'object',
         hideLabel: true,
         properties: {
+          storePage: {
+            type: 'string',
+            'x-control': ControlType.selectMany,
+            dataSource: {
+              source: 'collection',
+              collection: DataType.page,
+              value: 'name',
+              label: 'name',
+              filter: {
+                property: 'site',
+                operation: 'equal',
+                value: '{{name}}',
+              },
+            },
+            group: 'cart',
+          },
           cart: {
             type: 'string',
-            enum: ['default', 'none'],
-            group: 'looks',
+            enum: ['default', 'modern', 'none'],
+            group: 'cart',
           },
           productGrid: {
             type: 'string',
-            enum: ['default', 'none'],
+            enum: ['default', 'modern', 'none'],
             group: 'looks',
           },
           productDetails: {
             type: 'string',
-            enum: ['default', 'none'],
+            enum: ['default','modern', 'none'],
             group: 'looks',
           },
           showSearch: {
@@ -343,17 +329,50 @@ export const SiteSchema = () => {
               container: 'w-24',
             },
           },
+          showComments: {
+            type: 'boolean',
+            group: 'comment',
+            styling: {
+              container: 'w-24',
+            },
+          },
+          showShare: {
+            type: 'boolean',
+            group: 'comment',
+            styling: {
+              container: 'w-24',
+            },
+          },
+          quickView: {
+            type: 'string',
+            enum: [
+              'none',
+              'dialog',
+              'drawer-left',
+              'drawer-right',
+            ],
+            group: 'search',
+            default: 'left',
+          },
           filter: {
             type: 'string',
-            enum: ['default', 'none'],
+            enum: [
+              'none',
+              'top',
+              'left',
+              'right',
+              'drawer-left',
+              'drawer-right',
+            ],
             group: 'search',
+            default: 'left',
           },
           filters: {
             type: 'array',
             rules: [
               {
                 operation: 'equal',
-                valueA: '{{/properties/storefront/properties/filter}}',
+                valueA: '{{filter}}',
                 valueB: 'none',
                 action: 'hide',
               },
@@ -461,6 +480,38 @@ export const SiteSchema = () => {
         },
         layoutGroup: 'store',
       },
+      myAccount: {
+        type: 'object',
+        hideLabel: true,
+        properties: {
+          template: {
+            type: 'string',
+            'x-control': ControlType.selectMany,
+            dataSource: {
+              source: 'collection',
+              collection: DataType.page,
+              value: 'name',
+              label: 'name',
+              filter: {
+                property: 'site',
+                operation: 'equal',
+                value: '{{name}}',
+              },
+            },
+          },
+          features: {
+            type: 'array',
+            'x-control': ControlType.selectMany,
+            'x-control-variant': 'chip',
+            options: getAccountFeatures(),
+            operations: [],
+            items: {
+              type: 'string',
+            },
+          },
+        },
+        layoutGroup: 'account',
+      },
       tracking: {
         type: 'object',
         collapsible: 'open',
@@ -540,10 +591,10 @@ export const SiteSchema = () => {
         items: [
           { id: 'info', title: 'Info' },
           { id: 'settings', title: 'Settings' },
-          { id: 'features', title: 'Features' },
           { id: 'social', title: 'Socila & Tracking' },
           { id: 'spam', title: 'Spam Protection' },
           { id: 'store', title: 'Storefront' },
+          { id: 'account', title: 'My Account' },
         ],
       },
     },

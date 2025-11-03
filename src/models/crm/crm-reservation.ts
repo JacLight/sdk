@@ -28,6 +28,10 @@ export const ReservationSchema = () => {
         type: 'string',
         group: 'name',
       },
+      reservationDefinitionId: {
+        type: 'string',
+        group: 'name',
+      },
       customer: {
         type: 'object',
         layout: 'horizontal',
@@ -66,7 +70,7 @@ export const ReservationSchema = () => {
               default: 'pending',
             },
           },
-          required: ['name','email'],
+          required: ['name', 'email'],
         },
       },
       service: {
@@ -99,6 +103,37 @@ export const ReservationSchema = () => {
         type: 'string',
         format: 'date-time',
         group: 'time',
+      },
+      timezone: {
+        type: 'string',
+        'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
+        dataSource: {
+          source: 'function',
+          value: 'timezones',
+        },
+        default: '{{fn:Intl.DateTimeFormat().resolvedOptions().timeZone}}',
+        group: 'time',
+      },
+      locationName: {
+        type: 'string',
+        group: 'time',
+      },
+      locationType: {
+        type: 'string',
+        enum: ['physical', 'virtual', 'phone'],
+      },
+      address: {
+        type: 'object',
+      },
+      meetingLink: {
+        type: 'string',
+        format: 'uri',
+        group: 'time',
+      },
+      meetingInfo: {
+        type: 'string',
+        'x-control-variant': 'textarea',
       },
       checkedIn: {
         type: 'boolean',

@@ -5,7 +5,7 @@ import {
   ControlType,
   PermissionTypeComponent,
   PermissionTypeContent,
-  getMenuList
+  getMenuList,
 } from '../types';
 
 import { FileInfoSchema } from './file-info';
@@ -42,14 +42,22 @@ export const UserSchema = () => {
         type: 'string',
         'x-control-variant': 'password',
         hidden: true,
-        "minLength": 8,
-        "pattern": "^(?=.*[A-Za-z])(?=.*\\d).{8,}$"
+        minLength: 8,
+        pattern: '^(?=.*[A-Za-z])(?=.*\\d).{8,}$',
       },
       confirmPassword: {
         type: 'string',
         hidden: true,
         'x-control-variant': 'password',
-        rules: [{ operation: 'notEqual', valueA: '{{password}}', valueB: '{{confirmPassword}}', action: 'validate', message: 'Password and Confirm Password must be the same.' }]
+        rules: [
+          {
+            operation: 'notEqual',
+            valueA: '{{password}}',
+            valueB: '{{confirmPassword}}',
+            action: 'validate',
+            message: 'Password and Confirm Password must be the same.',
+          },
+        ],
       },
       lockout: {
         type: 'string',
@@ -197,9 +205,9 @@ export const UserSchema = () => {
       },
       signature: {
         type: 'string',
-        'x-control': ControlType.richtext
+        'x-control': ControlType.richtext,
       },
-      audit:{
+      audit: {
         type: 'object',
         hidden: true,
         properties: {
@@ -215,14 +223,13 @@ export const UserSchema = () => {
           meta: {
             type: 'object',
             hidden: true,
-          }
+          },
         },
-      }
+      },
     },
-    "required": ["firstName", "lastName", "email"]
+    required: ['firstName', 'lastName', 'email'],
   } as const;
 };
-
 
 export const UserGroupSchema = () => {
   return {
@@ -234,7 +241,7 @@ export const UserGroupSchema = () => {
         minLength: 3,
         maxLength: 50,
         unique: true,
-        transform: 'uri'
+        transform: 'uri',
       },
       description: {
         type: 'string',
@@ -351,13 +358,80 @@ export const UserRoleSchema = () => {
             items: {
               type: 'string',
             },
-          }
+          },
         },
       },
     },
   } as const;
 };
 
+export const userInvitationSchema = () => {
+  return {
+    type: 'object',
+    properties: {
+      email: {
+        type: 'string',
+        format: 'email',
+        minLength: 3,
+        maxLength: 150,
+        unique: true,
+      },
+      firstName: {
+        type: 'string',
+      },
+      lastName: {
+        type: 'string',
+      },
+      invitationToken: {
+        type: 'string',
+        readOnly: true,
+      },
+      status: {
+        type: 'string',
+        default: 'pending',
+      },
+      invitedBy: {
+        type: 'string',
+        readOnly: true,
+      },
+      expiryDate: {
+        type: 'string',
+        format: 'date-time',
+      },
+      message: {
+        type: 'string',
+      },
+      groups: {
+        type: 'string',
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.usergroup,
+          value: 'name',
+          label: 'name',
+        },
+        items: {
+          type: 'string',
+        },
+      },
+      roles: {
+        type: 'string',
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.userrole,
+          value: 'name',
+          label: 'name',
+        },
+        items: {
+          type: 'string',
+        },
+      },
+    },
+  } as const;
+};
 
 export const ApiKeySchema = () => {
   return {
@@ -367,23 +441,24 @@ export const ApiKeySchema = () => {
         type: 'string',
         minLength: 3,
         maxLength: 100,
-        description: 'Human-readable name for the API key'
+        description: 'Human-readable name for the API key',
       },
       description: {
         type: 'string',
         maxLength: 500,
-        description: 'Optional description of the API key purpose'
+        description: 'Optional description of the API key purpose',
       },
       keyHash: {
         type: 'string',
         hidden: true,
-        description: 'Hashed version of the API key for verification'
+        description: 'Hashed version of the API key for verification',
       },
       keyPrefix: {
         type: 'string',
         disabled: true,
         maxLength: 8,
-        description: 'First few characters for identification (e.g., ak_1234...)'
+        description:
+          'First few characters for identification (e.g., ak_1234...)',
       },
       scopes: {
         type: 'array',
@@ -397,13 +472,13 @@ export const ApiKeySchema = () => {
             { label: 'Delete', value: 'delete' },
             { label: 'Admin', value: 'admin' },
             { label: 'Integration', value: 'integration' },
-            { label: 'Webhook', value: 'webhook' }
-          ]
+            { label: 'Webhook', value: 'webhook' },
+          ],
         },
         items: {
-          type: 'string'
+          type: 'string',
         },
-        description: 'Permissions/scopes for this API key'
+        description: 'Permissions/scopes for this API key',
       },
       rateLimit: {
         type: 'object',
@@ -412,22 +487,22 @@ export const ApiKeySchema = () => {
             type: 'number',
             minimum: 1,
             maximum: 10000,
-            default: 100
+            default: 100,
           },
           requestsPerHour: {
             type: 'number',
             minimum: 1,
             maximum: 100000,
-            default: 1000
+            default: 1000,
           },
           requestsPerDay: {
             type: 'number',
             minimum: 1,
             maximum: 1000000,
-            default: 10000
-          }
+            default: 10000,
+          },
         },
-        description: 'Rate limiting configuration'
+        description: 'Rate limiting configuration',
       },
       status: {
         type: 'string',
@@ -437,22 +512,22 @@ export const ApiKeySchema = () => {
           json: [
             { label: 'Active', value: 'active' },
             { label: 'Inactive', value: 'inactive' },
-            { label: 'Revoked', value: 'revoked' }
-          ]
+            { label: 'Revoked', value: 'revoked' },
+          ],
         },
         default: 'active',
-        description: 'Current status of the API key'
+        description: 'Current status of the API key',
       },
       expiresAt: {
         type: 'string',
         format: 'date-time',
-        description: 'Expiration date for the API key'
+        description: 'Expiration date for the API key',
       },
       lastUsedAt: {
         type: 'string',
         format: 'date-time',
         disabled: true,
-        description: 'Last time this API key was used'
+        description: 'Last time this API key was used',
       },
       usageStats: {
         type: 'object',
@@ -461,29 +536,29 @@ export const ApiKeySchema = () => {
           totalRequests: {
             type: 'number',
             default: 0,
-            disabled: true
+            disabled: true,
           },
           lastMonthRequests: {
             type: 'number',
             default: 0,
-            disabled: true
+            disabled: true,
           },
           lastDayRequests: {
             type: 'number',
             default: 0,
-            disabled: true
+            disabled: true,
           },
           lastHourRequests: {
             type: 'number',
             default: 0,
-            disabled: true
-          }
+            disabled: true,
+          },
         },
-        description: 'Usage statistics for rate limiting and analytics'
+        description: 'Usage statistics for rate limiting and analytics',
       },
       metadata: {
         type: 'object',
-        description: 'Additional key-specific metadata'
+        description: 'Additional key-specific metadata',
       },
       audit: {
         type: 'object',
@@ -502,11 +577,11 @@ export const ApiKeySchema = () => {
           meta: {
             type: 'object',
             hidden: true,
-          }
+          },
         },
-      }
+      },
     },
-    required: ['name', 'keyHash', 'scopes']
+    required: ['name', 'keyHash', 'scopes'],
   } as const;
 };
 
@@ -514,30 +589,23 @@ const ush = UserSchema();
 const usgh = UserGroupSchema();
 const usrh = UserRoleSchema();
 const aksh = ApiKeySchema();
+const userInvitationh = userInvitationSchema();
 
 export type UserModel = FromSchema<typeof ush>;
 export type UserGroupModel = FromSchema<typeof usgh>;
 export type UserRoleModel = FromSchema<typeof usrh>;
 export type ApiKeyModel = FromSchema<typeof aksh>;
+export type UserInvitationModel = FromSchema<typeof userInvitationh>;
+
+registerCollection('User', DataType.user, UserSchema());
+
+registerCollection('User Group', DataType.usergroup, UserGroupSchema());
+registerCollection('User Role', DataType.userrole, UserRoleSchema());
+
+registerCollection('API Key', DataType.apikey, ApiKeySchema());
 
 registerCollection(
-  'User',
-  DataType.user,
-  UserSchema()
-)
-
-registerCollection(
-  'User Group',
-  DataType.usergroup,
-  UserGroupSchema()
-);registerCollection(
-  'User Role',
-  DataType.userrole,
-  UserRoleSchema()
-);
-
-registerCollection(
-  'API Key',
-  DataType.apikey,
-  ApiKeySchema()
+  'User Invitation',
+  DataType.user_invitation,
+  userInvitationSchema()
 );

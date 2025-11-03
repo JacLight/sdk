@@ -226,10 +226,10 @@ export const PageSchema = () => {
       isTemplate: {
         type: 'boolean',
         hidden: true,
-      }, 
-      appType:{
+      },
+      appType: {
         type: 'string',
-        enum: ['web', 'mobile','form', 'presentation'],
+        enum: ['web', 'mobile', 'form', 'presentation'],
         default: 'web',
         hidden: true,
       },
@@ -257,24 +257,8 @@ export const PageDataSchema = () => {
     type: 'object',
     displayStyle: 'card',
     properties: {
-      name:{
+      name: {
         type: 'string',
-        group: 'name',
-      },
-      datatypes: {
-        type: 'array',
-        'x-control': ControlType.selectMany,
-        'x-control-variant': 'combo',
-        items: {
-          type: 'string',
-        },
-        dataSource: {
-          source: 'collection',
-          collection: DataType.collection,
-          value: 'name',
-          label: 'name',
-        },
-        hidden: true, 
         group: 'name',
       },
       datatype: {
@@ -289,8 +273,7 @@ export const PageDataSchema = () => {
         },
         group: 'name',
       },
-      
-      keyword:{
+      keyword: {
         type: 'string',
       },
       categories: {
@@ -307,7 +290,6 @@ export const PageDataSchema = () => {
           label: 'name',
           children: 'children',
         },
-        categories: 'name',
       },
       tags: {
         type: 'array',
@@ -322,34 +304,51 @@ export const PageDataSchema = () => {
           value: 'name',
           label: 'name',
         },
-        categories: 'name',
       },
       sort: {
         type: 'string',
         displayStyle: 'outlined',
-        enum: [
-          'Title Asc',
-          'Title Desc',
-          'Name Asc',
-          'Name Desc',
-          'CreateDate Asc',
-          'CreateDate Desc',
-          'ModifyDate Asc',
-          'ModifyDate Desc',
+        'x-control-variant': 'combo',
+        'x-control': ControlType.selectMany,
+        options: [
+          { label: 'Name', value: 'name' },
+          { label: 'Title', value: 'title' },
+          { label: 'Slug', value: 'slug' },
+          { label: 'Create Date', value: 'createdate' },
+          { label: 'Updated Date', value: 'modifydate' },
         ],
+        group: 'sort',
+      },
+      sortType: {
+        type: 'string',
+        displayStyle: 'outlined',
+        enum: ['asc', 'desc'],
         group: 'sort',
       },
       maxItems: {
         type: 'number',
         displayStyle: 'outlined',
-        group: 'sort',
-        styling: {
-          container: 'w-30',
-        },
+        group: 'maximum',
       },
       random: {
         type: 'boolean',
-        group: 'sort',
+        group: 'maximum',
+      },
+      pageSize: {
+        type: 'number',
+        group: 'pagination',
+      },
+      pagination: {
+        type: 'string',
+        group: 'pagination',
+        'x-control': ControlType.selectMany,
+        options: [
+          { label: 'Load More', value: 'loadmore' },
+          { label: 'Infinite Scroll', value: 'infinite' },
+          { label: 'Standard', value: 'standard' },
+          { label: 'None', value: 'none' },
+        ],
+        default: 'loadmore',
       },
       rows: {
         type: 'array',
@@ -383,6 +382,108 @@ export const PageDataSchema = () => {
           },
         },
       },
+      filters: {
+        type: 'array',
+        items: {
+          type: 'object',
+          hideLabel: true,
+          properties: {
+            source: {
+              type: 'string',
+              enum: [
+                'price',
+                'category',
+                'brand',
+                'tags',
+                'rating',
+                'attribute',
+              ],
+              group: 'name',
+            },
+            name: {
+              type: 'string',
+              group: 'name',
+            },
+            display: {
+              type: 'string',
+              enum: [
+                'checkbox',
+                'select',
+                'radio',
+                'range-input',
+                'range-slider',
+              ],
+              group: 'display',
+              rules: [
+                {
+                  operation: 'equal',
+                  valueA: 'attribute',
+                  valueB: '{{source}}',
+                  action: 'hide',
+                },
+                {
+                  operation: 'notEqual',
+                  valueA: 'price',
+                  valueB: '{{source}}',
+                  action: 'set-property',
+                  property: [
+                    { key: 'enum', value: ['checkbox', 'select', 'radio'] },
+                  ],
+                },
+                {
+                  operation: 'equal',
+                  valueA: 'price',
+                  valueB: '{{source}}',
+                  action: 'set-property',
+                  property: [
+                    {
+                      key: 'enum',
+                      value: [
+                        'checkbox',
+                        'select',
+                        'radio',
+                        'range-input',
+                        'range-slider',
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            minIncrement: {
+              type: 'number',
+              group: 'display',
+              default: 100,
+              rules: [
+                {
+                  operation: 'notEqual',
+                  valueA: 'price',
+                  valueB: '{{source}}',
+                  action: 'hide',
+                },
+              ],
+            },
+            attribute: {
+              type: 'string',
+              'x-control': ControlType.selectMany,
+              dataSource: {
+                source: 'collection',
+                collection: DataType.sf_attribute,
+                value: 'name',
+                label: 'name',
+              },
+              rules: [
+                {
+                  operation: 'notEqual',
+                  valueA: '{{source}}',
+                  valueB: 'attribute',
+                  action: 'hide',
+                },
+              ],
+            },
+          },
+        },
+      },
     },
   } as const;
 };
@@ -393,8 +494,4 @@ const pageSchema = PageSchema();
 export type PageDataModel = FromSchema<typeof pageDataSchema>;
 export type PageModel = FromSchema<typeof pageSchema>;
 
-registerCollection(
-  'Page',
-  DataType.page,
-  PageSchema()
-);
+registerCollection('Page', DataType.page, PageSchema());

@@ -17,6 +17,9 @@ export const FileInfoSchema = () => {
         type: 'string',
         hidden: true,
       },
+      contentType: {
+        type: 'string',
+      },
       url: {
         type: 'string',
         'x-render': 'file',
