@@ -309,17 +309,17 @@ export const SiteSchema = () => {
           },
           cart: {
             type: 'string',
-            enum: ['default', 'modern', 'none'],
+            enum: ['default', 'modern', 'boutique', 'none'],
             group: 'cart',
           },
           productGrid: {
             type: 'string',
-            enum: ['default', 'modern', 'none'],
+            enum: ['default', 'modern', 'boutique', 'none'],
             group: 'looks',
           },
           productDetails: {
             type: 'string',
-            enum: ['default','modern', 'none'],
+            enum: ['default','modern', 'boutique', 'none'],
             group: 'looks',
           },
           showSearch: {

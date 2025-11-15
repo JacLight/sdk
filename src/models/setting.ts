@@ -32,7 +32,22 @@ export const SettingSchema = () => {
         type: 'string',
         group: 'system-info',
       },
-      address: getSettingItemSchema(DataType.location, 'address', 'name', undefined, { property: 'data.type', value: 'address' }),
+      automationEmail: {
+        type: 'string',
+        format: 'email',
+        group: 'automation',
+      },
+      automationPhone: {
+        type: 'string',
+        group: 'automation',
+      },
+      address: getSettingItemSchema(
+        DataType.location,
+        'address',
+        'name',
+        undefined,
+        { property: 'data.type', value: 'address' }
+      ),
       domainAccountId: {
         type: 'string',
         readOnly: true,
@@ -45,14 +60,38 @@ export const SettingSchema = () => {
       },
       emailTemplate: getSettingItemSchema(DataType.messagetemplate, 'email'),
       smsTemplate: getSettingItemSchema(DataType.messagetemplate, 'email'),
-      registerEmailTemplate: getSettingItemSchema(DataType.messagetemplate, 'register'),
-      registerSmsTemplate: getSettingItemSchema(DataType.messagetemplate, 'register'),
-      profileUpdateEmailTemplate: getSettingItemSchema(DataType.messagetemplate, 'profile'),
-      profileUpdateSmsTemplate: getSettingItemSchema(DataType.messagetemplate, 'profile'),
-      passwordChangeEmailTemplate: getSettingItemSchema(DataType.messagetemplate, 'change'),
-      passwordChangeSmsTemplate: getSettingItemSchema(DataType.messagetemplate, 'change'),
-      passwordResetEmailTemplate: getSettingItemSchema(DataType.messagetemplate, 'password'),
-      passwordResetSmsTemplate: getSettingItemSchema(DataType.messagetemplate, 'password'),
+      registerEmailTemplate: getSettingItemSchema(
+        DataType.messagetemplate,
+        'register'
+      ),
+      registerSmsTemplate: getSettingItemSchema(
+        DataType.messagetemplate,
+        'register'
+      ),
+      profileUpdateEmailTemplate: getSettingItemSchema(
+        DataType.messagetemplate,
+        'profile'
+      ),
+      profileUpdateSmsTemplate: getSettingItemSchema(
+        DataType.messagetemplate,
+        'profile'
+      ),
+      passwordChangeEmailTemplate: getSettingItemSchema(
+        DataType.messagetemplate,
+        'change'
+      ),
+      passwordChangeSmsTemplate: getSettingItemSchema(
+        DataType.messagetemplate,
+        'change'
+      ),
+      passwordResetEmailTemplate: getSettingItemSchema(
+        DataType.messagetemplate,
+        'password'
+      ),
+      passwordResetSmsTemplate: getSettingItemSchema(
+        DataType.messagetemplate,
+        'password'
+      ),
       inSmsGateway: getSettingItemSchema(DataType.config, 'in-sms'),
       outSmsGateway: getSettingItemSchema(DataType.config, 'in-sms'),
       inEmailGateway: getSettingItemSchema(DataType.config, 'in-email'),
@@ -123,7 +162,7 @@ export const SettingSchema = () => {
               group: 'template',
             },
           },
-        }
+        },
       },
       socialMediaSync: {
         type: 'array',
@@ -135,7 +174,19 @@ export const SettingSchema = () => {
             platform: {
               type: 'string',
               'x-control': ControlType.selectMany,
-              enum: ['facebook', 'twitter', 'linkedin', 'instagram', 'youtube', 'pinterest', 'tiktok', 'snapchat', 'whatsapp', 'email', 'sms'],
+              enum: [
+                'facebook',
+                'twitter',
+                'linkedin',
+                'instagram',
+                'youtube',
+                'pinterest',
+                'tiktok',
+                'snapchat',
+                'whatsapp',
+                'email',
+                'sms',
+              ],
             },
             accountId: {
               type: 'string',
@@ -149,12 +200,24 @@ export const SettingSchema = () => {
               },
               dataSource: {
                 source: 'function',
-                json: ['all', 'post', 'feed', 'messages', 'reactions', 'engagement', 'comments', 'notifications', 'insights', 'leads', 'ads'],
-              }
+                json: [
+                  'all',
+                  'post',
+                  'feed',
+                  'messages',
+                  'reactions',
+                  'engagement',
+                  'comments',
+                  'notifications',
+                  'insights',
+                  'leads',
+                  'ads',
+                ],
+              },
             },
-            config: getSettingItemSchema(DataType.config, '')
+            config: getSettingItemSchema(DataType.config, ''),
           },
-        }
+        },
       },
       dashboards: {
         type: 'array',
@@ -166,14 +229,32 @@ export const SettingSchema = () => {
             name: {
               type: 'string',
               'x-control': ControlType.selectMany,
-              enum: ['site', 'store', 'crm', 'ticket', 'mintflow', 'workflow', 'lead', 'event', 'campaign', 'social', 'dashboard'],
+              enum: [
+                'site',
+                'store',
+                'crm',
+                'ticket',
+                'mintflow',
+                'workflow',
+                'lead',
+                'event',
+                'campaign',
+                'social',
+                'dashboard',
+              ],
               group: 'dashboard',
             },
             dashboard: {
-              ...getSettingItemSchema(DataType.dataviz, 'dashboard', 'name', ['title', 'name'], { property: 'data.type', value: 'dashboard' }),
+              ...getSettingItemSchema(
+                DataType.dataviz,
+                'dashboard',
+                'name',
+                ['title', 'name'],
+                { property: 'data.type', value: 'dashboard' }
+              ),
             },
           },
-        }
+        },
       },
       themeSettings: {
         type: 'array',
@@ -213,29 +294,34 @@ export const SettingSchema = () => {
                     type: 'string',
                   },
                 },
-              }
-            }
-          }
-        }
-      }
+              },
+            },
+          },
+        },
+      },
     },
   } as const;
 };
 
-const getSettingItemSchema = (datatype: DataType, group = '', valueKey = 'sk', labelKey?: string | string[], filter?: any) =>
-({
-  type: 'string',
-  'x-control': ControlType.selectMany,
-  dataSource: {
-    source: 'collection',
-    collection: datatype,
-    valueField: valueKey,
-    labelField: labelKey || 'name',
-    filter
-  },
-  group: group,
-} as const);
-
+const getSettingItemSchema = (
+  datatype: DataType,
+  group = '',
+  valueKey = 'sk',
+  labelKey?: string | string[],
+  filter?: any
+) =>
+  ({
+    type: 'string',
+    'x-control': ControlType.selectMany,
+    dataSource: {
+      source: 'collection',
+      collection: datatype,
+      valueField: valueKey,
+      labelField: labelKey || 'name',
+      filter,
+    },
+    group: group,
+  } as const);
 
 const usgh = SettingSchema();
 
@@ -247,14 +333,6 @@ Object.keys(usgh.properties).forEach(
   (key: string) =>
     (BaseSettingKeys[key as BaseSettingType] = key as BaseSettingType)
 );
-export {
-  SettingModel,
-  BaseSettingType,
-  BaseSettingKeys,
-};
+export { SettingModel, BaseSettingType, BaseSettingKeys };
 
-registerCollection(
-  'Setting',
-  DataType.setting,
-  SettingSchema()
-);
+registerCollection('Setting', DataType.setting, SettingSchema());

@@ -18,3 +18,5 @@ export * from './crm-message-template';
 export * from './crm-audience';
 export * from './crm-creative';
 export * from './crm-pipeline';
+export * from './crm-ai_assistant';
+export * from './crm-agent';

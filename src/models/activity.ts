@@ -34,6 +34,11 @@ export const ActivityTypes: { [key: string]: string } = {
   unsubscribe: 'unsubscribe',
   register: 'register',
   reaction: 'reaction',
+  ai_execute: 'ai_execute',
+  ai_tool_call: 'ai_tool_call',
+  ai_trigger: 'ai_trigger',
+  ai_response: 'ai_response',
+  ai_error: 'ai_error',
 }
 
 export const ActivitySchema = () => {

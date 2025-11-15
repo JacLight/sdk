@@ -19,12 +19,18 @@ export const ReservationDefinitionSchema = () => {
         group: 'name',
         enum: ['service', 'interval', 'event', 'service-point'],
       },
-      paymentRequired: {
-        type: 'boolean',
+      status: {
+        type: 'string',
+        enum: ['active', 'inactive'],
         group: 'name',
       },
       title: {
         type: 'string',
+        group: 'title',
+      },
+      paymentRequired: {
+        type: 'boolean',
+        group: 'title',
       },
       image: FileInfoSchema(),
       description: {
@@ -277,21 +283,62 @@ export const ReservationDefinitionSchema = () => {
       meetingLink: {
         type: 'string',
       },
-      notificationTemplate: {
+      emails: {
         type: 'array',
-        'x-control': ControlType.selectMany,
-        'x-control-variant': 'chip',
-        'x-group': 'group2',
-        dataSource: {
-          source: 'collection',
-          collection: DataType.messagetemplate,
-          value: 'name',
-          label: 'name',
-        },
         items: {
           type: 'string',
         },
-        group: 'workflow',
+      },
+      phones: {
+        type: 'array',
+        items: {
+          type: 'string',
+        },
+      },
+      notifications: {
+        type: 'array',
+        collapsible: true,
+        items: {
+          type: 'object',
+          properties: {
+            timeBefore: {
+              type: 'number',
+              group: 'timeBefore',
+              description: 'Time before reservation, 0 for immediate',
+            },
+            unit: {
+              type: 'string',
+              enum: ['minutes', 'hours', 'days'],
+              group: 'timeBefore',
+            },
+            type: {
+              type: 'string',
+              enum: ['email', 'sms', 'whatsapp'],
+              group: 'type',
+            },
+            template: {
+              type: 'string',
+              'x-control': ControlType.selectMany,
+              'x-control-variant': 'chip',
+              dataSource: {
+                source: 'collection',
+                collection: DataType.messagetemplate,
+                value: 'name',
+                label: 'name',
+              },
+            },
+            html: {
+              type: 'string',
+              hideIn: ['form', 'table'],
+              'x-control': ControlType.richtext,
+            },
+            text: {
+              type: 'string',
+              hideIn: ['form', 'table'],
+              'x-control-variant': 'textarea',
+            },
+          },
+        },
       },
       workflow: {
         type: 'string',

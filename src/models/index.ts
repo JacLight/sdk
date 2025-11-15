@@ -40,3 +40,4 @@ export * from './workspace-item';
 export * from './automation';
 export * from './social-activity';
 export * from './dev-environment';
+export * from './site-notice';

@@ -13,7 +13,7 @@ export const MessageSchema = () => {
         'x-control-variant': 'chip',
         dataSource: {
           source: 'json',
-          json: ['email', 'sms', 'facebook', 'instagram', 'tiktok', 'twitter', 'linkedin', 'whatsapp', 'gbp', 'slack', 'pinterest', 'chat', 'push', 'notification', 'sitePopup', 'siteAlert'],
+          json: ['email', 'sms', 'facebook', 'instagram', 'tiktok', 'twitter', 'linkedin', 'whatsapp', 'gbp', 'slack', 'pinterest', 'chat', 'push', 'notification'],
         },
         default: 'email',
         group: 'name',
