@@ -34,6 +34,7 @@ export * from './web-visit';
 export * from './web-activity';
 export * from './site-index';
 export * from './site-domain';
+export * from './domain-registration';
 export * from './schedule';
 export * from './workspace';
 export * from './workspace-item';

@@ -26,6 +26,27 @@ export const AgentSchema = () => {
       status: {
         type: 'string',
       },
+      emailConfig:{
+        type: 'object',
+        collapsible:true,
+        properties:{
+          host:{
+            type:'string',
+          },
+          port:{
+            type:'number',
+          },
+          secure:{
+            type:'boolean',
+          },
+          authUser:{
+            type:'string',
+          },
+          authPass:{
+            type:'string',
+          },
+        },
+      }
     },
   } as const;
 };

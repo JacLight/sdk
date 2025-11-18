@@ -20,3 +20,6 @@ export * from './crm-creative';
 export * from './crm-pipeline';
 export * from './crm-ai_assistant';
 export * from './crm-agent';
+export * from './crm-email-account';
+export * from './crm-broadcast';
+export * from './crm-account-health';

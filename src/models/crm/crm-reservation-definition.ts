@@ -6,6 +6,8 @@ import { FileInfoSchema } from '../file-info';
 export const ReservationDefinitionSchema = () => {
   return {
     type: 'object',
+    ai: true,
+    personalize: true,
     properties: {
       name: {
         type: 'string',
@@ -300,6 +302,7 @@ export const ReservationDefinitionSchema = () => {
         collapsible: true,
         items: {
           type: 'object',
+          ai: true,
           properties: {
             timeBefore: {
               type: 'number',
@@ -314,6 +317,8 @@ export const ReservationDefinitionSchema = () => {
             type: {
               type: 'string',
               enum: ['email', 'sms', 'whatsapp'],
+              'x-control': ControlType.selectMany,
+              'x-control-variant': 'chip',
               group: 'type',
             },
             template: {
@@ -327,15 +332,21 @@ export const ReservationDefinitionSchema = () => {
                 label: 'name',
               },
             },
+            subject: {
+              type: 'string',
+              description: 'Email subject line (for email notifications)',
+            },
             html: {
               type: 'string',
               hideIn: ['form', 'table'],
               'x-control': ControlType.richtext,
+              personalize: true,
             },
             text: {
               type: 'string',
               hideIn: ['form', 'table'],
               'x-control-variant': 'textarea',
+              personalize: true,
             },
           },
         },
