@@ -35,6 +35,23 @@ export const AIAssistantSchema = () => {
         'x-control': ControlType.richtext,
         group: 'behavior_personality',
       },
+      voice: {
+        type: 'string',
+        title: 'AI Voice',
+        description: 'Voice for OpenAI Realtime API',
+        enum: [
+          'alloy',
+          'echo',
+          'shimmer',
+          'ash',
+          'ballad',
+          'coral',
+          'sage',
+          'verse',
+        ],
+        default: 'alloy',
+        group: 'behavior_voice',
+      },
       behaviorRules: {
         type: 'array',
         items: { type: 'string' },
@@ -44,19 +61,52 @@ export const AIAssistantSchema = () => {
       // ===== Skills =====
       capabilities: {
         type: 'array',
-        items: { type: 'string' },
+        items: {
+          type: 'string',
+          enum: [
+            'qualify_leads',
+            'answer_questions',
+            'schedule_appointments',
+            'process_orders',
+            'provide_support',
+            'product_recommendations',
+            'lead_nurturing',
+            'data_collection',
+          ],
+        },
+        description: 'What the assistant can do (business capabilities)',
       },
       tools: {
         type: 'array',
         items: {
           type: 'object',
           properties: {
-            key: { type: 'string' },
+            key: {
+              type: 'string',
+              enum: [
+                // Communication Tools
+                'send_sms',
+                'send_chat_message',
+                'make_phone_call',
+                'answer_phone_call',
+                'send_email',
+                // CRM Data Tools
+                'search_customers',
+                'create_lead',
+                'update_lead_status',
+                // Scheduling Tools
+                'check_availability',
+                'create_reservation',
+                // Knowledge Tools
+                'query_knowledge',
+              ],
+            },
             description: { type: 'string' },
             enabled: { type: 'boolean', default: true },
           },
           required: ['key'],
         },
+        description: 'How the assistant accomplishes tasks (technical tools)',
       },
 
       // ===== Interaction =====
@@ -69,7 +119,8 @@ export const AIAssistantSchema = () => {
             action: { type: 'string' },
             filters: {
               type: 'object',
-              description: 'Conditions that must match for this trigger to activate',
+              description:
+                'Conditions that must match for this trigger to activate',
               additionalProperties: true,
             },
           },
@@ -179,5 +230,5 @@ export type CrmAIAssistantModel = FromSchema<typeof cs>;
 registerCollection(
   'CRM AI Assistant',
   DataType.ai_assistant,
-  AIAssistantSchema
+  AIAssistantSchema()
 );

@@ -110,21 +110,8 @@ export const ReservationDefinitionSchema = () => {
           },
         ],
       },
-      venue: {
-        type: 'string',
-        'x-control': ControlType.selectMany,
-        'x-control-variant': 'chip',
-        'x-group': 'group1',
-        dataSource: {
-          source: 'collection',
-          collection: DataType.location,
-          value: 'name',
-          label: 'name',
-        },
-        group: 'location',
-      },
       hosts: {
-        type: 'string',
+        type: 'array',
         'x-control': ControlType.selectMany,
         'x-control-variant': 'chip',
         dataSource: {
@@ -133,7 +120,6 @@ export const ReservationDefinitionSchema = () => {
           value: 'email',
           label: 'email',
         },
-        group: 'location',
       },
       services: {
         collapsible: true,
@@ -262,6 +248,27 @@ export const ReservationDefinitionSchema = () => {
         default: 1,
         group: 'spots',
       },
+      meetingLink: {
+        type: 'string',
+        group: 'venue',
+      },
+      venue: {
+        type: 'string',
+        'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
+        'x-group': 'group1',
+        dataSource: {
+          source: 'collection',
+          collection: DataType.location,
+          value: 'name',
+          label: 'name',
+        },
+        group: 'venue',
+      },
+      meetingInfo: {
+        type: 'string',
+        'x-control-variant': 'textarea',
+      },
       form: {
         type: 'string',
         'x-control': ControlType.selectMany,
@@ -277,13 +284,6 @@ export const ReservationDefinitionSchema = () => {
         type: 'string',
         enum: ['unassigned', 'round-robin'],
         group: 'form',
-      },
-      meetingInfo: {
-        type: 'string',
-        'x-control-variant': 'textarea',
-      },
-      meetingLink: {
-        type: 'string',
       },
       emails: {
         type: 'array',

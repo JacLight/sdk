@@ -315,6 +315,15 @@ export const SFProductSchema = () => {
           },
         },
       },
+      source: {
+        type: 'string',
+      },
+      sourceUrl: {
+        type: 'string',
+      },
+      batch: {
+        type: 'string',
+      },
     },
     required: ['name', 'sku'],
   } as const;

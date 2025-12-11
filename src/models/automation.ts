@@ -63,6 +63,12 @@ export const AutomationSchema = () => {
         group: 'workflow',
         description: 'Automation workflow steps',
       },
+      blocks: {
+        type: 'array',
+        items: AutomationBlockSchema(),
+        group: 'workflow',
+        description: 'Reusable step blocks for better organization',
+      },
       connections: {
         type: 'array',
         items: WorkflowConnectionSchema(),
@@ -211,7 +217,7 @@ export const AutomationStepSchema = () => {
       },
       type: {
         type: 'string',
-        enum: ['trigger', 'action', 'condition', 'wait'],
+        enum: ['trigger', 'action', 'condition', 'wait', 'end'],
         'x-control': ControlType.selectMany,
         maxItems: 1,
         description: 'Step type',
@@ -242,6 +248,63 @@ export const AutomationStepSchema = () => {
         type: 'number',
         minimum: 1,
         description: 'Step execution order',
+      },
+      blockId: {
+        type: 'string',
+        description: 'ID of the block this step belongs to (optional)',
+      },
+      targetStepId: {
+        type: 'string',
+        description: 'Target step ID for goto steps',
+      },
+      targetBlockId: {
+        type: 'string',
+        description: 'Target block ID for goto steps',
+      },
+    },
+  } as const;
+};
+
+export const AutomationBlockSchema = () => {
+  return {
+    type: 'object',
+    required: ['id', 'name'],
+    properties: {
+      id: {
+        type: 'string',
+        description: 'Block unique identifier',
+      },
+      name: {
+        type: 'string',
+        minLength: 1,
+        maxLength: 100,
+        description: 'Block display name',
+      },
+      description: {
+        type: 'string',
+        maxLength: 500,
+        description: 'Block description',
+      },
+      steps: {
+        type: 'array',
+        items: {
+          type: 'string',
+        },
+        description: 'Array of step IDs in this block',
+      },
+      collapsed: {
+        type: 'boolean',
+        default: false,
+        description: 'Whether the block is collapsed in UI',
+      },
+      color: {
+        type: 'string',
+        description: 'Block color for visual organization',
+      },
+      order: {
+        type: 'number',
+        minimum: 1,
+        description: 'Block display order',
       },
     },
   } as const;
@@ -858,6 +921,9 @@ export namespace AutomationModels {
   >;
   export type AutomationStepModel = FromSchema<
     ReturnType<typeof AutomationStepSchema>
+  >;
+  export type AutomationBlockModel = FromSchema<
+    ReturnType<typeof AutomationBlockSchema>
   >;
   export type TriggerConditionModel = FromSchema<
     ReturnType<typeof TriggerConditionSchema>

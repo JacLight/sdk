@@ -88,6 +88,7 @@ export interface BaseModel<T> {
     name?: string;
     email?: string;
   },
+  crm_agent?: string;
   state?: ModelState;
   search?: string;
   create_hash?: string;

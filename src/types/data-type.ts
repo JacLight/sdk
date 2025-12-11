@@ -40,6 +40,8 @@ export enum DataType {
   mintflow = 'mintflow',
   mintflownode = 'mintflownode',
   post = 'post',
+  ivr_flow = 'ivr_flow',
+  ivr_routing = 'ivr_routing',
   subschema = 'subschema',
   lead_pipeline = 'lead_pipeline',
   config = 'config',
