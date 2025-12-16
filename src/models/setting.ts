@@ -32,14 +32,20 @@ export const SettingSchema = () => {
         type: 'string',
         group: 'system-info',
       },
-      automationEmail: {
-        type: 'string',
-        format: 'email',
-        group: 'automation',
+      emails: {
+        type: 'array',
+        items:{
+          type: 'string',
+          format: 'email',
+        },
+        group: 'emails',
       },
-      automationPhone: {
-        type: 'string',
-        group: 'automation',
+      phones: {
+        type: 'array',
+        items:{
+          type: 'string',
+        },
+        group: 'emails',
       },
       address: getSettingItemSchema(
         DataType.location,

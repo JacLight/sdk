@@ -46,6 +46,9 @@ export const SFOrderSchema = () => {
       email: {
         type: 'string',
       },
+      phone: {
+        type: 'string',
+      },      
       currency: {
         type: 'string',
       },

@@ -35,12 +35,12 @@ export const AddressSchema = () => {
         type: 'string',
         hidden: true,
       },
-      region: {
+      state: {
         type: 'string',
         'x-control': ControlType.selectMany,
         'x-control-variant': 'chip',
         dataSource: {
-          value: 'getCountryRegions',
+          value: 'getCountryStates',
           source: 'function',
           filter: {
             value: '{{address/country}}',

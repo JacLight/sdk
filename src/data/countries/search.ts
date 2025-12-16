@@ -37,7 +37,7 @@ export function search_country(query: {
     .pop();
 }
 
-export const getCountryRegions = (
+export const getCountryStates = (
   countryCode: string
 ): { label: string; value: string }[] => {
   if (!countryCode) return [];
