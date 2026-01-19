@@ -19,3 +19,5 @@ export * from './sf-transaction';
 export * from './sf-wishlist';
 export * from './sf-brand';
 export * from './sf-collection';
+export * from './sf-shipping-config'
+export * from './sf-price-list';

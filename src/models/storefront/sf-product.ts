@@ -2,6 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { DataType, ControlType } from '../../types';
 import { FileInfoSchema } from '../file-info';
+import { getCountryDropDownOptions } from '../../data';
 
 export const SFProductSchema = () => {
   return {
@@ -18,7 +19,7 @@ export const SFProductSchema = () => {
         default: '{{name}}',
         transform: ['uri', 'lowercase', 'suffix-', 'random-string'],
         textSearch: true,
-        group: 'slug',
+        group: 'name',
       },
       sku: {
         type: 'string',
@@ -40,6 +41,95 @@ export const SFProductSchema = () => {
       tax: {
         type: 'boolean',
         group: 'price',
+      },
+      pricing: {
+        type: 'object',
+        collapsible: true,
+        properties: {
+          enableTieredPricing: {
+            type: 'boolean',
+            default: false,
+            description: 'Enable quantity-based tiered pricing',
+            group: 'pricing-settings',
+          },
+          tiers: {
+            type: 'array',
+            description: 'Quantity-based price tiers',
+            rules: [
+              { operation: 'notEqual', valueA: '{{enableTieredPricing}}', valueB: true, action: 'hide' },
+            ],
+            items: {
+              type: 'object',
+              properties: {
+                minQty: {
+                  type: 'number',
+                  minimum: 1,
+                  default: 1,
+                  description: 'Minimum quantity',
+                  group: 'tier',
+                },
+                maxQty: {
+                  type: 'number',
+                  description: 'Maximum quantity (leave empty for unlimited)',
+                  group: 'tier',
+                },
+                price: {
+                  type: 'number',
+                  description: 'Price per unit at this tier',
+                  group: 'tier',
+                },
+                label: {
+                  type: 'string',
+                  description: 'Display label (e.g., "Wholesale", "Bulk")',
+                  group: 'tier',
+                },
+              },
+            },
+          },
+          groupPricing: {
+            type: 'array',
+            description: 'Customer group-specific pricing',
+            collapsible: true,
+            items: {
+              type: 'object',
+              properties: {
+                group: {
+                  type: 'string',
+                  'x-control': ControlType.selectMany,
+                  dataSource: {
+                    source: 'collection',
+                    collection: DataType.usergroup,
+                    value: 'name',
+                    label: 'name',
+                  },
+                  group: 'group-price',
+                },
+                priceType: {
+                  type: 'string',
+                  enum: ['fixed', 'discount_percent', 'discount_amount'],
+                  default: 'discount_percent',
+                  group: 'group-price',
+                },
+                value: {
+                  type: 'number',
+                  description: 'Fixed price, discount %, or discount amount',
+                  group: 'group-price',
+                },
+              },
+            },
+          },
+          priceList: {
+            type: 'string',
+            description: 'Override: use a specific price list for this product',
+            'x-control': ControlType.selectMany,
+            dataSource: {
+              source: 'collection',
+              collection: DataType.sf_price_list,
+              value: 'name',
+              label: 'name',
+            },
+          },
+        },
       },
       brand: {
         type: 'string',
@@ -128,17 +218,112 @@ export const SFProductSchema = () => {
             type: 'number',
             group: 'weight',
           },
+          weightUnit: {
+            type: 'string',
+            enum: ['oz', 'lb', 'g', 'kg'],
+            default: 'lb',
+            group: 'weight',
+          },
           length: {
             type: 'number',
-            group: 'weight',
+            group: 'dimensions',
           },
           height: {
             type: 'number',
-            group: 'weight',
+            group: 'dimensions',
           },
           width: {
             type: 'number',
-            group: 'weight',
+            group: 'dimensions',
+          },
+          dimensionUnit: {
+            type: 'string',
+            enum: ['in', 'cm'],
+            default: 'in',
+            group: 'dimensions',
+          },
+        },
+      },
+      shipping: {
+        type: 'object',
+        collapsible: true,
+        properties: {
+          config: {
+            type: 'string',
+            description: 'Select shipping configuration (leave empty to use site default)',
+            'x-control': ControlType.selectMany,
+            dataSource: {
+              source: 'collection',
+              collection: DataType.sf_shipping_config,
+              value: 'name',
+              label: 'title',
+            },
+            group: 'shipping-config',
+          },
+          override: {
+            type: 'string',
+            enum: ['', 'free', 'flat'],
+            description: 'Quick override: free shipping or flat rate',
+            group: 'shipping-config',
+          },
+          flatRate: {
+            type: 'number',
+            description: 'Flat rate amount (when override is flat)',
+            rules: [
+              { operation: 'notEqual', valueA: '{{override}}', valueB: 'flat', action: 'hide' },
+            ],
+            group: 'shipping-config',
+          },
+          currency: {
+            type: 'string',
+            default: 'USD',
+            group: 'shipping-config',
+          },
+          shipsFrom: {
+            type: 'string',
+            description: 'Ship from location (overrides config origin)',
+            'x-control': ControlType.selectMany,
+            dataSource: {
+              source: 'collection',
+              collection: DataType.location,
+              value: 'name',
+              label: 'name',
+            },
+          },
+          restrictions: {
+            type: 'object',
+            collapsible: true,
+            properties: {
+              excludeCountries: {
+                type: 'string',
+                'x-control': ControlType.selectMany,
+                'x-control-variant': 'chip',
+                dataSource: {
+                  source: 'json',
+                  json: getCountryDropDownOptions(),
+                },
+              },
+              excludeStates: {
+                type: 'array',
+                items: { type: 'string' },
+                description: 'States/regions where this product cannot be shipped',
+              },
+              requiresSignature: {
+                type: 'boolean',
+                default: false,
+                group: 'shipping-rules',
+              },
+              isHazmat: {
+                type: 'boolean',
+                default: false,
+                group: 'shipping-rules',
+              },
+              isFragile: {
+                type: 'boolean',
+                default: false,
+                group: 'shipping-rules',
+              },
+            },
           },
         },
       },

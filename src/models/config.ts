@@ -1,6 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../default-schema';
-import { ConfigType, ControlType } from '../types';
+import { ConfigType } from '../types';
 import { DataType } from '../types';
 
 export const ConfigSchema = () => {
@@ -22,9 +22,11 @@ export const ConfigSchema = () => {
       },
       useCases: {
         type: 'array',
-        'x-control-variant': 'chip',
-        'x-control': ControlType.selectMany,
+        collapsible: true,
         readOnly: true,
+        items:{
+          type: 'string',
+        }
       },
       default: {
         type: 'boolean',

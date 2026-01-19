@@ -859,61 +859,6 @@ export const AutomationLogSchema = () => {
 };
 
 
-export const AutomationTwilioSchema = () => {
-  return {
-    type: 'object',
-    properties: {
-      clientId: {
-        type: 'string',
-      },
-      phoneNumber: {
-        type: 'string',
-        description: 'Twilio Phone Number',
-      },
-      smsAutoReplyEnabled: {
-        type: 'boolean',
-        default: false,
-        description: 'Enable SMS auto-reply',
-      },
-      smsAutoReplyMessage: {
-        type: 'string',
-        description: 'SMS auto-reply message content',
-      },
-      voiceCallForwardingEnabled: {
-        type: 'boolean',
-        default: false,
-        description: 'Enable voice call forwarding',
-      },
-      voiceCallForwardNumber: {
-        type: 'string',
-        description: 'Phone number to forward voice calls to',
-      },
-      voiceCallForwardEndpoint: {
-        type: 'string',
-        description: 'Endpoint to forward voice calls to',
-      },
-      triggerAutomationsOnSMS: {
-        type: 'boolean',
-        default: false,
-        description: 'Trigger automations on SMS',
-      },
-      triggerAutomationsOnVoiceCalls: {
-        type: 'boolean',
-        default: false,
-        description: 'Trigger automations on voice calls',
-      },
-      marketingTrackingEnabled: {
-        type: 'boolean',
-        default: false,
-        description: 'Enable marketing tracking',
-      },
-    },
-  } as const;
-}
-
-
-
-
 export namespace AutomationModels {
   export type AutomationModel = FromSchema<ReturnType<typeof AutomationSchema>>;
   export type AutomationExecutionModel = FromSchema<
@@ -967,11 +912,9 @@ export namespace AutomationModels {
   export type RetryLogicModel = FromSchema<ReturnType<typeof RetryLogicSchema>>;
   export type LoopConfigModel = FromSchema<ReturnType<typeof LoopConfigSchema>>;
   export type ScheduleModel = FromSchema<ReturnType<typeof AutomationSchema>>;
-  export type AutomationTwilioModel = FromSchema<ReturnType<typeof AutomationTwilioSchema>>;
 }
 
 registerCollection('Automation', DataType.automation, AutomationSchema());
-registerCollection('AutomationTwilioModel', DataType.automation_twilio, AutomationTwilioSchema());
 registerCollection(
   'AutomationExecution',
   DataType.automation_execution,

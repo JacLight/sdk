@@ -74,6 +74,15 @@ export const SiteSchema = () => {
         readOnly: true,
         group: 'domain',
       },
+      aliases: {
+        type: 'array',
+        items: {
+          type: 'string',
+          format: 'hostname',
+          placeholder: 'example.com',
+        },
+        layoutGroup: 'info',
+      },
       description: {
         type: 'string',
         'x-control-variant': 'textarea',
@@ -307,6 +316,19 @@ export const SiteSchema = () => {
             },
             group: 'cart',
           },
+          shipping: {
+            type: 'string',
+            description:
+              'Select shipping configuration (leave empty to use site default)',
+            'x-control': ControlType.selectMany,
+            dataSource: {
+              source: 'collection',
+              collection: DataType.sf_shipping_config,
+              value: 'name',
+              label: 'title',
+            },
+            group: 'shipping-config',
+          },
           cart: {
             type: 'string',
             enum: ['default', 'modern', 'boutique', 'none'],
@@ -319,7 +341,7 @@ export const SiteSchema = () => {
           },
           productDetails: {
             type: 'string',
-            enum: ['default','modern', 'boutique', 'none'],
+            enum: ['default', 'modern', 'boutique', 'none'],
             group: 'looks',
           },
           showSearch: {
@@ -345,12 +367,7 @@ export const SiteSchema = () => {
           },
           quickView: {
             type: 'string',
-            enum: [
-              'none',
-              'dialog',
-              'drawer-left',
-              'drawer-right',
-            ],
+            enum: ['none', 'dialog', 'drawer-left', 'drawer-right'],
             group: 'search',
             default: 'left',
           },
@@ -581,9 +598,9 @@ export const SiteSchema = () => {
       hosting: {
         type: 'array',
         hidden: true,
-        properties: {},
+        items: {}
       },
-    },
+    },  
     'x-layout': {
       main: {
         type: 'tab',

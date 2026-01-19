@@ -234,12 +234,16 @@ export const IVRRoutingSchema = () => {
                       'transfer-queue',
                       'ai-assistant',
                       'voicemail',
+                      'send-sms',
                       'trigger-automation',
                       'collect-payment',
                       'verify-caller',
                       'play-consent',
                       'custom-webhook',
                       'menu',
+                      'start-recording',
+                      'pause-recording',
+                      'resume-recording',
                       'hangup',
                     ],
                     default: 'transfer-phone',
@@ -247,7 +251,7 @@ export const IVRRoutingSchema = () => {
                   actionParams: {
                     type: 'string',
                     description:
-                      'Phone number, agent ID, queue name, menu ID, automation ID, etc. based on action type',
+                      'Phone number, agent ID, queue name, menu ID, automation ID, SMS message, etc. based on action type',
                   },
                 },
                 required: ['digit', 'label', 'action'],
@@ -329,9 +333,49 @@ export const IVRRoutingSchema = () => {
               'Twilio voice name (e.g., alice, man, woman, or Amazon Polly voice)',
             default: 'alice',
           },
-          recordCalls: {
-            type: 'boolean',
-            default: false,
+          recording: {
+            type: 'object',
+            description: 'Call recording configuration',
+            properties: {
+              enabled: {
+                type: 'boolean',
+                description: 'Enable call recording globally',
+                default: false,
+              },
+              mode: {
+                type: 'string',
+                enum: ['all', 'inbound_only', 'outbound_only', 'menu_triggered'],
+                description: 'When to record calls',
+                default: 'all',
+              },
+              transcriptionEnabled: {
+                type: 'boolean',
+                description: 'Auto-transcribe recordings',
+                default: true,
+              },
+              notifyCallers: {
+                type: 'boolean',
+                description: 'Play recording disclosure to callers',
+                default: true,
+              },
+              notificationMessage: {
+                type: 'string',
+                description: 'Recording disclosure message',
+                default: 'This call may be recorded for quality purposes.',
+              },
+              pauseResumeEnabled: {
+                type: 'boolean',
+                description: 'Allow pausing/resuming recording (e.g., for PCI compliance)',
+                default: false,
+              },
+              retentionDays: {
+                type: 'integer',
+                minimum: 1,
+                maximum: 365,
+                description: 'Days to keep recordings before auto-delete',
+                default: 90,
+              },
+            },
           },
           voicemailEnabled: {
             type: 'boolean',
@@ -371,6 +415,203 @@ export const IVRRoutingSchema = () => {
             type: 'string',
             description: 'Automation workflow ID for holidays',
           },
+        },
+      },
+
+      // ===== CALL FORWARDING / RING GROUPS =====
+      forwarding: {
+        type: 'object',
+        description: 'Call forwarding and ring group configuration',
+        group: 'forwarding',
+        properties: {
+          enabled: {
+            type: 'boolean',
+            description: 'Enable call forwarding',
+            default: false,
+          },
+          strategy: {
+            type: 'string',
+            enum: ['simultaneous', 'sequential'],
+            description: 'Ring all at once or one by one',
+            default: 'sequential',
+          },
+          targets: {
+            type: 'array',
+            description: 'Phone numbers or agents to forward to',
+            items: {
+              type: 'object',
+              properties: {
+                type: {
+                  type: 'string',
+                  enum: ['phone', 'agent', 'queue', 'sip'],
+                  default: 'phone',
+                },
+                value: {
+                  type: 'string',
+                  description: 'Phone number, agent ID, queue name, or SIP URI',
+                },
+                label: {
+                  type: 'string',
+                  description: 'Display name (e.g., "John Mobile")',
+                },
+              },
+              required: ['type', 'value'],
+            },
+          },
+          ringDuration: {
+            type: 'integer',
+            minimum: 5,
+            maximum: 60,
+            description: 'Seconds to ring each target before trying next',
+            default: 20,
+          },
+          whisper: {
+            type: 'object',
+            description: 'Whisper announcement to person answering',
+            properties: {
+              enabled: {
+                type: 'boolean',
+                default: false,
+              },
+              message: {
+                type: 'string',
+                description: 'Message to play (supports {{caller}} variable)',
+                default: 'Incoming call from {{caller}}',
+              },
+            },
+          },
+          screening: {
+            type: 'object',
+            description: 'Call screening - require key press to accept',
+            properties: {
+              enabled: {
+                type: 'boolean',
+                default: false,
+              },
+              message: {
+                type: 'string',
+                default: 'Press 1 to accept this call, or hang up to decline.',
+              },
+            },
+          },
+          fallback: {
+            type: 'string',
+            enum: ['voicemail', 'automation', 'hangup'],
+            description: 'What to do if no one answers',
+            default: 'voicemail',
+          },
+          fallbackAutomationId: {
+            type: 'string',
+            description: 'Automation to run if fallback is "automation"',
+          },
+        },
+      },
+
+      // ===== MISSED CALL ACTIONS =====
+      // Array of actions to execute when a call is missed
+      missedCallActions: {
+        type: 'array',
+        description: 'Actions to execute on missed call',
+        group: 'missed_call',
+        items: {
+          type: 'object',
+          properties: {
+            // Common fields
+            type: {
+              type: 'string',
+              enum: ['sms', 'email', 'lead', 'automation', 'webhook'],
+            },
+            name: {
+              type: 'string',
+            },
+            enabled: {
+              type: 'boolean',
+              default: true,
+            },
+            businessHoursOnly: {
+              type: 'boolean',
+              default: false,
+            },
+
+            // SMS: to (string: "caller" or phone), message, cooldownMinutes
+            // Email: to (array of emails), subject, message, template
+            // Lead: leadAssignTo, leadTags, leadSource, leadStatus
+            // Automation: automationId, automationData
+            // Webhook: webhookUrl, webhookMethod, webhookHeaders
+
+            to: {
+              oneOf: [
+                { type: 'string' },
+                { type: 'array', items: { type: 'string' } },
+              ],
+              description: 'SMS: "caller" or phone number. Email: array of email addresses',
+            },
+            message: {
+              type: 'string',
+              description: 'Message content (SMS body or Email body HTML). Supports {{caller}}, {{business_name}}, {{time}}',
+              'x-control-variant': 'textarea',
+            },
+            cooldownMinutes: {
+              type: 'integer',
+              minimum: 1,
+              maximum: 1440,
+              default: 60,
+              description: 'SMS: minutes between sending repeated messages to same number',
+            },
+            subject: {
+              type: 'string',
+              description: 'Email subject line',
+            },
+            template: {
+              type: 'string',
+              description: 'Email template ID (optional, overrides message)',
+            },
+            leadAssignTo: {
+              type: 'string',
+              description: 'Lead: agent/queue to assign',
+            },
+            leadTags: {
+              type: 'array',
+              items: { type: 'string' },
+              description: 'Lead: tags to add',
+            },
+            leadSource: {
+              type: 'string',
+              description: 'Lead: source value',
+              default: 'missed-call',
+            },
+            leadStatus: {
+              type: 'string',
+              description: 'Lead: initial status',
+              default: 'new',
+            },
+            automationId: {
+              type: 'string',
+              description: 'Automation: workflow ID to trigger',
+            },
+            automationData: {
+              type: 'object',
+              additionalProperties: true,
+              description: 'Automation: extra data to pass',
+            },
+            webhookUrl: {
+              type: 'string',
+              format: 'uri',
+              description: 'Webhook: URL to call',
+            },
+            webhookMethod: {
+              type: 'string',
+              enum: ['GET', 'POST'],
+              default: 'POST',
+              description: 'Webhook: HTTP method',
+            },
+            webhookHeaders: {
+              type: 'object',
+              additionalProperties: { type: 'string' },
+              description: 'Webhook: custom headers',
+            },
+          },
+          required: ['type'],
         },
       },
 
