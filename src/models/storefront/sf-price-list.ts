@@ -17,15 +17,29 @@ export const SFPriceListSchema = () => {
         default: 'active',
         group: 'name',
       },
+      type: {
+        type: 'string',
+        enum: ['retail', 'wholesale', 'contract', 'promotional'],
+        default: 'retail',
+        description: 'Pricing type',
+        group: 'name',
+      },
       priority: {
         type: 'number',
         default: 0,
         description: 'Higher priority price lists are applied first',
         group: 'name',
       },
+      autoApply: {
+        type: 'boolean',
+        default: false,
+        description: 'Automatically apply to eligible customers',
+        group: 'name',
+      },
       description: {
         type: 'string',
       },
+
       // Date range for scheduled price lists
       startDate: {
         type: 'string',
@@ -37,6 +51,54 @@ export const SFPriceListSchema = () => {
         format: 'date-time',
         group: 'schedule',
       },
+
+      // Eligibility conditions (for auto-apply)
+      eligibility: {
+        type: 'object',
+        collapsible: true,
+        description: 'Conditions for customers to qualify for this pricing',
+        rules: [
+          { operation: 'notEqual', valueA: '{{autoApply}}', valueB: true, action: 'hide' },
+        ],
+        properties: {
+          requiresApproval: {
+            type: 'boolean',
+            default: false,
+            description: 'Requires manual approval to use this pricing',
+            group: 'eligibility',
+          },
+          minOrderCount: {
+            type: 'number',
+            description: 'Minimum previous orders',
+            group: 'eligibility',
+          },
+          minTotalSpent: {
+            type: 'number',
+            description: 'Minimum lifetime spend',
+            group: 'eligibility',
+          },
+          minAccountAgeDays: {
+            type: 'number',
+            description: 'Minimum account age in days',
+            group: 'eligibility',
+          },
+          customerTiers: {
+            type: 'array',
+            description: 'Required customer tier',
+            'x-control': ControlType.selectMany,
+            'x-control-variant': 'chip',
+            dataSource: {
+              source: 'collection',
+              collection: DataType.sf_customer_tier,
+              value: 'name',
+              label: 'name',
+            },
+            items: { type: 'string' },
+            group: 'eligibility',
+          },
+        },
+      },
+
       // Customer targeting
       customerGroups: {
         type: 'array',
@@ -295,7 +357,7 @@ const schema = SFPriceListSchema();
 export type SFPriceListModel = FromSchema<typeof schema>;
 
 registerCollection(
-  'Store Price List',
+  'Pricing Table',
   DataType.sf_price_list,
   SFPriceListSchema()
 );

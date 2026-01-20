@@ -86,6 +86,7 @@ export enum DataType {
   sf_promotion = 'sf_promotion',
   sf_return = 'sf_return',
   sf_discount = 'sf_discount',
+  sf_customer_tier = 'sf_customer_tier',
   sf_marketing = 'sf_marketing',
   sf_inventory = 'sf_inventory',
   sf_inventory_intake = 'sf_inventory_intake',

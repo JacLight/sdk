@@ -354,6 +354,50 @@ export const SFShippingConfigSchema = () => {
         },
       },
 
+      // Markup (applies to all methods to mark up shipping cost to customer)
+      markup: {
+        type: 'object',
+        title: 'Shipping Markup',
+        description: 'Add margin to shipping cost charged to customer',
+        collapsible: true,
+        properties: {
+          type: {
+            type: 'string',
+            enum: ['none', 'fixed', 'percentage', 'both'],
+            default: 'none',
+            description: 'How to apply markup to shipping cost',
+            group: 'markup',
+          },
+          fixedAmount: {
+            type: 'number',
+            description: 'Fixed amount to add (e.g., $2.00)',
+            group: 'markup',
+            rules: [
+              { operation: 'equal', valueA: '{{type}}', valueB: 'none', action: 'hide' },
+              { operation: 'equal', valueA: '{{type}}', valueB: 'percentage', action: 'hide' },
+            ],
+          },
+          percentage: {
+            type: 'number',
+            description: 'Percentage to add (e.g., 15 for 15%)',
+            group: 'markup',
+            rules: [
+              { operation: 'equal', valueA: '{{type}}', valueB: 'none', action: 'hide' },
+              { operation: 'equal', valueA: '{{type}}', valueB: 'fixed', action: 'hide' },
+            ],
+          },
+          roundUp: {
+            type: 'boolean',
+            default: false,
+            description: 'Round up to nearest dollar',
+            group: 'markup',
+            rules: [
+              { operation: 'equal', valueA: '{{type}}', valueB: 'none', action: 'hide' },
+            ],
+          },
+        },
+      },
+
       // Handling Fees
       handling: {
         type: 'object',

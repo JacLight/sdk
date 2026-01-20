@@ -43,93 +43,16 @@ export const SFProductSchema = () => {
         group: 'price',
       },
       pricing: {
-        type: 'object',
-        collapsible: true,
-        properties: {
-          enableTieredPricing: {
-            type: 'boolean',
-            default: false,
-            description: 'Enable quantity-based tiered pricing',
-            group: 'pricing-settings',
-          },
-          tiers: {
-            type: 'array',
-            description: 'Quantity-based price tiers',
-            rules: [
-              { operation: 'notEqual', valueA: '{{enableTieredPricing}}', valueB: true, action: 'hide' },
-            ],
-            items: {
-              type: 'object',
-              properties: {
-                minQty: {
-                  type: 'number',
-                  minimum: 1,
-                  default: 1,
-                  description: 'Minimum quantity',
-                  group: 'tier',
-                },
-                maxQty: {
-                  type: 'number',
-                  description: 'Maximum quantity (leave empty for unlimited)',
-                  group: 'tier',
-                },
-                price: {
-                  type: 'number',
-                  description: 'Price per unit at this tier',
-                  group: 'tier',
-                },
-                label: {
-                  type: 'string',
-                  description: 'Display label (e.g., "Wholesale", "Bulk")',
-                  group: 'tier',
-                },
-              },
-            },
-          },
-          groupPricing: {
-            type: 'array',
-            description: 'Customer group-specific pricing',
-            collapsible: true,
-            items: {
-              type: 'object',
-              properties: {
-                group: {
-                  type: 'string',
-                  'x-control': ControlType.selectMany,
-                  dataSource: {
-                    source: 'collection',
-                    collection: DataType.usergroup,
-                    value: 'name',
-                    label: 'name',
-                  },
-                  group: 'group-price',
-                },
-                priceType: {
-                  type: 'string',
-                  enum: ['fixed', 'discount_percent', 'discount_amount'],
-                  default: 'discount_percent',
-                  group: 'group-price',
-                },
-                value: {
-                  type: 'number',
-                  description: 'Fixed price, discount %, or discount amount',
-                  group: 'group-price',
-                },
-              },
-            },
-          },
-          priceList: {
-            type: 'string',
-            description: 'Override: use a specific price list for this product',
-            'x-control': ControlType.selectMany,
-            dataSource: {
-              source: 'collection',
-              collection: DataType.sf_price_list,
-              value: 'name',
-              label: 'name',
-            },
-          },
+        type: 'string',
+        description: 'Select pricing table for this product',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.sf_price_list,
+          value: 'name',
+          label: 'name',
         },
+        group: 'price',
       },
       brand: {
         type: 'string',
