@@ -1,6 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
-import { DataType, ControlType } from '../../types';
+import { DataType } from '../../types';
 
 export const CustomerGroupSchema = () => {
   return {
@@ -8,13 +8,6 @@ export const CustomerGroupSchema = () => {
     properties: {
       name: {
         type: 'string',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.customer,
-          value: 'sk',
-          label: 'name',
-        },
       },
       description: {
         type: 'string',
@@ -22,12 +15,6 @@ export const CustomerGroupSchema = () => {
       groupType: {
         type: 'string',
         enum: ['dynamic', 'static'],
-      },
-      contacts: {
-        type: 'array',
-        items: {
-          type: 'string',
-        },
       },
       addRules: {
         type: 'array',

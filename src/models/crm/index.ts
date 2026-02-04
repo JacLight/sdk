@@ -25,4 +25,7 @@ export * from './crm-broadcast';
 export * from './crm-account-health';
 export * from './crm-ivr-flow';
 export * from './crm-ivr-routing';
-export * from './crm-ai_assistant';
+export * from './crm-benefit';
+export * from './crm-benefit-enrollment';
+export * from './crm-promotion';
+export * from './crm-subscriber';

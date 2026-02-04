@@ -42,3 +42,5 @@ export * from './automation';
 export * from './social-activity';
 export * from './dev-environment';
 export * from './site-notice';
+export * from './service-pricing';
+export * from './payoxygen';

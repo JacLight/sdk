@@ -42,15 +42,47 @@ export const SFProductSchema = () => {
         type: 'boolean',
         group: 'price',
       },
-      pricing: {
-        type: 'string',
-        description: 'Select pricing table for this product',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.sf_price_list,
-          value: 'name',
-          label: 'name',
+      // Tiered pricing - can be for all customers or specific groups
+      tiers: {
+        type: 'array',
+        collapsible: true,
+        description: 'Pricing tiers (volume discounts, group pricing)',
+        items: {
+          type: 'object',
+          properties: {
+            minQuantity: {
+              type: 'number',
+              minimum: 1,
+              description: 'Minimum quantity for this tier',
+            },
+            maxQuantity: {
+              type: 'number',
+              description: 'Maximum quantity (empty = unlimited)',
+            },
+            price: {
+              type: 'number',
+              description: 'Price per unit at this tier',
+            },
+            discountPercent: {
+              type: 'number',
+              minimum: 0,
+              maximum: 100,
+              description: 'Or % discount from base price',
+            },
+            groups: {
+              type: 'array',
+              description: 'Limit to specific groups (empty = all customers)',
+              'x-control': ControlType.selectMany,
+              'x-control-variant': 'chip',
+              dataSource: {
+                source: 'collection',
+                collection: DataType.customer_group,
+                value: 'name',
+                label: 'name',
+              },
+              items: { type: 'string' },
+            },
+          },
         },
         group: 'price',
       },

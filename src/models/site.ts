@@ -314,7 +314,12 @@ export const SiteSchema = () => {
                 value: '{{name}}',
               },
             },
-            group: 'cart',
+            group: 'template',
+          },
+          template: {
+            type: 'string',
+            enum: ['default', 'modern', 'boutique', 'none'],
+            group: 'template',
           },
           shipping: {
             type: 'string',
@@ -329,21 +334,7 @@ export const SiteSchema = () => {
             },
             group: 'shipping-config',
           },
-          cart: {
-            type: 'string',
-            enum: ['default', 'modern', 'boutique', 'none'],
-            group: 'cart',
-          },
-          productGrid: {
-            type: 'string',
-            enum: ['default', 'modern', 'boutique', 'none'],
-            group: 'looks',
-          },
-          productDetails: {
-            type: 'string',
-            enum: ['default', 'modern', 'boutique', 'none'],
-            group: 'looks',
-          },
+
           showSearch: {
             type: 'boolean',
             group: 'search',
@@ -371,7 +362,7 @@ export const SiteSchema = () => {
             group: 'search',
             default: 'left',
           },
-          filter: {
+          filtersPosition: {
             type: 'string',
             enum: [
               'none',
@@ -598,9 +589,9 @@ export const SiteSchema = () => {
       hosting: {
         type: 'array',
         hidden: true,
-        items: {}
+        items: {},
       },
-    },  
+    },
     'x-layout': {
       main: {
         type: 'tab',

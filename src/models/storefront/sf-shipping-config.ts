@@ -398,6 +398,48 @@ export const SFShippingConfigSchema = () => {
         },
       },
 
+      // Default Parcel (fallback when product doesn't define parcel dimensions)
+      defaultParcel: {
+        type: 'object',
+        title: 'Default Parcel Dimensions',
+        description: 'Used when product does not have parcel dimensions defined',
+        collapsible: true,
+        properties: {
+          weight: {
+            type: 'number',
+            description: 'Default weight',
+            group: 'parcel-weight',
+          },
+          weightUnit: {
+            type: 'string',
+            enum: ['lb', 'kg', 'oz', 'g'],
+            default: 'lb',
+            group: 'parcel-weight',
+          },
+          length: {
+            type: 'number',
+            description: 'Default length (longest side)',
+            group: 'parcel-dimensions',
+          },
+          width: {
+            type: 'number',
+            description: 'Default width',
+            group: 'parcel-dimensions',
+          },
+          height: {
+            type: 'number',
+            description: 'Default height',
+            group: 'parcel-dimensions',
+          },
+          dimensionUnit: {
+            type: 'string',
+            enum: ['in', 'cm'],
+            default: 'in',
+            group: 'parcel-dimensions',
+          },
+        },
+      },
+
       // Handling Fees
       handling: {
         type: 'object',

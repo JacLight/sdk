@@ -140,6 +140,21 @@ export const CompanySchema = () => {
           ],
         },
       },
+      // Service agreements for using shared integrations
+      serviceAgreements: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            service: { type: 'string' },
+            status: { type: 'string', enum: ['pending', 'active', 'revoked', 'expired'] },
+            accepted: { type: 'boolean', default: false },
+            acceptedAt: { type: 'string', format: 'date-time' },
+            acceptedBy: { type: 'string' },
+            revokedAt: { type: 'string', format: 'date-time' },
+          },
+        },
+      },
     },
   } as const;
 };

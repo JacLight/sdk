@@ -108,7 +108,7 @@ export const SFPriceListSchema = () => {
         'x-control-variant': 'chip',
         dataSource: {
           source: 'collection',
-          collection: DataType.usergroup,
+          collection: DataType.customer_group,
           value: 'name',
           label: 'name',
         },

@@ -37,6 +37,34 @@ export const CustomerSchema = () => {
           },
         },
       },
+      groups: {
+        type: 'array',
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.customer_group,
+          value: 'name',
+          label: 'name',
+        },
+        items: {
+          type: 'string',
+        },
+      },
+      benefits: {
+        type: 'array',
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.benefit,
+          value: 'name',
+          label: 'name',
+        },
+        items: {
+          type: 'string',
+        },
+      },
       username: {
         type: 'string',
         unique: true,

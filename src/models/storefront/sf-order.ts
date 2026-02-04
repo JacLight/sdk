@@ -52,21 +52,55 @@ export const SFOrderSchema = () => {
       currency: {
         type: 'string',
       },
-      amount: {
+
+      // Pricing Summary
+      subtotal: {
         type: 'number',
+        description: 'Sum of item line totals before discounts',
+      },
+      shipping: {
+        type: 'number',
+      },
+      shippingMethod: {
+        type: 'string',
+      },
+      shippingFee: {
+        type: 'number',
+        description: 'Alias for shipping (backwards compat)',
       },
       tax: {
         type: 'number',
       },
       discount: {
         type: 'number',
+        description: 'Total discount amount',
       },
-      discountInfo: {
-        type: 'string',
+      amount: {
+        type: 'number',
+        description: 'Final total: subtotal + shipping + tax - discount',
+      },
+
+      // Discount Details
+      discounts: {
+        type: 'array',
+        description: 'All applied discounts',
+        items: {
+          type: 'object',
+          properties: {
+            code: { type: 'string' },
+            name: { type: 'string' },
+            amount: { type: 'number' },
+            type: { type: 'string' },
+            message: { type: 'string' },
+          },
+        },
       },
       discountCode: {
         type: 'string',
+        description: 'Comma-separated discount codes (for display)',
       },
+
+      // Other
       commission: {
         type: 'number',
       },
@@ -85,6 +119,8 @@ export const SFOrderSchema = () => {
       paymentGateway: {
         type: 'string',
       },
+
+      // Order Items
       products: {
         type: 'array',
         hideLabel: true,
@@ -96,21 +132,15 @@ export const SFOrderSchema = () => {
         items: {
           type: 'object',
           properties: {
-            sku: {
-              type: 'string',
-            },
-            name: {
-              type: 'string',
-            },
-            options: {
-              type: 'string',
-            },
-            quantity: {
-              type: 'number',
-            },
-            image: {
-              type: 'string',
-            },
+            sku: { type: 'string' },
+            name: { type: 'string' },
+            image: { type: 'string' },
+            options: { type: 'string' },
+            quantity: { type: 'number' },
+            unitPrice: { type: 'number' },
+            originalPrice: { type: 'number' },
+            lineTotal: { type: 'number' },
+            discount: { type: 'number', description: 'Item-level discount (volume pricing)' },
           },
         },
       },
