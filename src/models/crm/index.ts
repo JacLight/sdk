@@ -6,7 +6,8 @@ export * from './crm-ticket';
 export * from './crm-message';
 export * from './crm-customer';
 export * from './crm-customer-group';
-export * from './crm-event';
+export * from './crm-customer-kyc';
+// Note: Event model moved to events/event.ts - use enhanced Event from events module
 export * from './crm-reservation-definition';
 export * from './crm-reservation';
 export * from './crm-service-point';

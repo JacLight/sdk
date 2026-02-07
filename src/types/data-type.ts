@@ -59,6 +59,7 @@ export enum DataType {
   company = 'company',
   address = 'address',
   customer = 'customer',
+  customer_kyc = 'customer_kyc',
   calllog = 'calllog',
   form = 'form',
   signed_document = 'signed_document',
@@ -76,6 +77,9 @@ export enum DataType {
   sf_refund = 'sf_refund',
   sf_shipping = 'sf_shipping',
   sf_shipping_config = 'sf_shipping_config',
+  sf_rental_item = 'sf_rental_item',
+  sf_rental = 'sf_rental',
+  sf_rental_config = 'sf_rental_config',
   sf_subscription = 'sf_subscription',
   sf_subscription_plan = 'sf_subscription_plan',
   sf_transaction = 'sf_transaction',
@@ -119,4 +123,22 @@ export enum DataType {
   apikey = 'apikey',
   domain_registration = 'domain_registration',
   service_pricing = 'service_pricing',
+  // Logistics / Delivery
+  delivery_config = 'delivery_config',
+  delivery_zone = 'delivery_zone',
+  delivery_agent = 'delivery_agent',
+  delivery_job = 'delivery_job',
+  // Finance
+  payout = 'payout',
+  wallet = 'wallet',
+  // Events
+  event_ticket = 'event_ticket',
+  event_session = 'event_session',
+  event_participant = 'event_participant',
+  event_checkin = 'event_checkin',
+  // Community
+  community_connection = 'community_connection',
+  community_message = 'community_message',
+  community_meeting = 'community_meeting',
+  community_block = 'community_block',
 }

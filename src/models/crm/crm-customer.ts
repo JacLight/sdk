@@ -71,12 +71,15 @@ export const CustomerSchema = () => {
       },
       firstName: {
         type: 'string',
+        group: 'fullname',
       },
       middleName: {
         type: 'string',
+        group: 'fullname',
       },
       lastName: {
         type: 'string',
+        group: 'fullname',
       },
       title: {
         type: 'string',
@@ -102,17 +105,21 @@ export const CustomerSchema = () => {
       lockout: {
         type: 'string',
         default: 'false',
+        group: 'lockout',
       },
       lockoutDate: {
         type: 'string',
         format: 'date-time',
         disabled: true,
+        group: 'lockout',
       },
       status: {
         type: 'string',
+        group: 'phone-status',
       },
       phone: {
         type: 'string',
+        group: 'phone-status',
       },
       phones: {
         type: 'array',
@@ -168,9 +175,11 @@ export const CustomerSchema = () => {
       },
       language: {
         type: 'string',
+        group: 'locale',
       },
       timezone: {
         type: 'string',
+        group: 'locale',
       },
       greeting: {
         type: 'string',
@@ -238,24 +247,30 @@ export const CustomerSchema = () => {
       },
       prefix: {
         type: 'string',
+        group: 'prefix-suffix',
       },
       suffix: {
         type: 'string',
+        group: 'prefix-suffix',
       },
       sex: {
         type: 'string',
+        group: 'sex-birthday',
       },
       birthday: {
         type: 'string',
+        group: 'sex-birthday',
       },
       employeeNumber: {
         type: 'string',
       },
       jobTitle: {
         type: 'string',
+        group: 'job',
       },
       jobClass: {
         type: 'string',
+        group: 'job',
       },
       hoursOfOperation: {
         type: 'string',
@@ -328,6 +343,7 @@ export const CustomerSchema = () => {
           'closed',
           'other',
         ],
+        group: 'lead',
       },
       leadStage: {
         type: 'string',
@@ -341,6 +357,7 @@ export const CustomerSchema = () => {
           'evangelist',
           'other',
         ],
+        group: 'lead',
       },
       balance: {
         type: 'number',
@@ -362,6 +379,72 @@ export const CustomerSchema = () => {
           meta: {
             type: 'object',
             hidden: true,
+          },
+        },
+      },
+      // Community Profile (for peer-to-peer networking)
+      communityProfile: {
+        type: 'object',
+        collapsible: true,
+        properties: {
+          isPublic: {
+            type: 'boolean',
+            default: false,
+            description: 'Opt-in to be visible in networking features',
+          },
+          headline: {
+            type: 'string',
+            maxLength: 150,
+            description: 'Short headline e.g. "CEO at Company"',
+          },
+          bio: {
+            type: 'string',
+            'x-control-variant': 'textarea',
+            maxLength: 1000,
+          },
+          expertise: {
+            type: 'array',
+            'x-control-variant': 'chip',
+            items: { type: 'string' },
+            description: 'Skills/expertise to share',
+          },
+          interests: {
+            type: 'array',
+            'x-control-variant': 'chip',
+            items: { type: 'string' },
+            description: 'Topics interested in learning',
+          },
+          lookingFor: {
+            type: 'array',
+            'x-control-variant': 'chip',
+            items: { type: 'string' },
+            description: 'What they are looking for (investors, partners, etc.)',
+          },
+          socialLinks: {
+            type: 'object',
+            properties: {
+              linkedin: { type: 'string', format: 'uri' },
+              twitter: { type: 'string' },
+              github: { type: 'string' },
+              website: { type: 'string', format: 'uri' },
+            },
+          },
+          visibility: {
+            type: 'object',
+            properties: {
+              showEmail: { type: 'boolean', default: false },
+              showPhone: { type: 'boolean', default: false },
+              showCompany: { type: 'boolean', default: true },
+              showLocation: { type: 'boolean', default: true },
+            },
+          },
+          connectionPreferences: {
+            type: 'object',
+            properties: {
+              autoAcceptQrScans: { type: 'boolean', default: false },
+              allowMessagesFromNonConnections: { type: 'boolean', default: false },
+              sendReadReceipts: { type: 'boolean', default: true },
+            },
           },
         },
       },
