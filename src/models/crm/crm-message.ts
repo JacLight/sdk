@@ -6,6 +6,8 @@ import { FileInfoSchema } from '../file-info';
 export const MessageSchema = () => {
   return {
     type: 'object',
+    ai: true,
+    personalize: true,
     properties: {
       deliveryType: {
         type: 'string',
@@ -13,7 +15,22 @@ export const MessageSchema = () => {
         'x-control-variant': 'chip',
         dataSource: {
           source: 'json',
-          json: ['email', 'sms', 'facebook', 'instagram', 'tiktok', 'twitter', 'linkedin', 'whatsapp', 'gbp', 'slack', 'pinterest', 'chat', 'push', 'notification'],
+          json: [
+            'email',
+            'sms',
+            'facebook',
+            'instagram',
+            'tiktok',
+            'twitter',
+            'linkedin',
+            'whatsapp',
+            'gbp',
+            'slack',
+            'pinterest',
+            'chat',
+            'push',
+            'notification',
+          ],
         },
         default: 'email',
         group: 'name',
@@ -46,13 +63,28 @@ export const MessageSchema = () => {
           value: 'from-accounts',
         },
         rules: [
-          { operation: 'notIn', valueA: ['email', 'whatsapp', 'chat', 'slack', 'push'], valueB: '{{deliveryType}}', action: 'hide' },
+          {
+            operation: 'notIn',
+            valueA: ['email', 'whatsapp', 'chat', 'slack', 'push'],
+            valueB: '{{deliveryType}}',
+            action: 'hide',
+          },
         ],
       },
       status: {
         type: 'string',
         default: 'new',
-        enum: ['new', 'pending', 'active', 'sent', 'delivered', 'read', 'failed', 'scheduled', 'draft'],
+        enum: [
+          'new',
+          'pending',
+          'active',
+          'sent',
+          'delivered',
+          'read',
+          'failed',
+          'scheduled',
+          'draft',
+        ],
         'x-control': 'label',
         group: 'from',
         readOnly: true,
@@ -70,14 +102,20 @@ export const MessageSchema = () => {
           filter: {
             property: 'deliveryTypes',
             operation: 'in',
-            value: '{{deliveryType}}'
-          }
+            value: '{{deliveryType}}',
+          },
         },
       },
       subject: {
         type: 'string',
         rules: [
-          { operation: 'in', valueA: ['email'], valueB: '{{deliveryType}}', action: 'set-property', property: [{ key: 'inputRequired', value: true }] },
+          {
+            operation: 'in',
+            valueA: ['email'],
+            valueB: '{{deliveryType}}',
+            action: 'set-property',
+            property: [{ key: 'inputRequired', value: true }],
+          },
         ],
         watchedPaths: ['deliveryType'],
       },
@@ -86,10 +124,15 @@ export const MessageSchema = () => {
         type: 'string',
         'x-control': 'richtext',
         rules: [
-          { operation: 'notIn', valueA: ['email', 'sitePopup'], valueB: '{{deliveryType}}', action: 'hide' },
+          {
+            operation: 'notIn',
+            valueA: ['email', 'sitePopup'],
+            valueB: '{{deliveryType}}',
+            action: 'hide',
+          },
         ],
         watchedPaths: ['deliveryType'],
-        hideIn: ['table']
+        hideIn: ['table'],
       },
       text: {
         title: 'Content',
@@ -98,10 +141,15 @@ export const MessageSchema = () => {
         rows: 4,
         displayStyle: 'outlined',
         rules: [
-          { operation: 'in', valueA: ['email', 'site-popup'], valueB: '{{deliveryType}}', action: 'hide' },
+          {
+            operation: 'in',
+            valueA: ['email', 'site-popup'],
+            valueB: '{{deliveryType}}',
+            action: 'hide',
+          },
         ],
         watchedPaths: ['deliveryType'],
-        hideIn: ['table']
+        hideIn: ['table'],
       },
       files: {
         type: 'array',
@@ -179,7 +227,7 @@ export const MessageSchema = () => {
         reference: {
           type: 'string',
           hidden: true,
-        }
+        },
       },
     },
   } as const;
@@ -187,8 +235,4 @@ export const MessageSchema = () => {
 const ms = MessageSchema();
 export type MessageModel = FromSchema<typeof ms>;
 
-registerCollection(
-  'Message',
-  DataType.message,
-  MessageSchema(),
-);
+registerCollection('Message', DataType.message, MessageSchema());

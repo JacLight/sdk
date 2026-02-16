@@ -2,6 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { DataType, ControlType } from '../../types';
 import { AddressSchema } from '../crm/crm-address';
+import { FileInfoSchema } from '../file-info';
 
 export const SFRentalSchema = () => {
   return {
@@ -33,6 +34,12 @@ export const SFRentalSchema = () => {
         ],
         default: 'pending',
         group: 'id',
+      },
+      images: {
+        type: 'array',
+        'x-control': ControlType.file,
+        items: FileInfoSchema(),
+        hideLabel: true,
       },
 
       // Rental Item Reference
@@ -129,6 +136,11 @@ export const SFRentalSchema = () => {
             'x-control': ControlType.date,
             group: 'fulfillment',
           },
+          scheduledTime: {
+            type: 'string',
+            description: 'Scheduled time slot',
+            group: 'fulfillment',
+          },
           completedDate: {
             type: 'string',
             format: 'date-time',
@@ -139,6 +151,21 @@ export const SFRentalSchema = () => {
           instructions: {
             type: 'string',
             'x-control-variant': 'textarea',
+          },
+          fee: {
+            type: 'number',
+            description: 'Delivery fee (if delivery selected)',
+            group: 'fee',
+          },
+          feeWaived: {
+            type: 'boolean',
+            default: false,
+            description: 'Delivery fee waived by discount',
+            group: 'fee',
+          },
+          distance: {
+            type: 'number',
+            description: 'Distance in miles (for delivery)',
           },
         },
       },
@@ -158,6 +185,11 @@ export const SFRentalSchema = () => {
             'x-control': ControlType.date,
             group: 'return',
           },
+          scheduledTime: {
+            type: 'string',
+            description: 'Scheduled time slot',
+            group: 'return',
+          },
           actualDate: {
             type: 'string',
             format: 'date-time',
@@ -168,6 +200,21 @@ export const SFRentalSchema = () => {
           instructions: {
             type: 'string',
             'x-control-variant': 'textarea',
+          },
+          fee: {
+            type: 'number',
+            description: 'Return pickup fee (if pickup selected)',
+            group: 'fee',
+          },
+          feeWaived: {
+            type: 'boolean',
+            default: false,
+            description: 'Return fee waived by discount',
+            group: 'fee',
+          },
+          distance: {
+            type: 'number',
+            description: 'Distance in miles (for return pickup)',
           },
         },
       },
@@ -273,11 +320,21 @@ export const SFRentalSchema = () => {
                   type: 'number',
                   group: 'fee',
                 },
+                waived: {
+                  type: 'boolean',
+                  default: false,
+                  description: 'Waived by discount',
+                },
               },
             },
           },
           feesTotal: {
             type: 'number',
+            group: 'totals',
+          },
+          discount: {
+            type: 'number',
+            description: 'Total discount amount',
             group: 'totals',
           },
           tax: {
@@ -287,6 +344,23 @@ export const SFRentalSchema = () => {
           total: {
             type: 'number',
             group: 'totals',
+          },
+        },
+      },
+
+      // Applied Discounts
+      discounts: {
+        type: 'array',
+        title: 'Applied Discounts',
+        collapsible: true,
+        items: {
+          type: 'object',
+          properties: {
+            code: { type: 'string', description: 'Coupon code if applicable' },
+            name: { type: 'string', description: 'Discount name' },
+            amount: { type: 'number', description: 'Discount amount' },
+            type: { type: 'string', enum: ['percent', 'fixed', 'free_deposit', 'free_delivery', 'waive_fees'] },
+            message: { type: 'string' },
           },
         },
       },
@@ -301,22 +375,60 @@ export const SFRentalSchema = () => {
             type: 'number',
             group: 'deposit',
           },
+          waived: {
+            type: 'boolean',
+            default: false,
+            description: 'Waived by discount',
+            group: 'deposit',
+          },
           status: {
             type: 'string',
-            enum: ['pending', 'held', 'partially_refunded', 'refunded', 'forfeited'],
+            enum: [
+              'pending',
+              'held',
+              'partially_refunded',
+              'refunded',
+              'forfeited',
+              'waived',
+            ],
             default: 'pending',
             group: 'deposit',
+          },
+          // Payment source tracking
+          paymentGateway: {
+            type: 'string',
+            description: 'Payment gateway used (stripe, paypal, etc)',
+            group: 'payment',
+          },
+          transactionId: {
+            type: 'string',
+            description: 'Original charge/transaction ID',
+            group: 'payment',
+          },
+          chargeId: {
+            type: 'string',
+            description: 'Payment intent or charge ID for refunds',
+            group: 'payment',
           },
           heldDate: {
             type: 'string',
             format: 'date-time',
           },
+          // Refund tracking
           refundedAmount: {
             type: 'number',
           },
           refundedDate: {
             type: 'string',
             format: 'date-time',
+          },
+          refundTransactionId: {
+            type: 'string',
+            description: 'Refund transaction ID from gateway',
+          },
+          refundError: {
+            type: 'string',
+            description: 'Error message if refund failed',
           },
           deductions: {
             type: 'array',

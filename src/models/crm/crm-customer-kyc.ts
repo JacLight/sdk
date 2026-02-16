@@ -207,13 +207,11 @@ export const CustomerKYCSchema = () => {
         title: 'Residential Address',
         collapsible: true,
         properties: {
-          addressLine1: {
+          street1: {
             type: 'string',
-            group: 'address',
           },
-          addressLine2: {
+          street2: {
             type: 'string',
-            group: 'address',
           },
           city: {
             type: 'string',

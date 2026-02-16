@@ -37,4 +37,5 @@ export enum ControlType {
   arrayContainer = 'arrayContainer',
   dateRange = 'dateRange',
   lookup = 'lookup',
+  legalConsent = 'legalConsent',
 }

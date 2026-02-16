@@ -301,11 +301,12 @@ export const SFRentalItemSchema = () => {
         },
       },
 
-      // Location
-      location: {
+      // Pickup Location
+      pickupLocation: {
         type: 'object',
-        title: 'Location',
+        title: 'Pickup Location',
         collapsible: true,
+        description: 'Where customers pick up the rental item',
         properties: {
           type: {
             type: 'string',
@@ -338,12 +339,61 @@ export const SFRentalItemSchema = () => {
         },
       },
 
+      // Return/Dropoff Location
+      returnLocation: {
+        type: 'object',
+        title: 'Return Location',
+        collapsible: true,
+        description: 'Where customers return/drop off the rental item',
+        properties: {
+          sameAsPickup: {
+            type: 'boolean',
+            default: true,
+            description: 'Return location is same as pickup location',
+          },
+          type: {
+            type: 'string',
+            enum: ['location', 'manual'],
+            default: 'location',
+            description: 'Use existing location or enter manually',
+            rules: [
+              { operation: 'equal', valueA: '{{sameAsPickup}}', valueB: true, action: 'hide' },
+            ],
+            group: 'loc-type',
+          },
+          locationRef: {
+            type: 'string',
+            'x-control': ControlType.selectMany,
+            dataSource: {
+              source: 'collection',
+              collection: DataType.location,
+              value: 'name',
+              label: 'name',
+            },
+            rules: [
+              { operation: 'equal', valueA: '{{sameAsPickup}}', valueB: true, action: 'hide' },
+              { operation: 'notEqual', valueA: '{{type}}', valueB: 'location', action: 'hide' },
+            ],
+            group: 'loc-type',
+          },
+          address: {
+            ...AddressSchema(),
+            title: 'Manual Address',
+            rules: [
+              { operation: 'equal', valueA: '{{sameAsPickup}}', valueB: true, action: 'hide' },
+              { operation: 'notEqual', valueA: '{{type}}', valueB: 'manual', action: 'hide' },
+            ],
+          },
+        },
+      },
+
       // Fulfillment
       fulfillment: {
         type: 'object',
         title: 'Pickup & Delivery',
         collapsible: true,
         properties: {
+          // Pickup options
           allowPickup: {
             type: 'boolean',
             default: true,
@@ -356,6 +406,25 @@ export const SFRentalItemSchema = () => {
               { operation: 'notEqual', valueA: '{{allowPickup}}', valueB: true, action: 'hide' },
             ],
           },
+          pickupLeadTime: {
+            type: 'number',
+            description: 'Minimum hours before rental start for pickup',
+            rules: [
+              { operation: 'notEqual', valueA: '{{allowPickup}}', valueB: true, action: 'hide' },
+            ],
+            group: 'pickup-time',
+          },
+          pickupLeadTimeUnit: {
+            type: 'string',
+            enum: ['minutes', 'hours', 'days'],
+            default: 'hours',
+            rules: [
+              { operation: 'notEqual', valueA: '{{allowPickup}}', valueB: true, action: 'hide' },
+            ],
+            group: 'pickup-time',
+          },
+
+          // Delivery options
           allowDelivery: {
             type: 'boolean',
             default: false,
@@ -363,14 +432,87 @@ export const SFRentalItemSchema = () => {
           },
           deliveryFee: {
             type: 'number',
+            description: 'Base delivery fee',
             rules: [
               { operation: 'notEqual', valueA: '{{allowDelivery}}', valueB: true, action: 'hide' },
             ],
-            group: 'delivery',
+            group: 'delivery-fee',
+          },
+          deliveryFeeType: {
+            type: 'string',
+            enum: ['flat', 'per_mile', 'tiered'],
+            default: 'flat',
+            rules: [
+              { operation: 'notEqual', valueA: '{{allowDelivery}}', valueB: true, action: 'hide' },
+            ],
+            group: 'delivery-fee',
+          },
+          deliveryFeePerMile: {
+            type: 'number',
+            description: 'Additional fee per mile (for per_mile type)',
+            rules: [
+              { operation: 'notEqual', valueA: '{{allowDelivery}}', valueB: true, action: 'hide' },
+              { operation: 'notEqual', valueA: '{{deliveryFeeType}}', valueB: 'per_mile', action: 'hide' },
+            ],
+          },
+          deliveryTiers: {
+            type: 'array',
+            description: 'Tiered delivery pricing (for tiered type)',
+            rules: [
+              { operation: 'notEqual', valueA: '{{allowDelivery}}', valueB: true, action: 'hide' },
+              { operation: 'notEqual', valueA: '{{deliveryFeeType}}', valueB: 'tiered', action: 'hide' },
+            ],
+            items: {
+              type: 'object',
+              properties: {
+                minDistance: {
+                  type: 'number',
+                  group: 'tier-dist',
+                },
+                maxDistance: {
+                  type: 'number',
+                  group: 'tier-dist',
+                },
+                fee: {
+                  type: 'number',
+                },
+              },
+            },
           },
           deliveryRadius: {
             type: 'number',
-            description: 'Delivery radius in miles',
+            description: 'Maximum delivery radius in miles',
+            rules: [
+              { operation: 'notEqual', valueA: '{{allowDelivery}}', valueB: true, action: 'hide' },
+            ],
+          },
+          deliveryLeadTime: {
+            type: 'number',
+            description: 'Minimum hours before rental start for delivery',
+            rules: [
+              { operation: 'notEqual', valueA: '{{allowDelivery}}', valueB: true, action: 'hide' },
+            ],
+            group: 'delivery-time',
+          },
+          deliveryLeadTimeUnit: {
+            type: 'string',
+            enum: ['minutes', 'hours', 'days'],
+            default: 'hours',
+            rules: [
+              { operation: 'notEqual', valueA: '{{allowDelivery}}', valueB: true, action: 'hide' },
+            ],
+            group: 'delivery-time',
+          },
+          deliveryDays: {
+            type: 'array',
+            'x-control': ControlType.selectMany,
+            'x-control-variant': 'chip',
+            items: { type: 'string' },
+            dataSource: {
+              source: 'json',
+              json: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+            },
+            description: 'Days when delivery is available',
             rules: [
               { operation: 'notEqual', valueA: '{{allowDelivery}}', valueB: true, action: 'hide' },
             ],
@@ -381,6 +523,85 @@ export const SFRentalItemSchema = () => {
             rules: [
               { operation: 'notEqual', valueA: '{{allowDelivery}}', valueB: true, action: 'hide' },
             ],
+          },
+
+          // Return options
+          allowDropoff: {
+            type: 'boolean',
+            default: true,
+            description: 'Customer can drop off at location',
+            group: 'return',
+          },
+          dropoffInstructions: {
+            type: 'string',
+            'x-control-variant': 'textarea',
+            rules: [
+              { operation: 'notEqual', valueA: '{{allowDropoff}}', valueB: true, action: 'hide' },
+            ],
+          },
+          allowReturnPickup: {
+            type: 'boolean',
+            default: false,
+            description: 'We can pick up from customer',
+            group: 'return',
+          },
+          returnPickupFee: {
+            type: 'number',
+            description: 'Fee for return pickup',
+            rules: [
+              { operation: 'notEqual', valueA: '{{allowReturnPickup}}', valueB: true, action: 'hide' },
+            ],
+            group: 'return-pickup',
+          },
+          returnPickupFeeType: {
+            type: 'string',
+            enum: ['flat', 'per_mile', 'same_as_delivery'],
+            default: 'flat',
+            rules: [
+              { operation: 'notEqual', valueA: '{{allowReturnPickup}}', valueB: true, action: 'hide' },
+            ],
+            group: 'return-pickup',
+          },
+          returnPickupFeePerMile: {
+            type: 'number',
+            description: 'Additional fee per mile for return pickup',
+            rules: [
+              { operation: 'notEqual', valueA: '{{allowReturnPickup}}', valueB: true, action: 'hide' },
+              { operation: 'notEqual', valueA: '{{returnPickupFeeType}}', valueB: 'per_mile', action: 'hide' },
+            ],
+          },
+          returnPickupRadius: {
+            type: 'number',
+            description: 'Maximum return pickup radius in miles',
+            rules: [
+              { operation: 'notEqual', valueA: '{{allowReturnPickup}}', valueB: true, action: 'hide' },
+            ],
+          },
+          returnPickupInstructions: {
+            type: 'string',
+            'x-control-variant': 'textarea',
+            rules: [
+              { operation: 'notEqual', valueA: '{{allowReturnPickup}}', valueB: true, action: 'hide' },
+            ],
+          },
+
+          // Cutoff times
+          sameDayPickupCutoff: {
+            type: 'string',
+            'x-control-variant': 'time',
+            'x-control': ControlType.date,
+            description: 'Last time to book for same-day pickup',
+            group: 'cutoff',
+          },
+          sameDayDeliveryCutoff: {
+            type: 'string',
+            'x-control-variant': 'time',
+            'x-control': ControlType.date,
+            description: 'Last time to book for same-day delivery',
+            rules: [
+              { operation: 'notEqual', valueA: '{{allowDelivery}}', valueB: true, action: 'hide' },
+            ],
+            group: 'cutoff',
           },
         },
       },

@@ -16,7 +16,16 @@ export const BenefitEnrollmentSchema = () => {
       },
       status: {
         type: 'string',
-        enum: ['pending', 'under_review', 'approved', 'rejected', 'active', 'expired', 'cancelled'],
+        enum: [
+          'pending',
+          'in_progress',
+          'under_review',
+          'approved',
+          'rejected',
+          'active',
+          'expired',
+          'cancelled',
+        ],
         default: 'pending',
         'x-control': ControlType.label,
         group: 'general',
@@ -144,6 +153,10 @@ export const BenefitEnrollmentSchema = () => {
         description: 'Reason for rejection',
         group: 'notes',
       },
+      legalConsent: {
+        type: 'string',
+        'x-control': ControlType.legalConsent,
+      },
       history: {
         type: 'array',
         hideIn: ['form', 'table'],
@@ -166,4 +179,8 @@ export const BenefitEnrollmentSchema = () => {
 const schema = BenefitEnrollmentSchema();
 export type BenefitEnrollmentModel = FromSchema<typeof schema>;
 
-registerCollection('Benefit Enrollment', DataType.benefit_enrollment, BenefitEnrollmentSchema());
+registerCollection(
+  'Benefit Enrollment',
+  DataType.benefit_enrollment,
+  BenefitEnrollmentSchema()
+);

@@ -32,6 +32,8 @@ export const SiteNoticeSchema = () =>
       category: {
         type: 'string',
         enum: [
+          'verification',
+          'cookie-consent',
           'announcement',
           'alert',
           'update',
@@ -75,7 +77,6 @@ export const SiteNoticeSchema = () =>
           'CSS selector or element ID that activates this message (for onAction triggers)',
         hideIn: ['table'],
       },
-
       delayMs: {
         type: 'number',
         title: 'Delay (ms)',
@@ -109,14 +110,12 @@ export const SiteNoticeSchema = () =>
         title: 'Active From',
         group: 'schedule',
       },
-
       endTime: {
         type: 'string',
         format: 'date-time',
         title: 'Active Until',
         group: 'schedule',
       },
-
       showFrequency: {
         type: 'string',
         enum: ['oncePerUser', 'oncePerSession', 'always'],
@@ -124,14 +123,12 @@ export const SiteNoticeSchema = () =>
         title: 'Show Frequency',
         description: 'How often the same user should see this message',
       },
-
       rememberView: {
         type: 'boolean',
         default: true,
         title: 'Remember If Seen',
         description: 'Avoid showing again if user has already viewed it',
       },
-
       audience: {
         type: 'object',
         title: 'Target Audience',
@@ -155,7 +152,6 @@ export const SiteNoticeSchema = () =>
           },
         },
       },
-
       priority: {
         type: 'number',
         default: 1,
@@ -163,7 +159,6 @@ export const SiteNoticeSchema = () =>
         title: 'Priority',
         description: 'Higher priority messages appear before others',
       },
-
       actions: {
         type: 'array',
         title: 'Actions',
@@ -184,7 +179,6 @@ export const SiteNoticeSchema = () =>
           },
         },
       },
-
       metrics: {
         type: 'object',
         title: 'Metrics',
@@ -194,6 +188,16 @@ export const SiteNoticeSchema = () =>
           dismissals: { type: 'number', default: 0 },
         },
         readOnly: true,
+      },
+
+      // Redirect URL (for verification category - where to send users who reject)
+      rejectRedirectUrl: {
+        type: 'string',
+        title: 'Reject Redirect URL',
+        description: 'URL to redirect users who reject/fail verification (e.g., google.com)',
+        rules: [
+          { operation: 'notEqual', valueA: '{{category}}', valueB: 'verification', action: 'hide' },
+        ],
       },
     },
   } as const);

@@ -6,13 +6,15 @@ import { FileInfoSchema } from '../file-info';
 export const EventSchema = () => {
   return {
     type: 'object',
+    ai: true,
+    personalize: true,
     properties: {
       name: {
         type: 'string',
         pattern: '^[a-zA-Z_\\-0-9]*$',
         unique: true,
         group: 'name',
-        transform: 'uri'
+        transform: 'uri',
       },
       type: {
         type: 'string',
@@ -28,11 +30,18 @@ export const EventSchema = () => {
           value: 'email',
           label: ['email', 'firstName', 'lastName'],
         },
-        group: 'host'
+        group: 'host',
       },
       status: {
         type: 'string',
-        enum: ['draft', 'new', 'confirmed', 'completed', 'rescheduled', 'cancelled'],
+        enum: [
+          'draft',
+          'new',
+          'confirmed',
+          'completed',
+          'rescheduled',
+          'cancelled',
+        ],
         group: 'host',
       },
       title: {
@@ -54,7 +63,7 @@ export const EventSchema = () => {
             confirmed: {
               type: 'boolean',
             },
-          }
+          },
         },
         dataSource: {
           source: 'function',
@@ -64,11 +73,11 @@ export const EventSchema = () => {
       startTime: {
         type: 'string',
         format: 'date-time',
-        'group': 'time',
+        group: 'time',
       },
       endTime: {
         type: 'string',
-        'group': 'time',
+        group: 'time',
         format: 'date-time',
       },
       description: {
@@ -80,7 +89,7 @@ export const EventSchema = () => {
         type: 'string',
         'x-control': ControlType.selectMany,
         'x-control-variant': 'chip',
-        'group': 'venue',
+        group: 'venue',
         dataSource: {
           source: 'collection',
           collection: DataType.location,
@@ -92,8 +101,12 @@ export const EventSchema = () => {
         type: 'string',
         rules: [
           { operation: 'isNotEmpty', valueA: '{{venue}}', action: 'hide' },
-          { operation: 'isTruthy', valueA: '{{generateMeetingLink}}', action: 'hide' }
-        ]
+          {
+            operation: 'isTruthy',
+            valueA: '{{generateMeetingLink}}',
+            action: 'hide',
+          },
+        ],
       },
       notificationTemplate: {
         type: 'array',
@@ -134,18 +147,12 @@ export const EventSchema = () => {
         items: FileInfoSchema(),
         collapsible: true,
       },
-
     },
     required: ['name', 'startTime', 'endTime'],
   } as const;
 };
 
-
 const cs = EventSchema();
 export type EventModel = FromSchema<typeof cs>;
 
-registerCollection(
-  'Event',
-  DataType.event,
-  EventSchema(),
-);
+registerCollection('Event', DataType.event, EventSchema());

@@ -456,12 +456,15 @@ export const DeliveryJobSchema = () => {
             default: 'USD',
             group: 'currency',
           },
-          baseFee: {
+          basePrice: {
             type: 'number',
+            description: 'Base calculated price',
             group: 'base',
           },
-          distanceFee: {
+          adjustments: {
             type: 'number',
+            description: 'Sum of all adjustments',
+            default: 0,
             group: 'base',
           },
           surgeFee: {
@@ -473,30 +476,13 @@ export const DeliveryJobSchema = () => {
             default: 1,
             group: 'surge',
           },
-          extraFees: {
-            type: 'array',
-            items: {
-              type: 'object',
-              properties: {
-                name: { type: 'string', group: 'fee' },
-                amount: { type: 'number', group: 'fee' },
-              },
-            },
-          },
           tip: {
             type: 'number',
             default: 0,
           },
-          subtotal: {
-            type: 'number',
-            group: 'total',
-          },
-          tax: {
-            type: 'number',
-            group: 'total',
-          },
           total: {
             type: 'number',
+            description: 'Final total (basePrice + adjustments + tip)',
             group: 'total',
           },
         },
@@ -510,19 +496,14 @@ export const DeliveryJobSchema = () => {
         properties: {
           basePay: {
             type: 'number',
+            description: 'Base calculated pay',
             group: 'pay',
           },
-          distancePay: {
+          adjustments: {
             type: 'number',
+            description: 'Sum of driver adjustments (bonus, penalty, etc)',
+            default: 0,
             group: 'pay',
-          },
-          surgePay: {
-            type: 'number',
-            group: 'surge',
-          },
-          bonusPay: {
-            type: 'number',
-            group: 'surge',
           },
           tip: {
             type: 'number',
@@ -530,7 +511,7 @@ export const DeliveryJobSchema = () => {
           },
           total: {
             type: 'number',
-            description: 'Total driver earns (shown to driver)',
+            description: 'Total driver earns (basePay + adjustments)',
           },
         },
       },
@@ -833,6 +814,13 @@ export const DeliveryJobSchema = () => {
           label: 'title',
         },
         description: 'Delivery zone',
+      },
+
+      // === DISTANCE ===
+      distance: {
+        type: 'number',
+        description: 'Total distance in miles (calculated from stops)',
+        readOnly: true,
       },
 
       // === SOURCE ===

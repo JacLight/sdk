@@ -5,6 +5,8 @@ import { DataType, ControlType } from '../../types';
 export const PromotionNotificationSchema = () => {
   return {
     type: 'object',
+    ai: true, 
+    personalize: true,
     properties: {
       trigger: {
         type: 'string',

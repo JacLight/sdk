@@ -51,7 +51,7 @@ export const SFDiscountSchema = () => {
       // Row 4: type, value, maxDiscount
       type: {
         type: 'string',
-        enum: ['percent', 'fixed', 'free_shipping', 'buy_x_get_y'],
+        enum: ['percent', 'fixed', 'free_shipping', 'free_deposit', 'free_delivery', 'waive_fees', 'buy_x_get_y'],
         default: 'percent',
         group: 'row4',
       },
@@ -79,10 +79,10 @@ export const SFDiscountSchema = () => {
         rules: [{ operation: 'notEqual', valueA: '{{type}}', valueB: 'buy_x_get_y', action: 'hide' }],
       },
 
-      // Row 6: applyTo, products, categories
+      // Row 6: applyTo, products, categories, rentals
       applyTo: {
         type: 'string',
-        enum: ['cart', 'products', 'categories'],
+        enum: ['cart', 'products', 'categories', 'rentals', 'rental_fees'],
         default: 'cart',
         group: 'row6',
       },
@@ -102,6 +102,23 @@ export const SFDiscountSchema = () => {
         dataSource: { source: 'collection', collection: DataType.category, value: 'name', label: 'name' },
         group: 'row6',
         rules: [{ operation: 'notEqual', valueA: '{{applyTo}}', valueB: 'categories', action: 'hide' }],
+      },
+      rentalItems: {
+        type: 'array',
+        description: 'Apply to these rental items',
+        'x-control': ControlType.lookup,
+        dataSource: { source: 'collection', collection: DataType.sf_rental_item, value: 'sku', label: 'name' },
+        group: 'row6',
+        rules: [{ operation: 'notEqual', valueA: '{{applyTo}}', valueB: 'rentals', action: 'hide' }],
+      },
+      waiveFees: {
+        type: 'array',
+        description: 'Fee names to waive (e.g., delivery, insurance, cleaning)',
+        'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
+        items: { type: 'string' },
+        group: 'row6',
+        rules: [{ operation: 'notEqual', valueA: '{{type}}', valueB: 'waive_fees', action: 'hide' }],
       },
 
       // Row 7: excludeProducts

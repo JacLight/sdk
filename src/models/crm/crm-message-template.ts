@@ -7,6 +7,8 @@ import { DataType, ControlType } from '../../types';
 export const MessageTemplateSchema = () => {
   return {
     type: 'object',
+    ai: true,
+    personalize: true,
     properties: {
       name: {
         type: 'string',

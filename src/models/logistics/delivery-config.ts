@@ -217,37 +217,50 @@ export const DeliveryConfigSchema = () => {
         },
       },
 
-      // Default Pricing (for auto-calculation)
-      defaultPricing: {
+      // Pricing Configuration
+      pricing: {
         type: 'object',
-        title: 'Default Pricing',
+        title: 'Pricing',
         collapsible: true,
-        description: 'Used for auto-calculating job prices',
         properties: {
           currency: {
             type: 'string',
             default: 'USD',
-            group: 'currency',
-          },
-          baseFee: {
-            type: 'number',
-            description: 'Base delivery fee',
-            group: 'base',
-          },
-          perMile: {
-            type: 'number',
-            description: 'Per mile charge',
-            group: 'base',
-          },
-          perMinute: {
-            type: 'number',
-            description: 'Per minute wait time',
-            group: 'time',
+            group: 'general',
           },
           minimumFee: {
             type: 'number',
+            default: 15,
             description: 'Minimum delivery fee',
-            group: 'time',
+            group: 'general',
+          },
+          // Tiered pricing array
+          tiers: {
+            type: 'array',
+            title: 'Distance Pricing Tiers',
+            description: 'Price tiers based on distance. First matching tier is used.',
+            items: {
+              type: 'object',
+              properties: {
+                maxMiles: {
+                  type: 'number',
+                  description: 'Max miles for this tier (leave empty for unlimited)',
+                  group: 'tier',
+                },
+                flatRate: {
+                  type: 'number',
+                  description: 'Flat rate for this tier (0 if per-mile)',
+                  default: 0,
+                  group: 'tier',
+                },
+                perMile: {
+                  type: 'number',
+                  description: 'Per mile rate (0 if flat rate)',
+                  default: 0,
+                  group: 'tier',
+                },
+              },
+            },
           },
           platformFeePercent: {
             type: 'number',
@@ -262,37 +275,60 @@ export const DeliveryConfigSchema = () => {
         },
       },
 
-      // Default Driver Payout (for auto-calculation)
-      defaultPayout: {
+      // Package Limits
+      packageLimits: {
         type: 'object',
-        title: 'Default Driver Payout',
+        title: 'Package Limits',
         collapsible: true,
-        description: 'Used for auto-calculating driver pay',
+        description: 'Maximum package size and weight allowed',
         properties: {
-          basePay: {
+          maxWeight: {
             type: 'number',
-            description: 'Base pay per delivery',
-            group: 'base',
+            description: 'Maximum weight in lbs',
+            group: 'weight',
           },
-          perMile: {
+          maxLength: {
             type: 'number',
-            description: 'Per mile pay',
-            group: 'base',
+            description: 'Maximum length in inches',
+            group: 'dimensions',
           },
-          perMinuteWait: {
+          maxWidth: {
             type: 'number',
-            description: 'Wait time pay per minute',
-            group: 'time',
+            description: 'Maximum width in inches',
+            group: 'dimensions',
+          },
+          maxHeight: {
+            type: 'number',
+            description: 'Maximum height in inches',
+            group: 'dimensions',
+          },
+        },
+      },
+
+      // Driver Payout Configuration
+      driverPayout: {
+        type: 'object',
+        title: 'Driver Payout',
+        collapsible: true,
+        description: 'How drivers are paid',
+        properties: {
+          percentage: {
+            type: 'number',
+            default: 75,
+            description: 'Percentage of customer price driver receives',
+            group: 'payout',
           },
           minimumPay: {
             type: 'number',
+            default: 10,
             description: 'Minimum pay per delivery',
-            group: 'time',
+            group: 'payout',
           },
           tipShare: {
             type: 'number',
             default: 100,
             description: 'Percentage of tips driver keeps',
+            group: 'payout',
           },
         },
       },

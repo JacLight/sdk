@@ -492,7 +492,7 @@ export const SiteSchema = () => {
         type: 'object',
         hideLabel: true,
         properties: {
-          template: {
+          layout: {
             type: 'string',
             'x-control': ControlType.selectMany,
             dataSource: {
@@ -516,6 +516,11 @@ export const SiteSchema = () => {
             items: {
               type: 'string',
             },
+          },
+          preset: {
+            type: 'string',
+            enum: ['default' , 'minimal' , 'modern' , 'elegant' , 'dark' , 'midnight'],
+            default: 'default',
           },
         },
         layoutGroup: 'account',

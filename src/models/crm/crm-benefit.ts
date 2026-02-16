@@ -28,9 +28,21 @@ export const BenefitSchema = () => {
         type: 'string',
         'x-control-variant': 'textarea',
       },
+      information: {
+        type: 'string',
+        'x-control': ControlType.richtext,
+      },
+      legalAgreement: {
+        type: 'string',
+        description:
+          'Legal agreement text customer must accept during enrollment',
+        'x-control': ControlType.richtext,
+        group: 'enrollment',
+      },
       applicationForm: {
         type: 'string',
         description: 'Application form collection for enrollment',
+        'x-control': ControlType.selectMany,
         group: 'enrollment',
         dataSource: {
           source: 'collection',
@@ -115,7 +127,7 @@ export const BenefitSchema = () => {
               source: 'collection',
               collection: DataType.sf_product,
               value: 'sku',
-              label: 'name',
+              label: ['name', 'sku'],
             },
             items: { type: 'string' },
           },
