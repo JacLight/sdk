@@ -28,17 +28,6 @@ export const BenefitSchema = () => {
         type: 'string',
         'x-control-variant': 'textarea',
       },
-      information: {
-        type: 'string',
-        'x-control': ControlType.richtext,
-      },
-      legalAgreement: {
-        type: 'string',
-        description:
-          'Legal agreement text customer must accept during enrollment',
-        'x-control': ControlType.richtext,
-        group: 'enrollment',
-      },
       applicationForm: {
         type: 'string',
         description: 'Application form collection for enrollment',
@@ -56,6 +45,16 @@ export const BenefitSchema = () => {
         default: true,
         description: 'Enrollment requires admin approval',
         group: 'enrollment',
+      },
+      information: {
+        type: 'string',
+        'x-control': ControlType.richtext,
+      },
+      legalAgreement: {
+        type: 'string',
+        description:
+          'Legal agreement text customer must accept during enrollment',
+        'x-control': ControlType.richtext,
       },
       customerGroups: {
         type: 'array',
@@ -167,6 +166,7 @@ export const BenefitSchema = () => {
                 'enrollment_submitted',
                 'enrollment_approved',
                 'enrollment_rejected',
+                'enrollment_deleted',
                 'benefit_expiring',
                 'benefit_expired',
               ],

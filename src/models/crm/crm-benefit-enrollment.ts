@@ -153,9 +153,36 @@ export const BenefitEnrollmentSchema = () => {
         description: 'Reason for rejection',
         group: 'notes',
       },
-      legalConsent: {
-        type: 'string',
+      agreement: {
+        type: 'object',
+        description: 'Legal agreement acceptance record',
         'x-control': ControlType.legalConsent,
+        hideIn: ['form'],
+        group: 'agreement',
+        properties: {
+          text: {
+            type: 'string',
+            description: 'The agreement text that was accepted',
+            'x-control': ControlType.richtext,
+          },
+          acceptedAt: {
+            type: 'string',
+            format: 'date-time',
+            description: 'When the agreement was accepted',
+          },
+          acceptedBy: {
+            type: 'string',
+            description: 'Who accepted the agreement',
+          },
+          ipAddress: {
+            type: 'string',
+            description: 'IP address when accepted',
+          },
+          userAgent: {
+            type: 'string',
+            description: 'Browser user agent when accepted',
+          },
+        },
       },
       history: {
         type: 'array',

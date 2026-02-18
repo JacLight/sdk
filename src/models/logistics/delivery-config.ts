@@ -609,6 +609,109 @@ export const DeliveryConfigSchema = () => {
           },
         },
       },
+
+      // Zone Configuration
+      zones: {
+        type: 'array',
+        title: 'Zone-Specific Settings',
+        description: 'Override pricing/settings for specific zones',
+        collapsible: true,
+        items: {
+          type: 'object',
+          properties: {
+            zone: {
+              type: 'string',
+              'x-control': ControlType.selectMany,
+              dataSource: {
+                source: 'collection',
+                collection: DataType.delivery_zone,
+                value: 'name',
+                label: 'title',
+              },
+              group: 'zone',
+            },
+            enabled: {
+              type: 'boolean',
+              default: true,
+              group: 'zone',
+            },
+            pricingOverride: {
+              type: 'object',
+              title: 'Pricing Override',
+              description: 'Leave empty to use default pricing',
+              properties: {
+                minimumFee: { type: 'number', group: 'override' },
+                tiers: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      maxMiles: { type: 'number', group: 'tier' },
+                      flatRate: { type: 'number', group: 'tier' },
+                      perMile: { type: 'number', group: 'tier' },
+                    },
+                  },
+                },
+                surgeMultiplier: { type: 'number', description: 'Zone-specific surge' },
+              },
+            },
+            driverPayOverride: {
+              type: 'object',
+              title: 'Driver Pay Override',
+              properties: {
+                percentage: { type: 'number', group: 'pay' },
+                minimumPay: { type: 'number', group: 'pay' },
+              },
+            },
+          },
+        },
+      },
+
+      // Merchant Account Settings (for business customers with invoicing)
+      merchantAccounts: {
+        type: 'object',
+        title: 'Merchant Account Settings',
+        description: 'Settings for business customers who get invoiced instead of paying per job',
+        collapsible: true,
+        properties: {
+          enabled: {
+            type: 'boolean',
+            default: true,
+            description: 'Allow merchant/business accounts',
+          },
+          defaultSpendingLimit: {
+            type: 'number',
+            description: 'Default spending limit for new merchant accounts',
+            default: 5000,
+          },
+          defaultPaymentPeriodDays: {
+            type: 'number',
+            description: 'Default NET payment terms (days)',
+            default: 30,
+          },
+          invoiceTrigger: {
+            type: 'string',
+            enum: ['limit_or_period', 'limit_only', 'period_only', 'manual'],
+            default: 'limit_or_period',
+            description: 'What triggers invoice generation',
+          },
+          autoInvoice: {
+            type: 'boolean',
+            default: true,
+            description: 'Automatically generate invoices when triggered',
+          },
+          requireApproval: {
+            type: 'boolean',
+            default: true,
+            description: 'Require admin approval for new merchant accounts',
+          },
+          creditCheckRequired: {
+            type: 'boolean',
+            default: false,
+            description: 'Require credit check for merchant accounts',
+          },
+        },
+      },
     },
     required: ['name'],
   } as const;

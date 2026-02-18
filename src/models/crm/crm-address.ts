@@ -10,7 +10,22 @@ export const AddressSchema = () => {
       name: {
         type: 'string',
         pattern: '^[a-zA-Z_\\-0-9]*$',
-        transform: 'uri'
+        transform: 'uri',
+        group: 'general',
+      },
+      company: {
+        type: 'string',
+        group: 'general',
+      },
+      email: {
+        type: 'string',
+        hidden: true,
+        group: 'email',
+      },
+      phone: {
+        type: 'string',
+        hidden: true,
+        group: 'email',
       },
       street1: {
         type: 'string',
@@ -20,20 +35,11 @@ export const AddressSchema = () => {
       },
       city: {
         type: 'string',
+        group: 'city',
       },
       zip: {
         type: 'string',
-      },
-      company: {
-        type: 'string',
-      },
-      email: {
-        type: 'string',
-        hidden: true,
-      },
-      phone: {
-        type: 'string',
-        hidden: true,
+        group: 'city',
       },
       state: {
         type: 'string',
@@ -44,8 +50,9 @@ export const AddressSchema = () => {
           source: 'function',
           filter: {
             value: '{{address/country}}',
-          }
+          },
         },
+        group: 'state',
       },
       country: {
         type: 'string',
@@ -55,26 +62,26 @@ export const AddressSchema = () => {
           source: 'json',
           json: getCountryDropDownOptions(),
         },
+        group: 'state',
       },
       type: {
         type: 'string',
         enum: ['Home', 'Work'],
+        default: 'Home',
+        group: 'type',
       },
       mailing: {
         type: 'boolean',
+        group: 'type',
       },
       primary: {
         type: 'boolean',
+        group: 'type',
       },
     },
   } as const;
 };
 
-
 const dd = AddressSchema();
 export type AddressModel = FromSchema<typeof dd>;
-registerCollection(
-  'Address',
-  DataType.address,
-  AddressSchema(),
-);
+registerCollection('Address', DataType.address, AddressSchema());

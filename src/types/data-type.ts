@@ -128,6 +128,7 @@ export enum DataType {
   delivery_zone = 'delivery_zone',
   delivery_agent = 'delivery_agent',
   delivery_job = 'delivery_job',
+  merchant_customer = 'merchant_customer',
   // Finance
   payout = 'payout',
   wallet = 'wallet',

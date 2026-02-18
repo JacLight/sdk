@@ -18,6 +18,21 @@ export const DeliveryJobSchema = () => {
         transform: ['random-string::10', 'uppercase'],
         group: 'id',
       },
+
+      // Config used for this job
+      config: {
+        type: 'string',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.delivery_config,
+          value: 'name',
+          label: 'title',
+        },
+        description: 'Pricing/delivery config used for this job',
+        group: 'id',
+      },
+
       status: {
         type: 'string',
         enum: [
@@ -397,7 +412,7 @@ export const DeliveryJobSchema = () => {
         properties: {
           type: {
             type: 'string',
-            enum: ['asap', 'scheduled', 'recurring'],
+            enum: ['asap', 'scheduled'],
             default: 'asap',
             group: 'sched',
           },
@@ -408,39 +423,6 @@ export const DeliveryJobSchema = () => {
             rules: [
               { operation: 'equal', valueA: '{{type}}', valueB: 'asap', action: 'hide' },
             ],
-          },
-          recurrence: {
-            type: 'object',
-            rules: [
-              { operation: 'notEqual', valueA: '{{type}}', valueB: 'recurring', action: 'hide' },
-            ],
-            properties: {
-              pattern: {
-                type: 'string',
-                enum: ['daily', 'weekly', 'monthly'],
-                group: 'recur',
-              },
-              interval: {
-                type: 'number',
-                default: 1,
-                group: 'recur',
-              },
-              days: {
-                type: 'array',
-                'x-control': ControlType.selectMany,
-                'x-control-variant': 'chip',
-                items: { type: 'string' },
-                dataSource: {
-                  source: 'json',
-                  json: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
-                },
-              },
-              endDate: {
-                type: 'string',
-                format: 'date',
-                'x-control': ControlType.date,
-              },
-            },
           },
         },
       },
@@ -546,7 +528,12 @@ export const DeliveryJobSchema = () => {
               type: 'string',
               enum: ['debit', 'credit'],
             },
-            amount: { type: 'number' },
+            amount: { type: 'number', description: 'Amount customer pays' },
+            driverPortion: {
+              type: 'number',
+              default: 0,
+              description: 'Portion of this adjustment that goes to driver (0 = platform keeps all)',
+            },
             description: { type: 'string' },
             addedAt: { type: 'string', format: 'date-time' },
             addedBy: { type: 'string' },
@@ -554,7 +541,7 @@ export const DeliveryJobSchema = () => {
             processed: {
               type: 'boolean',
               default: false,
-              description: 'Whether this adjustment has been applied to wallet',
+              description: 'Whether this adjustment has been applied to driver wallet',
             },
             processedAt: { type: 'string', format: 'date-time' },
           },
@@ -632,13 +619,13 @@ export const DeliveryJobSchema = () => {
         properties: {
           method: {
             type: 'string',
-            enum: ['card', 'cash', 'invoice', 'prepaid', 'account'],
+            enum: ['card', 'cash', 'invoice', 'prepaid', 'merchant_account'],
             default: 'card',
             group: 'method',
           },
           status: {
             type: 'string',
-            enum: ['pending', 'authorized', 'captured', 'failed', 'refunded'],
+            enum: ['pending', 'authorized', 'captured', 'failed', 'refunded', 'invoiced', 'account_charged'],
             default: 'pending',
             group: 'method',
           },
@@ -649,6 +636,56 @@ export const DeliveryJobSchema = () => {
           },
           refundAmount: { type: 'number' },
           refundReason: { type: 'string' },
+        },
+      },
+
+      // === MERCHANT ACCOUNT BILLING (for business customers) ===
+      merchantBilling: {
+        type: 'object',
+        title: 'Merchant Account Billing',
+        description: 'For business customers with invoiced accounts',
+        collapsible: true,
+        properties: {
+          merchantAccount: {
+            type: 'string',
+            'x-control': ControlType.selectMany,
+            dataSource: {
+              source: 'collection',
+              collection: DataType.merchant_customer,
+              value: 'sk',
+              label: 'companyName',
+            },
+            description: 'Linked merchant account',
+          },
+          chargedToAccount: {
+            type: 'boolean',
+            default: false,
+            description: 'Whether this job was charged to merchant account',
+          },
+          chargedAt: {
+            type: 'string',
+            format: 'date-time',
+          },
+          invoiceId: {
+            type: 'string',
+            description: 'Invoice this job was included in',
+          },
+          invoicedAt: {
+            type: 'string',
+            format: 'date-time',
+          },
+          poNumber: {
+            type: 'string',
+            description: 'Purchase order number from merchant',
+          },
+          costCenter: {
+            type: 'string',
+            description: 'Cost center / department code',
+          },
+          projectCode: {
+            type: 'string',
+            description: 'Project code for billing',
+          },
         },
       },
 

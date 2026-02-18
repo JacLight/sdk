@@ -8,6 +8,105 @@ export const CustomerSchema = () => {
   return {
     type: 'object',
     properties: {
+      // ========== IDENTITY (Important First) ==========
+      accountType: {
+        type: 'string',
+        options: ['subscriber', 'contact', 'customer'],
+        group: 'account',
+      },
+      balance: {
+        type: 'number',
+        default: 0,
+        group: 'account',
+      },
+      status: {
+        type: 'string',
+        group: 'account',
+      },
+      email: {
+        type: 'string',
+        format: 'email',
+        minLength: 3,
+        maxLength: 150,
+        unique: true,
+        group: 'identity',
+      },
+      username: {
+        type: 'string',
+        unique: true,
+        group: 'identity',
+      },
+      phone: {
+        type: 'string',
+        group: 'identity',
+      },
+      firstName: {
+        type: 'string',
+        group: 'fullname',
+      },
+      middleName: {
+        type: 'string',
+        group: 'fullname',
+      },
+      lastName: {
+        type: 'string',
+        group: 'fullname',
+      },
+      prefix: {
+        type: 'string',
+        group: 'name-extra',
+      },
+      suffix: {
+        type: 'string',
+        group: 'name-extra',
+      },
+      // ========== PERSONAL ==========
+      title: {
+        type: 'string',
+        group: 'personal',
+      },
+      sex: {
+        type: 'string',
+        group: 'personal',
+      },
+      birthday: {
+        type: 'string',
+        group: 'personal',
+      },
+      language: {
+        type: 'string',
+        group: 'locale',
+      },
+      timezone: {
+        type: 'string',
+        group: 'locale',
+      },
+      greeting: {
+        type: 'string',
+      },
+
+      // ========== WORK ==========
+      company: {
+        type: 'string',
+        group: 'work',
+      },
+      jobTitle: {
+        type: 'string',
+        group: 'work',
+      },
+      jobClass: {
+        type: 'string',
+        group: 'job-detail',
+      },
+      employeeNumber: {
+        type: 'string',
+        group: 'job-detail',
+      },
+      hoursOfOperation: {
+        type: 'string',
+      },
+
+      // ========== ACCOUNT ==========\
       parent: {
         type: 'string',
         'x-control': ControlType.selectMany,
@@ -17,25 +116,7 @@ export const CustomerSchema = () => {
           value: 'sk',
           label: 'name',
         },
-      },
-      email: {
-        type: 'string',
-        format: 'email',
-        minLength: 3,
-        maxLength: 150,
-        unique: true,
-      },
-      emails: {
-        type: 'array',
-        hideIn: ['table'],
-        items: {
-          type: 'object',
-          properties: {
-            email: { type: 'string', format: 'email' },
-            status: { type: 'string', 'x-control': ControlType.label },
-            verified: { type: 'boolean', hidden: true },
-          },
-        },
+        group: 'groups',
       },
       groups: {
         type: 'array',
@@ -50,7 +131,82 @@ export const CustomerSchema = () => {
         items: {
           type: 'string',
         },
+        group: 'groups',
       },
+      lockout: {
+        type: 'string',
+        default: 'false',
+        group: 'lockout',
+      },
+      lockoutDate: {
+        type: 'string',
+        format: 'date-time',
+        disabled: true,
+        group: 'lockout',
+      },
+      passwordPolicy: {
+        type: 'string',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.passwordpolicy,
+          value: 'sk',
+          label: 'name',
+        },
+      },
+      password: {
+        type: 'string',
+        'x-control-variant': 'password',
+        hidden: true,
+        minLength: 8,
+        pattern: '^(?=.*[A-Za-z])(?=.*\\d).{8,}$',
+        group: 'password',
+      },
+      confirmPassword: {
+        type: 'string',
+        'x-control-variant': 'password',
+        hidden: true,
+        minLength: 8,
+        pattern: '^(?=.*[A-Za-z])(?=.*\\d).{8,}$',
+        group: 'password',
+      },
+      guestUser: {
+        type: 'boolean',
+        hidden: true,
+      },
+
+      // ========== LEAD ==========
+      leadStatus: {
+        type: 'string',
+        enum: [
+          'in progress',
+          'contacted',
+          'qualified',
+          'attempted',
+          'unqualified',
+          'converted',
+          'closed',
+          'other',
+        ],
+        group: 'lead',
+      },
+      leadStage: {
+        type: 'string',
+        enum: [
+          'new',
+          'lead',
+          'marketing-qualified',
+          'sales-qualified',
+          'opportunity',
+          'customer',
+          'evangelist',
+          'other',
+        ],
+        group: 'lead',
+      },
+
+      // ========== ARRAYS (Full Width - No Group) ==========
+
       benefits: {
         type: 'array',
         'x-control-variant': 'chip',
@@ -64,66 +220,6 @@ export const CustomerSchema = () => {
         items: {
           type: 'string',
         },
-      },
-      username: {
-        type: 'string',
-        unique: true,
-      },
-      firstName: {
-        type: 'string',
-        group: 'fullname',
-      },
-      middleName: {
-        type: 'string',
-        group: 'fullname',
-      },
-      lastName: {
-        type: 'string',
-        group: 'fullname',
-      },
-      title: {
-        type: 'string',
-      },
-      accountType: {
-        type: 'string',
-        options: ['subscriber', 'contact', 'customer'],
-      },
-      password: {
-        type: 'string',
-        'x-control-variant': 'password',
-        hidden: true,
-        minLength: 8,
-        pattern: '^(?=.*[A-Za-z])(?=.*\\d).{8,}$',
-      },
-      confirmPassword: {
-        type: 'string',
-        'x-control-variant': 'password',
-        hidden: true,
-        minLength: 8,
-        pattern: '^(?=.*[A-Za-z])(?=.*\\d).{8,}$',
-      },
-      lockout: {
-        type: 'string',
-        default: 'false',
-        group: 'lockout',
-      },
-      lockoutDate: {
-        type: 'string',
-        format: 'date-time',
-        disabled: true,
-        group: 'lockout',
-      },
-      status: {
-        type: 'string',
-        group: 'phone-status',
-      },
-      phone: {
-        type: 'string',
-        group: 'phone-status',
-      },
-      phones: {
-        type: 'array',
-        items: PhoneSchema(),
       },
       address: {
         type: 'array',
@@ -156,124 +252,21 @@ export const CustomerSchema = () => {
           },
         },
       },
-      history: {
+      phones: {
+        type: 'array',
+        items: PhoneSchema(),
+      },
+      emails: {
         type: 'array',
         hideIn: ['table'],
         items: {
           type: 'object',
           properties: {
-            date: {
-              type: 'string',
-              group: 'history',
-            },
-            event: {
-              type: 'string',
-              group: 'history',
-            },
+            email: { type: 'string', format: 'email' },
+            status: { type: 'string', 'x-control': ControlType.label },
+            verified: { type: 'boolean', hidden: true },
           },
         },
-      },
-      language: {
-        type: 'string',
-        group: 'locale',
-      },
-      timezone: {
-        type: 'string',
-        group: 'locale',
-      },
-      greeting: {
-        type: 'string',
-      },
-      guestUser: {
-        type: 'boolean',
-        hidden: true,
-      },
-      reminderQuestion: {
-        hideIn: ['table'],
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            question: {
-              type: 'string',
-            },
-            answer: {
-              type: 'string',
-            },
-          },
-        },
-      },
-      lastLoginDate: {
-        type: 'string',
-        disabled: true,
-      },
-      lastLoginIp: {
-        type: 'string',
-        disabled: true,
-      },
-      lastFailedLoginDate: {
-        type: 'string',
-        disabled: true,
-      },
-      failedLoginAttempts: {
-        type: 'number',
-        disabled: true,
-      },
-      passwordPolicy: {
-        type: 'string',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.passwordpolicy,
-          value: 'sk',
-          label: 'name',
-        },
-      },
-      image: FileInfoSchema(),
-      logo: FileInfoSchema(),
-      about: {
-        type: 'string',
-        'x-control-variant': 'textarea',
-      },
-      projects: {
-        collapsible: true,
-        type: 'array',
-        items: {
-          type: 'string',
-        },
-      },
-      company: {
-        type: 'string',
-      },
-      prefix: {
-        type: 'string',
-        group: 'prefix-suffix',
-      },
-      suffix: {
-        type: 'string',
-        group: 'prefix-suffix',
-      },
-      sex: {
-        type: 'string',
-        group: 'sex-birthday',
-      },
-      birthday: {
-        type: 'string',
-        group: 'sex-birthday',
-      },
-      employeeNumber: {
-        type: 'string',
-      },
-      jobTitle: {
-        type: 'string',
-        group: 'job',
-      },
-      jobClass: {
-        type: 'string',
-        group: 'job',
-      },
-      hoursOfOperation: {
-        type: 'string',
       },
       subscriptions: {
         type: 'array',
@@ -331,58 +324,40 @@ export const CustomerSchema = () => {
           },
         },
       },
-      leadStatus: {
-        type: 'string',
-        enum: [
-          'in progress',
-          'contacted',
-          'qualified',
-          'attempted',
-          'unqualified',
-          'converted',
-          'closed',
-          'other',
-        ],
-        group: 'lead',
+      projects: {
+        collapsible: true,
+        type: 'array',
+        items: {
+          type: 'string',
+        },
       },
-      leadStage: {
-        type: 'string',
-        enum: [
-          'new',
-          'lead',
-          'marketing-qualified',
-          'sales-qualified',
-          'opportunity',
-          'customer',
-          'evangelist',
-          'other',
-        ],
-        group: 'lead',
-      },
-      balance: {
-        type: 'number',
-        default: 0,
-      },
-      audit: {
-        type: 'object',
-        hidden: true,
-        properties: {
-          lastLogin: {
-            type: 'string',
-            disabled: true,
-          },
-          lastUpdated: {
-            type: 'string',
-            format: 'date-time',
-            disabled: true,
-          },
-          meta: {
-            type: 'object',
-            hidden: true,
+      reminderQuestion: {
+        hideIn: ['table'],
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            question: {
+              type: 'string',
+            },
+            answer: {
+              type: 'string',
+            },
           },
         },
       },
-      // Community Profile (for peer-to-peer networking)
+
+      // ========== IMAGES (Full Width - No Group) ==========
+      image: FileInfoSchema(),
+      logo: FileInfoSchema(),
+
+      // ========== TEXTAREA (Full Width - No Group) ==========
+      about: {
+        type: 'string',
+        'x-control-variant': 'textarea',
+      },
+
+      // ========== COLLAPSIBLE OBJECTS ==========
       communityProfile: {
         type: 'object',
         collapsible: true,
@@ -418,7 +393,8 @@ export const CustomerSchema = () => {
             type: 'array',
             'x-control-variant': 'chip',
             items: { type: 'string' },
-            description: 'What they are looking for (investors, partners, etc.)',
+            description:
+              'What they are looking for (investors, partners, etc.)',
           },
           socialLinks: {
             type: 'object',
@@ -442,8 +418,50 @@ export const CustomerSchema = () => {
             type: 'object',
             properties: {
               autoAcceptQrScans: { type: 'boolean', default: false },
-              allowMessagesFromNonConnections: { type: 'boolean', default: false },
+              allowMessagesFromNonConnections: {
+                type: 'boolean',
+                default: false,
+              },
               sendReadReceipts: { type: 'boolean', default: true },
+            },
+          },
+        },
+      },
+
+      // ========== HIDDEN/SYSTEM ==========
+      audit: {
+        type: 'array',
+        hidden: true,
+        collapsible: true,
+        items: {
+          type: 'object',
+          properties: {
+            lastLogin: {
+              type: 'string',
+              disabled: true,
+              format: 'date-time',
+            },
+            lastUpdated: {
+              type: 'string',
+              format: 'date-time',
+              disabled: true,
+            },
+            type: {
+              type: 'string',
+              enum: [
+                'created',
+                'updated',
+                'deleted',
+                'login',
+                'failed_login',
+                'change_password',
+                'reset_password',
+              ],
+              disabled: true,
+            },
+            meta: {
+              type: 'object',
+              hidden: true,
             },
           },
         },
