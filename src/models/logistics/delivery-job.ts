@@ -509,6 +509,64 @@ export const DeliveryJobSchema = () => {
         },
       },
 
+      // === PRICE RECONCILIATION (Uber/Lyft style post-ride adjustment) ===
+      priceReconciliation: {
+        type: 'object',
+        title: 'Price Reconciliation',
+        description: 'Post-ride price adjustment based on actual vs estimated',
+        collapsible: true,
+        properties: {
+          status: {
+            type: 'string',
+            enum: ['pending', 'reviewed', 'adjusted', 'finalized'],
+            default: 'pending',
+          },
+          estimatedPrice: {
+            type: 'number',
+            description: 'Original quoted price',
+          },
+          estimatedDistance: {
+            type: 'number',
+            description: 'Original estimated distance (miles)',
+          },
+          estimatedDuration: {
+            type: 'number',
+            description: 'Original estimated duration (minutes)',
+          },
+          actualPrice: {
+            type: 'number',
+            description: 'Price based on actual route',
+          },
+          actualDistance: {
+            type: 'number',
+            description: 'Actual distance traveled (miles)',
+          },
+          actualDuration: {
+            type: 'number',
+            description: 'Actual duration (minutes)',
+          },
+          adjustment: {
+            type: 'number',
+            description: 'Price difference (actual - estimated)',
+          },
+          adjustmentReason: {
+            type: 'string',
+            enum: ['route_change', 'traffic', 'detour', 'customer_request', 'error_correction', 'other'],
+          },
+          adjustmentNotes: {
+            type: 'string',
+          },
+          finalPrice: {
+            type: 'number',
+            description: 'Final price after any manual adjustments',
+          },
+          reviewedBy: { type: 'string' },
+          reviewedAt: { type: 'string', format: 'date-time' },
+          customerNotified: { type: 'boolean', default: false },
+          driverNotified: { type: 'boolean', default: false },
+        },
+      },
+
       // === ADJUSTMENTS (line items added to job) ===
       adjustments: {
         type: 'array',
@@ -532,6 +590,8 @@ export const DeliveryJobSchema = () => {
                 'discount',
                 'refund',
                 'penalty',
+                'route_adjustment',
+                'time_adjustment',
                 'other',
               ],
             },
@@ -714,13 +774,39 @@ export const DeliveryJobSchema = () => {
             type: 'string',
             format: 'date-time',
           },
+          // Estimated (from routing API before ride)
           distance: {
             type: 'number',
-            description: 'Total distance in miles',
+            description: 'Estimated route distance in miles (from maps API)',
           },
           duration: {
             type: 'number',
-            description: 'Estimated duration in minutes',
+            description: 'Estimated duration in minutes (from maps API)',
+          },
+          // Actual (recorded during/after ride)
+          actualDistance: {
+            type: 'number',
+            description: 'Actual distance traveled in miles (GPS tracked)',
+          },
+          actualDuration: {
+            type: 'number',
+            description: 'Actual duration in minutes',
+          },
+          startedAt: {
+            type: 'string',
+            format: 'date-time',
+            description: 'When ride/delivery actually started',
+          },
+          completedAt: {
+            type: 'string',
+            format: 'date-time',
+            description: 'When ride/delivery completed',
+          },
+          // Route info
+          routeSource: {
+            type: 'string',
+            enum: ['google', 'osrm', 'mapbox', 'manual'],
+            description: 'Which routing service was used',
           },
           liveLocation: {
             type: 'object',
@@ -734,6 +820,21 @@ export const DeliveryJobSchema = () => {
             type: 'object',
             hidden: true,
             description: 'Encoded route polyline',
+          },
+          // GPS track points for actual route
+          trackPoints: {
+            type: 'array',
+            hidden: true,
+            description: 'GPS points recorded during delivery',
+            items: {
+              type: 'object',
+              properties: {
+                lat: { type: 'number' },
+                lng: { type: 'number' },
+                timestamp: { type: 'string', format: 'date-time' },
+                speed: { type: 'number', description: 'Speed in mph' },
+              },
+            },
           },
         },
       },

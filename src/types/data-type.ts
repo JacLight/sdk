@@ -143,4 +143,20 @@ export enum DataType {
   community_message = 'community_message',
   community_meeting = 'community_meeting',
   community_block = 'community_block',
+  // Business/HR Management
+  bm_employee = 'bm_employee',
+  bm_timesheet = 'bm_timesheet',
+  bm_payroll_run = 'bm_payroll_run',
+  bm_schedule = 'bm_schedule',
+  bm_pay_stub = 'bm_pay_stub',
+  bm_payroll_profile = 'bm_payroll_profile',
+  bm_work_order = 'bm_work_order',
+  // Restaurant/Hospitality
+  bm_floor_plan = 'bm_floor_plan',
+  bm_table = 'bm_table',
+  bm_section = 'bm_section',
+  bm_fulfillment = 'bm_fulfillment',
+  bm_tab = 'bm_tab',
+  // Plugins
+  plugin_registration = 'plugin_registration',
 }

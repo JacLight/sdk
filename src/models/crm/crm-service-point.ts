@@ -107,7 +107,7 @@ export const ServicePointItemSchema = () => {
       },
       status: {
         type: 'string',
-        enum: ['upcoming', 'active', 'done', 'cancelled'],
+        enum: ['waiting', 'checked-in', 'in-progress', 'completed', 'cancelled', 'no-show'],
         group: 'service',
       },
       customer: {
