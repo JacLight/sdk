@@ -100,6 +100,22 @@ const CartItemSchema = {
     },
     feesTotal: { type: 'number', default: 0, description: 'Sum of all fees for this item (rentals only)' },
     lineTotal: { type: 'number', default: 0, description: 'amount + feesTotal (full cost including fees, rentals only)' },
+    // Tier/volume pricing info
+    originalPrice: { type: 'number', description: 'Price before tier discount' },
+    finalPrice: { type: 'number', description: 'Price after tier discount (same as unitPrice)' },
+    totalPrice: { type: 'number', description: 'finalPrice * quantity' },
+    tierDiscount: { type: 'number', description: 'Tier discount amount per unit' },
+    discountPercent: { type: 'number', description: 'Tier discount percentage' },
+    appliedRule: { type: 'string', description: 'Display label e.g. "Volume: 3+"' },
+    appliedRuleType: { type: 'string', enum: ['product_tier', 'group_pricing', 'price_list'], description: 'Type of pricing rule applied' },
+    tier: {
+      type: 'object',
+      properties: {
+        minQty: { type: 'number' },
+        maxQty: { type: 'number' },
+      },
+    },
+    currency: { type: 'string', description: 'Currency code e.g. USD' },
   },
 } as const;
 

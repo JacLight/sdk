@@ -1,8 +1,8 @@
 {
-  "version": "0.132.6",
+  "version": "0.133.7",
   "license": "MIT",
   "main": "dist/index.js",
-  "typings": "dist/index.d.ts",  
+  "typings": "dist/index.d.ts",
   "types": "rules/types/index.d.ts",
   "files": [
     "dist",

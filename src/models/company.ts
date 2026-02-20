@@ -21,6 +21,11 @@ export const CompanySchema = () => {
         maxLength: 20,
         unique: true,
       },
+      displayName: {
+        type: 'string',
+        minLength: 3,
+        maxLength: 100,
+      },
       maxUsers: {
         type: 'number',
       },

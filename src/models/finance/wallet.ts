@@ -182,40 +182,130 @@ export const WalletSchema = () => {
         title: 'Payout Settings',
         collapsible: true,
         properties: {
-          method: {
-            type: 'string',
-            enum: ['bank_transfer', 'paypal', 'venmo', 'cashapp', 'check', 'wire', 'crypto'],
-            group: 'method',
-          },
           frequency: {
             type: 'string',
             enum: ['instant', 'daily', 'weekly', 'biweekly', 'monthly', 'manual'],
             default: 'weekly',
-            group: 'method',
+            group: 'payout-config',
           },
-          // Bank
-          bankAccount: {
-            type: 'object',
-            properties: {
-              bankName: { type: 'string', group: 'bank' },
-              accountType: { type: 'string', enum: ['checking', 'savings'], group: 'bank' },
-              routingNumber: { type: 'string', group: 'account' },
-              accountNumber: { type: 'string', group: 'account' },
-              accountHolderName: { type: 'string' },
-              verified: { type: 'boolean', default: false },
+          defaultMethodId: {
+            type: 'string',
+            description: 'ID of the default payout method',
+            group: 'payout-config',
+          },
+        },
+      },
+
+      // Multiple Payout Methods
+      payoutMethods: {
+        type: 'array',
+        title: 'Payout Methods',
+        collapsible: true,
+        items: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'string',
+              description: 'Unique identifier for this payout method',
+              group: 'method',
             },
-          },
-          // Digital
-          paypalEmail: { type: 'string', format: 'email' },
-          venmoHandle: { type: 'string' },
-          cashappHandle: { type: 'string' },
-          // Crypto
-          cryptoWallet: {
-            type: 'object',
-            properties: {
-              currency: { type: 'string', group: 'crypto' },
-              address: { type: 'string', group: 'crypto' },
-              network: { type: 'string' },
+            type: {
+              type: 'string',
+              enum: ['bank', 'paypal', 'venmo', 'cashapp', 'debit_card', 'check', 'wire', 'crypto'],
+              group: 'method',
+            },
+            label: {
+              type: 'string',
+              description: 'User-friendly label (e.g., "Chase Checking", "Personal PayPal")',
+              group: 'method',
+            },
+            isDefault: {
+              type: 'boolean',
+              default: false,
+              group: 'method',
+            },
+            status: {
+              type: 'string',
+              enum: ['pending', 'verified', 'failed', 'disabled'],
+              default: 'pending',
+              group: 'status',
+            },
+            // Bank Account Details
+            bank: {
+              type: 'object',
+              properties: {
+                bankName: { type: 'string', group: 'bank' },
+                accountType: { type: 'string', enum: ['checking', 'savings'], group: 'bank' },
+                routingNumber: { type: 'string', group: 'routing' },
+                accountNumber: { type: 'string', group: 'routing' },
+                accountNumberLast4: { type: 'string', maxLength: 4, description: 'Last 4 digits (for display)', group: 'routing' },
+                accountHolderName: { type: 'string' },
+                accountHolderType: { type: 'string', enum: ['individual', 'business'] },
+              },
+            },
+            // Debit Card Details
+            debitCard: {
+              type: 'object',
+              properties: {
+                cardBrand: { type: 'string', enum: ['visa', 'mastercard', 'discover', 'amex'], group: 'card' },
+                last4: { type: 'string', maxLength: 4, group: 'card' },
+                expirationMonth: { type: 'number', minimum: 1, maximum: 12 },
+                expirationYear: { type: 'number' },
+                cardholderName: { type: 'string' },
+                token: { type: 'string', description: 'Tokenized card reference from payment processor' },
+              },
+            },
+            // PayPal Details
+            paypal: {
+              type: 'object',
+              properties: {
+                email: { type: 'string', format: 'email' },
+                payerId: { type: 'string', description: 'PayPal payer ID if connected' },
+              },
+            },
+            // Venmo Details
+            venmo: {
+              type: 'object',
+              properties: {
+                handle: { type: 'string', description: '@username' },
+                phoneNumber: { type: 'string' },
+                userId: { type: 'string', description: 'Venmo user ID if connected' },
+              },
+            },
+            // Cash App Details
+            cashapp: {
+              type: 'object',
+              properties: {
+                cashtag: { type: 'string', description: '$cashtag' },
+                phoneNumber: { type: 'string' },
+              },
+            },
+            // Crypto Wallet
+            crypto: {
+              type: 'object',
+              properties: {
+                currency: { type: 'string', enum: ['BTC', 'ETH', 'USDC', 'USDT'], group: 'crypto' },
+                address: { type: 'string', group: 'crypto' },
+                network: { type: 'string', description: 'e.g., mainnet, polygon, etc.' },
+              },
+            },
+            // Verification
+            verifiedAt: {
+              type: 'string',
+              format: 'date-time',
+            },
+            verificationMethod: {
+              type: 'string',
+              enum: ['micro_deposits', 'instant_verification', 'manual', 'plaid', 'stripe'],
+            },
+            // Metadata
+            addedAt: {
+              type: 'string',
+              format: 'date-time',
+            },
+            lastUsedAt: {
+              type: 'string',
+              format: 'date-time',
             },
           },
         },

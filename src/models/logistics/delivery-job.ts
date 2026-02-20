@@ -443,20 +443,21 @@ export const DeliveryJobSchema = () => {
             description: 'Base calculated price',
             group: 'base',
           },
+          distanceFee: {
+            type: 'number',
+            description: 'Fee component based on distance',
+            group: 'distance',
+          },
+          timeFee: {
+            type: 'number',
+            description: 'Fee component based on time',
+            group: 'time',
+          },
           adjustments: {
             type: 'number',
             description: 'Sum of all adjustments',
             default: 0,
             group: 'base',
-          },
-          surgeFee: {
-            type: 'number',
-            group: 'surge',
-          },
-          surgeMultiplier: {
-            type: 'number',
-            default: 1,
-            group: 'surge',
           },
           tip: {
             type: 'number',
@@ -479,6 +480,16 @@ export const DeliveryJobSchema = () => {
           basePay: {
             type: 'number',
             description: 'Base calculated pay',
+            group: 'pay',
+          },
+          distancePay: {
+            type: 'number',
+            description: 'Pay component based on distance',
+            group: 'pay',
+          },
+          timePay: {
+            type: 'number',
+            description: 'Pay component based on time',
             group: 'pay',
           },
           adjustments: {

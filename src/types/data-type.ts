@@ -132,6 +132,7 @@ export enum DataType {
   // Finance
   payout = 'payout',
   wallet = 'wallet',
+  wallet_transaction = 'wallet_transaction',
   // Events
   event_ticket = 'event_ticket',
   event_session = 'event_session',
