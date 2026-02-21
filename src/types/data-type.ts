@@ -60,6 +60,7 @@ export enum DataType {
   address = 'address',
   customer = 'customer',
   customer_kyc = 'customer_kyc',
+  merchant_customer = 'merchant_customer', // Business accounts with invoice billing
   calllog = 'calllog',
   form = 'form',
   signed_document = 'signed_document',
@@ -128,7 +129,6 @@ export enum DataType {
   delivery_zone = 'delivery_zone',
   delivery_agent = 'delivery_agent',
   delivery_job = 'delivery_job',
-  merchant_customer = 'merchant_customer',
   // Finance
   payout = 'payout',
   wallet = 'wallet',
@@ -157,6 +157,6 @@ export enum DataType {
   bm_section = 'bm_section',
   bm_fulfillment = 'bm_fulfillment',
   bm_tab = 'bm_tab',
-  // Plugins
-  plugin_registration = 'plugin_registration',
+  // Client Apps
+  client_app = 'client_app',
 }

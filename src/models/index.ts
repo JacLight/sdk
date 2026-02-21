@@ -49,4 +49,4 @@ export * from './finance';
 export * from './events';
 export * from './community';
 export * from './business-made';
-export * from './plugins';
+export * from './client-app';

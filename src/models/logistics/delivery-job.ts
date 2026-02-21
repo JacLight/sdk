@@ -75,10 +75,10 @@ export const DeliveryJobSchema = () => {
               label: 'email',
             },
           },
-          firstName: { type: 'string', group: 'name' },
-          lastName: { type: 'string', group: 'name' },
-          email: { type: 'string', format: 'email', group: 'contact' },
-          phone: { type: 'string', group: 'contact' },
+          firstName: { type: 'string', group: 'customer-name' },
+          lastName: { type: 'string', group: 'customer-name' },
+          email: { type: 'string', format: 'email', group: 'customer-contact' },
+          phone: { type: 'string', group: 'customer-contact' },
         },
       },
 
@@ -92,37 +92,37 @@ export const DeliveryJobSchema = () => {
           properties: {
             sequence: {
               type: 'number',
-              group: 'seq',
+              group: 'stop-header',
             },
             type: {
               type: 'string',
               enum: ['pickup', 'dropoff'],
-              group: 'seq',
+              group: 'stop-header',
             },
             status: {
               type: 'string',
               enum: ['pending', 'en_route', 'arrived', 'completed', 'failed'],
               default: 'pending',
-              group: 'seq',
+              group: 'stop-header',
             },
             // Location
             location: {
               type: 'object',
               properties: {
                 address: AddressSchema(),
-                lat: { type: 'number', group: 'coords' },
-                lng: { type: 'number', group: 'coords' },
-                placeId: { type: 'string', description: 'Google Place ID' },
-                placeName: { type: 'string', description: 'Business/place name' },
+                lat: { type: 'number', group: 'location-coords' },
+                lng: { type: 'number', group: 'location-coords' },
+                placeId: { type: 'string', group: 'location-place' },
+                placeName: { type: 'string', group: 'location-place' },
               },
             },
             // Contact at this stop
             contact: {
               type: 'object',
               properties: {
-                name: { type: 'string', group: 'contact' },
-                phone: { type: 'string', group: 'contact' },
-                email: { type: 'string', format: 'email' },
+                name: { type: 'string' },
+                phone: { type: 'string', group: 'stop-contact' },
+                email: { type: 'string', format: 'email', group: 'stop-contact' },
               },
             },
             // Time window
@@ -133,7 +133,6 @@ export const DeliveryJobSchema = () => {
                   type: 'string',
                   enum: ['asap', 'scheduled', 'window'],
                   default: 'asap',
-                  group: 'time-type',
                 },
                 scheduledAt: {
                   type: 'string',
@@ -144,13 +143,13 @@ export const DeliveryJobSchema = () => {
                   type: 'string',
                   format: 'date-time',
                   'x-control': ControlType.date,
-                  group: 'window',
+                  group: 'time-window-range',
                 },
                 windowEnd: {
                   type: 'string',
                   format: 'date-time',
                   'x-control': ControlType.date,
-                  group: 'window',
+                  group: 'time-window-range',
                 },
               },
             },
@@ -176,15 +175,15 @@ export const DeliveryJobSchema = () => {
               items: {
                 type: 'object',
                 properties: {
-                  description: { type: 'string', group: 'item' },
-                  quantity: { type: 'number', default: 1, group: 'item' },
-                  weight: { type: 'number', description: 'Weight in lbs' },
+                  description: { type: 'string' },
+                  quantity: { type: 'number', default: 1, group: 'item-qty-weight' },
+                  weight: { type: 'number', description: 'Weight in lbs', group: 'item-qty-weight' },
                   dimensions: {
                     type: 'object',
                     properties: {
-                      length: { type: 'number', group: 'dim' },
-                      width: { type: 'number', group: 'dim' },
-                      height: { type: 'number', group: 'dim' },
+                      length: { type: 'number', group: 'item-dimensions' },
+                      width: { type: 'number', group: 'item-dimensions' },
+                      height: { type: 'number', group: 'item-dimensions' },
                     },
                   },
                   value: { type: 'number', description: 'Declared value' },
@@ -219,15 +218,14 @@ export const DeliveryJobSchema = () => {
                 type: {
                   type: 'string',
                   enum: ['signature', 'photo', 'pin', 'none'],
-                  group: 'proof',
                 },
                 signature: FileInfoSchema(),
                 photos: {
                   type: 'array',
                   items: FileInfoSchema(),
                 },
-                pin: { type: 'string' },
-                recipientName: { type: 'string' },
+                pin: { type: 'string', group: 'proof-details' },
+                recipientName: { type: 'string', group: 'proof-details' },
                 notes: { type: 'string' },
                 collectedAt: {
                   type: 'string',
@@ -236,8 +234,8 @@ export const DeliveryJobSchema = () => {
                 location: {
                   type: 'object',
                   properties: {
-                    lat: { type: 'number', group: 'proof-loc' },
-                    lng: { type: 'number', group: 'proof-loc' },
+                    lat: { type: 'number', group: 'proof-location' },
+                    lng: { type: 'number', group: 'proof-location' },
                   },
                 },
               },
@@ -303,7 +301,6 @@ export const DeliveryJobSchema = () => {
             type: 'string',
             enum: ['auto', 'broadcast', 'pool', 'offer', 'manual'],
             default: 'broadcast',
-            group: 'mode',
           },
           agent: {
             type: 'string',
@@ -316,17 +313,19 @@ export const DeliveryJobSchema = () => {
             },
             description: 'Assigned agent',
           },
-          agentName: { type: 'string' },
-          agentPhone: { type: 'string' },
+          agentName: { type: 'string', group: 'agent-info' },
+          agentPhone: { type: 'string', group: 'agent-info' },
           agentPhoto: { type: 'string' },
           vehicleInfo: { type: 'string' },
           assignedAt: {
             type: 'string',
             format: 'date-time',
+            group: 'assignment-times',
           },
           acceptedAt: {
             type: 'string',
             format: 'date-time',
+            group: 'assignment-times',
           },
         },
       },
@@ -340,25 +339,27 @@ export const DeliveryJobSchema = () => {
         items: {
           type: 'object',
           properties: {
-            agent: { type: 'string', group: 'offer' },
-            agentName: { type: 'string', group: 'offer' },
+            agent: { type: 'string', group: 'offer-agent' },
+            agentName: { type: 'string', group: 'offer-agent' },
             offeredAt: {
               type: 'string',
               format: 'date-time',
-              group: 'times',
+              group: 'offer-times',
             },
             expiresAt: {
               type: 'string',
               format: 'date-time',
-              group: 'times',
+              group: 'offer-times',
             },
             status: {
               type: 'string',
               enum: ['pending', 'accepted', 'rejected', 'expired', 'cancelled'],
+              group: 'offer-status',
             },
             respondedAt: {
               type: 'string',
               format: 'date-time',
+              group: 'offer-status',
             },
             rejectReason: { type: 'string' },
           },
@@ -375,7 +376,6 @@ export const DeliveryJobSchema = () => {
             type: 'string',
             enum: ['all', 'zones', 'radius', 'specific'],
             default: 'radius',
-            group: 'target',
           },
           zones: {
             type: 'array',
@@ -390,9 +390,9 @@ export const DeliveryJobSchema = () => {
               { operation: 'notEqual', valueA: '{{mode}}', valueB: 'radius', action: 'hide' },
             ],
             properties: {
-              lat: { type: 'number', group: 'center' },
-              lng: { type: 'number', group: 'center' },
-              miles: { type: 'number', group: 'center' },
+              lat: { type: 'number', group: 'radius-coords' },
+              lng: { type: 'number', group: 'radius-coords' },
+              miles: { type: 'number' },
             },
           },
           specificAgents: {
@@ -414,7 +414,6 @@ export const DeliveryJobSchema = () => {
             type: 'string',
             enum: ['asap', 'scheduled'],
             default: 'asap',
-            group: 'sched',
           },
           scheduledDate: {
             type: 'string',
@@ -436,37 +435,37 @@ export const DeliveryJobSchema = () => {
           currency: {
             type: 'string',
             default: 'USD',
-            group: 'currency',
           },
           basePrice: {
             type: 'number',
             description: 'Base calculated price',
-            group: 'base',
-          },
-          distanceFee: {
-            type: 'number',
-            description: 'Fee component based on distance',
-            group: 'distance',
-          },
-          timeFee: {
-            type: 'number',
-            description: 'Fee component based on time',
-            group: 'time',
+            group: 'pricing-base',
           },
           adjustments: {
             type: 'number',
             description: 'Sum of all adjustments',
             default: 0,
-            group: 'base',
+            group: 'pricing-base',
+          },
+          distanceFee: {
+            type: 'number',
+            description: 'Fee component based on distance',
+            group: 'pricing-fees',
+          },
+          timeFee: {
+            type: 'number',
+            description: 'Fee component based on time',
+            group: 'pricing-fees',
           },
           tip: {
             type: 'number',
             default: 0,
+            group: 'pricing-total',
           },
           total: {
             type: 'number',
             description: 'Final total (basePrice + adjustments + tip)',
-            group: 'total',
+            group: 'pricing-total',
           },
         },
       },
@@ -480,31 +479,33 @@ export const DeliveryJobSchema = () => {
           basePay: {
             type: 'number',
             description: 'Base calculated pay',
-            group: 'pay',
-          },
-          distancePay: {
-            type: 'number',
-            description: 'Pay component based on distance',
-            group: 'pay',
-          },
-          timePay: {
-            type: 'number',
-            description: 'Pay component based on time',
-            group: 'pay',
+            group: 'driver-pay-base',
           },
           adjustments: {
             type: 'number',
             description: 'Sum of driver adjustments (bonus, penalty, etc)',
             default: 0,
-            group: 'pay',
+            group: 'driver-pay-base',
+          },
+          distancePay: {
+            type: 'number',
+            description: 'Pay component based on distance',
+            group: 'driver-pay-components',
+          },
+          timePay: {
+            type: 'number',
+            description: 'Pay component based on time',
+            group: 'driver-pay-components',
           },
           tip: {
             type: 'number',
             default: 0,
+            group: 'driver-pay-total',
           },
           total: {
             type: 'number',
             description: 'Total driver earns (basePay + adjustments)',
+            group: 'driver-pay-total',
           },
         },
       },
@@ -524,34 +525,42 @@ export const DeliveryJobSchema = () => {
           estimatedPrice: {
             type: 'number',
             description: 'Original quoted price',
+            group: 'recon-estimated',
           },
           estimatedDistance: {
             type: 'number',
             description: 'Original estimated distance (miles)',
+            group: 'recon-estimated',
           },
           estimatedDuration: {
             type: 'number',
             description: 'Original estimated duration (minutes)',
+            group: 'recon-estimated',
           },
           actualPrice: {
             type: 'number',
             description: 'Price based on actual route',
+            group: 'recon-actual',
           },
           actualDistance: {
             type: 'number',
             description: 'Actual distance traveled (miles)',
+            group: 'recon-actual',
           },
           actualDuration: {
             type: 'number',
             description: 'Actual duration (minutes)',
+            group: 'recon-actual',
           },
           adjustment: {
             type: 'number',
             description: 'Price difference (actual - estimated)',
+            group: 'recon-adjustment',
           },
           adjustmentReason: {
             type: 'string',
             enum: ['route_change', 'traffic', 'detour', 'customer_request', 'error_correction', 'other'],
+            group: 'recon-adjustment',
           },
           adjustmentNotes: {
             type: 'string',
@@ -560,10 +569,10 @@ export const DeliveryJobSchema = () => {
             type: 'number',
             description: 'Final price after any manual adjustments',
           },
-          reviewedBy: { type: 'string' },
-          reviewedAt: { type: 'string', format: 'date-time' },
-          customerNotified: { type: 'boolean', default: false },
-          driverNotified: { type: 'boolean', default: false },
+          reviewedBy: { type: 'string', group: 'recon-review' },
+          reviewedAt: { type: 'string', format: 'date-time', group: 'recon-review' },
+          customerNotified: { type: 'boolean', default: false, group: 'recon-notify' },
+          driverNotified: { type: 'boolean', default: false, group: 'recon-notify' },
         },
       },
 
@@ -649,35 +658,37 @@ export const DeliveryJobSchema = () => {
           driverTotal: {
             type: 'number',
             description: 'Total paid to driver',
-            group: 'driver',
+            group: 'earnings-driver',
           },
           driverTip: {
             type: 'number',
-            group: 'driver',
+            group: 'earnings-driver',
           },
           driverBonus: {
             type: 'number',
-            group: 'driver',
+            group: 'earnings-driver',
           },
           platformFee: {
             type: 'number',
             description: 'Platform earnings',
-            group: 'platform',
+            group: 'earnings-platform',
           },
           status: {
             type: 'string',
             enum: ['pending', 'processing', 'available', 'paid'],
             default: 'pending',
-            group: 'platform',
+            group: 'earnings-platform',
           },
           availableAt: {
             type: 'string',
             format: 'date-time',
             description: 'When earnings become available',
+            group: 'earnings-times',
           },
           paidAt: {
             type: 'string',
             format: 'date-time',
+            group: 'earnings-times',
           },
         },
       },
@@ -690,73 +701,66 @@ export const DeliveryJobSchema = () => {
         properties: {
           method: {
             type: 'string',
-            enum: ['card', 'cash', 'invoice', 'prepaid', 'merchant_account'],
-            default: 'card',
-            group: 'method',
+            enum: ['stripe', 'paypal', 'card', 'cash', 'invoice', 'prepaid', 'merchant_account'],
+            default: 'stripe',
+            group: 'payment-method',
           },
           status: {
             type: 'string',
-            enum: ['pending', 'authorized', 'captured', 'failed', 'refunded', 'invoiced', 'account_charged'],
+            enum: [
+              'pending',           // Awaiting payment
+              'processing',        // Payment being processed
+              'requires_action',   // Needs customer action (3DS, etc)
+              'authorized',        // Pre-authorized but not captured
+              'paid',              // Payment completed (same as captured)
+              'captured',          // Payment captured
+              'failed',            // Payment failed
+              'cancelled',         // Payment cancelled
+              'expired',           // Payment intent expired
+              'refunded',          // Fully refunded
+              'partially_refunded', // Partial refund
+              'disputed',          // Chargeback/dispute
+              'invoiced',          // Billed to merchant account (pending payment)
+              'account_charged',   // Charged to merchant account balance
+            ],
             default: 'pending',
-            group: 'method',
+            group: 'payment-method',
           },
-          transactionId: { type: 'string' },
+          amount: {
+            type: 'number',
+            description: 'Payment amount',
+            group: 'payment-transaction',
+          },
+          currency: {
+            type: 'string',
+            default: 'USD',
+            group: 'payment-transaction',
+          },
+          transactionId: { type: 'string', group: 'payment-transaction' },
+          transactionNumber: { type: 'string', group: 'payment-transaction' },
+          paymentRef: {
+            type: 'string',
+            description: 'Reference to sf_transaction record',
+            group: 'payment-transaction',
+          },
           paidAt: {
             type: 'string',
             format: 'date-time',
+            group: 'payment-transaction',
           },
-          refundAmount: { type: 'number' },
-          refundReason: { type: 'string' },
-        },
-      },
-
-      // === MERCHANT ACCOUNT BILLING (for business customers) ===
-      merchantBilling: {
-        type: 'object',
-        title: 'Merchant Account Billing',
-        description: 'For business customers with invoiced accounts',
-        collapsible: true,
-        properties: {
-          merchantAccount: {
-            type: 'string',
-            'x-control': ControlType.selectMany,
-            dataSource: {
-              source: 'collection',
-              collection: DataType.merchant_customer,
-              value: 'sk',
-              label: 'companyName',
+          // Refund tracking
+          refund: {
+            type: 'object',
+            properties: {
+              amount: { type: 'number' },
+              reason: { type: 'string' },
+              refundId: { type: 'string' },
+              processedAt: { type: 'string', format: 'date-time' },
             },
-            description: 'Linked merchant account',
           },
-          chargedToAccount: {
-            type: 'boolean',
-            default: false,
-            description: 'Whether this job was charged to merchant account',
-          },
-          chargedAt: {
-            type: 'string',
-            format: 'date-time',
-          },
-          invoiceId: {
-            type: 'string',
-            description: 'Invoice this job was included in',
-          },
-          invoicedAt: {
-            type: 'string',
-            format: 'date-time',
-          },
-          poNumber: {
-            type: 'string',
-            description: 'Purchase order number from merchant',
-          },
-          costCenter: {
-            type: 'string',
-            description: 'Cost center / department code',
-          },
-          projectCode: {
-            type: 'string',
-            description: 'Project code for billing',
-          },
+          // Legacy fields for backwards compatibility
+          refundAmount: { type: 'number', group: 'payment-refund' },
+          refundReason: { type: 'string', group: 'payment-refund' },
         },
       },
 
@@ -769,38 +773,46 @@ export const DeliveryJobSchema = () => {
           estimatedPickup: {
             type: 'string',
             format: 'date-time',
+            group: 'tracking-eta',
           },
           estimatedDelivery: {
             type: 'string',
             format: 'date-time',
+            group: 'tracking-eta',
           },
           // Estimated (from routing API before ride)
           distance: {
             type: 'number',
             description: 'Estimated route distance in miles (from maps API)',
+            group: 'tracking-estimated',
           },
           duration: {
             type: 'number',
             description: 'Estimated duration in minutes (from maps API)',
+            group: 'tracking-estimated',
           },
           // Actual (recorded during/after ride)
           actualDistance: {
             type: 'number',
             description: 'Actual distance traveled in miles (GPS tracked)',
+            group: 'tracking-actual',
           },
           actualDuration: {
             type: 'number',
             description: 'Actual duration in minutes',
+            group: 'tracking-actual',
           },
           startedAt: {
             type: 'string',
             format: 'date-time',
             description: 'When ride/delivery actually started',
+            group: 'tracking-times',
           },
           completedAt: {
             type: 'string',
             format: 'date-time',
             description: 'When ride/delivery completed',
+            group: 'tracking-times',
           },
           // Route info
           routeSource: {
@@ -811,8 +823,8 @@ export const DeliveryJobSchema = () => {
           liveLocation: {
             type: 'object',
             properties: {
-              lat: { type: 'number', group: 'live' },
-              lng: { type: 'number', group: 'live' },
+              lat: { type: 'number', group: 'live-coords' },
+              lng: { type: 'number', group: 'live-coords' },
               updatedAt: { type: 'string', format: 'date-time' },
             },
           },
@@ -829,8 +841,8 @@ export const DeliveryJobSchema = () => {
             items: {
               type: 'object',
               properties: {
-                lat: { type: 'number' },
-                lng: { type: 'number' },
+                lat: { type: 'number', group: 'track-point' },
+                lng: { type: 'number', group: 'track-point' },
                 timestamp: { type: 'string', format: 'date-time' },
                 speed: { type: 'number', description: 'Speed in mph' },
               },
@@ -851,18 +863,18 @@ export const DeliveryJobSchema = () => {
             timestamp: {
               type: 'string',
               format: 'date-time',
-              group: 'event',
+              group: 'timeline-event',
             },
             event: {
               type: 'string',
-              group: 'event',
+              group: 'timeline-event',
             },
             description: { type: 'string' },
             location: {
               type: 'object',
               properties: {
-                lat: { type: 'number', group: 'loc' },
-                lng: { type: 'number', group: 'loc' },
+                lat: { type: 'number', group: 'timeline-loc' },
+                lng: { type: 'number', group: 'timeline-loc' },
               },
             },
             actor: { type: 'string' },
@@ -981,12 +993,12 @@ export const DeliveryJobSchema = () => {
           type: {
             type: 'string',
             enum: ['api', 'admin', 'app', 'integration', 'order', 'recurring'],
-            group: 'source',
+            group: 'source-info',
           },
           reference: {
             type: 'string',
             description: 'Order ID, integration ID, etc.',
-            group: 'source',
+            group: 'source-info',
           },
         },
       },
@@ -1003,12 +1015,12 @@ export const DeliveryJobSchema = () => {
             reportedAt: {
               type: 'string',
               format: 'date-time',
-              group: 'time',
+              group: 'issue-reported',
             },
             reportedBy: {
               type: 'string',
               enum: ['driver', 'customer', 'recipient', 'admin'],
-              group: 'time',
+              group: 'issue-reported',
             },
             type: {
               type: 'string',
@@ -1028,7 +1040,13 @@ export const DeliveryJobSchema = () => {
                 'business_closed',
                 'other',
               ],
-              group: 'issue',
+              group: 'issue-type',
+            },
+            status: {
+              type: 'string',
+              enum: ['open', 'acknowledged', 'resolved', 'escalated'],
+              default: 'open',
+              group: 'issue-type',
             },
             description: {
               type: 'string',
@@ -1041,21 +1059,17 @@ export const DeliveryJobSchema = () => {
             location: {
               type: 'object',
               properties: {
-                lat: { type: 'number', group: 'loc' },
-                lng: { type: 'number', group: 'loc' },
+                lat: { type: 'number', group: 'issue-loc' },
+                lng: { type: 'number', group: 'issue-loc' },
               },
-            },
-            status: {
-              type: 'string',
-              enum: ['open', 'acknowledged', 'resolved', 'escalated'],
-              default: 'open',
             },
             resolution: { type: 'string' },
             resolvedAt: {
               type: 'string',
               format: 'date-time',
+              group: 'issue-resolved',
             },
-            resolvedBy: { type: 'string' },
+            resolvedBy: { type: 'string', group: 'issue-resolved' },
           },
         },
       },
@@ -1072,25 +1086,26 @@ export const DeliveryJobSchema = () => {
             timestamp: {
               type: 'string',
               format: 'date-time',
-              group: 'msg',
+              group: 'msg-header',
             },
             sender: {
               type: 'string',
               enum: ['driver', 'customer', 'recipient', 'support', 'system'],
-              group: 'msg',
+              group: 'msg-header',
             },
-            senderName: { type: 'string' },
-            content: { type: 'string' },
+            senderName: { type: 'string', group: 'msg-header' },
             type: {
               type: 'string',
               enum: ['text', 'image', 'location', 'eta_update', 'status_update'],
               default: 'text',
             },
+            content: { type: 'string' },
             attachment: FileInfoSchema(),
-            read: { type: 'boolean', default: false },
+            read: { type: 'boolean', default: false, group: 'msg-read' },
             readAt: {
               type: 'string',
               format: 'date-time',
+              group: 'msg-read',
             },
           },
         },

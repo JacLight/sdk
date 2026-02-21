@@ -1,79 +1,85 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { DataType, ControlType } from '../../types';
+import { FileInfoSchema } from '@models/file-info';
 
-export const PluginRegistrationSchema = () => {
+export const ClientAppSchema = () => {
   return {
     type: 'object',
     properties: {
-      // Identity
+      // Identity - row 1
       name: {
         type: 'string',
         unique: true,
         minLength: 3,
         maxLength: 50,
         pattern: '^[a-z][a-z0-9_-]*$',
-        description: 'Unique plugin identifier (lowercase, alphanumeric, hyphens, underscores)',
-        group: 'identity',
+        description:
+          'Unique app identifier (lowercase, alphanumeric, hyphens, underscores)',
+        group: 'name',
       },
       displayName: {
         type: 'string',
         maxLength: 100,
-        description: 'Human-readable plugin name',
-        group: 'identity',
+        description: 'Human-readable app name',
+        group: 'name',
       },
-      description: {
-        type: 'string',
-        'x-control': ControlType.richtext,
-        description: 'Detailed description of what the plugin does',
-      },
+
+      // Version & Status - row 2
       version: {
         type: 'string',
         pattern: '^\\d+\\.\\d+\\.\\d+$',
         default: '1.0.0',
         description: 'Semantic version (e.g., 1.0.0)',
-        group: 'identity',
+        group: 'version',
+      },
+      status: {
+        type: 'string',
+        enum: ['draft', 'active', 'disabled', 'deprecated'],
+        default: 'draft',
+        description: 'App lifecycle status',
+        group: 'version',
       },
 
-      // Source
+      // Description - standalone (richtext)
+      description: {
+        type: 'string',
+        'x-control': ControlType.richtext,
+        description: 'Detailed description of what the app does',
+      },
+
+      // Source - row 3
       entryPoint: {
         type: 'string',
-        description: 'URL to plugin JavaScript bundle',
+        description: 'URL to app JavaScript bundle',
         group: 'source',
       },
+      sourceFile: FileInfoSchema(),
       integrity: {
         type: 'string',
         description: 'SRI hash for integrity verification (e.g., sha384-...)',
-        group: 'source',
       },
-
-      // Initialization
       initFunction: {
         type: 'string',
         default: 'init',
-        description: 'Global function to call on load (e.g., "MyPlugin.init")',
+        description: 'Global function to call on load (e.g., "MyApp.init")',
+        group: 'init',
+      },
+      mountPoint: {
+        type: 'string',
+        enum: ['inline', 'modal', 'drawer', 'fullscreen'],
+        default: 'inline',
+        description: 'How the app UI is displayed',
         group: 'init',
       },
       config: {
         type: 'object',
         description: 'Configuration passed to init function',
         'x-control': ControlType.code,
-        group: 'init',
       },
-
-      // Lifecycle
-      status: {
-        type: 'string',
-        enum: ['draft', 'active', 'disabled', 'deprecated'],
-        default: 'draft',
-        description: 'Plugin lifecycle status',
-        group: 'lifecycle',
-      },
-
-      // Permissions
       permissions: {
         type: 'array',
-        description: 'Data access permissions granted to the plugin',
+        description: 'Data access permissions granted to the app',
         'x-control': ControlType.selectMany,
         'x-control-variant': 'chip',
         items: {
@@ -88,62 +94,52 @@ export const PluginRegistrationSchema = () => {
             'write:inventory',
           ],
         },
-        group: 'permissions',
       },
       allowedEndpoints: {
         type: 'array',
-        description: 'Explicit API endpoints plugin can access',
+        description: 'Explicit API endpoints app can access',
         items: { type: 'string' },
-        group: 'permissions',
-      },
-
-      // UI
-      mountPoint: {
-        type: 'string',
-        enum: ['inline', 'modal', 'drawer', 'fullscreen'],
-        default: 'inline',
-        description: 'How the plugin UI is displayed',
-        group: 'ui',
       },
       containerStyle: {
         type: 'object',
-        description: 'CSS styles for the plugin container',
+        description: 'CSS styles for the app container',
         'x-control': ControlType.code,
-        group: 'ui',
       },
 
-      // Metadata
+      // Author & Homepage - row 5
       author: {
         type: 'string',
-        description: 'Plugin author or organization',
-        group: 'metadata',
+        description: 'App author or organization',
+        group: 'author',
       },
       homepage: {
         type: 'string',
         format: 'uri',
-        description: 'Plugin homepage or documentation URL',
-        group: 'metadata',
+        description: 'App homepage or documentation URL',
+        group: 'author',
       },
+
+      // Icon - standalone (file upload)
       icon: {
         type: 'string',
         'x-control': ControlType.file,
-        description: 'Plugin icon image',
-        group: 'metadata',
+        description: 'App icon image',
       },
+
+      // Tags - standalone (array)
       tags: {
         type: 'array',
         'x-control': ControlType.selectMany,
         'x-control-variant': 'chip',
         items: { type: 'string' },
         description: 'Tags for categorization and discovery',
-        group: 'metadata',
       },
     },
-    required: ['name', 'entryPoint'],
+    required: ['name'],
   } as const;
 };
 
-const schema = PluginRegistrationSchema();
-export type PluginRegistrationModel = FromSchema<typeof schema>;
+const schema = ClientAppSchema();
+export type ClientAppModel = FromSchema<typeof schema>;
 
-registerCollection('Plugin Registration', DataType.plugin_registration, PluginRegistrationSchema());
+registerCollection('Client App', DataType.client_app, ClientAppSchema());

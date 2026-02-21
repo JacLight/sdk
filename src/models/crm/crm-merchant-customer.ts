@@ -1,8 +1,12 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { DataType, ControlType } from '../../types';
-import { AddressSchema } from '../crm/crm-address';
+import { AddressSchema } from './crm-address';
 
+/**
+ * Merchant Customer - Business accounts that can order services now and pay later via invoice.
+ * Can be used by any service (delivery, orders, subscriptions, etc.)
+ */
 export const MerchantCustomerSchema = () => {
   return {
     type: 'object',
@@ -101,7 +105,7 @@ export const MerchantCustomerSchema = () => {
         },
       },
 
-      // Pricing (can override default config)
+      // Pricing (can override default pricing for this merchant)
       pricing: {
         type: 'object',
         title: 'Custom Pricing',
@@ -114,14 +118,15 @@ export const MerchantCustomerSchema = () => {
           },
           discountPercent: {
             type: 'number',
-            description: 'Percentage discount on all jobs',
+            description: 'Percentage discount on all transactions',
             group: 'discount',
           },
           discountFixed: {
             type: 'number',
-            description: 'Fixed discount per job',
+            description: 'Fixed discount per transaction',
             group: 'discount',
           },
+          // Legacy: specific delivery config (for backward compatibility)
           customConfig: {
             type: 'string',
             'x-control': ControlType.selectMany,
@@ -131,9 +136,30 @@ export const MerchantCustomerSchema = () => {
               value: 'name',
               label: 'title',
             },
-            description: 'Use a specific pricing config',
+            description: 'Use a specific delivery pricing config',
+          },
+          // Service-specific pricing configs can be added by each service
+          customConfigs: {
+            type: 'object',
+            description: 'Service-specific custom pricing configs (keyed by service name)',
+            additionalProperties: true,
           },
         },
+      },
+
+      // Services this merchant account can use
+      enabledServices: {
+        type: 'array',
+        title: 'Enabled Services',
+        description: 'Which services this merchant can charge to their account',
+        'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
+        items: { type: 'string' },
+        dataSource: {
+          source: 'json',
+          json: ['delivery', 'orders', 'subscriptions', 'rentals', 'services', 'all'],
+        },
+        default: ['all'],
       },
 
       // Billing Period Tracking
@@ -152,9 +178,17 @@ export const MerchantCustomerSchema = () => {
             format: 'date',
             group: 'period',
           },
+          transactionCount: {
+            type: 'number',
+            default: 0,
+            description: 'Number of transactions in this period',
+            group: 'stats',
+          },
+          // Legacy field alias
           jobCount: {
             type: 'number',
             default: 0,
+            description: 'Number of jobs in this period (legacy alias for transactionCount)',
             group: 'stats',
           },
           totalAmount: {
@@ -162,10 +196,24 @@ export const MerchantCustomerSchema = () => {
             default: 0,
             group: 'stats',
           },
+          transactions: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                id: { type: 'string' },
+                type: { type: 'string' }, // delivery, order, etc.
+                amount: { type: 'number' },
+                date: { type: 'string', format: 'date-time' },
+              },
+            },
+            description: 'Transactions in this period',
+          },
+          // Legacy field: simple array of job IDs
           jobs: {
             type: 'array',
             items: { type: 'string' },
-            description: 'Job IDs in this period',
+            description: 'Job IDs in this period (legacy)',
           },
         },
       },
@@ -177,21 +225,21 @@ export const MerchantCustomerSchema = () => {
         readOnly: true,
         collapsible: true,
         properties: {
-          totalJobs: {
+          totalTransactions: {
             type: 'number',
             default: 0,
-            group: 'jobs',
+            group: 'transactions',
           },
           totalSpent: {
             type: 'number',
             default: 0,
-            group: 'jobs',
+            group: 'transactions',
           },
-          averageJobValue: {
+          averageTransactionValue: {
             type: 'number',
             default: 0,
           },
-          lastJobDate: {
+          lastTransactionDate: {
             type: 'string',
             format: 'date-time',
           },
@@ -209,6 +257,10 @@ export const MerchantCustomerSchema = () => {
             type: 'number',
             description: 'Average days to pay invoices',
           },
+          // Legacy fields for backwards compat
+          totalJobs: { type: 'number', default: 0 },
+          averageJobValue: { type: 'number', default: 0 },
+          lastJobDate: { type: 'string', format: 'date-time' },
         },
       },
 
@@ -239,6 +291,11 @@ export const MerchantCustomerSchema = () => {
               format: 'date',
               group: 'period',
             },
+            transactionCount: {
+              type: 'number',
+              group: 'amount',
+            },
+            // Legacy field alias
             jobCount: {
               type: 'number',
               group: 'amount',
@@ -270,9 +327,9 @@ export const MerchantCustomerSchema = () => {
       authorizedUsers: {
         collapsible: true,
         type: 'array',
-        title: 'Additional Authorized Users',
+        title: 'Authorized Users',
         description:
-          'Other customers who can create jobs on this account (account owner is auto-authorized)',
+          'Customers who can create transactions on this account (account owner is auto-authorized)',
         items: {
           type: 'object',
           properties: {
@@ -293,6 +350,11 @@ export const MerchantCustomerSchema = () => {
               default: 'user',
               group: 'user',
             },
+            canApproveTransactions: {
+              type: 'boolean',
+              default: false,
+            },
+            // Legacy field alias
             canApproveJobs: {
               type: 'boolean',
               default: false,
@@ -300,6 +362,11 @@ export const MerchantCustomerSchema = () => {
             spendingLimit: {
               type: 'number',
               description: 'Individual spending limit (0 = unlimited)',
+            },
+            enabledServices: {
+              type: 'array',
+              items: { type: 'string' },
+              description: 'Which services this user can use (empty = all)',
             },
             addedAt: {
               type: 'string',
@@ -391,8 +458,74 @@ export const MerchantCustomerSchema = () => {
 const sc = MerchantCustomerSchema();
 export type MerchantCustomerModel = FromSchema<typeof sc>;
 
-registerCollection(
-  'Merchant Customer',
-  DataType.merchant_customer,
-  MerchantCustomerSchema()
-);
+/**
+ * Merchant Account Statistics
+ */
+export interface MerchantAccountStats {
+  totalTransactions: number;
+  totalSpent: number;
+  averageTransactionValue: number;
+  lastTransactionDate: string;
+  invoicesPaid: number;
+  invoicesOutstanding: number;
+  currentBalance: number;
+  availableCredit: number;
+}
+
+/**
+ * Billing Period information
+ */
+export interface BillingPeriod {
+  startDate: string;
+  endDate: string;
+  transactionCount: number;
+  totalAmount: number;
+  transactions: Array<{
+    id: string;
+    type: string;
+    amount: number;
+    date: string;
+    reference?: string;
+  }>;
+}
+
+/**
+ * Invoice record for merchant billing
+ */
+export interface MerchantInvoice {
+  invoiceId: string;
+  invoiceNumber: string;
+  periodStart: string;
+  periodEnd: string;
+  transactionCount: number;
+  amount: number;
+  status: 'draft' | 'sent' | 'paid' | 'overdue' | 'cancelled';
+  createdAt: string;
+  dueDate: string;
+  paidAt?: string;
+}
+
+/**
+ * Authorized user on a merchant account
+ */
+export interface MerchantAuthorizedUser {
+  customer: string;
+  role: 'admin' | 'manager' | 'user';
+  canApproveTransactions: boolean;
+  spendingLimit?: number;
+  enabledServices?: string[];
+  addedAt: string;
+}
+
+/**
+ * Charge request for billing a merchant
+ */
+export interface MerchantChargeRequest {
+  id: string;
+  type: string;
+  amount: number;
+  reference?: string;
+  description?: string;
+}
+
+registerCollection('Merchant Customer', DataType.merchant_customer, MerchantCustomerSchema());

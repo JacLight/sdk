@@ -30,3 +30,4 @@ export * from './crm-benefit';
 export * from './crm-benefit-enrollment';
 export * from './crm-promotion';
 export * from './crm-subscriber';
+export * from './crm-merchant-customer';
