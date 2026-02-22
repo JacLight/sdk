@@ -151,6 +151,43 @@ export enum DataType {
   bm_pay_stub = 'bm_pay_stub',
   bm_payroll_profile = 'bm_payroll_profile',
   bm_work_order = 'bm_work_order',
+  // HR - Recruitment
+  bm_job_posting = 'bm_job_posting',
+  bm_applicant = 'bm_applicant',
+  bm_interview = 'bm_interview',
+  bm_offer = 'bm_offer',
+  // HR - Benefits
+  bm_benefit_plan = 'bm_benefit_plan',
+  bm_benefit_enrollment = 'bm_benefit_enrollment',
+  // HR - Leave
+  bm_leave_type = 'bm_leave_type',
+  bm_leave_balance = 'bm_leave_balance',
+  bm_leave_request = 'bm_leave_request',
+  bm_leave_policy = 'bm_leave_policy',
+  // HR - Performance
+  bm_goal = 'bm_goal',
+  bm_performance_review = 'bm_performance_review',
+  bm_pip = 'bm_pip',
+  // HR - Learning
+  bm_course = 'bm_course',
+  bm_certification = 'bm_certification',
+  bm_learning_path = 'bm_learning_path',
+  bm_course_enrollment = 'bm_course_enrollment',
+  // HR - Compensation
+  bm_salary_grade = 'bm_salary_grade',
+  bm_compensation_change = 'bm_compensation_change',
+  bm_bonus = 'bm_bonus',
+  // HR - Organization
+  bm_department = 'bm_department',
+  bm_position = 'bm_position',
+  bm_org_chart = 'bm_org_chart',
+  // HR - Documents & Compliance
+  bm_employee_document = 'bm_employee_document',
+  bm_policy = 'bm_policy',
+  bm_policy_acknowledgement = 'bm_policy_acknowledgement',
+  // HR - Offboarding
+  bm_offboarding = 'bm_offboarding',
+  bm_exit_interview = 'bm_exit_interview',
   // Restaurant/Hospitality
   bm_floor_plan = 'bm_floor_plan',
   bm_table = 'bm_table',

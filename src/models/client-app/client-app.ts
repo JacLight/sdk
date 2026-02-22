@@ -1,7 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { DataType, ControlType } from '../../types';
-import { FileInfoSchema } from '@models/file-info';
+import { FileInfoSchema } from '../file-info';
 
 export const ClientAppSchema = () => {
   return {

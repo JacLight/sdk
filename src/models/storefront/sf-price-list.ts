@@ -129,7 +129,6 @@ export const SFPriceListSchema = () => {
         items: { type: 'string' },
         group: 'targeting',
       },
-      // Product targeting
       applyTo: {
         type: 'string',
         enum: ['all', 'products', 'categories', 'brands'],

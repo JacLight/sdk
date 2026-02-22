@@ -1,4 +1,4 @@
-import { FileInfoSchema } from '@models/file-info';
+import { FileInfoSchema } from '../file-info';
 import { ControlType , DataType} from '../../types';
 import { FromSchema } from 'json-schema-to-ts';
 
