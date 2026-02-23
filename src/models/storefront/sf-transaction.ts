@@ -21,7 +21,7 @@ export const SFTransactionSchema = () => {
       invoiceType: {
         type: 'string',
         group: 'number',
-        enum: ['order', 'subscription', 'invoice', 'refund', 'other'],
+        enum: ['order', 'subscription', 'invoice', 'refund', 'other', 'delivery'],
       },
       invoiceNumber: {
         type: 'string',
@@ -38,10 +38,10 @@ export const SFTransactionSchema = () => {
           { operation: 'equal', valueA: '{{invoiceType}}', valueB: 'subscription', action: 'set-property', property: [{ key: 'dataSource.collection', value: DataType.sf_subscription }, { key: 'fetchData', value: { datatype: DataType.sf_subscription } }] },
           { operation: 'equal', valueA: '{{invoiceType}}', valueB: 'invoice', action: 'set-property', property: [{ key: 'dataSource.collection', value: DataType.sf_invoice }, { key: 'fetchData', value: { datatype: DataType.sf_invoice } }] },
           { operation: 'equal', valueA: '{{invoiceType}}', valueB: 'refund', action: 'set-property', property: [{ key: 'dataSource.collection', value: DataType.sf_refund }, { key: 'fetchData', value: { datatype: DataType.sf_refund } }] },
+          { operation: 'equal', valueA: '{{invoiceType}}', valueB: 'delivery', action: 'set-property', property: [{ key: 'dataSource.collection', value: DataType.sf_delivery }, { key: 'fetchData', value: { datatype: DataType.sf_delivery } }] },
           { operation: 'equal', valueA: '{{invoiceType}}', valueB: 'other', action: 'set-property', property: [{ key: 'x-control', value: 'text' }, { key: 'x-control-variant', value: '' }, { key: 'fetchData', value: '' }] },
         ]
       },
-      
       currency: {
         type: 'string',
         group: 'name',

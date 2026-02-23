@@ -196,4 +196,28 @@ export enum DataType {
   bm_tab = 'bm_tab',
   // Client Apps
   client_app = 'client_app',
+  // Banking
+  bank_account = 'bank_account',
+  bank_account_holder = 'bank_account_holder',
+  bank_transfer = 'bank_transfer',
+  bank_card = 'bank_card',
+  ledger_account = 'ledger_account',
+  ledger_entry = 'ledger_entry',
+  journal_entry = 'journal_entry',
+  // Merchant Services / Payment Links
+  sf_payment_link = 'sf_payment_link',
+  sf_checkout_session = 'sf_checkout_session',
+  sf_payment_button = 'sf_payment_button',
+  // Loans
+  loan = 'loan',
+  loan_application = 'loan_application',
+  loan_payment = 'loan_payment',
+  // Money Market / High-Yield Savings
+  money_market_account = 'money_market_account',
+  interest_rate_tier = 'interest_rate_tier',
+  // Investments / Treasury
+  investment_account = 'investment_account',
+  treasury_holding = 'treasury_holding',
+  certificate_of_deposit = 'certificate_of_deposit',
+  investment_transaction = 'investment_transaction',
 }
