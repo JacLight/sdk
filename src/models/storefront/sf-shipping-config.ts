@@ -440,6 +440,39 @@ export const SFShippingConfigSchema = () => {
         },
       },
 
+      // Box Sizes for bin-packing
+      boxSizes: {
+        type: 'object',
+        title: 'Shipping Box Sizes',
+        description: 'Define available box sizes. If empty, standard carrier boxes are used.',
+        collapsible: true,
+        properties: {
+          source: {
+            type: 'string',
+            enum: ['custom', 'carrier'],
+            default: 'carrier',
+            description: 'custom = seller-defined boxes only, carrier = standard carrier boxes',
+          },
+          boxes: {
+            type: 'array',
+            title: 'Custom Box Sizes',
+            rules: [{ operation: 'equal', valueA: '{{source}}', valueB: 'carrier', action: 'hide' }],
+            items: {
+              type: 'object',
+              properties: {
+                name: { type: 'string', group: 'box-name' },
+                length: { type: 'number', group: 'box-dims' },
+                width: { type: 'number', group: 'box-dims' },
+                height: { type: 'number', group: 'box-dims' },
+                dimensionUnit: { type: 'string', enum: ['in', 'cm'], default: 'in', group: 'box-dims' },
+                maxWeight: { type: 'number', description: 'Max weight capacity', group: 'box-weight' },
+                weightUnit: { type: 'string', enum: ['lb', 'kg'], default: 'lb', group: 'box-weight' },
+              },
+            },
+          },
+        },
+      },
+
       // Handling Fees
       handling: {
         type: 'object',

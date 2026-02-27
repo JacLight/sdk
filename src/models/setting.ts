@@ -34,7 +34,7 @@ export const SettingSchema = () => {
       },
       emails: {
         type: 'array',
-        items:{
+        items: {
           type: 'string',
           format: 'email',
         },
@@ -42,7 +42,7 @@ export const SettingSchema = () => {
       },
       phones: {
         type: 'array',
-        items:{
+        items: {
           type: 'string',
         },
         group: 'emails',
@@ -98,11 +98,21 @@ export const SettingSchema = () => {
         DataType.messagetemplate,
         'password'
       ),
+      newDeviceAlertEmailTemplate: getSettingItemSchema(
+        DataType.messagetemplate,
+        'security'
+      ),
+      twoFactorCodeEmailTemplate: getSettingItemSchema(
+        DataType.messagetemplate,
+        'security'
+      ),
       inSmsGateway: getSettingItemSchema(DataType.config, 'in-sms'),
       outSmsGateway: getSettingItemSchema(DataType.config, 'in-sms'),
       inEmailGateway: getSettingItemSchema(DataType.config, 'in-email'),
       outEmailGateway: getSettingItemSchema(DataType.config, 'in-email'),
+
       pushGateway: getSettingItemSchema(DataType.config, 'push-gateway'),
+
       notificationTemplates: {
         type: 'array',
         collapsible: 'close',
@@ -262,46 +272,44 @@ export const SettingSchema = () => {
           },
         },
       },
-      themeSettings: {
-        type: 'array',
+      securitySettings: {
+        type: 'object',
         collapsible: 'close',
-        items: {
-          type: 'object',
-          title: '{{name}}',
-          collapsible: 'close',
-          properties: {
-            name: {
+        properties: {
+          enableTwoFactorForUsers: {
+            type: 'boolean',
+            default: false,
+            description: 'Allow users to enable 2FA on their accounts',
+          },
+          enableTwoFactorForCustomers: {
+            type: 'boolean',
+            default: false,
+            description: 'Allow customers to enable 2FA on their accounts',
+          },
+          enableNewDeviceAuthentication: {
+            type: 'boolean',
+            default: false,
+            description:
+              'Require verification when logging in from new device (password login only)',
+          },
+          twoFactorMethods: {
+            type: 'array',
+            items: {
               type: 'string',
-              maxItems: 1,
-              dataSource: {
-                source: 'function',
-                value: 'getThemeSettingsList',
-              },
+              enum: ['email', 'authenticator', 'sms'],
             },
-            darkMode: {
-              type: 'string',
-              enum: ['auto', 'dark', 'light'],
-            },
-            energy: {
-              type: 'string',
-            },
-            settings: {
-              type: 'array',
-              layout: 'horizontal',
-              items: {
-                type: 'object',
-                layout: 'horizontal',
-                showIndex: true,
-                properties: {
-                  property: {
-                    type: 'string',
-                  },
-                  value: {
-                    type: 'string',
-                  },
-                },
-              },
-            },
+            default: ['email', 'authenticator'],
+            description: 'Available 2FA methods. SMS incurs additional costs.',
+          },
+          alertOnNewDeviceLogin: {
+            type: 'boolean',
+            default: false,
+            description: 'Send email alert when login from new device',
+          },
+          deviceTrustDays: {
+            type: 'number',
+            default: 30,
+            description: 'Days to remember trusted devices',
           },
         },
       },

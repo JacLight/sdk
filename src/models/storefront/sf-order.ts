@@ -461,11 +461,58 @@ export const SFOrderSchema = () => {
             },
             parcel: {
               type: 'object',
+              description: 'Primary parcel dimensions',
               properties: {
                 length: { type: 'number' },
                 width: { type: 'number' },
                 height: { type: 'number' },
                 weight: { type: 'number' },
+              },
+            },
+            packing: {
+              type: 'object',
+              description: 'Bin-packing result — box breakdown for fulfillment',
+              properties: {
+                totalBoxes: {
+                  type: 'number',
+                  description: 'Total number of boxes/packages for this shipment',
+                },
+                boxes: {
+                  type: 'array',
+                  description: 'Detailed breakdown of each box',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      boxIndex: { type: 'number', description: 'Box number (1-based)' },
+                      boxName: { type: 'string', description: 'Box/packaging name (e.g., "USPS Medium Flat Rate Box")' },
+                      dimensions: {
+                        type: 'object',
+                        properties: {
+                          length: { type: 'number' },
+                          width: { type: 'number' },
+                          height: { type: 'number' },
+                          dimensionUnit: { type: 'string', enum: ['in', 'cm'] },
+                        },
+                      },
+                      weight: { type: 'number', description: 'Total weight of items in this box' },
+                      weightUnit: { type: 'string', enum: ['lb', 'kg'] },
+                      itemCount: { type: 'number' },
+                      dimensionsEstimated: { type: 'boolean' },
+                      items: {
+                        type: 'array',
+                        description: 'Items packed in this box',
+                        items: {
+                          type: 'object',
+                          properties: {
+                            sku: { type: 'string' },
+                            name: { type: 'string' },
+                            quantity: { type: 'number' },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
               },
             },
             products: {

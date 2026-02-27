@@ -152,7 +152,10 @@ export const CompanySchema = () => {
           type: 'object',
           properties: {
             service: { type: 'string' },
-            status: { type: 'string', enum: ['pending', 'active', 'revoked', 'expired'] },
+            status: {
+              type: 'string',
+              enum: ['pending', 'active', 'revoked', 'expired'],
+            },
             accepted: { type: 'boolean', default: false },
             acceptedAt: { type: 'string', format: 'date-time' },
             acceptedBy: { type: 'string' },

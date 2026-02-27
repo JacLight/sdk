@@ -50,3 +50,5 @@ export * from './community';
 export * from './business-made';
 export * from './client-app';
 export * from './banking';
+export * from './user-device';
+export * from './user-security';

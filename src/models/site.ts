@@ -7,18 +7,17 @@ import { FileInfoSchema } from './file-info';
 
 const getAccountFeatures = () => [
   { label: 'Overview', value: 'overview' },
-  { label: 'Addresses', value: 'addresses' },
-  { label: 'Reservations', value: 'reservations' },
-  { label: 'Tickets', value: 'tickets' },
-  { label: 'Orders', value: 'orders' },
-  { label: 'Profile', value: 'profile' },
-  { label: 'Projects', value: 'projects' },
-  { label: 'Sites', value: 'sites' },
-  { label: 'Stats', value: 'stats' },
   { label: 'Files', value: 'files' },
+  { label: 'Orders', value: 'orders' },
+  { label: 'Wishlists', value: 'wishlists' },
+  { label: 'Reservations', value: 'reservations' },
   { label: 'Payments', value: 'payments' },
+  { label: 'Benefits', value: 'benefits' },
   { label: 'Messages', value: 'messages' },
+  { label: 'Tickets', value: 'tickets' },
   { label: 'Notifications', value: 'notifications' },
+  { label: 'Profile', value: 'profile' },
+  { label: 'Addresses', value: 'addresses' },
   { label: 'Help', value: 'help' },
 ];
 

@@ -466,6 +466,30 @@ export const CustomerSchema = () => {
           },
         },
       },
+      securitySettings: {
+        type: 'object',
+        collapsible: 'close',
+        group: 'security',
+        properties: {
+          twoFactorEnabled: {
+            type: 'boolean',
+            default: false,
+          },
+          preferredTwoFactorMethod: {
+            type: 'string',
+            enum: ['email', 'sms', 'authenticator'],
+            'x-control': ControlType.selectSingle,
+          },
+          deviceTrustEnabled: {
+            type: 'boolean',
+            default: true,
+          },
+          alertOnNewDevice: {
+            type: 'boolean',
+            default: true,
+          },
+        },
+      },
     },
   } as const;
 };

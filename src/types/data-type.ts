@@ -220,4 +220,8 @@ export enum DataType {
   treasury_holding = 'treasury_holding',
   certificate_of_deposit = 'certificate_of_deposit',
   investment_transaction = 'investment_transaction',
+  // Security
+  user_device = 'user_device',
+  user_security = 'user_security',
+  two_factor_backup = 'two_factor_backup',
 }
