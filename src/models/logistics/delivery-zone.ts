@@ -1,6 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { DataType, ControlType } from '../../types';
+import { countries } from '../../data';
 
 export const DeliveryZoneSchema = () => {
   return {
@@ -37,7 +38,7 @@ export const DeliveryZoneSchema = () => {
         properties: {
           type: {
             type: 'string',
-            enum: ['polygon', 'radius', 'zipcodes', 'cities'],
+            enum: ['polygon', 'radius', 'zipcodes', 'cities', 'states', 'countries'],
             default: 'polygon',
             group: 'geo-type',
           },
@@ -94,6 +95,32 @@ export const DeliveryZoneSchema = () => {
             },
             rules: [
               { operation: 'notEqual', valueA: '{{type}}', valueB: 'cities', action: 'hide' },
+            ],
+          },
+          states: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                state: { type: 'string', group: 'state' },
+                country: { type: 'string', group: 'state' },
+              },
+            },
+            rules: [
+              { operation: 'notEqual', valueA: '{{type}}', valueB: 'states', action: 'hide' },
+            ],
+          },
+          countries: {
+            type: 'array',
+            'x-control': ControlType.selectMany,
+            'x-control-variant': 'chip',
+            items: { type: 'string' },
+            dataSource: {
+              source: 'function',
+              value: countries,
+            },
+            rules: [
+              { operation: 'notEqual', valueA: '{{type}}', valueB: 'countries', action: 'hide' },
             ],
           },
         },

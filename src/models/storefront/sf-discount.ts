@@ -51,7 +51,15 @@ export const SFDiscountSchema = () => {
       // Row 4: type, value, maxDiscount
       type: {
         type: 'string',
-        enum: ['percent', 'fixed', 'free_shipping', 'free_deposit', 'free_delivery', 'waive_fees', 'buy_x_get_y'],
+        enum: [
+          'percent',
+          'fixed',
+          'free_shipping',
+          'free_deposit',
+          'free_delivery',
+          'waive_fees',
+          'buy_x_get_y',
+        ],
         default: 'percent',
         group: 'row4',
       },
@@ -74,9 +82,20 @@ export const SFDiscountSchema = () => {
         properties: {
           buyQty: { type: 'number', default: 2, description: 'Buy this many' },
           getQty: { type: 'number', default: 1, description: 'Get this many' },
-          getPercent: { type: 'number', default: 100, description: '% off (100 = free)' },
+          getPercent: {
+            type: 'number',
+            default: 100,
+            description: '% off (100 = free)',
+          },
         },
-        rules: [{ operation: 'notEqual', valueA: '{{type}}', valueB: 'buy_x_get_y', action: 'hide' }],
+        rules: [
+          {
+            operation: 'notEqual',
+            valueA: '{{type}}',
+            valueB: 'buy_x_get_y',
+            action: 'hide',
+          },
+        ],
       },
 
       // Row 6: applyTo, products, categories, rentals
@@ -90,26 +109,62 @@ export const SFDiscountSchema = () => {
         type: 'array',
         description: 'Apply to these products',
         'x-control': ControlType.lookup,
-        dataSource: { source: 'collection', collection: DataType.sf_product, value: 'sku', label: 'name' },
+        dataSource: {
+          source: 'collection',
+          collection: DataType.sf_product,
+          value: 'sku',
+          label: 'name',
+        },
         group: 'row6',
-        rules: [{ operation: 'notEqual', valueA: '{{applyTo}}', valueB: 'products', action: 'hide' }],
+        rules: [
+          {
+            operation: 'notEqual',
+            valueA: '{{applyTo}}',
+            valueB: 'products',
+            action: 'hide',
+          },
+        ],
       },
       categories: {
         type: 'array',
         description: 'Apply to these categories',
         'x-control': ControlType.selectMany,
         'x-control-variant': 'chip',
-        dataSource: { source: 'collection', collection: DataType.category, value: 'name', label: 'name' },
+        dataSource: {
+          source: 'collection',
+          collection: DataType.category,
+          value: 'name',
+          label: 'name',
+        },
         group: 'row6',
-        rules: [{ operation: 'notEqual', valueA: '{{applyTo}}', valueB: 'categories', action: 'hide' }],
+        rules: [
+          {
+            operation: 'notEqual',
+            valueA: '{{applyTo}}',
+            valueB: 'categories',
+            action: 'hide',
+          },
+        ],
       },
       rentalItems: {
         type: 'array',
         description: 'Apply to these rental items',
         'x-control': ControlType.lookup,
-        dataSource: { source: 'collection', collection: DataType.sf_rental_item, value: 'sku', label: 'name' },
+        dataSource: {
+          source: 'collection',
+          collection: DataType.sf_rental_item,
+          value: 'sku',
+          label: 'name',
+        },
         group: 'row6',
-        rules: [{ operation: 'notEqual', valueA: '{{applyTo}}', valueB: 'rentals', action: 'hide' }],
+        rules: [
+          {
+            operation: 'notEqual',
+            valueA: '{{applyTo}}',
+            valueB: 'rentals',
+            action: 'hide',
+          },
+        ],
       },
       waiveFees: {
         type: 'array',
@@ -118,7 +173,14 @@ export const SFDiscountSchema = () => {
         'x-control-variant': 'chip',
         items: { type: 'string' },
         group: 'row6',
-        rules: [{ operation: 'notEqual', valueA: '{{type}}', valueB: 'waive_fees', action: 'hide' }],
+        rules: [
+          {
+            operation: 'notEqual',
+            valueA: '{{type}}',
+            valueB: 'waive_fees',
+            action: 'hide',
+          },
+        ],
       },
 
       // Row 7: excludeProducts
@@ -126,7 +188,12 @@ export const SFDiscountSchema = () => {
         type: 'array',
         description: 'Never apply to these products',
         'x-control': ControlType.lookup,
-        dataSource: { source: 'collection', collection: DataType.sf_product, value: 'sku', label: 'name' },
+        dataSource: {
+          source: 'collection',
+          collection: DataType.sf_product,
+          value: 'sku',
+          label: 'name',
+        },
         group: 'row7',
       },
 
@@ -153,27 +220,64 @@ export const SFDiscountSchema = () => {
         type: 'array',
         description: 'Cart must contain these products',
         'x-control': ControlType.lookup,
-        dataSource: { source: 'collection', collection: DataType.sf_product, value: 'sku', label: 'name' },
+        dataSource: {
+          source: 'collection',
+          collection: DataType.sf_product,
+          value: 'sku',
+          label: 'name',
+        },
         group: 'row9',
       },
 
-      // Row 10: customerGroups, customers
+      // Row 10: customerGroups, excludeCustomerGroups, customers
       customerGroups: {
         type: 'array',
         description: 'Limit to these customer groups (empty = all)',
         'x-control': ControlType.selectMany,
         'x-control-variant': 'chip',
-        dataSource: { source: 'collection', collection: DataType.customer_group, value: 'name', label: 'name' },
+        dataSource: {
+          source: 'collection',
+          collection: DataType.customer_group,
+          value: 'name',
+          label: 'name',
+        },
+        group: 'row10',
+      },
+      excludeCustomerGroups: {
+        type: 'array',
+        description: 'Exclude these customer groups',
+        'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
+        dataSource: {
+          source: 'collection',
+          collection: DataType.customer_group,
+          value: 'name',
+          label: 'name',
+        },
         group: 'row10',
       },
       customers: {
         type: 'array',
         description: 'Limit to specific customers (empty = all)',
         'x-control': ControlType.lookup,
-        dataSource: { source: 'collection', collection: DataType.customer, value: 'email', label: 'name' },
-        group: 'row10',
+        dataSource: {
+          source: 'collection',
+          collection: DataType.customer,
+          value: 'email',
+          label: 'name',
+        },
       },
-
+      excludeCustomers: {
+        type: 'array',
+        description: 'Exclude specific customers (empty = all)',
+        'x-control': ControlType.lookup,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.customer,
+          value: 'email',
+          label: 'name',
+        },
+      },
       // Row 11: startDate, endDate
       startDate: {
         type: 'string',

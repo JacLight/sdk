@@ -31,3 +31,6 @@ export * from './crm-benefit-enrollment';
 export * from './crm-promotion';
 export * from './crm-subscriber';
 export * from './crm-merchant-customer';
+export * from './crm-affiliate-program';
+export * from './crm-affiliate';
+export * from './crm-affiliate-referral';

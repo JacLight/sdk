@@ -19,6 +19,12 @@ export const getSiteFeatureList = () => {
       enable: false,
     },
     {
+      value: 'affiliate-marketing',
+      label: 'Affiliate Marketing',
+      description: 'Enable affiliate marketing on your site',
+      enable: false,
+    },
+    {
       value: 'live-chat',
       label: 'Live Chat',
       description: 'Enable live chat on your site',

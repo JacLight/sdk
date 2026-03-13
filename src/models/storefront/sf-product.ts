@@ -455,6 +455,17 @@ export const SFProductSchema = () => {
           },
         },
       },
+      affiliateEligible: {
+        type: 'boolean',
+        default: true,
+        description: 'Whether this product is eligible for affiliate commissions',
+        group: 'affiliate',
+      },
+      affiliateCommission: {
+        type: 'number',
+        description: 'Product-specific commission rate (percentage). Overrides program default. Leave empty to use program rate.',
+        group: 'affiliate',
+      },
       source: {
         type: 'string',
       },
