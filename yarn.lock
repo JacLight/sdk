@@ -1415,10 +1415,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@jaclight/dbsdk@npm:0.136.8":
+  version: 0.136.8
+  resolution: "@jaclight/dbsdk@npm:0.136.8::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40JacLight%2Fdbsdk%2F0.136.8%2F3bc970bf12f3094eacb492a42c54f374126e7ac4"
+  dependencies:
+    "@types/color": "npm:^3.0.6"
+    "@types/uuid": "npm:^9.0.7"
+    clone: "npm:^2.1.2"
+    color: "npm:^4.2.3"
+    eventemitter2: "npm:^6.4.4"
+    hash-it: "npm:^5.0.0"
+    json-schema-to-ts: "npm:^3.0.0"
+    jsonpath-plus: "npm:^5.0.7"
+    lodash.isobjectlike: "npm:^4.0.0"
+    tailwind-merge: "npm:^3.0.2"
+    uuid: "npm:^9.0.1"
+  checksum: a15746ee1b0dfde785c972febeac5bb06f585affb5e3ac9025045781fb494243c59c00bc8ca32ecf50a777d43e3ea4ad092912b9b9c0f85e52b0c529e423bf10
+  languageName: node
+  linkType: hard
+
 "@jaclight/dbsdk@workspace:.":
   version: 0.0.0-use.local
   resolution: "@jaclight/dbsdk@workspace:."
   dependencies:
+    "@jaclight/dbsdk": "npm:0.136.8"
     "@size-limit/preset-small-lib": "npm:^7.0.5"
     "@types/color": "npm:^3.0.6"
     "@types/uuid": "npm:^9.0.7"

@@ -96,6 +96,28 @@ export const EventTicketSchema = () => {
         },
       },
 
+      // Linked Tickets (perks, companion tickets, access passes issued from this ticket)
+      linkedTickets: {
+        type: 'array',
+        collapsible: true,
+        items: {
+          type: 'object',
+          properties: {
+            ticketId: { type: 'string', title: 'Linked Ticket ID' },
+            type: { type: 'string', enum: ['perk', 'access', 'companion', 'upgrade', 'addon'], title: 'Link Type' },
+            name: { type: 'string', title: 'Name' },
+            claimed: { type: 'boolean', default: false },
+            claimedAt: { type: 'string', format: 'date-time' },
+            claimedBy: { type: 'string', title: 'Claimed By (holder ID)' },
+          },
+        },
+      },
+      parentTicket: {
+        type: 'string',
+        title: 'Parent Ticket ID',
+        description: 'If this ticket was issued as a linked perk from another ticket',
+      },
+
       // Check-in tracking
       checkIns: {
         type: 'array',

@@ -106,6 +106,10 @@ export const AffiliateProgramSchema = () => {
         },
         group: 'attribution',
       },
+      trackingCookieAge: {
+        type: 'number',
+        default: 30,
+      },
       payout: {
         type: 'object',
         collapsible: true,
@@ -187,4 +191,8 @@ export const AffiliateProgramSchema = () => {
 const schema = AffiliateProgramSchema();
 export type AffiliateProgramModel = FromSchema<typeof schema>;
 
-registerCollection('Affiliate Program', DataType.affiliate_program, AffiliateProgramSchema());
+registerCollection(
+  'Affiliate Program',
+  DataType.affiliate_program,
+  AffiliateProgramSchema()
+);

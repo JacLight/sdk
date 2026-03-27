@@ -13,7 +13,7 @@ export const DomainRegistrationSchema = () => {
       },
       registrar: {
         type: 'string',
-        enum: ['internal', 'external', 'godaddy', 'namecheap', 'cloudflare', 'other'],
+        enum: ['internal', 'external', 'godaddy', 'namecheap', 'cloudflare', 'resellerclub', 'other'],
         default: 'external',
       },
       status: {

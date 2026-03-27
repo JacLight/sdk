@@ -21,7 +21,7 @@ export const AgentSchema = () => {
       description: {
         type: 'string',
       },
-      image:FileInfoSchema(),
+      image: FileInfoSchema(),
       profileURL: {
         type: 'string',
       },
@@ -43,11 +43,35 @@ export const AgentSchema = () => {
           type: 'string',
         },
       },
-      phone: {
-        type: 'string',
+      phones: {
+        type: 'array',
+        'x-control': ControlType.selectMany,
+        'x-control-variant': 'combo',
+        'x-allow-create': true,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.phone,
+          value: 'phoneNumber',
+          label: 'phoneNumber',
+        },
+        items: {
+          type: 'string',
+        },
       },
-      email: {
-        type: 'string',
+      emails: {
+        type: 'array',
+        'x-control': ControlType.selectMany,
+        'x-control-variant': 'combo',
+        'x-allow-create': true,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.email_account,
+          value: 'emailAddress',
+          label: 'emailAddress',
+        },
+        items: {
+          type: 'string',
+        },
       },
       meetingLinks: {
         type: 'array',

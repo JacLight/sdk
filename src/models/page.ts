@@ -360,7 +360,7 @@ export const PageDataSchema = () => {
           source: 'collection',
           value: '{{datatype}}',
         },
-        operations: ['pick', 'delete'],
+        'x-control': ControlType.lookup,
         items: {
           styling: {
             container: 'px-0',
@@ -382,8 +382,30 @@ export const PageDataSchema = () => {
           },
         },
       },
+      queryMapping: {
+        type: 'array',
+        collapsible: 'close',
+        items: {
+          type: 'object',
+          layout: 'horizontal',
+          properties: {
+            param: {
+              type: 'string',
+              description: 'URL query parameter name',
+              group: 'mapping',
+            },
+            target: {
+              type: 'string',
+              enum: ['keyword', 'categories', 'tags', 'sort', 'sortType', 'maxItems', 'pageSize', 'datatype', 'random'],
+              description: 'PageData property to map to',
+              group: 'mapping',
+            },
+          },
+        },
+      },
       filters: {
         type: 'array',
+        collapsible: 'close',
         items: {
           type: 'object',
           hideLabel: true,

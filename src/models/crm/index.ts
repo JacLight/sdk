@@ -24,6 +24,7 @@ export * from './crm-agent';
 export * from './crm-email-account';
 export * from './crm-broadcast';
 export * from './crm-account-health';
+export * from './crm-broadcast-delivery';
 export * from './crm-ivr-flow';
 export * from './crm-ivr-routing';
 export * from './crm-benefit';

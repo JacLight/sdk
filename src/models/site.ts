@@ -7,12 +7,14 @@ import { FileInfoSchema } from './file-info';
 
 const getAccountFeatures = () => [
   { label: 'Overview', value: 'overview' },
+  { label: 'Projects', value: 'projects' },
   { label: 'Files', value: 'files' },
   { label: 'Orders', value: 'orders' },
   { label: 'Wishlists', value: 'wishlists' },
   { label: 'Reservations', value: 'reservations' },
   { label: 'Payments', value: 'payments' },
   { label: 'Benefits', value: 'benefits' },
+  { label: 'Affiliates', value: 'affiliates' },
   { label: 'Messages', value: 'messages' },
   { label: 'Tickets', value: 'tickets' },
   { label: 'Notifications', value: 'notifications' },
@@ -20,6 +22,7 @@ const getAccountFeatures = () => [
   { label: 'Addresses', value: 'addresses' },
   { label: 'Help', value: 'help' },
 ];
+
 
 export const SiteSchema = () => {
   return {
@@ -333,7 +336,6 @@ export const SiteSchema = () => {
             },
             group: 'shipping-config',
           },
-
           showSearch: {
             type: 'boolean',
             group: 'search',
@@ -360,6 +362,12 @@ export const SiteSchema = () => {
             enum: ['none', 'dialog', 'drawer-left', 'drawer-right'],
             group: 'search',
             default: 'left',
+          },
+          extraInfoDisplay: {
+            type: 'string',
+            enum: ['tab', 'accordion', 'post', 'none'],
+            layoutGroup: 'layout',
+            group: 'search',
           },
           filtersPosition: {
             type: 'string',
@@ -518,7 +526,14 @@ export const SiteSchema = () => {
           },
           preset: {
             type: 'string',
-            enum: ['default' , 'minimal' , 'modern' , 'elegant' , 'dark' , 'midnight'],
+            enum: [
+              'default',
+              'minimal',
+              'modern',
+              'elegant',
+              'dark',
+              'midnight',
+            ],
             default: 'default',
           },
         },

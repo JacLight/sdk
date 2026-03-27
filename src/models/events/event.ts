@@ -218,6 +218,30 @@ export const EventSchema = () => {
               type: 'boolean',
               default: true,
             },
+            allowReentry: {
+              type: 'boolean',
+              default: false,
+              title: 'Allow Re-entry',
+            },
+            allowTransfer: {
+              type: 'boolean',
+              default: false,
+              title: 'Allow Transfer/Resale',
+            },
+            linkedTicketTypes: {
+              type: 'array',
+              title: 'Included Perks',
+              description: 'Ticket types that are included with this ticket (e.g. VIP includes free lunch)',
+              items: {
+                type: 'object',
+                properties: {
+                  ticketTypeId: { type: 'string', title: 'Ticket Type' },
+                  type: { type: 'string', enum: ['perk', 'access', 'companion', 'upgrade', 'addon'], default: 'perk' },
+                  name: { type: 'string', title: 'Perk Name' },
+                  autoIssue: { type: 'boolean', default: false, title: 'Auto-issue on purchase' },
+                },
+              },
+            },
           },
         },
       },

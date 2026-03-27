@@ -223,6 +223,8 @@ export enum DataType {
   treasury_holding = 'treasury_holding',
   certificate_of_deposit = 'certificate_of_deposit',
   investment_transaction = 'investment_transaction',
+  // Broadcast Delivery
+  broadcast_delivery = 'broadcast_delivery',
   // Security
   user_device = 'user_device',
   user_security = 'user_security',

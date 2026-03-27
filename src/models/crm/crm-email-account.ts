@@ -42,83 +42,15 @@ export const EmailAccountSchema = () => {
         description: 'e.g., burnerdomain.com',
         group: 'config',
       },
-
-      // Provider Configuration
       provider: {
         type: "string",
-        enum: ["google_workspace", "aws_ses", "sendgrid", "mailgun", "postmark", "custom_smtp"],
-        title: 'Email Provider',
-        group: 'config',
-      },
-      smtpConfig: {
-        type: "object",
-        title: "SMTP Configuration",
-        group: 'config',
-        properties: {
-          host: {
-            type: "string",
-            title: 'SMTP Host',
-            description: 'e.g., smtp.gmail.com',
-          },
-          port: {
-            type: "number",
-            title: 'SMTP Port',
-            enum: [25, 465, 587, 2525],
-            default: 587,
-          },
-          username: {
-            type: "string",
-            title: 'SMTP Username',
-          },
-          password: {
-            type: "string",
-            title: 'SMTP Password',
-            'x-control-variant': 'password',
-            description: 'Encrypted in storage',
-          },
-          encryption: {
-            type: "string",
-            enum: ["none", "tls", "ssl"],
-            title: 'Encryption',
-            default: "tls",
-          },
-          fromName: {
-            type: "string",
-            title: 'From Name',
-            description: 'Display name for sender',
-          },
+        dataSource:{
+          collection: DataType.config,
+          valueField: 'sk',
+          labelField: 'name',
         },
-      },
-
-      // API Configuration (for non-SMTP providers)
-      apiConfig: {
-        type: "object",
-        title: "API Configuration",
         group: 'config',
-        properties: {
-          apiKey: {
-            type: "string",
-            title: 'API Key',
-            'x-control-variant': 'password',
-          },
-          apiSecret: {
-            type: "string",
-            title: 'API Secret',
-            'x-control-variant': 'password',
-          },
-          region: {
-            type: "string",
-            title: 'Region',
-            description: 'For AWS SES',
-          },
-          endpoint: {
-            type: "string",
-            title: 'API Endpoint',
-          },
-        },
       },
-
-      // DNS Verification
       dnsRecords: {
         type: "object",
         title: "DNS Records & Verification",

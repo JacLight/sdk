@@ -145,6 +145,19 @@ export const CompanySchema = () => {
           ],
         },
       },
+      emailHistory: {
+        type: 'array',
+        hidden: true,
+        items: {
+          type: 'object',
+          properties: {
+            email: { type: 'string' },
+            changedAt: { type: 'string', format: 'date-time' },
+            changedBy: { type: 'string' },
+            reason: { type: 'string' },
+          },
+        },
+      },
       // Service agreements for using shared integrations
       serviceAgreements: {
         type: 'array',

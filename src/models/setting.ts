@@ -109,10 +109,10 @@ export const SettingSchema = () => {
       inSmsGateway: getSettingItemSchema(DataType.config, 'in-sms'),
       outSmsGateway: getSettingItemSchema(DataType.config, 'in-sms'),
       inEmailGateway: getSettingItemSchema(DataType.config, 'in-email'),
-      outEmailGateway: getSettingItemSchema(DataType.config, 'in-email'),
-
+      outEmailGateway: getSettingItemSchema(DataType.config, 'out-email'),
+      bulkEmailGateway: getSettingItemSchema(DataType.config, 'bulk'),
+      bulkSmsGateway: getSettingItemSchema(DataType.config, 'bulk'),
       pushGateway: getSettingItemSchema(DataType.config, 'push-gateway'),
-
       notificationTemplates: {
         type: 'array',
         collapsible: 'close',
