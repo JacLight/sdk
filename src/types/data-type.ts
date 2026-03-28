@@ -138,6 +138,8 @@ export enum DataType {
   wallet_transaction = 'wallet_transaction',
   // Events
   event_ticket = 'event_ticket',
+  event_ticket_type = 'event_ticket_type',
+  event_badge_template = 'event_badge_template',
   event_session = 'event_session',
   event_participant = 'event_participant',
   event_checkin = 'event_checkin',

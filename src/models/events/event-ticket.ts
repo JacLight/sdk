@@ -31,9 +31,16 @@ export const EventTicketSchema = () => {
         group: 'event-info',
       },
 
-      // Ticket Type
+      // Ticket Type (reference to event_ticket_type record)
       ticketType: {
         type: 'string',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.event_ticket_type,
+          value: 'sk',
+          label: 'title',
+        },
         group: 'ticket-type',
       },
       ticketTypeName: {
@@ -47,7 +54,7 @@ export const EventTicketSchema = () => {
         group: 'ticket-type',
       },
 
-      // Holder Information
+      // Holder
       holder: {
         type: 'string',
         'x-control': ControlType.selectMany,
@@ -58,6 +65,7 @@ export const EventTicketSchema = () => {
           label: ['email', 'firstName', 'lastName'],
         },
       },
+
       // Status
       status: {
         type: 'string',
@@ -66,56 +74,52 @@ export const EventTicketSchema = () => {
       },
 
       // QR Code
-      qrCode: {
-        type: 'string',
-        readOnly: true,
-      },
-      qrSecret: {
-        type: 'string',
-        hidden: true,
-      },
-      qrLastRotated: {
-        type: 'string',
-        format: 'date-time',
-        hidden: true,
-      },
+      qrCode: { type: 'string', readOnly: true },
+      qrSecret: { type: 'string', hidden: true },
+      qrLastRotated: { type: 'string', format: 'date-time', hidden: true },
+      barcode: { type: 'string', readOnly: true },
 
-      // Accreditation
-      accreditations: {
+      // Badge
+      badgePrinted: { type: 'boolean', default: false, readOnly: true },
+      badgePrintedAt: { type: 'string', format: 'date-time', readOnly: true },
+
+      // Fulfillment (accreditation desk)
+      fulfilledAt: { type: 'string', format: 'date-time', readOnly: true },
+      fulfilledBy: { type: 'string', readOnly: true },
+      accreditationPoint: { type: 'string', readOnly: true },
+
+      // Perks (populated from ticket type definition on issue)
+      perks: {
         type: 'array',
+        collapsible: true,
+        readOnly: true,
         items: {
           type: 'object',
           properties: {
-            type: { type: 'string' },
-            name: { type: 'string' },
-            zones: {
+            perkId: { type: 'string', title: 'Perk ID' },
+            name: { type: 'string', title: 'Name' },
+            type: { type: 'string', enum: ['perk', 'access', 'companion', 'addon'] },
+            quantity: { type: 'number', default: 1 },
+            claimedCount: { type: 'number', default: 0 },
+            claims: {
               type: 'array',
-              items: { type: 'string' },
+              items: {
+                type: 'object',
+                properties: {
+                  claimedAt: { type: 'string', format: 'date-time' },
+                  claimedBy: { type: 'string' },
+                  scanPointId: { type: 'string' },
+                  fulfilledAt: { type: 'string', format: 'date-time' },
+                  fulfilledBy: { type: 'string' },
+                  badgePrinted: { type: 'boolean', default: false },
+                  badgePrintedAt: { type: 'string', format: 'date-time' },
+                  qrCode: { type: 'string' },
+                  barcode: { type: 'string' },
+                },
+              },
             },
           },
         },
-      },
-
-      // Linked Tickets (perks, companion tickets, access passes issued from this ticket)
-      linkedTickets: {
-        type: 'array',
-        collapsible: true,
-        items: {
-          type: 'object',
-          properties: {
-            ticketId: { type: 'string', title: 'Linked Ticket ID' },
-            type: { type: 'string', enum: ['perk', 'access', 'companion', 'upgrade', 'addon'], title: 'Link Type' },
-            name: { type: 'string', title: 'Name' },
-            claimed: { type: 'boolean', default: false },
-            claimedAt: { type: 'string', format: 'date-time' },
-            claimedBy: { type: 'string', title: 'Claimed By (holder ID)' },
-          },
-        },
-      },
-      parentTicket: {
-        type: 'string',
-        title: 'Parent Ticket ID',
-        description: 'If this ticket was issued as a linked perk from another ticket',
       },
 
       // Check-in tracking
@@ -129,20 +133,14 @@ export const EventTicketSchema = () => {
             timestamp: { type: 'string', format: 'date-time' },
             direction: { type: 'string', enum: ['in', 'out'] },
             validator: { type: 'string' },
+            scanPointId: { type: 'string' },
           },
         },
       },
-      lastCheckIn: {
-        type: 'string',
-        format: 'date-time',
-        readOnly: true,
-      },
-      currentZone: {
-        type: 'string',
-        readOnly: true,
-      },
+      lastCheckIn: { type: 'string', format: 'date-time', readOnly: true },
+      currentZone: { type: 'string', readOnly: true },
 
-      // Purchase Information
+      // Purchase
       purchase: {
         type: 'object',
         collapsible: true,
@@ -174,14 +172,8 @@ export const EventTicketSchema = () => {
       },
 
       // Metadata
-      notes: {
-        type: 'string',
-        'x-control-variant': 'textarea',
-      },
-      tags: {
-        type: 'array',
-        items: { type: 'string' },
-      },
+      notes: { type: 'string', 'x-control-variant': 'textarea' },
+      tags: { type: 'array', items: { type: 'string' } },
     },
     required: ['event', 'ticketType'],
   } as const;

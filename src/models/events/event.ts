@@ -25,7 +25,7 @@ export const EventSchema = () => {
       },
       type: {
         type: 'string',
-        enum: ['conference', 'meetup', 'workshop', 'webinar', 'tradeshow', 'festival', 'other'],
+        enum: ['conference', 'summit', 'meetup', 'workshop', 'webinar', 'tradeshow', 'festival', 'concert', 'sports', 'club', 'gala', 'exhibition', 'other'],
         default: 'conference',
         group: 'type-status',
       },
@@ -148,129 +148,77 @@ export const EventSchema = () => {
         items: {
           type: 'object',
           properties: {
-            id: {
-              type: 'string',
-            },
-            name: {
-              type: 'string',
-            },
-            description: {
-              type: 'string',
-            },
-            capacity: {
-              type: 'number',
-            },
-            requiresAccreditation: {
-              type: 'array',
-              items: { type: 'string' },
-            },
+            id: { type: 'string' },
+            name: { type: 'string' },
+            description: { type: 'string' },
+            capacity: { type: 'number' },
           },
         },
       },
 
-      // Ticket Types Configuration
-      ticketTypes: {
+      // Scan Points (gates, doors, food stations, lounges)
+      scanPoints: {
         type: 'array',
         collapsible: true,
         items: {
           type: 'object',
           properties: {
-            id: {
-              type: 'string',
-            },
-            name: {
-              type: 'string',
-            },
-            description: {
-              type: 'string',
-            },
-            price: {
-              type: 'number',
-            },
-            currency: {
-              type: 'string',
-              default: 'USD',
-            },
-            capacity: {
-              type: 'number',
-            },
-            soldCount: {
-              type: 'number',
-              default: 0,
-            },
-            color: {
-              type: 'string',
-              'x-control': ControlType.color,
-            },
-            permissions: {
+            id: { type: 'string' },
+            name: { type: 'string', title: 'Scan Point Name' },
+            description: { type: 'string' },
+            zone: { type: 'string', title: 'Zone' },
+            acceptedTicketTypes: {
               type: 'array',
+              title: 'Accepted Ticket Types',
+              description: 'event_ticket_type SKs. Empty = accept all.',
               items: { type: 'string' },
             },
-            saleStartDate: {
-              type: 'string',
-              format: 'date-time',
-            },
-            saleEndDate: {
-              type: 'string',
-              format: 'date-time',
-            },
-            isActive: {
-              type: 'boolean',
-              default: true,
-            },
-            allowReentry: {
-              type: 'boolean',
-              default: false,
-              title: 'Allow Re-entry',
-            },
-            allowTransfer: {
-              type: 'boolean',
-              default: false,
-              title: 'Allow Transfer/Resale',
-            },
-            linkedTicketTypes: {
+            acceptedPerkIds: {
               type: 'array',
-              title: 'Included Perks',
-              description: 'Ticket types that are included with this ticket (e.g. VIP includes free lunch)',
-              items: {
-                type: 'object',
-                properties: {
-                  ticketTypeId: { type: 'string', title: 'Ticket Type' },
-                  type: { type: 'string', enum: ['perk', 'access', 'companion', 'upgrade', 'addon'], default: 'perk' },
-                  name: { type: 'string', title: 'Perk Name' },
-                  autoIssue: { type: 'boolean', default: false, title: 'Auto-issue on purchase' },
-                },
-              },
+              title: 'Accepted Perk IDs',
+              description: 'Perk IDs from ticket type definitions. Empty = main ticket only.',
+              items: { type: 'string' },
             },
+            autoClaimPerk: {
+              type: 'boolean',
+              default: false,
+              title: 'Auto-claim perk on scan',
+            },
+            assignedStaff: {
+              type: 'array',
+              title: 'Assigned Staff',
+              items: { type: 'string' },
+            },
+            isActive: { type: 'boolean', default: true },
           },
         },
       },
 
-      // Accreditation Types
-      accreditationTypes: {
+      // Accreditation Points (registration desks / badge pickup counters)
+      accreditationPoints: {
         type: 'array',
         collapsible: true,
         items: {
           type: 'object',
           properties: {
-            id: {
-              type: 'string',
-            },
-            name: {
-              type: 'string',
-            },
-            color: {
-              type: 'string',
-              'x-control': ControlType.color,
-            },
-            zones: {
+            id: { type: 'string' },
+            name: { type: 'string', title: 'Name' },
+            description: { type: 'string' },
+            zone: { type: 'string', title: 'Zone' },
+            acceptedTicketTypes: {
               type: 'array',
+              title: 'Ticket Types Handled',
+              description: 'event_ticket_type SKs. Empty = all.',
               items: { type: 'string' },
             },
-            permissions: {
+            allowWalkIn: { type: 'boolean', default: false, title: 'Allow Walk-in Purchase' },
+            allowOnlinePickup: { type: 'boolean', default: true, title: 'Allow Online Pickup' },
+            assignedStaff: {
               type: 'array',
+              title: 'Assigned Staff',
               items: { type: 'string' },
             },
+            isActive: { type: 'boolean', default: true },
           },
         },
       },
