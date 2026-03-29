@@ -25,7 +25,21 @@ export const EventSchema = () => {
       },
       type: {
         type: 'string',
-        enum: ['conference', 'summit', 'meetup', 'workshop', 'webinar', 'tradeshow', 'festival', 'concert', 'sports', 'club', 'gala', 'exhibition', 'other'],
+        enum: [
+          'conference',
+          'summit',
+          'meetup',
+          'workshop',
+          'webinar',
+          'tradeshow',
+          'festival',
+          'concert',
+          'sports',
+          'club',
+          'gala',
+          'exhibition',
+          'other',
+        ],
         default: 'conference',
         group: 'type-status',
       },
@@ -176,7 +190,8 @@ export const EventSchema = () => {
             acceptedPerkIds: {
               type: 'array',
               title: 'Accepted Perk IDs',
-              description: 'Perk IDs from ticket type definitions. Empty = main ticket only.',
+              description:
+                'Perk IDs from ticket type definitions. Empty = main ticket only.',
               items: { type: 'string' },
             },
             autoClaimPerk: {
@@ -211,8 +226,16 @@ export const EventSchema = () => {
               description: 'event_ticket_type SKs. Empty = all.',
               items: { type: 'string' },
             },
-            allowWalkIn: { type: 'boolean', default: false, title: 'Allow Walk-in Purchase' },
-            allowOnlinePickup: { type: 'boolean', default: true, title: 'Allow Online Pickup' },
+            allowWalkIn: {
+              type: 'boolean',
+              default: false,
+              title: 'Allow Walk-in Purchase',
+            },
+            allowOnlinePickup: {
+              type: 'boolean',
+              default: true,
+              title: 'Allow Online Pickup',
+            },
             assignedStaff: {
               type: 'array',
               title: 'Assigned Staff',
@@ -265,8 +288,9 @@ export const EventSchema = () => {
 
       // Host & Organizers
       host: {
-        type: 'string',
+        type: 'array',
         'x-control': ControlType.selectMany,
+        items: { type: 'string' },
         dataSource: {
           source: 'collection',
           collection: DataType.user,
@@ -287,15 +311,15 @@ export const EventSchema = () => {
       },
 
       // Content
-      description: {
+      shortDescription: {
         type: 'string',
         'x-control': ControlType.richtext,
         collapsible: true,
       },
-      shortDescription: {
+      description: {
         type: 'string',
-        'x-control-variant': 'textarea',
-        maxLength: 500,
+        'x-control': ControlType.richtext,
+        collapsible: true,
       },
       coverImage: FileInfoSchema(),
       logo: FileInfoSchema(),
@@ -327,16 +351,6 @@ export const EventSchema = () => {
           totalSessions: { type: 'number', default: 0 },
           totalParticipants: { type: 'number', default: 0 },
         },
-      },
-
-      // Metadata
-      tags: {
-        type: 'array',
-        'x-control-variant': 'chip',
-        items: { type: 'string' },
-      },
-      category: {
-        type: 'string',
       },
     },
     required: ['name', 'title', 'startDate'],

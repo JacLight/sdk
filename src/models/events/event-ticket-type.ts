@@ -10,6 +10,7 @@ export const EventTicketTypeSchema = () => {
         type: 'string',
         pattern: '^[a-zA-Z_\\-0-9]*$',
         unique: true,
+        uniqueScope: ['event'],
         transform: ['random-string::10', 'uri'],
         title: 'ID',
       },
@@ -77,6 +78,17 @@ export const EventTicketTypeSchema = () => {
       isActive: {
         type: 'boolean',
         default: true,
+      },
+      maxPerOrder: {
+        type: 'number',
+        title: 'Max Per Order',
+        description: 'Maximum number of tickets a customer can buy in one order',
+        default: 10,
+      },
+      maxPerCustomer: {
+        type: 'number',
+        title: 'Max Per Customer',
+        description: 'Maximum tickets a single customer can hold for this type',
       },
       sortOrder: {
         type: 'number',

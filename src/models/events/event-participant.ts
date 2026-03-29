@@ -38,6 +38,12 @@ export const EventParticipantSchema = () => {
         },
       },
 
+      email: {
+        type: 'string',
+        format: 'email',
+        title: 'Email',
+      },
+
       // Participant type - fully user-defined
       type: {
         type: 'string',

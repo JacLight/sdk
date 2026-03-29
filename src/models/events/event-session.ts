@@ -107,6 +107,7 @@ export const EventSessionSchema = () => {
         maxLength: 300,
       },
       coverImage: FileInfoSchema(),
+      image: FileInfoSchema(),
       tags: {
         type: 'array',
         'x-control-variant': 'chip',

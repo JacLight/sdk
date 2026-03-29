@@ -10,6 +10,7 @@ const getAccountFeatures = () => [
   { label: 'Projects', value: 'projects' },
   { label: 'Files', value: 'files' },
   { label: 'Orders', value: 'orders' },
+  { label: 'Events', value: 'events' },
   { label: 'Wishlists', value: 'wishlists' },
   { label: 'Reservations', value: 'reservations' },
   { label: 'Payments', value: 'payments' },

@@ -65,6 +65,15 @@ export const EventTicketSchema = () => {
           label: ['email', 'firstName', 'lastName'],
         },
       },
+      holderEmail: {
+        type: 'string',
+        format: 'email',
+        title: 'Holder Email',
+      },
+      holderName: {
+        type: 'string',
+        title: 'Holder Name',
+      },
 
       // Status
       status: {
@@ -145,7 +154,7 @@ export const EventTicketSchema = () => {
         type: 'object',
         collapsible: true,
         properties: {
-          orderId: { type: 'string' },
+          bookingId: { type: 'string' },
           transactionId: { type: 'string' },
           amount: { type: 'number' },
           currency: { type: 'string', default: 'USD' },

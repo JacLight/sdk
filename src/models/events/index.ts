@@ -1,6 +1,7 @@
 export * from './event';
 export * from './event-ticket-type';
 export * from './event-badge-template';
+export * from './event-booking';
 export * from './event-ticket';
 export * from './event-session';
 export * from './event-participant';
