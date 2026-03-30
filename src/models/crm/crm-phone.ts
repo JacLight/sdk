@@ -135,13 +135,10 @@ export const PhoneSchema = () => {
         },
       },
 
-      // Voice configuration
+      // Voice configuration — routing is handled by ivr_routing records
       voiceConfig: {
         type: 'object',
         properties: {
-          forwardingEnabled: { type: 'boolean', default: false },
-          forwardingNumber: { type: 'string' },
-          forwardingEndpoint: { type: 'string' },
           voicemailEnabled: { type: 'boolean', default: false },
           voicemailGreeting: { type: 'string' },
           recordCalls: { type: 'boolean', default: false },

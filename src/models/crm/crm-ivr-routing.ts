@@ -168,9 +168,9 @@ export const IVRRoutingSchema = () => {
       // Routing Type
       routingType: {
         type: 'string',
-        enum: ['simple_menu', 'automation_flow'],
-        description: 'Simple menu (press buttons) or advanced automation',
-        default: 'simple_menu',
+        enum: ['forward', 'ai-assistant', 'simple_menu', 'automation_flow'],
+        description: 'forward = ring targets, ai-assistant = AI answers and routes, simple_menu = press buttons, automation_flow = full workflow',
+        default: 'forward',
         group: 'routing',
       },
 
@@ -196,8 +196,19 @@ export const IVRRoutingSchema = () => {
             greeting: {
               type: 'string',
               maxLength: 500,
-              description: 'What callers hear (supports {{variables}})',
+              description: 'What callers hear via TTS (ignored if greetingAudioUrl is set)',
               'x-control-variant': 'textarea',
+            },
+            aiInstructions: {
+              type: 'string',
+              maxLength: 1000,
+              description: 'Instructions for AI assistant — when to route callers to this menu group, what this department handles',
+              'x-control-variant': 'textarea',
+            },
+            greetingAudioUrl: {
+              type: 'string',
+              format: 'uri',
+              description: 'Pre-recorded audio file URL (MP3/WAV) — overrides TTS greeting for professional sound',
             },
             options: {
               type: 'array',
@@ -232,6 +243,7 @@ export const IVRRoutingSchema = () => {
                       'transfer-phone',
                       'transfer-agent',
                       'transfer-queue',
+                      'forward',
                       'ai-assistant',
                       'voicemail',
                       'send-sms',
@@ -277,6 +289,36 @@ export const IVRRoutingSchema = () => {
               maxLength: 200,
               description: 'What to say for invalid selections',
               default: 'Invalid selection. Please try again.',
+            },
+            defaultAction: {
+              type: 'object',
+              description: 'What to do if no key is pressed after all retries',
+              properties: {
+                action: {
+                  type: 'string',
+                  enum: [
+                    'forward',
+                    'transfer-phone',
+                    'transfer-agent',
+                    'transfer-queue',
+                    'voicemail',
+                    'ai-assistant',
+                    'trigger-automation',
+                    'hangup',
+                  ],
+                  default: 'voicemail',
+                },
+                actionParams: {
+                  type: 'string',
+                  description: 'Phone number, agent ID, queue name, etc.',
+                },
+                message: {
+                  type: 'string',
+                  maxLength: 200,
+                  description: 'Message before executing default action',
+                  default: 'We did not receive your selection.',
+                },
+              },
             },
           },
           required: ['id', 'name', 'greeting', 'options'],
@@ -329,9 +371,28 @@ export const IVRRoutingSchema = () => {
           },
           voice: {
             type: 'string',
-            description:
-              'Twilio voice name (e.g., alice, man, woman, or Amazon Polly voice)',
-            default: 'alice',
+            'x-control': 'ControlType.select',
+            description: 'TTS voice — use Neural/WaveNet for natural-sounding speech',
+            enum: [
+              'Polly.Joanna-Neural',
+              'Polly.Matthew-Neural',
+              'Polly.Amy-Neural',
+              'Polly.Brian-Neural',
+              'Polly.Lupe-Neural',
+              'Polly.Pedro-Neural',
+              'Polly.Lea-Neural',
+              'Polly.Remi-Neural',
+              'Polly.Vicki-Neural',
+              'Polly.Daniel-Neural',
+              'Google.en-US-Wavenet-F',
+              'Google.en-US-Wavenet-D',
+              'Google.es-US-Wavenet-A',
+              'Google.fr-FR-Wavenet-A',
+              'Polly.Joanna',
+              'Polly.Matthew',
+              'alice',
+            ],
+            default: 'Polly.Joanna-Neural',
           },
           recording: {
             type: 'object',
@@ -418,91 +479,164 @@ export const IVRRoutingSchema = () => {
         },
       },
 
-      // ===== CALL FORWARDING / RING GROUPS =====
-      forwarding: {
+      // ===== FORWARDING GROUPS =====
+      // Define reusable forwarding groups, then reference by ID from:
+      //   - routingType "forward" → forwardingGroupId
+      //   - menu option action "forward" → actionParams = group ID
+      //   - defaultAction "forward" → actionParams = group ID
+      forwardingGroups: {
+        type: 'array',
+        description: 'Define forwarding/ring groups. Reference by ID from routing or menu actions.',
+        group: 'forwarding',
+        items: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'string',
+              description: 'Unique ID (e.g., sales-team, on-call)',
+            },
+            name: {
+              type: 'string',
+              description: 'Display name',
+            },
+            strategy: {
+              type: 'string',
+              enum: ['simultaneous', 'sequential', 'round-robin'],
+              description: 'simultaneous = ring all at once, sequential = one by one in order, round-robin = rotate starting target each call',
+              default: 'simultaneous',
+            },
+            targets: {
+              type: 'array',
+              description: 'Numbers/agents to ring',
+              items: {
+                type: 'object',
+                properties: {
+                  type: {
+                    type: 'string',
+                    enum: ['phone', 'agent', 'queue', 'sip'],
+                    default: 'phone',
+                  },
+                  value: {
+                    type: 'string',
+                    description: 'Phone number, agent ID, queue name, or SIP URI',
+                  },
+                  label: {
+                    type: 'string',
+                    description: 'Display name (e.g., "John Mobile")',
+                  },
+                },
+                required: ['type', 'value'],
+              },
+            },
+            ringDuration: {
+              type: 'integer',
+              minimum: 5,
+              maximum: 60,
+              description: 'Seconds to ring before giving up or trying next',
+              default: 20,
+            },
+            whisper: {
+              type: 'object',
+              description: 'Whisper announcement to person answering',
+              properties: {
+                enabled: { type: 'boolean', default: false },
+                message: { type: 'string', default: 'Incoming call from {{caller}}' },
+              },
+            },
+            screening: {
+              type: 'object',
+              description: 'Require key press to accept call',
+              properties: {
+                enabled: { type: 'boolean', default: false },
+                message: { type: 'string', default: 'Press 1 to accept this call, or hang up to decline.' },
+              },
+            },
+            fallback: {
+              type: 'string',
+              enum: ['voicemail', 'ai-assistant', 'automation', 'hangup'],
+              description: 'What to do if no one answers',
+              default: 'voicemail',
+            },
+            fallbackAutomationId: {
+              type: 'string',
+              description: 'Automation to run if fallback is "automation"',
+            },
+          },
+          required: ['id', 'name', 'targets'],
+        },
+      },
+
+      // ===== FORWARD ROUTING CONFIG =====
+      // Used when routingType is "forward"
+      forwardConfig: {
         type: 'object',
-        description: 'Call forwarding and ring group configuration',
+        description: 'Config for routingType "forward" — which group to ring, optional greeting',
         group: 'forwarding',
         properties: {
-          enabled: {
+          forwardingGroupId: {
+            type: 'string',
+            description: 'ID of forwarding group to ring',
+          },
+          greeting: {
+            type: 'string',
+            maxLength: 500,
+            description: 'Optional greeting before ringing (leave empty to skip)',
+            'x-control-variant': 'textarea',
+          },
+        },
+      },
+
+      // ===== AI ASSISTANT CONFIG =====
+      // Used when routingType is "ai-assistant"
+      aiAssistantConfig: {
+        type: 'object',
+        description: 'Config for AI-powered call handling — AI answers, converses, and routes',
+        group: 'routing',
+        properties: {
+          assistantId: {
+            type: 'string',
+            description: 'AI assistant ID to handle the call',
+          },
+          greeting: {
+            type: 'string',
+            maxLength: 500,
+            description: 'Initial greeting the AI speaks (e.g., "Hi, thanks for calling Acme. How can I help you?")',
+            'x-control-variant': 'textarea',
+          },
+          context: {
+            type: 'string',
+            maxLength: 2000,
+            description: 'System prompt / context for the AI (business info, what it can help with, transfer rules)',
+            'x-control-variant': 'textarea',
+          },
+          voice: {
+            type: 'string',
+            description: 'Voice for the AI (e.g., alloy, echo, shimmer, or provider-specific)',
+          },
+          language: {
+            type: 'string',
+            description: 'Language code (e.g., en-US, es-ES)',
+            default: 'en-US',
+          },
+          canTransfer: {
             type: 'boolean',
-            description: 'Enable call forwarding',
-            default: false,
+            description: 'Allow AI to transfer calls to forwarding groups (AI derives routing from menus and forwarding groups config)',
+            default: true,
           },
-          strategy: {
+          fallbackForwardingGroupId: {
             type: 'string',
-            enum: ['simultaneous', 'sequential'],
-            description: 'Ring all at once or one by one',
-            default: 'sequential',
+            description: 'Forwarding group if AI cannot resolve the request',
           },
-          targets: {
-            type: 'array',
-            description: 'Phone numbers or agents to forward to',
-            items: {
-              type: 'object',
-              properties: {
-                type: {
-                  type: 'string',
-                  enum: ['phone', 'agent', 'queue', 'sip'],
-                  default: 'phone',
-                },
-                value: {
-                  type: 'string',
-                  description: 'Phone number, agent ID, queue name, or SIP URI',
-                },
-                label: {
-                  type: 'string',
-                  description: 'Display name (e.g., "John Mobile")',
-                },
-              },
-              required: ['type', 'value'],
-            },
-          },
-          ringDuration: {
+          maxDuration: {
             type: 'integer',
-            minimum: 5,
-            maximum: 60,
-            description: 'Seconds to ring each target before trying next',
-            default: 20,
+            minimum: 30,
+            maximum: 600,
+            description: 'Max seconds for AI conversation before transferring',
+            default: 120,
           },
-          whisper: {
-            type: 'object',
-            description: 'Whisper announcement to person answering',
-            properties: {
-              enabled: {
-                type: 'boolean',
-                default: false,
-              },
-              message: {
-                type: 'string',
-                description: 'Message to play (supports {{caller}} variable)',
-                default: 'Incoming call from {{caller}}',
-              },
-            },
-          },
-          screening: {
-            type: 'object',
-            description: 'Call screening - require key press to accept',
-            properties: {
-              enabled: {
-                type: 'boolean',
-                default: false,
-              },
-              message: {
-                type: 'string',
-                default: 'Press 1 to accept this call, or hang up to decline.',
-              },
-            },
-          },
-          fallback: {
+          phoneConfigId: {
             type: 'string',
-            enum: ['voicemail', 'automation', 'hangup'],
-            description: 'What to do if no one answers',
-            default: 'voicemail',
-          },
-          fallbackAutomationId: {
-            type: 'string',
-            description: 'Automation to run if fallback is "automation"',
+            description: 'Phone config reference for WebSocket connection',
           },
         },
       },
