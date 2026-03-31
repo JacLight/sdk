@@ -169,7 +169,8 @@ export const IVRRoutingSchema = () => {
       routingType: {
         type: 'string',
         enum: ['forward', 'ai-assistant', 'simple_menu', 'automation_flow'],
-        description: 'forward = ring targets, ai-assistant = AI answers and routes, simple_menu = press buttons, automation_flow = full workflow',
+        description:
+          'forward = ring targets, ai-assistant = AI answers and routes, simple_menu = press buttons, automation_flow = full workflow',
         default: 'forward',
         group: 'routing',
       },
@@ -196,19 +197,22 @@ export const IVRRoutingSchema = () => {
             greeting: {
               type: 'string',
               maxLength: 500,
-              description: 'What callers hear via TTS (ignored if greetingAudioUrl is set)',
+              description:
+                'What callers hear via TTS (ignored if greetingAudioUrl is set)',
               'x-control-variant': 'textarea',
             },
             aiInstructions: {
               type: 'string',
               maxLength: 1000,
-              description: 'Instructions for AI assistant — when to route callers to this menu group, what this department handles',
+              description:
+                'Instructions for AI assistant — when to route callers to this menu group, what this department handles',
               'x-control-variant': 'textarea',
             },
             greetingAudioUrl: {
               type: 'string',
               format: 'uri',
-              description: 'Pre-recorded audio file URL (MP3/WAV) — overrides TTS greeting for professional sound',
+              description:
+                'Pre-recorded audio file URL (MP3/WAV) — overrides TTS greeting for professional sound',
             },
             options: {
               type: 'array',
@@ -372,7 +376,8 @@ export const IVRRoutingSchema = () => {
           voice: {
             type: 'string',
             'x-control': 'ControlType.select',
-            description: 'TTS voice — use Neural/WaveNet for natural-sounding speech',
+            description:
+              'TTS voice — use Neural/WaveNet for natural-sounding speech',
             enum: [
               'Polly.Joanna-Neural',
               'Polly.Matthew-Neural',
@@ -405,7 +410,12 @@ export const IVRRoutingSchema = () => {
               },
               mode: {
                 type: 'string',
-                enum: ['all', 'inbound_only', 'outbound_only', 'menu_triggered'],
+                enum: [
+                  'all',
+                  'inbound_only',
+                  'outbound_only',
+                  'menu_triggered',
+                ],
                 description: 'When to record calls',
                 default: 'all',
               },
@@ -426,7 +436,8 @@ export const IVRRoutingSchema = () => {
               },
               pauseResumeEnabled: {
                 type: 'boolean',
-                description: 'Allow pausing/resuming recording (e.g., for PCI compliance)',
+                description:
+                  'Allow pausing/resuming recording (e.g., for PCI compliance)',
                 default: false,
               },
               retentionDays: {
@@ -486,7 +497,8 @@ export const IVRRoutingSchema = () => {
       //   - defaultAction "forward" → actionParams = group ID
       forwardingGroups: {
         type: 'array',
-        description: 'Define forwarding/ring groups. Reference by ID from routing or menu actions.',
+        description:
+          'Define forwarding/ring groups. Reference by ID from routing or menu actions.',
         group: 'forwarding',
         items: {
           type: 'object',
@@ -502,7 +514,8 @@ export const IVRRoutingSchema = () => {
             strategy: {
               type: 'string',
               enum: ['simultaneous', 'sequential', 'round-robin'],
-              description: 'simultaneous = ring all at once, sequential = one by one in order, round-robin = rotate starting target each call',
+              description:
+                'simultaneous = ring all at once, sequential = one by one in order, round-robin = rotate starting target each call',
               default: 'simultaneous',
             },
             targets: {
@@ -518,7 +531,8 @@ export const IVRRoutingSchema = () => {
                   },
                   value: {
                     type: 'string',
-                    description: 'Phone number, agent ID, queue name, or SIP URI',
+                    description:
+                      'Phone number, agent ID, queue name, or SIP URI',
                   },
                   label: {
                     type: 'string',
@@ -540,7 +554,10 @@ export const IVRRoutingSchema = () => {
               description: 'Whisper announcement to person answering',
               properties: {
                 enabled: { type: 'boolean', default: false },
-                message: { type: 'string', default: 'Incoming call from {{caller}}' },
+                message: {
+                  type: 'string',
+                  default: 'Incoming call from {{caller}}',
+                },
               },
             },
             screening: {
@@ -548,7 +565,11 @@ export const IVRRoutingSchema = () => {
               description: 'Require key press to accept call',
               properties: {
                 enabled: { type: 'boolean', default: false },
-                message: { type: 'string', default: 'Press 1 to accept this call, or hang up to decline.' },
+                message: {
+                  type: 'string',
+                  default:
+                    'Press 1 to accept this call, or hang up to decline.',
+                },
               },
             },
             fallback: {
@@ -570,7 +591,8 @@ export const IVRRoutingSchema = () => {
       // Used when routingType is "forward"
       forwardConfig: {
         type: 'object',
-        description: 'Config for routingType "forward" — which group to ring, optional greeting',
+        description:
+          'Config for routingType "forward" — which group to ring, optional greeting',
         group: 'forwarding',
         properties: {
           forwardingGroupId: {
@@ -580,7 +602,8 @@ export const IVRRoutingSchema = () => {
           greeting: {
             type: 'string',
             maxLength: 500,
-            description: 'Optional greeting before ringing (leave empty to skip)',
+            description:
+              'Optional greeting before ringing (leave empty to skip)',
             'x-control-variant': 'textarea',
           },
         },
@@ -590,7 +613,8 @@ export const IVRRoutingSchema = () => {
       // Used when routingType is "ai-assistant"
       aiAssistantConfig: {
         type: 'object',
-        description: 'Config for AI-powered call handling — AI answers, converses, and routes',
+        description:
+          'Config for AI-powered call handling — AI answers, converses, and routes',
         group: 'routing',
         properties: {
           assistantId: {
@@ -600,18 +624,32 @@ export const IVRRoutingSchema = () => {
           greeting: {
             type: 'string',
             maxLength: 500,
-            description: 'Initial greeting the AI speaks (e.g., "Hi, thanks for calling Acme. How can I help you?")',
+            description:
+              'Initial greeting the AI speaks (e.g., "Hi, thanks for calling Acme. How can I help you?")',
             'x-control-variant': 'textarea',
           },
           context: {
             type: 'string',
             maxLength: 2000,
-            description: 'System prompt / context for the AI (business info, what it can help with, transfer rules)',
+            description:
+              'System prompt / context for the AI (business info, what it can help with, transfer rules)',
             'x-control-variant': 'textarea',
           },
           voice: {
             type: 'string',
-            description: 'Voice for the AI (e.g., alloy, echo, shimmer, or provider-specific)',
+            title: 'AI Voice',
+            description: 'Voice for OpenAI Realtime API',
+            enum: [
+              'alloy',
+              'echo',
+              'shimmer',
+              'ash',
+              'ballad',
+              'coral',
+              'sage',
+              'verse',
+            ],
+            default: 'coral',
           },
           language: {
             type: 'string',
@@ -620,7 +658,8 @@ export const IVRRoutingSchema = () => {
           },
           canTransfer: {
             type: 'boolean',
-            description: 'Allow AI to transfer calls to forwarding groups (AI derives routing from menus and forwarding groups config)',
+            description:
+              'Allow AI to transfer calls to forwarding groups (AI derives routing from menus and forwarding groups config)',
             default: true,
           },
           fallbackForwardingGroupId: {
@@ -678,11 +717,13 @@ export const IVRRoutingSchema = () => {
                 { type: 'string' },
                 { type: 'array', items: { type: 'string' } },
               ],
-              description: 'SMS: "caller" or phone number. Email: array of email addresses',
+              description:
+                'SMS: "caller" or phone number. Email: array of email addresses',
             },
             message: {
               type: 'string',
-              description: 'Message content (SMS body or Email body HTML). Supports {{caller}}, {{business_name}}, {{time}}',
+              description:
+                'Message content (SMS body or Email body HTML). Supports {{caller}}, {{business_name}}, {{time}}',
               'x-control-variant': 'textarea',
             },
             cooldownMinutes: {
@@ -690,7 +731,8 @@ export const IVRRoutingSchema = () => {
               minimum: 1,
               maximum: 1440,
               default: 60,
-              description: 'SMS: minutes between sending repeated messages to same number',
+              description:
+                'SMS: minutes between sending repeated messages to same number',
             },
             subject: {
               type: 'string',

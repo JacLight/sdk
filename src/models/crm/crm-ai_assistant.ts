@@ -49,7 +49,7 @@ export const AIAssistantSchema = () => {
           'sage',
           'verse',
         ],
-        default: 'alloy',
+        default: 'coral',
         group: 'behavior_voice',
       },
       behaviorRules: {
