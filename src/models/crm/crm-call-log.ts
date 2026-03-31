@@ -14,6 +14,11 @@ export const CallLogSchema = () => {
     type: 'object',
     properties: {
       // Call identifiers
+      sessionId: {
+        type: 'string',
+        description: 'Call session ID — same across all legs of one customer call (transfers, forwards)',
+        group: 'identity',
+      },
       callSid: {
         type: 'string',
         description: 'Twilio Call SID (unique identifier)',
@@ -139,6 +144,12 @@ export const CallLogSchema = () => {
         description: 'IVR routing configuration used',
         group: 'routing',
       },
+      routingType: {
+        type: 'string',
+        enum: ['forward', 'ai-assistant', 'simple_menu', 'automation_flow'],
+        description: 'How the call was routed',
+        group: 'routing',
+      },
       menuPath: {
         type: 'array',
         items: { type: 'string' },
@@ -159,6 +170,83 @@ export const CallLogSchema = () => {
         type: 'integer',
         description: 'Time spent waiting in queue (seconds)',
         group: 'routing',
+      },
+
+      // Call Journey — timeline of everything that happened
+      journey: {
+        type: 'array',
+        description: 'Ordered timeline of all call events',
+        group: 'journey',
+        items: {
+          type: 'object',
+          properties: {
+            timestamp: { type: 'string', format: 'date-time' },
+            event: {
+              type: 'string',
+              enum: [
+                'call-received',
+                'greeting-played',
+                'menu-presented',
+                'digit-pressed',
+                'ai-connected',
+                'ai-greeting',
+                'ai-conversation',
+                'transfer-initiated',
+                'transfer-completed',
+                'forward-ringing',
+                'forward-answered',
+                'forward-no-answer',
+                'voicemail-started',
+                'voicemail-recorded',
+                'recording-started',
+                'recording-stopped',
+                'tool-called',
+                'hold-started',
+                'hold-ended',
+                'call-ended',
+              ],
+            },
+            details: {
+              type: 'object',
+              additionalProperties: true,
+              description: 'Event-specific data (menuId, digit, transferTo, toolName, etc.)',
+            },
+          },
+        },
+      },
+
+      // AI conversation
+      assistantId: {
+        type: 'string',
+        description: 'AI assistant that handled the call',
+        group: 'ai',
+      },
+      aiTranscript: {
+        type: 'array',
+        description: 'AI conversation transcript',
+        group: 'ai',
+        items: {
+          type: 'object',
+          properties: {
+            role: { type: 'string', enum: ['caller', 'ai'] },
+            text: { type: 'string' },
+            timestamp: { type: 'string', format: 'date-time' },
+          },
+        },
+      },
+      toolsUsed: {
+        type: 'array',
+        description: 'AI tools invoked during the call',
+        group: 'ai',
+        items: {
+          type: 'object',
+          properties: {
+            tool: { type: 'string' },
+            params: { type: 'object', additionalProperties: true },
+            result: { type: 'object', additionalProperties: true },
+            timestamp: { type: 'string', format: 'date-time' },
+          },
+        },
       },
 
       // Business context

@@ -62,19 +62,15 @@ export const AIAssistantSchema = () => {
       capabilities: {
         type: 'array',
         items: {
-          type: 'string',
-          enum: [
-            'qualify_leads',
-            'answer_questions',
-            'schedule_appointments',
-            'process_orders',
-            'provide_support',
-            'product_recommendations',
-            'lead_nurturing',
-            'data_collection',
-          ],
+          type: 'object',
+          properties: {
+            id: { type: 'string', description: 'Capability key (e.g., qualify_leads, provide_support)' },
+            name: { type: 'string', description: 'Display name (e.g., Lead Qualification)' },
+            description: { type: 'string', description: 'What this capability does' },
+          },
+          required: ['id'],
         },
-        description: 'What the assistant can do (business capabilities)',
+        description: 'What the assistant can do — references built-in AI instruction playbooks',
       },
       tools: {
         type: 'array',
@@ -84,21 +80,28 @@ export const AIAssistantSchema = () => {
             key: {
               type: 'string',
               enum: [
-                // Communication Tools
                 'send_sms',
-                'send_chat_message',
-                'make_phone_call',
-                'answer_phone_call',
                 'send_email',
-                // CRM Data Tools
+                'send_chat_message',
                 'search_customers',
                 'create_lead',
                 'update_lead_status',
-                // Scheduling Tools
                 'check_availability',
+                'get_reservation_types',
                 'create_reservation',
-                // Knowledge Tools
+                'confirm_reservation',
+                'cancel_reservation',
+                'modify_reservation',
+                'create_ticket',
+                'get_ticket',
+                'update_ticket',
                 'query_knowledge',
+                'get_chat_history',
+                'get_conversation_history',
+                'confirm_order_status',
+                'check_product_availability',
+                'find_similar_product',
+                'make_call',
               ],
             },
             description: { type: 'string' },
