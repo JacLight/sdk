@@ -21,7 +21,7 @@ export const CommunityBlockSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.customer,
-          value: 'sk',
+          value: 'data.email',
           label: ['email', 'firstName', 'lastName'],
         },
       },
@@ -33,7 +33,7 @@ export const CommunityBlockSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.customer,
-          value: 'sk',
+          value: 'data.email',
           label: ['email', 'firstName', 'lastName'],
         },
       },

@@ -21,7 +21,7 @@ export const CommunityBookmarkSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.customer,
-          value: 'sk',
+          value: 'data.email',
           label: ['email', 'firstName', 'lastName'],
         },
       },

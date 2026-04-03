@@ -1,6 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../default-schema';
 import { ControlType, DataType } from '../types';
+import { FileInfoSchema } from './file-info';
 
 export const CompanySchema = () => {
   return {
@@ -21,6 +22,7 @@ export const CompanySchema = () => {
         maxLength: 20,
         unique: true,
       },
+      logo:FileInfoSchema(),
       displayName: {
         type: 'string',
         minLength: 3,

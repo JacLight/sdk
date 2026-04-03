@@ -22,7 +22,7 @@ export const CommunityPostSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.customer,
-          value: 'sk',
+          value: 'data.email',
           label: ['email', 'firstName', 'lastName'],
         },
       },

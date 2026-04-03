@@ -477,6 +477,9 @@ export const ApiKeySchema = () => {
         hidden: true,
         description: 'Hashed version of the API key for verification',
       },
+      keySecret:{
+        type: 'string',
+      },
       keyPrefix: {
         type: 'string',
         disabled: true,

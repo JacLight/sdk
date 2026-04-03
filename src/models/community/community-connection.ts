@@ -21,7 +21,7 @@ export const CommunityConnectionSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.customer,
-          value: 'sk',
+          value: 'data.email',
           label: ['email', 'firstName', 'lastName'],
         },
       },
@@ -34,8 +34,14 @@ export const CommunityConnectionSchema = () => {
           email: { type: 'string' },
           company: { type: 'string' },
           jobTitle: { type: 'string' },
-          image: { type: 'string' },
+          image: { type: 'object', properties: { url: { type: 'string' } } },
         },
+      },
+
+      requesterEmail: {
+        type: 'string',
+        format: 'email',
+        readOnly: true,
       },
 
       // The person receiving the request
@@ -45,7 +51,7 @@ export const CommunityConnectionSchema = () => {
         dataSource: {
           source: 'collection',
           collection: DataType.customer,
-          value: 'sk',
+          value: 'data.email',
           label: ['email', 'firstName', 'lastName'],
         },
       },
@@ -58,8 +64,14 @@ export const CommunityConnectionSchema = () => {
           email: { type: 'string' },
           company: { type: 'string' },
           jobTitle: { type: 'string' },
-          image: { type: 'string' },
+          image: { type: 'object', properties: { url: { type: 'string' } } },
         },
+      },
+
+      targetEmail: {
+        type: 'string',
+        format: 'email',
+        readOnly: true,
       },
 
       // Status

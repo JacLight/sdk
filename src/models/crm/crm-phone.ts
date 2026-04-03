@@ -30,15 +30,18 @@ export const PhoneSchema = () => {
         type: 'string',
         enum: ['local', 'toll_free', 'short_code', 'mobile', 'landline'],
         description: 'Type of phone number',
+        hideIn: ['generator'],
       },
       purpose: {
         type: 'string',
         enum: ['contact', 'business', 'marketing', 'support', 'sales'],
         description: 'Purpose of this phone number',
+        hideIn: ['generator'],
       },
       primary: {
         type: 'boolean',
         default: false,
+        hideIn: ['generator'],
       },
 
       // Provider integration
@@ -46,14 +49,17 @@ export const PhoneSchema = () => {
         type: 'string',
         enum: ['twilio', 'vonage', 'bandwidth', 'telnyx', 'plivo'],
         description: 'Telephony provider',
+        hideIn: ['generator'],
       },
       providerSid: {
         type: 'string',
         description: 'Provider unique identifier for this number',
+        hideIn: ['generator'],
       },
       providerAccountSid: {
         type: 'string',
         description: 'Provider account identifier',
+        hideIn: ['generator'],
       },
 
       // Status tracking
@@ -61,15 +67,18 @@ export const PhoneSchema = () => {
         type: 'string',
         enum: ['active', 'inactive', 'pending', 'suspended', 'released', 'failed'],
         default: 'pending',
+        hideIn: ['generator'],
       },
       verified: {
         type: 'boolean',
         default: false,
+        hideIn: ['generator'],
       },
 
       // Capabilities
       capabilities: {
         type: 'object',
+        hideIn: ['generator'],
         properties: {
           voice: { type: 'boolean', default: false },
           sms: { type: 'boolean', default: false },
@@ -81,6 +90,7 @@ export const PhoneSchema = () => {
       // Purchase information
       purchase: {
         type: 'object',
+        hideIn: ['generator'],
         properties: {
           purchasedAt: { type: 'string', format: 'date-time' },
           purchasedBy: { type: 'string' },
@@ -91,10 +101,10 @@ export const PhoneSchema = () => {
           expiresAt: { type: 'string', format: 'date-time' },
         },
       },
-
       // Webhook configuration
       webhooks: {
         type: 'object',
+        hideIn: ['generator'],
         properties: {
           smsUrl: { type: 'string', format: 'uri' },
           voiceUrl: { type: 'string', format: 'uri' },
@@ -102,10 +112,10 @@ export const PhoneSchema = () => {
           fallbackUrl: { type: 'string', format: 'uri' },
         },
       },
-
       // SMS Registration (A2P 10DLC / Toll-Free Verification)
       smsRegistration: {
         type: 'object',
+        hideIn: ['generator'],
         properties: {
           status: {
             type: 'string',
@@ -134,10 +144,10 @@ export const PhoneSchema = () => {
           },
         },
       },
-
       // Voice configuration — routing is handled by ivr_routing records
       voiceConfig: {
         type: 'object',
+        hideIn: ['generator'],
         properties: {
           voicemailEnabled: { type: 'boolean', default: false },
           voicemailGreeting: { type: 'string' },
@@ -145,26 +155,26 @@ export const PhoneSchema = () => {
           transcribeCalls: { type: 'boolean', default: false },
         },
       },
-
       // SMS configuration
       smsConfig: {
         type: 'object',
+        hideIn: ['generator'],
         properties: {
           autoReplyEnabled: { type: 'boolean', default: false },
           autoReplyMessage: { type: 'string' },
           triggerAutomations: { type: 'boolean', default: false },
         },
       },
-
       // IVR / Routing
       routingId: {
         type: 'string',
         description: 'Associated IVR or SMS routing configuration ID',
+        hideIn: ['generator'],
       },
-
       // Marketing & tracking
       tracking: {
         type: 'object',
+        hideIn: ['generator'],
         properties: {
           enabled: { type: 'boolean', default: false },
           campaignId: { type: 'string' },
@@ -172,10 +182,10 @@ export const PhoneSchema = () => {
           medium: { type: 'string' },
         },
       },
-
       // Usage statistics
       stats: {
         type: 'object',
+        hideIn: ['generator'],
         properties: {
           totalCalls: { type: 'number', default: 0 },
           totalSms: { type: 'number', default: 0 },
@@ -183,25 +193,6 @@ export const PhoneSchema = () => {
           lastCallAt: { type: 'string', format: 'date-time' },
           lastSmsAt: { type: 'string', format: 'date-time' },
         },
-      },
-
-      // Legacy fields (for backward compatibility with contact phones)
-      phone: {
-        type: 'string',
-        pattern: '^[-$0-9+]*$',
-        description: 'Deprecated: Use phoneNumber instead',
-      },
-      type: {
-        type: 'string',
-        description: 'Deprecated: Use phoneNumberType instead',
-      },
-      source: {
-        type: 'string',
-        description: 'How this phone was acquired or source system',
-      },
-      config: {
-        type: 'object',
-        description: 'Deprecated: Use specific config objects instead',
       },
     },
   } as const;

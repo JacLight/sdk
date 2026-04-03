@@ -18,6 +18,7 @@ export const CustomerSchema = () => {
         type: 'number',
         default: 0,
         group: 'account',
+        hideIn: ['generator'],
       },
       status: {
         type: 'string',
@@ -137,12 +138,14 @@ export const CustomerSchema = () => {
         type: 'string',
         default: 'false',
         group: 'lockout',
+        hideIn: ['generator'],
       },
       lockoutDate: {
         type: 'string',
         format: 'date-time',
         disabled: true,
         group: 'lockout',
+        hideIn: ['generator'],
       },
       passwordPolicy: {
         type: 'string',
@@ -153,6 +156,7 @@ export const CustomerSchema = () => {
           value: 'sk',
           label: 'name',
         },
+        hideIn: ['generator'],
       },
       password: {
         type: 'string',
@@ -161,6 +165,7 @@ export const CustomerSchema = () => {
         minLength: 8,
         pattern: '^(?=.*[A-Za-z])(?=.*\\d).{8,}$',
         group: 'password',
+        hideIn: ['generator'],
       },
       confirmPassword: {
         type: 'string',
@@ -169,10 +174,12 @@ export const CustomerSchema = () => {
         minLength: 8,
         pattern: '^(?=.*[A-Za-z])(?=.*\\d).{8,}$',
         group: 'password',
+        hideIn: ['generator'],
       },
       guestUser: {
         type: 'boolean',
         hidden: true,
+        hideIn: ['generator'],
       },
 
       // ========== LEAD ==========
@@ -332,7 +339,7 @@ export const CustomerSchema = () => {
         },
       },
       reminderQuestion: {
-        hideIn: ['table'],
+        hideIn: ['table', 'generator'],
         type: 'array',
         items: {
           type: 'object',
@@ -361,6 +368,7 @@ export const CustomerSchema = () => {
       communityProfile: {
         type: 'object',
         collapsible: true,
+        hideIn: ['generator'],
         properties: {
           isPublic: {
             type: 'boolean',
@@ -433,6 +441,7 @@ export const CustomerSchema = () => {
         type: 'array',
         hidden: true,
         collapsible: true,
+        hideIn: ['generator'],
         items: {
           type: 'object',
           properties: {
@@ -470,6 +479,7 @@ export const CustomerSchema = () => {
         type: 'object',
         collapsible: 'close',
         group: 'security',
+        hideIn: ['generator'],
         properties: {
           twoFactorEnabled: {
             type: 'boolean',

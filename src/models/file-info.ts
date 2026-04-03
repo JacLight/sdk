@@ -16,9 +16,11 @@ export const FileInfoSchema = () => {
       content: {
         type: 'string',
         hidden: true,
+        hideIn: ['generator'],
       },
       contentType: {
         type: 'string',
+        hideIn: ['generator'],
       },
       url: {
         type: 'string',
@@ -27,10 +29,12 @@ export const FileInfoSchema = () => {
       isPublic: {
         type: 'boolean',
         hidden: true,
+        hideIn: ['generator'],
       },
       meta: {
         type: 'object',
         hidden: true,
+        hideIn: ['generator'],
         properties: {
           width: {
             type: 'number',

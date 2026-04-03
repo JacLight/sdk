@@ -75,7 +75,7 @@ export const CollectionSchema = () => {
       },
       description: {
         type: 'string',
-        group: 'workflow',
+        'x-control': ControlType.richtext,
         groupLayout: 'flat',
       },
       workflow: {
@@ -154,6 +154,24 @@ export const CollectionSchema = () => {
         },
         hidden: true,
       },
+      successMessage: {
+        type: 'string',
+        'x-control': ControlType.richtext,
+        hidden: true,
+      },
+       errorMessage: {
+        type: 'string',
+        'x-control': ControlType.richtext,
+        hidden: true,
+       },
+       successRedirectUrl: {
+        type: 'string',
+        hidden: true,
+       },
+       errorRedirectUrl: {
+        type: 'string',
+        hidden: true,
+       },
     },
     required: ['name'],
   };

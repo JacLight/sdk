@@ -95,6 +95,14 @@ export const EventCheckInSchema = () => {
         default: 'qr_scan',
       },
 
+      // Scan type
+      scanType: {
+        type: 'string',
+        enum: ['entrance', 'eligibility'],
+        default: 'entrance',
+        description: 'entrance = gate in/out (one-time use, tracks occupancy), eligibility = zone/perk validation (unlimited, tracks usage count)',
+      },
+
       // Status
       status: {
         type: 'string',
@@ -108,6 +116,10 @@ export const EventCheckInSchema = () => {
           'wrong_zone',
           'capacity_full',
           'already_checked_in',
+          'reentry_not_allowed',
+          'reentry_limit_exceeded',
+          'ticket_type_not_accepted',
+          'perk_not_available',
           'expired_ticket',
           'cancelled_ticket',
           'blacklisted',

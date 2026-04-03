@@ -1,6 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { DataType } from '../../types';
+import { FileInfoSchema } from '../file-info';
 
 export const AffiliateProgramSchema = () => {
   return {
@@ -15,15 +16,146 @@ export const AffiliateProgramSchema = () => {
         transform: ['uri'],
         group: 'general',
       },
+      displayName: {
+        type: 'string',
+        description: 'Public-facing program name (e.g., "Acme Partner Program")',
+        group: 'general',
+      },
       title: {
         type: 'string',
         description: 'Display title',
         group: 'general',
       },
+      tagline: {
+        type: 'string',
+        description: 'Short tagline for program page (e.g., "Earn up to 35% commission")',
+        group: 'general',
+      },
       description: {
         type: 'string',
-        'x-control-variant': 'textarea',
+        'x-control-variant': 'richtext',
+        description: 'Full program description — shown on signup page',
       },
+      logo: FileInfoSchema(),
+      coverImage: FileInfoSchema(),
+      // Benefits — what affiliates get
+      benefits: {
+        type: 'array',
+        description: 'Program benefits displayed on signup page',
+        group: 'benefits',
+        items: {
+          type: 'object',
+          properties: {
+            title: { type: 'string', description: 'Benefit title (e.g., "25% Commission")' },
+            description: { type: 'string', description: 'Benefit details' },
+            icon: { type: 'string', description: 'Icon name' },
+          },
+        },
+      },
+
+      // Performance bonuses
+      bonuses: {
+        type: 'array',
+        description: 'Milestone bonuses (e.g., $300 at $5k sales, +3% lifetime at $30k)',
+        group: 'benefits',
+        items: {
+          type: 'object',
+          properties: {
+            threshold: { type: 'number', description: 'Sales amount to qualify' },
+            thresholdType: { type: 'string', enum: ['sales_amount', 'sales_count', 'referral_count'], default: 'sales_amount' },
+            reward: { type: 'string', description: 'What they get (e.g., "$300 bonus", "+3% lifetime commission")' },
+            rewardType: { type: 'string', enum: ['cash_bonus', 'commission_increase', 'product_credit', 'custom'], default: 'cash_bonus' },
+            rewardValue: { type: 'number', description: 'Numeric value of reward' },
+          },
+        },
+      },
+
+      // Terms and agreements
+      terms: {
+        type: 'object',
+        description: 'Program terms and conditions',
+        group: 'terms',
+        properties: {
+          agreementText: {
+            type: 'string',
+            'x-control-variant': 'richtext',
+            description: 'Full affiliate agreement text',
+          },
+          agreementUrl: {
+            type: 'string',
+            format: 'uri',
+            description: 'URL to hosted agreement document',
+          },
+          requiresAgreement: {
+            type: 'boolean',
+            default: true,
+            description: 'Affiliates must accept terms before joining',
+          },
+          autoApprove: {
+            type: 'boolean',
+            default: false,
+            description: 'Automatically approve new affiliates',
+          },
+          maxAffiliates: {
+            type: 'number',
+            description: 'Cap on total affiliates (e.g., first 100 founding affiliates)',
+          },
+          applicationDeadline: {
+            type: 'string',
+            format: 'date',
+            description: 'Deadline to join the program',
+          },
+        },
+      },
+
+      // Product info for affiliates
+      products: {
+        type: 'array',
+        description: 'Products affiliates can promote with pricing and per-item commission',
+        group: 'products',
+        items: {
+          type: 'object',
+          properties: {
+            productId: { type: 'string' },
+            name: { type: 'string' },
+            price: { type: 'number' },
+            currency: { type: 'string', default: 'USD' },
+            commissionOverride: { type: 'number', description: 'Per-product commission % (overrides program default)' },
+            image: { type: 'string', format: 'uri' },
+          },
+        },
+      },
+
+      // Marketing resources for affiliates
+      resources: {
+        type: 'array',
+        description: 'Marketing materials, banners, copy for affiliates to use',
+        group: 'resources',
+        items: {
+          type: 'object',
+          properties: {
+            title: { type: 'string' },
+            type: { type: 'string', enum: ['banner', 'email_template', 'social_post', 'landing_page', 'video', 'document', 'other'] },
+            url: { type: 'string', format: 'uri' },
+            description: { type: 'string' },
+            dimensions: { type: 'string', description: 'For banners (e.g., "728x90")' },
+          },
+        },
+      },
+
+      // Contact info
+      contactEmail: {
+        type: 'string',
+        format: 'email',
+        description: 'Program manager contact email',
+        group: 'contact',
+      },
+      contactName: {
+        type: 'string',
+        description: 'Program manager name',
+        group: 'contact',
+      },
+
       status: {
         type: 'string',
         enum: ['active', 'inactive', 'draft'],
