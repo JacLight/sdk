@@ -25,13 +25,7 @@ export const EventTicketSchema = () => {
         },
         group: 'event-info',
       },
-      eventName: {
-        type: 'string',
-        readOnly: true,
-        group: 'event-info',
-      },
-
-      // Ticket Type (reference to event_ticket_type record)
+      // Ticket Type (reference to event_ticket_type record — name, color, perks come from there)
       ticketType: {
         type: 'string',
         'x-control': ControlType.selectMany,
@@ -41,16 +35,6 @@ export const EventTicketSchema = () => {
           value: 'sk',
           label: 'title',
         },
-        group: 'ticket-type',
-      },
-      ticketTypeName: {
-        type: 'string',
-        readOnly: true,
-        group: 'ticket-type',
-      },
-      ticketTypeColor: {
-        type: 'string',
-        readOnly: true,
         group: 'ticket-type',
       },
 
@@ -82,11 +66,11 @@ export const EventTicketSchema = () => {
         default: 'pending',
       },
 
-      // QR Code
-      qrCode: { type: 'string', readOnly: true },
-      qrSecret: { type: 'string', hidden: true },
-      qrLastRotated: { type: 'string', format: 'date-time', hidden: true },
-      barcode: { type: 'string', readOnly: true },
+      // Code — ticket.name is the static code (print on wristbands, badges, etc.)
+      // code is the rotating signed payload for mobile app (expires in 60s)
+      code: { type: 'string', readOnly: true },
+      codeSecret: { type: 'string', hidden: true },
+      codeLastRotated: { type: 'string', format: 'date-time', hidden: true },
 
       // Badge
       badgePrinted: { type: 'boolean', default: false, readOnly: true },
@@ -122,8 +106,7 @@ export const EventTicketSchema = () => {
                   fulfilledBy: { type: 'string' },
                   badgePrinted: { type: 'boolean', default: false },
                   badgePrintedAt: { type: 'string', format: 'date-time' },
-                  qrCode: { type: 'string' },
-                  barcode: { type: 'string' },
+                  code: { type: 'string' },
                 },
               },
             },
@@ -162,6 +145,16 @@ export const EventTicketSchema = () => {
           paymentMethod: { type: 'string' },
           promoCode: { type: 'string' },
           discount: { type: 'number' },
+        },
+      },
+
+      amountPaid: { type: 'number', default: 0, readOnly: true },
+      payments: {
+        type: 'array', readOnly: true, items: {
+          type: 'object', properties: {
+            amount: { type: 'number' }, gateway: { type: 'string' }, ref: { type: 'string' },
+            method: { type: 'string' }, date: { type: 'string' }, transactionId: { type: 'string' },
+          },
         },
       },
 

@@ -199,6 +199,20 @@ export const EventSchema = () => {
               default: false,
               title: 'Auto-claim perk on scan',
             },
+            scanType: {
+              type: 'string',
+              enum: ['entrance', 'eligibility'],
+              default: 'entrance',
+              title: 'Scan Type',
+              description: 'entrance = gate in/out (one-time), eligibility = perk/zone check (unlimited)',
+            },
+            matchField: {
+              type: 'string',
+              enum: ['ticket_code', 'ticket_type', 'credential_code'],
+              default: 'ticket_code',
+              title: 'Match Scanned Code Against',
+              description: 'ticket_code = match against ticket name (static, printed on wristbands/badges), ticket_type = match against ticket type, credential_code = match against linked credential record',
+            },
             assignedStaff: {
               type: 'array',
               title: 'Assigned Staff',

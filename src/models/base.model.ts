@@ -100,6 +100,8 @@ export interface BaseModel<T> {
   client?: string;
 }
 
+export const baseModelSystemFields = ['pk', 'sk', 'name', 'datatype', 'version', 'createdate', 'modifydate', 'publishedDate', 'author', 'comments', 'activities', 'messages', 'schedules', 'rules', 'schedule', 'shares', 'likes', 'dislikes', 'averageRating', 'ratingCount', 'state', 'search', 'create_hash', 'reactions', 'modified_by', 'created_by', 'views', 'last_viewed', 'client'] as const;
+
 export const PostSubSchema = () => {
   return {
     type: 'object',

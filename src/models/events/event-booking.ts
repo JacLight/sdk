@@ -24,11 +24,6 @@ export const EventBookingSchema = () => {
           label: 'title',
         },
       },
-      eventName: {
-        type: 'string',
-        readOnly: true,
-      },
-
       // Buyer
       email: {
         type: 'string',
@@ -57,7 +52,6 @@ export const EventBookingSchema = () => {
           type: 'object',
           properties: {
             ticketTypeId: { type: 'string' },
-            ticketTypeName: { type: 'string' },
             quantity: { type: 'number' },
             unitPrice: { type: 'number' },
             amount: { type: 'number' },

@@ -55,10 +55,6 @@ export const EventCheckInSchema = () => {
         type: 'string',
         group: 'zone',
       },
-      zoneName: {
-        type: 'string',
-        group: 'zone',
-      },
       checkpoint: {
         type: 'string',
       },
@@ -160,10 +156,6 @@ export const EventCheckInSchema = () => {
           label: 'title',
         },
       },
-      sessionName: {
-        type: 'string',
-      },
-
       // Notes
       notes: {
         type: 'string',

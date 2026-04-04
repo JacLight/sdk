@@ -68,11 +68,6 @@ export const EventSessionSchema = () => {
         type: 'string',
         group: 'track',
       },
-      trackName: {
-        type: 'string',
-        readOnly: true,
-        group: 'track',
-      },
       zone: {
         type: 'string',
         group: 'zone-room',

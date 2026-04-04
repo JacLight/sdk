@@ -144,6 +144,7 @@ export enum DataType {
   event_session = 'event_session',
   event_participant = 'event_participant',
   event_checkin = 'event_checkin',
+  event_credential = 'event_credential',
   // Community (social platform)
   community_connection = 'community_connection',
   community_message = 'community_message',

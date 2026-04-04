@@ -1,11 +1,13 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { DataType, ControlType } from '../../types';
+import { AddressSchema } from '../crm/crm-address';
 
 export const SFInvoiceSchema = () => {
   return {
     type: 'object',
     properties: {
+      // --- Invoice Identity ---
       number: {
         type: 'string',
         pattern: '^[a-zA-Z_\\-0-9]*$',
@@ -17,10 +19,19 @@ export const SFInvoiceSchema = () => {
       },
       po: {
         type: 'string',
+        title: 'Purchase Order',
         group: 'number',
       },
+      currency: {
+        type: 'string',
+        default: 'USD',
+        group: 'number',
+      },
+
+      // --- Customer ---
       billTo: {
         type: 'string',
+        title: 'Customer',
         'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
@@ -28,10 +39,41 @@ export const SFInvoiceSchema = () => {
           value: 'username',
           label: ['username', 'email'],
         },
+        group: 'customer',
+      },
+      customerName: {
+        type: 'string',
+        title: 'Customer Name',
+        group: 'customer',
+      },
+      customerEmail: {
+        type: 'string',
+        format: 'email',
+        title: 'Customer Email',
+        group: 'customer',
+      },
+      customerPhone: {
+        type: 'string',
+        title: 'Customer Phone',
+        group: 'customer',
+      },
+
+      // --- Addresses ---
+      billingAddress: {
+        ...AddressSchema(),
+        title: 'Billing Address',
+        collapsible: true,
+        group: 'address',
+      },
+      shippingAddress: {
+        ...AddressSchema(),
+        title: 'Shipping Address',
+        collapsible: true,
         group: 'address',
       },
       shipTo: {
         type: 'string',
+        title: 'Ship To (Customer)',
         'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
@@ -41,21 +83,40 @@ export const SFInvoiceSchema = () => {
         },
         group: 'address',
       },
+
+      // --- Dates ---
       invoiceDate: {
         type: 'string',
+        format: 'date',
         default: '{{fn:new Date().toLocaleDateString()}}',
         group: 'date',
       },
       dueDate: {
         type: 'string',
+        format: 'date',
         default: '{{fn:new Date().toLocaleDateString()}}',
         group: 'date',
       },
       paymentDate: {
         type: 'string',
+        format: 'date-time',
         group: 'date',
         readOnly: true,
       },
+      sentDate: {
+        type: 'string',
+        format: 'date-time',
+        readOnly: true,
+        group: 'date',
+      },
+      sentTo: {
+        type: 'array',
+        items: { type: 'string' },
+        readOnly: true,
+        group: 'date',
+      },
+
+      // --- Line Items ---
       products: {
         type: 'array',
         collapsible: true,
@@ -65,7 +126,7 @@ export const SFInvoiceSchema = () => {
           collection: DataType.sf_product,
         },
         'x-control': ControlType.table,
-        operations: ['pick', 'add','remove'],
+        operations: ['pick', 'add', 'remove'],
         items: {
           type: 'object',
           showIndex: true,
@@ -91,12 +152,13 @@ export const SFInvoiceSchema = () => {
               type: 'number',
               format: 'currency',
               readOnly: true,
-              fn:
-                '((rowData.quantity || 1) * (rowData.price || 0)) - (rowData.discount || 0)',
+              fn: '((rowData.quantity || 1) * (rowData.price || 0)) - (rowData.discount || 0)',
             },
           },
         },
       },
+
+      // --- Totals ---
       itemCount: {
         type: 'number',
         readOnly: true,
@@ -123,18 +185,104 @@ export const SFInvoiceSchema = () => {
         group: 'discount',
         format: 'currency',
       },
-      paymentRef: {
-        type: 'string',
-        group: 'payment',
-      },
       total: {
         type: 'string',
         group: 'payment',
         readOnly: true,
-        fn:
-          'parseFloat(data.products.reduce((acc, item) => acc + (item.amount || 0), 0) || 0) + parseFloat(data.tax || 0) - parseFloat(data.discount || 0)',
+        fn: 'parseFloat(data.products.reduce((acc, item) => acc + (item.amount || 0), 0) || 0) + parseFloat(data.tax || 0) - parseFloat(data.discount || 0)',
         format: 'currency',
       },
+
+      // --- Payment ---
+      paymentRef: {
+        type: 'string',
+        title: 'Payment Reference',
+        group: 'payment',
+      },
+      paymentGateway: {
+        type: 'string',
+        title: 'Payment Gateway',
+        description: 'Selected payment gateway for online payment',
+        group: 'payment',
+      },
+      enableOnlinePayment: {
+        type: 'boolean',
+        default: false,
+        title: 'Enable Online Payment',
+        description: 'Allow customer to pay online via Stripe/PayPal',
+        group: 'payment',
+      },
+      paymentLink: {
+        type: 'string',
+        format: 'uri',
+        title: 'Payment Link',
+        readOnly: true,
+        description: 'URL where customer can pay this invoice online',
+        group: 'payment',
+      },
+      amountPaid: {
+        type: 'number',
+        default: 0,
+        readOnly: true,
+        title: 'Amount Paid',
+        group: 'payment',
+      },
+      payments: {
+        type: 'array',
+        readOnly: true,
+        title: 'Payment History',
+        items: {
+          type: 'object',
+          properties: {
+            amount: { type: 'number' },
+            gateway: { type: 'string' },
+            ref: { type: 'string' },
+            method: { type: 'string' },
+            date: { type: 'string', format: 'date-time' as const },
+            transactionId: { type: 'string' },
+          },
+        },
+        group: 'payment',
+      },
+      refunds: {
+        type: 'array',
+        readOnly: true,
+        title: 'Refund History',
+        items: {
+          type: 'object',
+          properties: {
+            amount: { type: 'number' },
+            reason: { type: 'string' },
+            date: { type: 'string', format: 'date-time' as const },
+            refundedBy: { type: 'string' },
+            refundId: { type: 'string' },
+            gateway: { type: 'string' },
+          },
+        },
+        group: 'payment',
+      },
+      totalRefunded: {
+        type: 'number',
+        default: 0,
+        readOnly: true,
+        title: 'Total Refunded',
+        group: 'payment',
+      },
+      paymentMethods: {
+        type: 'array',
+        'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
+        group: 'payment',
+        dataSource: {
+          source: 'collection',
+          collection: DataType.config,
+          value: 'name',
+          label: ['name', 'from'],
+          filter: { property: 'type', value: 'payment' },
+        },
+      },
+
+      // --- Delivery ---
       template: {
         type: 'array',
         'x-control': ControlType.selectMany,
@@ -163,25 +311,26 @@ export const SFInvoiceSchema = () => {
           })),
         },
       },
-      paymentMethods: {
-        type: 'array',
-        'x-control': ControlType.selectMany,
-        'x-control-variant': 'chip',
-        group: 'template',
-        dataSource: {
-          source: 'collection',
-          collection: DataType.config,
-          value: 'name',
-          label: ['name', 'from'],
-          filter: { property: 'type', value: 'payment' },
-        },
-      },
+
+      // --- Status & Notes ---
       status: {
         type: 'string',
+        enum: ['new', 'draft', 'sent', 'paid', 'paid-partial', 'overpaid', 'overdue', 'refunded', 'cancelled'],
+        default: 'new',
         group: 'status',
       },
       remarks: {
         type: 'string',
+        title: 'Customer-Facing Notes',
+        description: 'Shown on the invoice to the customer',
+        'x-control-variant': 'textarea',
+        group: 'status',
+      },
+      internalNotes: {
+        type: 'string',
+        title: 'Internal Notes',
+        description: 'Not visible to customer',
+        'x-control-variant': 'textarea',
         group: 'status',
       },
     },
@@ -189,11 +338,6 @@ export const SFInvoiceSchema = () => {
   } as const;
 };
 
-
 const is = SFInvoiceSchema();
 export type SFInvoiceModel = FromSchema<typeof is>;
-registerCollection(
-  'Store Invoice',
-  DataType.sf_invoice,
-  SFInvoiceSchema()
-);
+registerCollection('Store Invoice', DataType.sf_invoice, SFInvoiceSchema());

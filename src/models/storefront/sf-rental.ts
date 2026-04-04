@@ -527,6 +527,16 @@ export const SFRentalSchema = () => {
         },
       },
 
+      amountPaid: { type: 'number', default: 0, readOnly: true },
+      payments: {
+        type: 'array', readOnly: true, items: {
+          type: 'object', properties: {
+            amount: { type: 'number' }, gateway: { type: 'string' }, ref: { type: 'string' },
+            method: { type: 'string' }, date: { type: 'string' }, transactionId: { type: 'string' },
+          },
+        },
+      },
+
       // Agreement
       agreement: {
         type: 'object',
