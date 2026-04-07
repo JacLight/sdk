@@ -1,7 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 
-import { DataType } from '../../types';
+import { DataType, ControlType } from '../../types';
 
 export const PhoneSchema = () => {
   return {
@@ -193,6 +193,34 @@ export const PhoneSchema = () => {
           lastCallAt: { type: 'string', format: 'date-time' },
           lastSmsAt: { type: 'string', format: 'date-time' },
         },
+      },
+
+      // Assignment — which users/groups this phone number is assigned to
+      assignedUsers: {
+        type: 'array',
+        description: 'Users this phone is assigned to',
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.user,
+          value: 'email',
+          label: ['username', 'email'],
+        },
+        items: { type: 'string' },
+      },
+      assignedGroups: {
+        type: 'array',
+        description: 'User groups this phone is assigned to',
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.usergroup,
+          value: 'name',
+          label: ['title', 'name'],
+        },
+        items: { type: 'string' },
       },
     },
   } as const;

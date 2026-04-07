@@ -350,6 +350,6 @@ export type CallModel = FromSchema<typeof cs>;
 
 registerCollection(
   'Call Log',
-  DataType.calllog,
+  DataType.call_log,
   CallLogSchema,
 );

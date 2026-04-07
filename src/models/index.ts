@@ -52,3 +52,4 @@ export * from './client-app';
 export * from './banking';
 export * from './user-device';
 export * from './user-security';
+export * from './dataviz';

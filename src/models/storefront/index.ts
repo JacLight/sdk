@@ -24,6 +24,5 @@ export * from './sf-rental';
 export * from './sf-rental-config';
 export * from './sf-price-list';
 export * from './sf-customer-tier';
-export * from './sf-payment-link';
 export * from './sf-checkout-session';
 export * from './sf-payment-button';

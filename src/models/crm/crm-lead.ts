@@ -182,11 +182,20 @@ export const LeadSchema = () => {
         default: 'USD',
       },
 
-      // Assignment & Ownership
+      // Assignment & Ownership — can be a user OR a user group (team)
       assignedTo: {
         type: 'string',
         group: 'assignment',
         title: 'Assigned To',
+        description: 'User name/sk OR user group name/sk (see assignedToType)',
+      },
+      assignedToType: {
+        type: 'string',
+        enum: ['user', 'group'],
+        default: 'user',
+        group: 'assignment',
+        title: 'Assignment Type',
+        description: 'Whether assignedTo refers to an individual user or a user group (team collective)',
       },
       assignedBy: {
         type: 'string',

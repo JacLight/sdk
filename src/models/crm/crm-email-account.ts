@@ -1,6 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
-import { DataType } from '../../types';
+import { DataType, ControlType } from '../../types';
 
 export const EmailAccountSchema = () => {
   return {
@@ -301,6 +301,39 @@ export const EmailAccountSchema = () => {
         'x-control-variant': 'textarea',
         title: 'Description',
         group: 'additional',
+      },
+
+      // Assignment — this email account is assigned to these users and/or groups.
+      // Populated by the user profile "Assign Email" flow, or inline from the email account list.
+      assignedUsers: {
+        type: 'array',
+        title: 'Assigned Users',
+        description: 'Users this email account is assigned to',
+        group: 'assignment',
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.user,
+          value: 'email',
+          label: ['username', 'email'],
+        },
+        items: { type: 'string' },
+      },
+      assignedGroups: {
+        type: 'array',
+        title: 'Assigned Groups',
+        description: 'User groups this email account is assigned to',
+        group: 'assignment',
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.usergroup,
+          value: 'name',
+          label: ['title', 'name'],
+        },
+        items: { type: 'string' },
       },
     },
     required: ['name', 'accountName', 'emailAddress', 'provider'],

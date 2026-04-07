@@ -245,7 +245,8 @@ export const IVRRoutingSchema = () => {
                     type: 'string',
                     enum: [
                       'transfer-phone',
-                      'transfer-agent',
+                      'transfer-user',
+                      'transfer-group',
                       'transfer-queue',
                       'forward',
                       'ai-assistant',
@@ -263,11 +264,19 @@ export const IVRRoutingSchema = () => {
                       'hangup',
                     ],
                     default: 'transfer-phone',
+                    description:
+                      'Action to take. Use "transfer-user" to route to an individual user/agent, "transfer-group" to route to a user group (rings all/round-robin based on groupStrategy).',
                   },
                   actionParams: {
                     type: 'string',
                     description:
-                      'Phone number, agent ID, queue name, menu ID, automation ID, SMS message, etc. based on action type',
+                      'Target identifier based on action type: phone number (transfer-phone), user name or sk (transfer-user), user group name or sk (transfer-group), queue name (transfer-queue), menu ID, automation ID, SMS message, etc.',
+                  },
+                  groupStrategy: {
+                    type: 'string',
+                    enum: ['ring-all', 'round-robin', 'longest-idle', 'skill-based', 'sequential'],
+                    description: 'Only used when action is "transfer-group". How to pick which group member to ring.',
+                    default: 'ring-all',
                   },
                 },
                 required: ['digit', 'label', 'action'],
@@ -303,7 +312,8 @@ export const IVRRoutingSchema = () => {
                   enum: [
                     'forward',
                     'transfer-phone',
-                    'transfer-agent',
+                    'transfer-user',
+                    'transfer-group',
                     'transfer-queue',
                     'voicemail',
                     'ai-assistant',
@@ -314,7 +324,14 @@ export const IVRRoutingSchema = () => {
                 },
                 actionParams: {
                   type: 'string',
-                  description: 'Phone number, agent ID, queue name, etc.',
+                  description:
+                    'Target identifier: phone number, user name/sk, group name/sk, queue name, etc. based on action type.',
+                },
+                groupStrategy: {
+                  type: 'string',
+                  enum: ['ring-all', 'round-robin', 'longest-idle', 'skill-based', 'sequential'],
+                  description: 'Only used when action is "transfer-group".',
+                  default: 'ring-all',
                 },
                 message: {
                   type: 'string',

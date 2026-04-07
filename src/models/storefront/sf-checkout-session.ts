@@ -30,17 +30,6 @@ export const SFCheckoutSessionSchema = () => {
         description: 'Payment link code if from payment link',
         group: 'source',
       },
-      paymentLinkId: {
-        type: 'string',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.sf_payment_link,
-          value: 'sk',
-          label: ['code', 'title'],
-        },
-        group: 'source',
-      },
       invoiceId: {
         type: 'string',
         'x-control': ControlType.selectMany,

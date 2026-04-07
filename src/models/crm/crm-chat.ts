@@ -1,8 +1,9 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 
-import { DataType } from '../../types';
+import { ControlType, DataType } from '../../types';
 import { UserSchema } from '../user';
+import { FileInfoSchema } from '../file-info';
 
 export const ChatMessageSchema = () => {
   return {
@@ -50,9 +51,6 @@ export const ChatMessageSchema = () => {
   } as const;
 };
 
-const cms = ChatMessageSchema();
-export type ChatMessageModel = FromSchema<typeof cms>;
-
 export const ChatGroupSchema = () => {
   return {
     type: 'object',
@@ -86,7 +84,234 @@ export const ChatGroupSchema = () => {
   } as const;
 };
 
+export const ChatConfigSchema = () => {
+  return {
+    type: 'object',
+    hideLabel: true,
+    properties: {
+      name: {
+        type: 'string',
+        minLength: 1,
+        maxLength: 200,
+        pattern: '^[a-zA-Z_\\-0-9]*$',
+        transform: ['random-string::10'],
+        group: 'basic',
+      },
+      description: {
+        type: 'string',
+        maxLength: 1000,
+        'x-control-variant': 'textarea',
+        description: 'Campaign description',
+      },
+      template:{
+        type: 'string',
+        enum: ['default', 'modern', 'minimal', 'qa'],
+      },
+      defaultPath: {
+        type: 'string',
+        dataSource: {
+          source: 'json',
+          json: [
+            { label: 'Welcome', value: '/' },
+            { label: 'Form', value: '/register' },
+            { label: 'Chat', value: '/chat' },
+            { label: 'Chat with AI', value: '/chat-ai' },
+            { label: 'Chat with Agent', value: '/chat-agent' },
+          ],
+        },
+      },
+      logo: {
+        ...FileInfoSchema(),
+        collapsible: true,
+      },
+      headerContent: {
+        type: 'string',
+        collapsible: true,
+        'x-control': ControlType.richtext,
+      },
+      chatBubblePosition: {
+        type: 'string',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'json',
+          json: ['left', 'right'],
+        },
+        group: 'bubble',
+      },
+      status: {
+        type: 'string',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'json',
+          json: ['online', 'offline'],
+        },
+        group: 'bubble',
+      },
+      chatOpeners: {
+        type: 'array',
+        collapsible: true,
+        items: {
+          type: 'string',
+          'x-control-variant': 'textarea',
+          displayStyle: 'outlined',
+          rows: 3,
+        },
+      },
+      offline: {
+        type: 'object',
+        collapsible: true,
+        properties: {
+          showForm: {
+            type: 'boolean',
+            default: true,
+          },
+          message: {
+            type: 'string',
+            'x-control-variant': 'textarea',
+            row: 3,
+          },
+        },
+      },
+      allowAttachments: {
+        type: 'boolean',
+        default: true,
+        group: 'allow',
+      },
+      allowEmojis: {
+        type: 'boolean',
+        default: true,
+        group: 'allow',
+      },
+      showAgents: {
+        type: 'boolean',
+        group: 'randomize',
+      },
+      registrationRequired: {
+        type: 'boolean',
+        default: false,
+        group: 'randomize',
+      },
+      registrationFields: {
+        type: 'object',
+        collapsible: true,
+        layout: 'horizontal',
+        properties: {
+          name: {
+            type: 'boolean',
+            default: false,
+          },
+          email: {
+            type: 'boolean',
+            default: false,
+          },
+          phone: {
+            type: 'boolean',
+            default: false,
+          },
+          comments: {
+            type: 'boolean',
+            default: false,
+          },
+        },
+        rules: [
+          {
+            operation: 'isFalsy',
+            valueA: '{{registrationRequired}}',
+            action: 'hide',
+          },
+        ],
+      },
+      availability: {
+        type: 'object',
+        collapsible: true,
+        properties: {
+          allTimes: {
+            type: 'boolean',
+            title: 'Chat available 24/7',
+            default: true,
+          },
+          workDays: {
+            type: 'array',
+            'x-control': ControlType.selectMany,
+            'x-control-variant': 'chip',
+            items: {
+              type: 'string',
+            },
+            dataSource: {
+              source: 'json',
+              json: [
+                'Monday',
+                'Tuesday',
+                'Wednesday',
+                'Thursday',
+                'Friday',
+                'Saturday',
+                'Sunday',
+              ],
+            },
+          },
+        },
+      },
+      ai: {
+        type: 'string',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.ai_assistant,
+          label: 'name',
+          value: 'name',
+        },
+        displayStyle: 'outlined',
+      },
+      automation: {
+        type: 'string',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.automation,
+          label: 'name',
+          value: 'name',
+        },
+        displayStyle: 'outlined',
+      },
+      agents: {
+        type: 'array',
+        items: {
+          type: 'object',
+          collapsible: true,
+          properties: {
+            user: {
+              type: 'string',
+              'x-control': ControlType.selectMany,
+              dataSource: {
+                source: 'collection',
+                collection: DataType.user,
+                label: ['email', 'firstName', 'lastName'],
+                value: 'email',
+              },
+            },
+            avatar: FileInfoSchema(),
+            screenName: {
+              type: 'string',
+            },
+            tagLine: {
+              type: 'string',
+            },
+          },
+        },
+      },
+    },
+  } as const;
+};
+
+const cms = ChatMessageSchema();
+export type ChatMessageModel = FromSchema<typeof cms>;
+
 const ccs = ChatGroupSchema();
 export type ChatGroupModel = FromSchema<typeof ccs>;
 
-registerCollection('Chat Message', DataType.chatmessage, ChatMessageSchema());
+const cfs = ChatConfigSchema();
+export type ChatConfigSchemaModel = FromSchema<typeof cfs>;
+
+registerCollection('Chat Config', DataType.chat_config, ChatConfigSchema());
+registerCollection('Chat Message', DataType.chat_message, ChatMessageSchema());

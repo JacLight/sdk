@@ -109,6 +109,6 @@ export type SFGiftCardModel = FromSchema<typeof ms>;
 
 registerCollection(
   'Store Gift Card',
-  DataType.sf_giftcard,
+  DataType.sf_gift_card,
   SFGiftCardSchema(),
 );

@@ -9,7 +9,6 @@ import {
 } from '../types';
 
 import { FileInfoSchema } from './file-info';
-import { PhoneSchema } from './crm/crm-phone';
 
 export const UserSchema = () => {
   return {
@@ -73,10 +72,22 @@ export const UserSchema = () => {
       },
       phone: {
         type: 'string',
+        description: 'Primary personal phone (free text)',
       },
       phones: {
         type: 'array',
-        items: PhoneSchema(),
+        description: 'Company phone numbers assigned to this user. Each entry is a reference to a phone record.',
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.phone,
+          value: 'phoneNumber',
+          label: 'phoneNumber',
+        },
+        items: {
+          type: 'string',
+        },
       },
       address: {
         type: 'array',
@@ -207,6 +218,47 @@ export const UserSchema = () => {
         type: 'string',
         'x-control': ControlType.richtext,
       },
+
+      // CRM-facing profile (replaces separate agent record)
+      bio: {
+        type: 'string',
+        'x-control-variant': 'textarea',
+        description: 'Bio for CRM-facing display, customer-facing profiles',
+      },
+      profileURL: {
+        type: 'string',
+        description: 'Public profile URL',
+      },
+      bookingURL: {
+        type: 'string',
+        description: 'Calendar/scheduling link (Calendly, Cal.com, etc.)',
+      },
+      meetingLinks: {
+        type: 'array',
+        description: 'Zoom/Meet/Teams personal meeting links',
+        items: {
+          type: 'object',
+          properties: {
+            label: { type: 'string' },
+            url: { type: 'string' },
+          },
+        },
+      },
+      emails: {
+        type: 'array',
+        description: 'Company email accounts assigned to this user (e.g., jane@company.com). Each entry references an email_account record.',
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.email_account,
+          value: 'emailAddress',
+          label: 'emailAddress',
+        },
+        items: {
+          type: 'string',
+        },
+      },
       audit: {
         type: 'object',
         hidden: true,
@@ -267,9 +319,14 @@ export const UserGroupSchema = () => {
         unique: true,
         transform: 'uri',
       },
+      title: {
+        type: 'string',
+        description: 'Display name (e.g., "Sales Team")',
+      },
       description: {
         type: 'string',
       },
+      image: FileInfoSchema(),
       passwordPolicy: {
         type: 'string',
         'x-control': ControlType.selectMany,
@@ -281,18 +338,21 @@ export const UserGroupSchema = () => {
         },
       },
       users: {
-        type: 'string',
+        type: 'array',
+        description: 'Members of this group',
         'x-control-variant': 'chip',
         'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
           collection: DataType.user,
-          value: 'name',
-          label: 'name',
+          value: 'email',
+          label: ['username', 'email'],
         },
+        items: { type: 'string' },
       },
       roles: {
-        type: 'string',
+        type: 'array',
+        description: 'Roles granted to all members of this group',
         'x-control-variant': 'chip',
         'x-control': ControlType.selectMany,
         dataSource: {
@@ -301,6 +361,58 @@ export const UserGroupSchema = () => {
           value: 'name',
           label: 'name',
         },
+        items: { type: 'string' },
+      },
+
+      // Collective assignment — groups can be treated as a single "virtual agent"
+      // for tasks, tickets, CRM leads, and IVR routing.
+      assignmentStrategy: {
+        type: 'string',
+        enum: ['ring-all', 'round-robin', 'longest-idle', 'skill-based', 'sequential', 'manual'],
+        default: 'round-robin',
+        description: 'How work is distributed to group members when assigned as a collective (tasks, leads, tickets, IVR calls).',
+      },
+      canBeAssigned: {
+        type: 'boolean',
+        default: true,
+        description: 'Whether this group can be used as an assignment target in tasks, leads, tickets, IVR, and chat routing.',
+      },
+      skills: {
+        type: 'array',
+        description: 'Skill tags for skill-based routing (e.g., "billing", "spanish", "tier-2").',
+        items: { type: 'string' },
+      },
+
+      // Shared team contact info (replaces agent groups)
+      sharedEmails: {
+        type: 'array',
+        description: 'Shared team email addresses (e.g., sales@, support@)',
+        dataSource: {
+          source: 'collection',
+          collection: DataType.email_account,
+          value: 'emailAddress',
+          label: 'emailAddress',
+        },
+        items: {
+          type: 'string',
+        },
+      },
+      sharedPhones: {
+        type: 'array',
+        description: 'Shared team phone numbers',
+        dataSource: {
+          source: 'collection',
+          collection: DataType.phone,
+          value: 'phoneNumber',
+          label: 'phoneNumber',
+        },
+        items: {
+          type: 'string',
+        },
+      },
+      bookingURL: {
+        type: 'string',
+        description: 'Team round-robin booking link',
       },
     },
   } as const;

@@ -2,8 +2,105 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../default-schema';
 import { DataType, ControlType } from '../types';
 
+// ============================================================================
+// DataViz Models — Two separate collections
+// ============================================================================
+//
+//   DataViz       — the dashboard layout (sections → columns → item refs)
+//   dataview_item  — reusable items (text, table, chart) referenced by layouts
+//
+// Structure:
+//   dataview (dashboard)
+//     └── sections[]
+//           └── columns[]
+//                 └── itemRefs[] (references to dataview_item records)
+//
+//   dataview_item
+//     name, description, type (text|table|chart), content
+//     - text: { text: "..." }
+//     - table/chart: { mongoQuery, viewConfig }
+// ============================================================================
 
+// ----------------------------------------------------------------------------
+// DataView Item — reusable text, table, or chart
+// ----------------------------------------------------------------------------
+export const DataVizItemSchema = () => {
+  return {
+    type: 'object',
+    properties: {
+      name: {
+        type: 'string',
+        pattern: '^[a-zA-Z_\\-0-9]*$',
+        minLength: 3,
+        maxLength: 80,
+        unique: true,
+        transform: 'uri',
+      },
+      title: { type: 'string' },
+      description: { type: 'string', 'x-control-variant': 'textarea' },
+      type: {
+        type: 'string',
+        enum: ['text', 'table', 'chart'],
+        default: 'text',
+      },
+      content: {
+        type: 'object',
+        additionalProperties: true,
+        description: 'For text: { text: "..." }. For table/chart: { mongoQuery, viewConfig }',
+      },
+      tags: { type: 'array', items: { type: 'string' } },
+    },
+    required: ['name', 'type'],
+  } as const;
+};
 
+// ----------------------------------------------------------------------------
+// DataView Layout sub-schemas
+// ----------------------------------------------------------------------------
+const DataVizColumnSchema = () => {
+  return {
+    type: 'object',
+    properties: {
+      id: { type: 'string', hidden: true },
+      width: { type: 'string', description: 'full, half, third, quarter, or CSS value' },
+      items: {
+        type: 'array',
+        description: 'References to dataviz_item records',
+        items: {
+          type: 'string',
+          'x-control-variant': 'chip',
+          'x-control': ControlType.selectMany,
+          dataSource: {
+            source: 'collection',
+            collection: DataType.dataviz_item,
+            value: 'sk',
+            label: 'name',
+          },
+        },
+      },
+      classes: { type: 'string', hidden: true },
+    },
+  } as const;
+};
+
+const DataVizSectionSchema = () => {
+  return {
+    type: 'object',
+    properties: {
+      id: { type: 'string', hidden: true },
+      title: { type: 'string' },
+      description: { type: 'string', 'x-control-variant': 'textarea' },
+      layout: { type: 'string', enum: ['grid', 'row', 'tabs', 'accordion'], default: 'grid' },
+      gridCols: { type: 'number', default: 12 },
+      columns: { type: 'array', items: DataVizColumnSchema() },
+      classes: { type: 'string', hidden: true },
+    },
+  } as const;
+};
+
+// ----------------------------------------------------------------------------
+// DataViz — dashboard layout
+// ----------------------------------------------------------------------------
 export const DataVizSchema = () => {
   return {
     type: 'object',
@@ -12,270 +109,59 @@ export const DataVizSchema = () => {
         type: 'string',
         pattern: '^[a-zA-Z_\\-0-9]*$',
         minLength: 3,
-        maxLength: 50,
+        maxLength: 80,
         unique: true,
-        transform: 'uri'
+        transform: 'uri',
       },
-      title: {
-        type: 'string',
-      },
-      description: {
-        type: 'string',
-        'x-control-variant': 'textarea',
-      },
-      type: {
-        type: 'string',
-        enum: ['dashboard', 'table'],
-      },
+      title: { type: 'string' },
+      description: { type: 'string', 'x-control-variant': 'textarea' },
+      tags: { type: 'array', items: { type: 'string' } },
+
       sections: {
-        hidden: true,
         type: 'array',
-        items: {
-          type: 'array',
-          items: DataVizColumnSchema()
+        items: DataVizSectionSchema(),
+      },
+
+      filters: {
+        type: 'object',
+        properties: {
+          dateRange: {
+            type: 'object',
+            properties: {
+              startDate: { type: 'string' },
+              endDate: { type: 'string' },
+            },
+          },
+          custom: { type: 'object', additionalProperties: true },
         },
       },
-      table: {
-        hidden: true,
-        ...DataVizTableConfigSchema()
-      },
-      chart: {
-        hidden: true,
-        ...DataVizChartConfigSchema()
-      },
-      classes: {
-        type: 'string',
-        hidden: true,
-      },
-      style: {
-        type: ['string', 'object'],
-        hidden: true,
-      }
+
+      classes: { type: 'string', hidden: true },
+      style: { type: ['string', 'object'], hidden: true },
     },
     required: ['name'],
   } as const;
 };
 
-export const DataVizColumnSchema = () => {
-  return {
-    type: 'object',
-    properties: {
-      id: {
-        type: 'string',
-        hidden: true,
-      },
-      type: {
-        type: 'string',
-        hidden: true,
-      },
-      title: {
-        type: 'string',
-      },
-      description: {
-        type: 'string',
-        'x-control-variant': 'textarea',
-      },
-      tableConfig: {
-        type: 'string',
-        'x-control': ControlType.selectMany,
-        'x-control-variant': 'chip',
-        dataSource: {
-          source: 'collection',
-          collection: DataType.dataviz,
-          value: 'sk',
-          label: 'name',
-          filter: {
-            property: 'type',
-            operation: 'equal',
-            value: 'table',
-          },
-        },
-      },
-      chartConfig: {
-        type: 'string',
-        'x-control': ControlType.selectMany,
-        'x-control-variant': 'chip',
-        dataSource: {
-          source: 'collection',
-          collection: DataType.dataviz,
-          value: 'sk',
-          label: 'name',
-          filter: {
-            property: 'type',
-            operation: 'equal',
-            value: 'table',
-          },
-        },
-      },
-      showToolbar: {
-        type: 'boolean',
-        default: false
-      },
-      valuesOnly: {
-        type: 'string',
-        description: 'comma separated, keys',
-      },
-      chartSettings: {
-        type: 'string',
-        'x-control': ControlType.code,
-        'x-control-variant': 'json',
-        collapsible: true,
-      },
-      hideTitle: {
-        type: 'boolean',
-        default: false,
-        group: 'display'
-      },
-      showTable: {
-        type: 'boolean',
-        default: true,
-        group: 'display'
-      },
-      showChart: {
-        type: 'boolean',
-        default: true,
-        group: 'display'
-      },
-      classes: {
-        type: 'string',
-      },
-      style: {
-        type: 'string',
-        'x-control': 'Code',
-        'x-control-variant': 'css',
-        collapsible: true,
-        popup: {
-          inline: true,
-          style: { width: '800px' },
-        },
-        hidden: true,
-      },
-      views: {
-        hidden: true,
-        type: 'array',
-        items: {
-          type: 'object',
-        }
-      }
+// ----------------------------------------------------------------------------
+// Types
+// ----------------------------------------------------------------------------
+const dvItem = DataVizItemSchema();
+export type DataVizItemModel = FromSchema<typeof dvItem>;
 
-    },
-  } as const;
-};
+const dvColumn = DataVizColumnSchema();
+export type DataVizColumnModel = FromSchema<typeof dvColumn>;
 
-export const DataVizTableConfigSchema = () => {
-  return {
-    type: 'object',
-    properties: {
-      collection: {
-        type: 'string',
-        showIndex: true,
-        'x-control-variant': 'chip',
-        'x-control': ControlType.selectMany,
-        items: {
-          hideLabel: true,
-          type: 'string'
-        },
-        dataSource: {
-          source: 'collection',
-          value: 'collection',
-          valueField: 'name',
-          labelField: 'name',
-        },
-        group: 'collection',
-      },
-      code: {
-        type: 'string',
-        'x-control-variant': 'json',
-        'x-control': ControlType.code,
-      },
-      match: {
-        type: 'string',
-        hideLabel: true,
-      },
-      group: {
-        type: 'string',
-        hideLabel: true,
+const dvSection = DataVizSectionSchema();
+export type DataVizSectionModel = FromSchema<typeof dvSection>;
 
-      },
-      sort: {
-        type: 'string',
-        hideLabel: true,
-      },
-      excludes: {
-        type: 'array',
-        'x-control': ControlType.selectMany,
-        'x-control-variant': 'chip',
-        items: {
-          type: 'string',
-        },
-        hideLabel: true,
-      },
-      includes: {
-        type: 'array',
-        'x-control': ControlType.selectMany,
-        'x-control-variant': 'chip',
-        items: {
-          type: 'string',
-        },
-        hideLabel: true,
-      },
-    },
-  } as const;
-};
+const dvMain = DataVizSchema();
+export type DataVizModel = FromSchema<typeof dvMain>;
 
+// Legacy aliases
 
-export const DataVizChartConfigSchema = () => {
-  return {
-    type: 'object',
-    properties: {
-      title: {
-        type: 'string',
-        hidden: true,
-      },
-      chartType: {
-        type: 'string',
-        enum: ['line', 'bar', 'pie', 'doughnut', 'gauge', 'area', 'radar', 'map', 'funnel', 'heatmap', 'scatter', 'treemap', 'sunburst']
-      },
-      config: {
-        type: 'string',
-        'x-control': 'Code',
-        'x-control-variant': 'json',
-        collapsible: true,
-        popup: {
-          inline: true,
-          style: { width: '800px' },
-        }
-      },
-      dataTemplate: {
-        type: 'string',
-        'x-control': 'Code',
-        'x-control-variant': 'json',
-        collapsible: true,
-        popup: {
-          inline: true,
-          style: { width: '800px' },
-        }
-      },
-    }
-  } as const;
-};
-
-const dd = DataVizSchema();
-export type DataVizModel = FromSchema<typeof dd>;
-
-const ddx = DataVizColumnSchema();
-export type DataVizColumnModel = FromSchema<typeof ddx>;
-
-const ddxx = DataVizTableConfigSchema();
-export type DataVizTableConfigModel = FromSchema<typeof ddxx>;
-
-const ddxxy = DataVizChartConfigSchema();
-export type DataVizChartConfigModel = FromSchema<typeof ddxxy>;
-
-
-
-registerCollection(
-  'DataViz',
-  DataType.dataviz,
-  DataVizSchema()
-);
+// ----------------------------------------------------------------------------
+// Register collections
+// ----------------------------------------------------------------------------
+registerCollection('DataViz', DataType.dataviz, DataVizSchema());
+registerCollection('DataVizItem', DataType.dataviz_item, DataVizItemSchema());
