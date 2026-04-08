@@ -300,6 +300,58 @@ export const ChatConfigSchema = () => {
           },
         },
       },
+      broadcast: {
+        type: 'object',
+        collapsible: true,
+        title: 'Broadcast Settings',
+        properties: {
+          position: {
+            type: 'string',
+            'x-control': ControlType.selectMany,
+            dataSource: {
+              source: 'json',
+              json: ['bottom-left', 'bottom-right', 'top-left', 'top-right'],
+            },
+            default: 'bottom-right',
+          },
+          defaultWidth: {
+            type: 'number',
+            default: 320,
+            minimum: 200,
+            maximum: 800,
+          },
+          defaultHeight: {
+            type: 'number',
+            default: 240,
+            minimum: 150,
+            maximum: 600,
+          },
+          autoPlay: {
+            type: 'boolean',
+            default: true,
+            description: 'Auto-show broadcast when agent starts streaming',
+          },
+          muted: {
+            type: 'boolean',
+            default: false,
+            description: 'Start broadcast muted',
+          },
+          resizable: {
+            type: 'boolean',
+            default: true,
+          },
+          closable: {
+            type: 'boolean',
+            default: true,
+            description: 'Allow viewers to close the broadcast window',
+          },
+          reopenable: {
+            type: 'boolean',
+            default: true,
+            description: 'Show a button to reopen after closing',
+          },
+        },
+      },
     },
   } as const;
 };
