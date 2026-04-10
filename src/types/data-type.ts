@@ -25,6 +25,7 @@ export enum DataType {
   email_account = 'email_account',
   ai_assistant= 'ai_assistant',
   creative = 'creative',
+  creative_studio = 'creative_studio',
   dev_environment = 'dev_environment',
   permission = 'permission',
   usage = 'usage',
