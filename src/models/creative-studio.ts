@@ -57,6 +57,106 @@ export const CreativeStudioSchema = () => {
         description: 'Canvas height in pixels',
       },
 
+      // Work areas (Figma-style frames inside the infinite canvas)
+      workAreas: {
+        type: 'array',
+        description: 'Frames inside the infinite canvas — each is an export region',
+        items: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', description: 'Unique frame ID' },
+            name: { type: 'string', description: 'Frame display name' },
+            left: { type: 'number', description: 'X position on canvas' },
+            top: { type: 'number', description: 'Y position on canvas' },
+            width: { type: 'number', description: 'Frame width' },
+            height: { type: 'number', description: 'Frame height' },
+            thumbnail: { type: 'string', description: 'Exported PNG URL for this frame' },
+            platform: { type: 'string', description: 'Optional platform tag' },
+            background: { type: 'string', description: 'Background color hex' },
+            backgroundOpacity: { type: 'number', minimum: 0, maximum: 1, description: 'Background fill alpha (0..1)' },
+          },
+        },
+        hideIn: ['generator'],
+      },
+
+      // Which frame is currently active (for UI state restoration)
+      activeWorkAreaId: {
+        type: 'string',
+        description: 'ID of the currently active work area',
+        hideIn: ['generator'],
+      },
+
+      // Viewport — zoom + pan at time of last save (restored on reload)
+      viewport: {
+        type: 'object',
+        description: 'Canvas zoom and pan state at last save',
+        properties: {
+          zoom: { type: 'number', description: 'Canvas zoom level (1 = 100%)' },
+          panX: { type: 'number', description: 'Horizontal viewport translation' },
+          panY: { type: 'number', description: 'Vertical viewport translation' },
+        },
+        hideIn: ['generator'],
+      },
+
+      // External context link — what this design was created for
+      externalContext: {
+        type: 'object',
+        description: 'Link to the external item this design was created for (campaign, product, blog post, book, etc.)',
+        properties: {
+          type: {
+            type: 'string',
+            enum: ['marketing-campaign', 'product', 'blog-post', 'book', 'email', 'custom'],
+            description: 'Type of external item',
+          },
+          id: { type: 'string', description: 'External item ID' },
+          name: { type: 'string', description: 'External item display name' },
+          description: { type: 'string', description: 'Short description of the external item' },
+          snapshotData: {
+            type: 'object',
+            description: 'Snapshot of key fields from the external item at time of creation',
+          },
+          assets: {
+            type: 'array',
+            description: 'Media assets from the external item (product images, etc.)',
+            items: {
+              type: 'object',
+              properties: {
+                url: { type: 'string' },
+                name: { type: 'string' },
+                type: { type: 'string' },
+              },
+            },
+          },
+          copySnippets: {
+            type: 'array',
+            description: 'Text snippets from the external item (headlines, body, CTA, etc.)',
+            items: {
+              type: 'object',
+              properties: {
+                label: { type: 'string' },
+                text: { type: 'string' },
+              },
+            },
+          },
+          platforms: {
+            type: 'array',
+            description: 'Target platforms from the external item — used to auto-create frames',
+            items: { type: 'string' },
+          },
+          brand: {
+            type: 'object',
+            description: 'Brand overrides from the external item (voice, colors, typography)',
+            properties: {
+              voice: { type: 'string' },
+              colors: { type: 'object' },
+              typography: { type: 'object' },
+            },
+          },
+          linkedAt: { type: 'string', format: 'date-time', description: 'When this design was linked to the external item' },
+        },
+        hideIn: ['generator'],
+      },
+
       // Platform / format targeting
       platform: {
         type: 'string',
@@ -153,8 +253,18 @@ export const CreativeStudioSchema = () => {
             width: { type: 'number' },
             height: { type: 'number' },
             multiplier: { type: 'number' },
+            workAreaId: { type: 'string', description: 'Source work area if exported from a frame' },
           },
         },
+        hideIn: ['generator'],
+      },
+
+      // Indicates whether this design has been finalized for its external context
+      // (i.e. user clicked "Use These Designs" — false means it's still a draft)
+      isFinalized: {
+        type: 'boolean',
+        default: false,
+        description: 'True after the user commits the design to its external item',
         hideIn: ['generator'],
       },
     },
