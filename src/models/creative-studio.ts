@@ -42,6 +42,41 @@ export const CreativeStudioSchema = () => {
         hideIn: ['generator'],
       },
 
+      // AI generation pipeline — stored as xyflow's native JSON.
+      // Nodes are asset groups (with images, colors, text, instructions).
+      // Edges define what feeds into what. The rightmost terminal node
+      // is the output. xyflow handles layout, connections, serialization.
+      pipeline: {
+        type: 'object',
+        description: 'xyflow graph JSON — nodes[] + edges[] forming the AI generation pipeline',
+        properties: {
+          nodes: { type: 'array', items: { type: 'object' } },
+          edges: { type: 'array', items: { type: 'object' } },
+        },
+        hideIn: ['generator'],
+      },
+
+      // Generation history — non-destructive, every attempt preserved
+      generationHistory: {
+        type: 'array',
+        description: 'History of AI generation attempts with pipeline snapshots',
+        items: {
+          type: 'object',
+          properties: {
+            id: { type: 'string' },
+            generatedAt: { type: 'string', format: 'date-time' },
+            output: FileInfoSchema(),
+            outputType: { type: 'string', enum: ['image', 'video'] },
+          },
+        },
+        hideIn: ['generator'],
+      },
+      activeGenerationId: {
+        type: 'string',
+        description: 'Which generation from history is currently active',
+        hideIn: ['generator'],
+      },
+
       // Thumbnail for the library grid
       thumbnail: FileInfoSchema(),
 
@@ -98,61 +133,20 @@ export const CreativeStudioSchema = () => {
         hideIn: ['generator'],
       },
 
-      // External context link — what this design was created for
+      // External context link — minimal pointer to the external item this design was created for.
+      // Runtime data (assets, copy, brand, platforms) is fetched from the external item by id when needed.
       externalContext: {
         type: 'object',
-        description: 'Link to the external item this design was created for (campaign, product, blog post, book, etc.)',
+        description: 'Link to the external item this design was created for (campaign, product, blog post, etc.)',
         properties: {
           type: {
             type: 'string',
             enum: ['marketing-campaign', 'product', 'blog-post', 'book', 'email', 'custom'],
             description: 'Type of external item',
           },
-          id: { type: 'string', description: 'External item ID' },
-          name: { type: 'string', description: 'External item display name' },
-          description: { type: 'string', description: 'Short description of the external item' },
-          snapshotData: {
-            type: 'object',
-            description: 'Snapshot of key fields from the external item at time of creation',
-          },
-          assets: {
-            type: 'array',
-            description: 'Media assets from the external item (product images, etc.)',
-            items: {
-              type: 'object',
-              properties: {
-                url: { type: 'string' },
-                name: { type: 'string' },
-                type: { type: 'string' },
-              },
-            },
-          },
-          copySnippets: {
-            type: 'array',
-            description: 'Text snippets from the external item (headlines, body, CTA, etc.)',
-            items: {
-              type: 'object',
-              properties: {
-                label: { type: 'string' },
-                text: { type: 'string' },
-              },
-            },
-          },
-          platforms: {
-            type: 'array',
-            description: 'Target platforms from the external item — used to auto-create frames',
-            items: { type: 'string' },
-          },
-          brand: {
-            type: 'object',
-            description: 'Brand overrides from the external item (voice, colors, typography)',
-            properties: {
-              voice: { type: 'string' },
-              colors: { type: 'object' },
-              typography: { type: 'object' },
-            },
-          },
-          linkedAt: { type: 'string', format: 'date-time', description: 'When this design was linked to the external item' },
+          id: { type: 'string', description: 'External item ID — used to resolve runtime data' },
+          name: { type: 'string', description: 'Cached display name (avoids a fetch for list views)' },
+          linkedAt: { type: 'string', format: 'date-time' },
         },
         hideIn: ['generator'],
       },

@@ -47,7 +47,15 @@ export const AffiliateReferralSchema = () => {
       },
       status: {
         type: 'string',
-        enum: ['pending', 'converted', 'qualified', 'commission_held', 'commission_paid', 'rejected', 'expired'],
+        enum: [
+          'pending',
+          'converted',
+          'qualified',
+          'commission_held',
+          'commission_paid',
+          'rejected',
+          'expired',
+        ],
         default: 'pending',
         group: 'type',
       },
@@ -88,6 +96,16 @@ export const AffiliateReferralSchema = () => {
       walletTransactionId: {
         type: 'string',
       },
+      expectedAmount: {
+        type: 'number',
+      },
+      lostAmount: {
+        type: 'number',
+      },
+      paidAmount: {
+        type: 'number',
+      },
+
       flagged: {
         type: 'boolean',
         default: false,
@@ -103,4 +121,8 @@ export const AffiliateReferralSchema = () => {
 const schema = AffiliateReferralSchema();
 export type AffiliateReferralModel = FromSchema<typeof schema>;
 
-registerCollection('Affiliate Referral', DataType.affiliate_referral, AffiliateReferralSchema());
+registerCollection(
+  'Affiliate Referral',
+  DataType.affiliate_referral,
+  AffiliateReferralSchema()
+);

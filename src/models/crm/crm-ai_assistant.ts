@@ -64,13 +64,18 @@ export const AIAssistantSchema = () => {
         items: {
           type: 'object',
           properties: {
-            id: { type: 'string', description: 'Capability key (e.g., qualify_leads, provide_support)' },
-            name: { type: 'string', description: 'Display name (e.g., Lead Qualification)' },
-            description: { type: 'string', description: 'What this capability does' },
+            name: {
+              type: 'string',
+              description: 'Display name (e.g., Lead Qualification)',
+            },
+            description: {
+              type: 'string',
+              description: 'What this capability does',
+            },
           },
-          required: ['id'],
         },
-        description: 'What the assistant can do — references built-in AI instruction playbooks',
+        description:
+          'What the assistant can do — references built-in AI instruction playbooks',
       },
       tools: {
         type: 'array',
@@ -79,30 +84,6 @@ export const AIAssistantSchema = () => {
           properties: {
             key: {
               type: 'string',
-              enum: [
-                'send_sms',
-                'send_email',
-                'send_chat_message',
-                'search_customers',
-                'create_lead',
-                'update_lead_status',
-                'check_availability',
-                'get_reservation_types',
-                'create_reservation',
-                'confirm_reservation',
-                'cancel_reservation',
-                'modify_reservation',
-                'create_ticket',
-                'get_ticket',
-                'update_ticket',
-                'query_knowledge',
-                'get_chat_history',
-                'get_conversation_history',
-                'confirm_order_status',
-                'check_product_availability',
-                'find_similar_product',
-                'make_call',
-              ],
             },
             description: { type: 'string' },
             enabled: { type: 'boolean', default: true },

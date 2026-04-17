@@ -559,16 +559,6 @@ export const IVRRoutingSchema = () => {
                 required: ['type', 'value'],
               },
             },
-            callerIdMode: {
-              type: 'string',
-              enum: ['caller', 'office', 'custom'],
-              description: 'caller = show original caller number, office = show your office number, custom = show a specific number',
-              default: 'caller',
-            },
-            customCallerId: {
-              type: 'string',
-              description: 'Custom caller ID number (only used when callerIdMode is "custom")',
-            },
             ringDuration: {
               type: 'integer',
               minimum: 5,

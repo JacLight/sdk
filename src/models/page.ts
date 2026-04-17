@@ -193,6 +193,10 @@ export const PageSchema = () => {
         },
         layoutGroup: 'breakpoint',
       },
+      html: {
+        type: 'string',
+        hidden: true,
+      },
       content: {
         type: 'array',
         hidden: true,
@@ -396,7 +400,17 @@ export const PageDataSchema = () => {
             },
             target: {
               type: 'string',
-              enum: ['keyword', 'categories', 'tags', 'sort', 'sortType', 'maxItems', 'pageSize', 'datatype', 'random'],
+              enum: [
+                'keyword',
+                'categories',
+                'tags',
+                'sort',
+                'sortType',
+                'maxItems',
+                'pageSize',
+                'datatype',
+                'random',
+              ],
               description: 'PageData property to map to',
               group: 'mapping',
             },

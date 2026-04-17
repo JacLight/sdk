@@ -382,7 +382,11 @@ export const SFOrderSchema = () => {
         type: 'string',
         description: 'Comma-separated discount codes (for display)',
       },
-
+      affiliateCode: {
+        type: 'string',
+        description:
+          'Affiliate code applied to this order (for display / tracking)',
+      },
       // Other
       commission: {
         type: 'number',
@@ -467,7 +471,13 @@ export const SFOrderSchema = () => {
             },
             status: {
               type: 'string',
-              enum: ['pending', 'shipped', 'in_transit', 'delivered', 'cancelled'],
+              enum: [
+                'pending',
+                'shipped',
+                'in_transit',
+                'delivered',
+                'cancelled',
+              ],
               description: 'Shipment status',
             },
             shippedAt: {
@@ -495,7 +505,8 @@ export const SFOrderSchema = () => {
               properties: {
                 totalBoxes: {
                   type: 'number',
-                  description: 'Total number of boxes/packages for this shipment',
+                  description:
+                    'Total number of boxes/packages for this shipment',
                 },
                 boxes: {
                   type: 'array',
@@ -503,8 +514,15 @@ export const SFOrderSchema = () => {
                   items: {
                     type: 'object',
                     properties: {
-                      boxIndex: { type: 'number', description: 'Box number (1-based)' },
-                      boxName: { type: 'string', description: 'Box/packaging name (e.g., "USPS Medium Flat Rate Box")' },
+                      boxIndex: {
+                        type: 'number',
+                        description: 'Box number (1-based)',
+                      },
+                      boxName: {
+                        type: 'string',
+                        description:
+                          'Box/packaging name (e.g., "USPS Medium Flat Rate Box")',
+                      },
                       dimensions: {
                         type: 'object',
                         properties: {
@@ -514,7 +532,10 @@ export const SFOrderSchema = () => {
                           dimensionUnit: { type: 'string', enum: ['in', 'cm'] },
                         },
                       },
-                      weight: { type: 'number', description: 'Total weight of items in this box' },
+                      weight: {
+                        type: 'number',
+                        description: 'Total weight of items in this box',
+                      },
                       weightUnit: { type: 'string', enum: ['lb', 'kg'] },
                       itemCount: { type: 'number' },
                       dimensionsEstimated: { type: 'boolean' },
@@ -549,7 +570,8 @@ export const SFOrderSchema = () => {
             },
             manual: {
               type: 'boolean',
-              description: 'True if added manually (not via carrier integration)',
+              description:
+                'True if added manually (not via carrier integration)',
             },
           },
         },
