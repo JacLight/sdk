@@ -63,11 +63,7 @@ export const FormSchema = () => {
           collection: DataType.collection,
           label: 'name',
           value: 'name',
-          filter: {
-            property: 'type',
-            operation: 'equal',
-            value: 'Defined',
-          },
+          filter: { 'data.type': 'Defined' },
         },
       },
       participants: {

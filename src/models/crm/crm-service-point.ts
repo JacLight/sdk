@@ -94,7 +94,7 @@ export const ServicePointItemSchema = () => {
           collection: DataType.service_point,
           value: 'name',
           label: 'name',
-          filter: { property: 'location', value: '{{location}}' },
+          filter: { 'data.location': '{{location}}' },
         },
         group: 'service',
       },

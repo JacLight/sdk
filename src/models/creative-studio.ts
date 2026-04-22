@@ -43,9 +43,8 @@ export const CreativeStudioSchema = () => {
       },
 
       // AI generation pipeline — stored as xyflow's native JSON.
-      // Nodes are asset groups (with images, colors, text, instructions).
-      // Edges define what feeds into what. The rightmost terminal node
-      // is the output. xyflow handles layout, connections, serialization.
+      // Nodes are individual assets (images, colors, text, video).
+      // Edges define the flow. One output node receives the final result.
       pipeline: {
         type: 'object',
         description: 'xyflow graph JSON — nodes[] + edges[] forming the AI generation pipeline',

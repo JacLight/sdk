@@ -28,11 +28,7 @@ export const PostSchema = () => {
           collection: DataType.flexdata,
           value: 'name',
           label: 'name',
-          filter: {
-            value: 'ViewComponent',
-            property: 'application',
-            operator: 'equal',
-          },
+          filter: { 'data.application': 'ViewComponent' },
         },
       },
       title: {
@@ -64,11 +60,6 @@ export const PostSchema = () => {
         hideIn: ['table'],
         description:
           'Single-page body. For multi-page documents use `pages` instead.',
-      },
-      markdown: {
-        type: 'string',
-        'x-control': ControlType.code,
-        hidden: true,
       },
       /**
        * Multi-page documents (ebooks, courses, magazines, documentation, video courses)

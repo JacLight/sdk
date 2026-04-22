@@ -5,7 +5,6 @@ import { FileInfoSchema } from './file-info';
 import { ActivityModel } from './activity';
 import { MessageModel } from './crm';
 import { TaskModel } from './task';
-import { ScheduleModel } from './schedule';
 
 export enum SortType {
   desc = -1,
@@ -74,9 +73,7 @@ export interface BaseModel<T> {
   comments?: CommentModel[];
   activities?: ActivityModel[];
   messages?: MessageModel[];
-  schedules?: ScheduleModel[];
   rules?: any[];
-  schedule?: ScheduleModel;
   shares?: number;
   likes?: number;
   dislikes?: number;

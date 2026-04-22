@@ -278,7 +278,7 @@ export const SFInvoiceSchema = () => {
           collection: DataType.config,
           value: 'name',
           label: ['name', 'from'],
-          filter: { property: 'type', value: 'payment' },
+          filter: { 'data.type': 'payment' },
         },
       },
 

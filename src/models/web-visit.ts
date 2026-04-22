@@ -7,42 +7,29 @@ export const WebVisitSchema = () => {
     type: 'object',
     timeseries: true,
     properties: {
-      // ── Identity ───────────────────────────────────────────────
-      // visitorId: server-generated hash of (orgId + email) or (orgId + ip + ua).
-      // Deterministic — same inputs always produce the same id.
-      // When a visitor identifies (email becomes known), prior anonymous rows
-      // are back-filled via CustomerActivityService.identifyVisitor.
+      // Identity
       visitorId: { type: 'string' },
       sessionId: { type: 'string' },
-      customerEmail: { type: 'string' },
-      customerSk: { type: 'string' },
+      email: { type: 'string' },
+      username: { type: 'string' },
+      firstName: { type: 'string' },
+      lastName: { type: 'string' },
+      phone: { type: 'string' },
+      sk: { type: 'string' },
 
-      // ── Event classification ───────────────────────────────────
-      // type: what happened. source: which channel it came from.
-      type: {
-        type: 'string',
-        description:
-          'pageview | click | scroll | form_start | form_submit | search | error | unload ' +
-          '| chat | call | email | sms | order | payment | refund | subscription ' +
-          '| ticket | note | task | meeting | signup | login | logout ' +
-          '| stage_change | tag_change | custom',
-      },
-      source: {
-        type: 'string',
-        description: 'web | chat | phone | email | sms | commerce | crm | api | automation | system',
-      },
-      direction: {
-        type: 'string',
-        description: 'inbound | outbound | internal',
-      },
+      // Event classification
+      type: { type: 'string', description: 'pageview | click | scroll | form_start | form_submit | search | error | unload | chat | call | email | sms | order | payment | refund | subscription | ticket | note | task | meeting | signup | login | logout | stage_change | tag_change | custom' },
+      source: { type: 'string', description: 'web | chat | phone | email | sms | commerce | crm | api | automation | system | user-activity' },
+      direction: { type: 'string', description: 'inbound | outbound | internal' },
+      method: { type: 'string', description: 'HTTP method for API activity' },
 
-      // ── Human-readable summary for timeline UI ─────────────────
+      // Summary / timeline
       summary: { type: 'string' },
       importance: { type: 'number', description: '1 (low noise) to 5 (critical). Default 3.' },
       icon: { type: 'string', description: 'Icon hint for timeline UI (e.g., "Phone", "ShoppingCart")' },
       tags: { type: 'array', items: { type: 'string' } },
 
-      // ── Page / interaction details ─────────────────────────────
+      // Page / interaction
       url: { type: 'string' },
       pageTitle: { type: 'string' },
       referrer: { type: 'string' },
@@ -51,48 +38,77 @@ export const WebVisitSchema = () => {
       scrollDepth: { type: 'number', description: '0-100 max scroll %' },
       loadTime: { type: 'number', description: 'Page load time in ms' },
       target: { type: 'string', description: 'Click target (CSS selector / element id)' },
-      searchQuery: { type: 'string', description: 'Site search query text' },
-      formName: { type: 'string', description: 'Form name (not field values) for form events' },
+      searchQuery: { type: 'string' },
+      formName: { type: 'string' },
 
-      // ── Geo / device (server-resolved from IP via MaxMind) ─────
-      continent: { type: 'string' },
-      country: { type: 'string' },
-      city: { type: 'string' },
+      // Network / IPs
       realIp: { type: 'string' },
-      subdivisionIso: { type: 'string' },
-      subdivisions: { type: 'string' },
+      forwardIp: { type: 'string' },
+      clientIp: { type: 'string' },
+      socketIp: { type: 'string' },
+      connectionIp: { type: 'string' },
+
+      // Geo (server-resolved via ipwho.is / freeipapi.com)
+      continent: { type: 'string' },
+      continentCode: { type: 'string', description: 'ISO two-letter (e.g., NA)' },
+      country: { type: 'string' },
+      countryCode: { type: 'string', description: 'ISO two-letter (e.g., US)' },
+      region: { type: 'string', description: 'Region/state name' },
+      regionCode: { type: 'string', description: 'Region ISO code (e.g., TX)' },
+      city: { type: 'string' },
+      zipCode: { type: 'string' },
       latitude: { type: 'number' },
       longitude: { type: 'number' },
-      forwardIp: { type: 'string' },
-      timezone: { type: 'string' },
-      traits: { type: 'string' },
-      clientIp: { type: 'string' },
-      browserInfo: { type: 'string' },
-      deviceType: { type: 'string' },
+      timeZone: { type: 'string', description: 'IANA tz (e.g., America/Chicago)' },
+      timeZoneAbbr: { type: 'string' },
+      utcOffset: { type: 'string' },
+      callingCode: { type: 'string' },
+      flag: { type: 'string', description: 'Country flag emoji' },
+      isEu: { type: 'boolean' },
+      languages: { type: 'array', items: { type: 'string' } },
+      currencies: { type: 'array', items: { type: 'string' } },
 
-      // ── Site context ───────────────────────────────────────────
+      // ISP / Network
+      asn: { type: 'string' },
+      isp: { type: 'string' },
+      org: { type: 'string' },
+      ispDomain: { type: 'string' },
+      isProxy: { type: 'boolean', description: 'True if IP is a known proxy/VPN/Tor' },
+
+      // Device / browser
+      userAgent: { type: 'string', description: 'Raw User-Agent header' },
+      browser: { type: 'string' },
+      browserVersion: { type: 'string' },
+      os: { type: 'string' },
+      osVersion: { type: 'string' },
+      deviceType: { type: 'string', description: 'desktop | mobile | tablet | bot' },
+      deviceVendor: { type: 'string' },
+      deviceModel: { type: 'string' },
+
+      // Site context
       host: { type: 'string' },
       protocol: { type: 'string' },
       siteName: { type: 'string' },
       domain: { type: 'string' },
+      configSite: { type: 'string' },
+      configOrg: { type: 'string' },
+      configId: { type: 'string' },
+      deviceId: { type: 'string' },
+      sharedHost: { type: 'string' },
+      orgId: { type: 'string' },
+      multipart: { type: 'boolean' },
 
-      // ── Attribution ────────────────────────────────────────────
-      utm: {
-        type: 'object',
-        properties: {
-          source: { type: 'string' },
-          medium: { type: 'string' },
-          campaign: { type: 'string' },
-          term: { type: 'string' },
-          content: { type: 'string' },
-        },
-      },
+      // Attribution (UTM)
+      utmSource: { type: 'string' },
+      utmMedium: { type: 'string' },
+      utmCampaign: { type: 'string' },
+      utmTerm: { type: 'string' },
+      utmContent: { type: 'string' },
 
-      // ── Type-specific structured payload ───────────────────────
-      // For non-pageview types: order details, call metadata, chat info, etc.
+      // Type-specific payload (only nested field — unavoidable for freeform event data)
       payload: { type: 'object' },
 
-      // ── Linked records (e.g., orderId, chatId, ticketId) ───────
+      // Linked records
       relatedEntities: {
         type: 'array',
         items: {
@@ -105,7 +121,7 @@ export const WebVisitSchema = () => {
         },
       },
 
-      // ── Metadata ───────────────────────────────────────────────
+      // Metadata
       timestamp: { type: 'string' },
       author: { type: 'string', description: 'Who triggered this event (email | system | ai-assistant)' },
     },

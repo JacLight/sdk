@@ -808,6 +808,20 @@ export const IVRRoutingSchema = () => {
         },
       },
 
+      // Caller ID
+      callerIdMode: {
+        type: 'string',
+        enum: ['caller', 'office', 'custom'],
+        description: 'caller = show original caller number, office = show your office number, custom = show a specific number',
+        default: 'caller',
+        group: 'settings',
+      },
+      customCallerId: {
+        type: 'string',
+        description: 'Custom caller ID number (only used when callerIdMode is "custom")',
+        group: 'settings',
+      },
+
       // Status
       enabled: {
         type: 'boolean',

@@ -253,11 +253,7 @@ export const SFShippingConfigSchema = () => {
             dataSource: {
               source: 'collection',
               collection: DataType.config,
-              filter: {
-                property: 'useCases',
-                operation: 'contains',
-                value: 'Shipping',
-              },
+              filter: { 'data.useCases': 'Shipping' },
               value: 'name',
               label: 'name',
             },

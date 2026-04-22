@@ -26,11 +26,7 @@ export const PageSchema = () => {
           collection: DataType.page,
           value: 'name',
           label: 'name',
-          filter: {
-            operation: 'equal',
-            property: 'site',
-            value: '{{site}}',
-          },
+          filter: { 'data.site': '{{site}}' },
         },
         layoutGroup: 'x-layout.main.items.0',
         group: 'site',
@@ -76,9 +72,6 @@ export const PageSchema = () => {
         },
         group: 'datatype',
         layoutGroup: 'info',
-        styling: {
-          container: 'mb-4',
-        },
       },
       inheritParent: {
         type: 'boolean',
@@ -86,54 +79,33 @@ export const PageSchema = () => {
         layoutGroup: 'info',
         group: 'hidden',
         labelPosition: 'top',
-        styling: {
-          label: 'text-[9px]',
-          container: 'w-full',
-          group: 'mt-2',
-        },
       },
       childNavigation: {
         type: 'boolean',
         layoutGroup: 'info',
         group: 'hidden',
         labelPosition: 'top',
-        styling: {
-          label: 'text-[9px]',
-          container: 'w-full',
-        },
       },
       hidden: {
         type: 'boolean',
         layoutGroup: 'info',
         group: 'hidden',
         labelPosition: 'top',
-        styling: {
-          label: 'text-[9px]',
-          container: 'w-full',
-        },
       },
-      hideScrollToTop: {
-        type: 'boolean',
-        default: true,
+      hiddenControls: {
+        type: 'array',
+        description: 'Floating UI controls to hide on this page',
         layoutGroup: 'info',
         group: 'animate',
+        'x-control': ControlType.selectMany,
         labelPosition: 'top',
-        styling: {
-          label: 'text-[9px]',
-          container: 'w-full',
-        },
-      },
-      animateScroll: {
-        type: 'boolean',
-        default: true,
-        layoutGroup: 'info',
-        group: 'animate',
-        'x-control-variant': 'switch',
-        labelPosition: 'top',
-        styling: {
-          label: 'text-[9px]',
-          container: 'w-full',
-        },
+        items: { type: 'string' },
+        options: [
+          { label: 'Search', value: 'search' },
+          { label: 'Chat', value: 'chat' },
+          { label: 'Cart', value: 'cart' },
+          { label: 'Scroll to top', value: 'scrollToTop' },
+        ],
       },
       animateContent: {
         type: 'boolean',
@@ -141,10 +113,6 @@ export const PageSchema = () => {
         layoutGroup: 'info',
         group: 'animate',
         labelPosition: 'top',
-        styling: {
-          label: 'text-[9px]',
-          container: 'w-full',
-        },
       },
       keywords: {
         type: 'string',
@@ -155,16 +123,10 @@ export const PageSchema = () => {
         type: 'string',
         'x-control-variant': 'textarea',
         layoutGroup: 'x-layout.main.items.1',
-        styling: {
-          container: 'mb-2',
-        },
       },
       tracking: {
         type: 'object',
         collapsible: true,
-        styling: {
-          container: 'px-0',
-        },
         properties: {
           pixel: {
             type: 'string',
@@ -356,9 +318,6 @@ export const PageDataSchema = () => {
       },
       rows: {
         type: 'array',
-        styling: {
-          container: 'px-0',
-        },
         collapsible: 'close',
         dataSource: {
           source: 'collection',
@@ -366,9 +325,6 @@ export const PageDataSchema = () => {
         },
         'x-control': ControlType.lookup,
         items: {
-          styling: {
-            container: 'px-0',
-          },
           type: 'object',
           properties: {
             datatype: {

@@ -24,7 +24,6 @@ const getAccountFeatures = () => [
   { label: 'Help', value: 'help' },
 ];
 
-
 export const SiteSchema = () => {
   return {
     type: 'object',
@@ -48,11 +47,7 @@ export const SiteSchema = () => {
           collection: DataType.page,
           value: 'name',
           label: 'name',
-          filter: {
-            property: 'site',
-            operation: 'equal',
-            value: '{{name}}',
-          },
+          filter: { 'data.site': '{{name}}' },
         },
         group: 'name',
         layoutGroup: 'info',
@@ -138,11 +133,7 @@ export const SiteSchema = () => {
           collection: DataType.page,
           value: 'name',
           label: 'name',
-          filter: {
-            property: 'site',
-            operation: 'equal',
-            value: '{{name}}',
-          },
+          filter: { 'data.site': '{{name}}' },
         },
         layoutGroup: 'settings',
         group: 'login',
@@ -155,11 +146,7 @@ export const SiteSchema = () => {
           collection: DataType.page,
           value: 'name',
           label: 'name',
-          filter: {
-            property: 'site',
-            operation: 'equal',
-            value: '{{name}}',
-          },
+          filter: { 'data.site': '{{name}}' },
         },
         layoutGroup: 'settings',
         group: 'login',
@@ -244,7 +231,7 @@ export const SiteSchema = () => {
           value: 'getThemeSettingsList',
         },
         layoutGroup: 'settings',
-        group: 'theme',
+        group: 'template',
       },
       template: {
         type: 'string',
@@ -254,7 +241,7 @@ export const SiteSchema = () => {
           value: 'getSiteTemplates',
         },
         layoutGroup: 'settings',
-        group: 'theme',
+        group: 'template',
       },
       colorSwitch: {
         type: 'string',
@@ -276,17 +263,24 @@ export const SiteSchema = () => {
         'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
-          collection: DataType.flexdata,
+          collection: DataType.chat_config,
           value: 'sk',
-          label: ['name', 'sk'],
-          filter: {
-            property: 'application',
-            operation: 'equal',
-            value: 'chat-config',
-          },
+          label: 'name',
         },
         group: 'chat',
         layoutGroup: 'settings',
+      },
+      chatAppId: {
+        type: 'string',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.user,
+          value: 'username',
+          label: ['username'],
+          filter: { 'data.groups': 'System' },
+        },
+        group: 'chat',
       },
       features: {
         type: 'array',
@@ -311,11 +305,7 @@ export const SiteSchema = () => {
               collection: DataType.page,
               value: 'name',
               label: 'name',
-              filter: {
-                property: 'site',
-                operation: 'equal',
-                value: '{{name}}',
-              },
+              filter: { 'data.site': '{{name}}' },
             },
             group: 'template',
           },
@@ -508,11 +498,7 @@ export const SiteSchema = () => {
               collection: DataType.page,
               value: 'name',
               label: 'name',
-              filter: {
-                property: 'site',
-                operation: 'equal',
-                value: '{{name}}',
-              },
+              filter: { 'data.site': '{{name}}' },
             },
           },
           features: {

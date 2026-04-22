@@ -94,7 +94,7 @@ export const ChatConfigSchema = () => {
         minLength: 1,
         maxLength: 200,
         pattern: '^[a-zA-Z_\\-0-9]*$',
-        transform: ['random-string::10'],
+        transform: ['uri', 'lowercase'],
         group: 'basic',
       },
       description: {
@@ -103,7 +103,7 @@ export const ChatConfigSchema = () => {
         'x-control-variant': 'textarea',
         description: 'Campaign description',
       },
-      template:{
+      template: {
         type: 'string',
         enum: ['default', 'modern', 'minimal', 'qa'],
       },

@@ -326,11 +326,7 @@ export const SFProductSchema = () => {
               dataSource: {
                 source: 'collection',
                 collection: DataType.sf_attribute,
-                filter: {
-                  property: 'name',
-                  operation: 'equal',
-                  value: '{{name}}',
-                },
+                filter: { 'data.name': '{{name}}' },
                 value: 'options',
                 label: 'options',
                 valueAsOption: true,
