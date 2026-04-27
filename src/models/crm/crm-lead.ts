@@ -379,52 +379,248 @@ export const LeadPipelineSchema = () => {
     properties: {
       name: {
         type: 'string',
-        minLength: 3,
+        minLength: 1,
         maxLength: 100,
-        group: 'identity',
+        title: 'Pipeline Name',
+        group: 'core',
       },
       description: {
         type: 'string',
-        'x-control': 'textarea',
-        group: 'identity',
+        maxLength: 500,
+        title: 'Description',
+        group: 'core',
+        'x-control-variant': 'textarea',
+      },
+      color: {
+        type: 'string',
+        title: 'Pipeline Color',
+        group: 'core',
+      },
+      icon: {
+        type: 'string',
+        title: 'Pipeline Icon',
+        group: 'core',
+        default: 'GitBranch',
+      },
+      isActive: {
+        type: 'boolean',
+        title: 'Active',
+        group: 'core',
+        default: true,
+      },
+      isDefault: {
+        type: 'boolean',
+        title: 'Default Pipeline',
+        group: 'core',
+        default: false,
       },
       stages: {
         type: 'array',
-        title: 'Stages',
+        title: 'Pipeline Stages',
         group: 'stages',
-        collapsible: true,
-        showIndex: true,
+        minItems: 1,
         items: {
           type: 'object',
           properties: {
-            id: {
-              type: 'string',
-              pattern: '^[a-zA-Z_\\-0-9]*$',
-              transform: ['random-string::10'],
+            id: { type: 'string', pattern: '^[a-zA-Z_\\-0-9]*$', transform: ['random-string::10'] },
+            name: { type: 'string', minLength: 1, maxLength: 100 },
+            description: { type: 'string', maxLength: 200 },
+            color: { type: 'string' },
+            order: { type: 'integer', minimum: 0 },
+            probability: { type: 'number', minimum: 0, maximum: 100 },
+            isWon: { type: 'boolean', default: false },
+            isLost: { type: 'boolean', default: false },
+            allowSkip: { type: 'boolean', default: true },
+            requireComment: { type: 'boolean', default: false },
+            automationTriggers: {
+              type: 'array',
+              items: { type: 'string', enum: ['on_enter', 'on_exit', 'on_stay_duration', 'on_activity'] },
             },
-            name: {
-              type: 'string',
-              minLength: 1,
-              maxLength: 100,
+            sla: {
+              type: 'object',
+              properties: {
+                duration: { type: 'integer', minimum: 1 },
+                action: { type: 'string', enum: ['notify', 'escalate', 'auto_move', 'create_task'] },
+              },
             },
-            probability: {
-              type: 'number',
-              minimum: 0,
-              maximum: 100,
-              default: 0,
-            },
-            isWon: {
-              type: 'boolean',
-              default: false,
-            },
-            isLost: {
-              type: 'boolean',
-              default: false,
-            },
-            order: {
-              type: 'number',
+            requirements: {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: {
+                  field: { type: 'string' },
+                  validation: { type: 'string', enum: ['required', 'email', 'phone', 'url', 'number', 'custom'] },
+                },
+              },
             },
           },
+          required: ['id', 'name', 'order'],
+        },
+      },
+      settings: {
+        type: 'object',
+        title: 'Pipeline Settings',
+        group: 'settings',
+        properties: {
+          autoAssignment: { type: 'boolean', default: false },
+          assignmentMethod: { type: 'string', enum: ['round_robin', 'load_balanced', 'territory', 'skill_based', 'manual'], default: 'round_robin' },
+          duplicateCheck: { type: 'boolean', default: true },
+          duplicateCriteria: { type: 'array', items: { type: 'string', enum: ['email', 'phone', 'company', 'name'] }, default: ['email'] },
+          leadScoring: { type: 'boolean', default: true },
+          scoringModel: { type: 'string', enum: ['basic', 'behavioral', 'predictive', 'custom'], default: 'basic' },
+          rottenLeadDays: { type: 'integer', minimum: 1, default: 30 },
+          rottenLeadHandling: { type: 'string', enum: ['notify', 'auto_move', 'archive', 'ignore'], default: 'notify' },
+          allowSkipStages: { type: 'boolean', default: true },
+          requireStageComments: { type: 'boolean', default: false },
+          workingHours: {
+            type: 'object',
+            properties: {
+              enabled: { type: 'boolean', default: false },
+              timezone: { type: 'string', default: 'UTC' },
+              schedule: {
+                type: 'object',
+                additionalProperties: {
+                  type: 'object',
+                  properties: {
+                    start: { type: 'string', pattern: '^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$' },
+                    end: { type: 'string', pattern: '^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$' },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      scoringRules: {
+        type: 'array',
+        title: 'Lead Scoring Rules',
+        group: 'scoring',
+        items: {
+          type: 'object',
+          properties: {
+            id: { type: 'string' },
+            name: { type: 'string' },
+            category: { type: 'string', enum: ['demographic', 'behavioral', 'engagement', 'firmographic'] },
+            condition: {
+              type: 'object',
+              properties: {
+                field: { type: 'string' },
+                operator: { type: 'string', enum: ['equals', 'not_equals', 'contains', 'greater_than', 'less_than', 'exists', 'not_exists', 'in', 'not_in'] },
+                value: {},
+              },
+            },
+            points: { type: 'integer', minimum: -100, maximum: 100 },
+            isActive: { type: 'boolean', default: true },
+          },
+          required: ['id', 'name', 'category', 'condition', 'points'],
+        },
+      },
+      assignmentRules: {
+        type: 'array',
+        title: 'Assignment Rules',
+        group: 'assignment',
+        items: {
+          type: 'object',
+          properties: {
+            id: { type: 'string' },
+            name: { type: 'string' },
+            priority: { type: 'integer', minimum: 1 },
+            active: { type: 'boolean', default: true },
+            criteria: {
+              type: 'object',
+              properties: {
+                source: { type: 'array', items: { type: 'string' } },
+                score: { type: 'object', properties: { min: { type: 'number' }, max: { type: 'number' } } },
+                tags: { type: 'array', items: { type: 'string' } },
+                customFields: { type: 'object', additionalProperties: true },
+              },
+            },
+            assignTo: {
+              type: 'object',
+              properties: {
+                type: { type: 'string', enum: ['user', 'team', 'round_robin', 'load_balanced'] },
+                value: { type: 'string' },
+                userPool: { type: 'array', items: { type: 'string' } },
+              },
+            },
+          },
+          required: ['id', 'name', 'priority'],
+        },
+      },
+      automations: {
+        type: 'array',
+        title: 'Pipeline Automations',
+        group: 'automations',
+        items: {
+          type: 'object',
+          properties: {
+            id: { type: 'string' },
+            name: { type: 'string' },
+            isActive: { type: 'boolean', default: true },
+            trigger: {
+              type: 'object',
+              properties: {
+                type: {
+                  type: 'string',
+                  enum: ['lead_created', 'lead_updated', 'stage_changed', 'stage_entered', 'stage_exited', 'time_in_stage', 'score_changed', 'tag_added', 'activity_created', 'form_submitted', 'email_opened', 'link_clicked', 'schedule'],
+                },
+                conditions: { type: 'object', additionalProperties: true },
+                schedule: {
+                  type: 'object',
+                  properties: {
+                    frequency: { type: 'string', enum: ['once', 'daily', 'weekly', 'monthly'] },
+                    time: { type: 'string' },
+                    daysOfWeek: { type: 'array', items: { type: 'integer', minimum: 0, maximum: 6 } },
+                  },
+                },
+              },
+            },
+            actions: {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: {
+                  type: { type: 'string', enum: ['send_email', 'send_sms', 'create_task', 'update_field', 'add_tag', 'remove_tag', 'change_stage', 'assign_to', 'add_note', 'webhook', 'wait', 'branch'] },
+                  config: { type: 'object', additionalProperties: true },
+                  delay: {
+                    type: 'object',
+                    properties: {
+                      value: { type: 'integer' },
+                      unit: { type: 'string', enum: ['minutes', 'hours', 'days', 'weeks'] },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          required: ['id', 'name', 'trigger', 'actions'],
+        },
+      },
+      teamMembers: {
+        type: 'array',
+        title: 'Team Members',
+        group: 'team',
+        items: {
+          type: 'object',
+          properties: {
+            userId: { type: 'string' },
+            name: { type: 'string' },
+            role: { type: 'string', enum: ['admin', 'manager', 'sales_rep', 'viewer'] },
+            permissions: {
+              type: 'array',
+              items: { type: 'string', enum: ['view', 'create', 'edit', 'delete', 'assign', 'export', 'configure'] },
+            },
+            quotas: {
+              type: 'object',
+              properties: {
+                monthly: { type: 'integer' },
+                quarterly: { type: 'integer' },
+                yearly: { type: 'integer' },
+              },
+            },
+            maxLeads: { type: 'integer' },
+          },
+          required: ['userId', 'name', 'role'],
         },
       },
     },

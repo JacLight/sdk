@@ -25,7 +25,7 @@ const statusOptions = [
   'failed',
   'scheduled',
   'draft',
-].map(item => ({ label: item, value: item, optionOwner: 'update-state' }));
+].map(item => ({ label: item, value: item, optionOwner: 'update-status' }));
 const stateOptions = Object.keys(ModelState).map(item => ({
   label: item,
   value: item,
