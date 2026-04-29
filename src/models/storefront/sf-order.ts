@@ -2,6 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { DataType, ControlType } from '../../types';
 import { AddressSchema } from '../crm/crm-address';
+import { BusinessLocationField } from '../_location-fields';
 
 // Order item schema - shared between products and rentals
 const OrderItemSchema = {
@@ -158,15 +159,29 @@ export const SFOrderSchema = () => {
   return {
     type: 'object',
     properties: {
-      store: {
+      ...BusinessLocationField(),
+      // Seat / table / bar-spot this tab is held at. Empty for retail / walk-up
+      // / online orders. The picker filters service points to the order's
+      // businessLocationId.
+      servicePointId: {
         type: 'string',
         'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
-          collection: DataType.location,
-          value: 'sk',
-          label: 'name',
+          collection: DataType.service_point,
+          value: 'name',
+          label: 'displayName',
+          filter: { 'data.businessLocationId': '{{businessLocationId}}' },
         },
+      },
+      // Free-form human-friendly handle for this order. Lets the operator
+      // attach the order to whatever identifier they're using on the floor:
+      // a section ("Outdoor patio"), a table ("T7"), a card-on-file
+      // ("Card ****1234"), a party name ("Smith — 4"), a phone number, etc.
+      // Independent of `servicePointId`/`customer` (which are FK refs) — the
+      // alias is just a label for fast eyeball lookup on the floor or POS.
+      alias: {
+        type: 'string',
       },
       number: {
         type: 'string',

@@ -34,7 +34,17 @@ export * from './documents';
 export * from './offboarding';
 
 // Operations
-export * from './floor-plan';
+// (Tabs are storefront Orders with status='open' attached to a servicePointId
+// — no separate schema. Order already supports partial/multi payment via
+// `amountPaid` + `payments[]`.)
 export * from './fulfillment';
-export * from './tab';
 export * from './work-order';
+
+// Per-location variations live as attributes on entity records (storefront sf_attribute pattern)
+// — no separate schema needed in a document DB.
+
+// Accounts Payable + Vendors
+export * from './bill';
+
+// Operations: queue, check-in, pipelines, period close, budgets
+export * from './operations';

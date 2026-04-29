@@ -2,6 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { DataType, ControlType } from '../../types';
 import { FileInfoSchema } from '../file-info';
+import { BusinessLocationField } from '../_location-fields';
 
 export const ReservationDefinitionSchema = () => {
   return {
@@ -19,7 +20,43 @@ export const ReservationDefinitionSchema = () => {
       type: {
         type: 'string',
         group: 'name',
-        enum: ['service', 'interval', 'event', 'service-point'],
+        enum: ['service', 'interval', 'event', 'service_point', 'pipeline'],
+      },
+      // For type='pipeline' — the workflow this reservation kicks off when started.
+      // The reservation's status mirrors the workflow stage from there.
+      workflowName: {
+        type: 'string',
+        group: 'name',
+        rules: [
+          { operation: 'notEqual', valueA: '{{type}}', valueB: 'pipeline', action: 'hide' },
+        ],
+      },
+      // For type='service_point' — restrict reservations to a sub-tree of the
+      // service-point hierarchy at this location (e.g. "any spot under section
+      // patio"). The actual leaf is picked at booking time.
+      servicePointParent: {
+        type: 'string',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.service_point,
+          value: 'name',
+          label: 'displayName',
+          filter: { 'data.businessLocationId': '{{businessLocationId}}' },
+        },
+        group: 'name',
+        rules: [
+          { operation: 'notEqual', valueA: '{{type}}', valueB: 'service_point', action: 'hide' },
+        ],
+      },
+      // For type='service_point' — optional kind filter (e.g. "table", "seat") to
+      // narrow the spot picker by service-point kind.
+      servicePointKind: {
+        type: 'string',
+        group: 'name',
+        rules: [
+          { operation: 'notEqual', valueA: '{{type}}', valueB: 'service_point', action: 'hide' },
+        ],
       },
       status: {
         type: 'string',
@@ -30,6 +67,8 @@ export const ReservationDefinitionSchema = () => {
         type: 'string',
         group: 'title',
       },
+      // Null = offered at all venues. Set for single-venue reservation types.
+      ...BusinessLocationField(),
       paymentRequired: {
         type: 'boolean',
         group: 'title',
@@ -52,59 +91,6 @@ export const ReservationDefinitionSchema = () => {
           {
             operation: 'notEqual',
             valueA: 'event',
-            valueB: '{{type}}',
-            action: 'hide',
-          },
-        ],
-      },
-      servicePoints: {
-        type: 'array',
-        collapsible: true,
-        'x-control': ControlType.table,
-        operations: ['pick', 'add', 'remove'],
-        displayStyle: 'table',
-        items: {
-          type: 'object',
-          showIndex: true,
-          properties: {
-            id: {
-              type: 'string',
-              hideIn: ['table'],
-            },
-            name: {
-              type: 'string',
-              styleClass: 'w-full',
-            },
-            capacity: {
-              type: 'string',
-              styleClass: 'w-10',
-            },
-            location: {
-              styleClass: 'w-16',
-              type: 'string',
-            },
-            images: {
-              styleClass: 'w-16',
-              type: 'string',
-              hideIn: ['table'],
-            },
-            title: {
-              styleClass: 'w-16',
-              type: 'string',
-              hideIn: ['table'],
-            },
-          },
-        },
-        dataSource: {
-          source: 'collection',
-          collection: DataType.service_point,
-          value: 'name',
-          label: 'name',
-        },
-        rules: [
-          {
-            operation: 'notEqual',
-            valueA: 'service-point',
             valueB: '{{type}}',
             action: 'hide',
           },
@@ -161,7 +147,7 @@ export const ReservationDefinitionSchema = () => {
         rules: [
           {
             operation: 'in',
-            valueA: ['service-point', 'event'],
+            valueA: ['service_point', 'event'],
             valueB: '{{type}}',
             action: 'hide',
           },

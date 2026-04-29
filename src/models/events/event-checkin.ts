@@ -1,6 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { DataType, ControlType } from '../../types';
+import { BusinessLocationField } from '../_location-fields';
 
 export const EventCheckInSchema = () => {
   return {
@@ -23,6 +24,7 @@ export const EventCheckInSchema = () => {
           label: 'title',
         },
       },
+      ...BusinessLocationField(),
       ticket: {
         type: 'string',
         'x-control': ControlType.selectMany,

@@ -2,6 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { DataType, ControlType } from '../../types';
 import { FileInfoSchema } from '../file-info';
+import { BusinessLocationField } from '../_location-fields';
 
 export const EventSchema = () => {
   return {
@@ -23,6 +24,7 @@ export const EventSchema = () => {
         unique: true,
         group: 'name-slug',
       },
+      ...BusinessLocationField(),
       type: {
         type: 'string',
         enum: [

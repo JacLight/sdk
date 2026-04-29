@@ -4,6 +4,9 @@ import { DataType, ControlType } from '../../types';
 import { FileInfoSchema } from '../file-info';
 import { getCountryDropDownOptions } from '../../data';
 
+// Product is entity-wide catalog. Per-location pricing, tax, availability,
+// and station routing live on `bm_location_product` (LocationProduct overlay).
+
 export const SFProductSchema = () => {
   return {
     type: 'object',

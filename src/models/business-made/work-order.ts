@@ -1,6 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { DataType, ControlType } from '../../types';
+import { BusinessLocationField } from '../_location-fields';
 
 export const WorkOrderItemSchema = () => {
   return {
@@ -80,6 +81,7 @@ export const WorkOrderSchema = () => {
         type: 'string',
         group: 'name',
       },
+      ...BusinessLocationField(),
       description: {
         type: 'string',
         'x-control-variant': 'textarea',

@@ -3,6 +3,7 @@ import { registerCollection } from '../../default-schema';
 import { DataType, ControlType } from '../../types';
 import { FileInfoSchema } from '../file-info';
 import { PhoneSchema } from './crm-phone';
+import { BusinessLocationField } from '../_location-fields';
 
 export const CustomerSchema = () => {
   return {
@@ -14,6 +15,9 @@ export const CustomerSchema = () => {
         options: ['subscriber', 'contact', 'customer'],
         group: 'account',
       },
+      // Optional. Null = company-wide customer (default — they can be served at any venue).
+      // Set when this customer is "owned" by a single venue (loyalty / acquired by that venue).
+      ...BusinessLocationField(),
       balance: {
         type: 'number',
         default: 0,

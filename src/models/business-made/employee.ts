@@ -1,6 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { DataType, ControlType } from '../../types';
+import { BusinessLocationField } from '../_location-fields';
 
 export const EmployeeSchema = () => {
   return {
@@ -17,6 +18,7 @@ export const EmployeeSchema = () => {
         unique: true,
         group: 'name',
       },
+      ...BusinessLocationField(),
       personalInfo: {
         type: 'object',
         collapsible: true,

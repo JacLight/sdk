@@ -3,7 +3,7 @@ import { registerCollection } from '../default-schema';
 import { DataType, ControlType } from '../types';
 import { AddressSchema } from './crm/crm-address';
 
-export const LocationSchema = () => {
+export const BusinessLocationSchema = () => {
   return {
     type: 'object',
     properties: {
@@ -20,61 +20,46 @@ export const LocationSchema = () => {
         type: 'string',
         'x-control': ControlType.selectMany,
         'x-control-variant': 'chip',
-        dataSource: {
-          source: 'json',
-          json: [
-            'address',
-            'website',
-            'virtual',
-          ],
-        },
+        dataSource: { source: 'json', json: ['address', 'website', 'virtual'] },
         group: 'name',
       },
-      title: {
-        type: 'string',
-      },
+      title: { type: 'string' },
       services: {
         type: 'string',
         'x-control': ControlType.selectMany,
         'x-control-variant': 'chip',
-        dataSource: {
-          source: 'json',
-          json: [
-          ],
-        },
+        dataSource: { source: 'json', json: [] },
       },
       address: {
         type: 'object',
         properties: AddressSchema().properties,
         rules: [
           { operation: 'notEqual', valueA: '{{type}}', valueB: 'address', action: 'hide' },
-        ]
+        ],
       },
       meetingLink: {
         type: 'string',
         rules: [
           { operation: 'notIn', valueA: ['virtual', 'website'], valueB: '{{type}}', action: 'hide' },
-        ]
+        ],
       },
       description: {
         type: 'string',
         'x-control-variant': 'textarea',
         rules: [
           { operation: 'notIn', valueA: ['virtual', 'website'], valueB: '{{type}}', action: 'hide' },
-        ]
+        ],
       },
-      status: {
-        type: 'string',
-        enum: ['active', 'inactive'],
-      },
+      gridSize: { type: 'number', default: 20 },
+      status: { type: 'string', enum: ['active', 'inactive'] },
     },
   } as const;
 };
 
-const ps = LocationSchema();
-export type LocationModel = FromSchema<typeof ps>;
-registerCollection(
-  'Business Location',
-  DataType.location,
-  LocationSchema()
-);
+export const LocationSchema = BusinessLocationSchema;
+
+const ps = BusinessLocationSchema();
+export type BusinessLocationModel = FromSchema<typeof ps>;
+export type LocationModel = BusinessLocationModel;
+
+registerCollection('Business Location', DataType.location, BusinessLocationSchema());

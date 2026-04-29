@@ -2,6 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { DataType, ControlType } from '../../types';
 import { FileInfoSchema } from '../file-info';
+import { BusinessLocationField } from '../_location-fields';
 
 export const EventParticipantSchema = () => {
   return {
@@ -25,6 +26,7 @@ export const EventParticipantSchema = () => {
         },
         group: 'name-event',
       },
+      ...BusinessLocationField(),
 
       // Link to customer record - all personal info comes from here
       customer: {

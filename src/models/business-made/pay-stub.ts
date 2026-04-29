@@ -2,6 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { DataType } from '../../types';
 import { PayrollEarningSchema, PayrollDeductionSchema, PayrollTaxSchema } from './payroll-run';
+import { BusinessLocationField } from '../_location-fields';
 
 export const PayStubSchema = () => {
   return {
@@ -17,6 +18,7 @@ export const PayStubSchema = () => {
         type: 'string',
         group: 'employee',
       },
+      ...BusinessLocationField(),
       payrollRunId: {
         type: 'string',
       },

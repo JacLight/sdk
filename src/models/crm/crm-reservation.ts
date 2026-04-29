@@ -2,6 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 
 import { ControlType, DataType } from '../../types';
+import { BusinessLocationField } from '../_location-fields';
 
 export const ReservationSchema = () => {
   return {
@@ -12,7 +13,7 @@ export const ReservationSchema = () => {
         default: 'new',
         'x-control': 'label',
         readOnly: true,
-        enum: ['new', 'confirmed', 'completed', 'rescheduled', 'cancelled'],
+        enum: ['new', 'confirmed', 'waiting', 'notified', 'in_progress', 'completed', 'rescheduled', 'cancelled', 'no_show'],
         group: 'name',
       },
       name: {
@@ -32,6 +33,33 @@ export const ReservationSchema = () => {
         type: 'string',
         group: 'name',
       },
+      ...BusinessLocationField(),
+      // What this reservation is waiting on / occupies. Mirrors ReservationDefinition.type.
+      targetType: {
+        type: 'string',
+        enum: ['service_point', 'pipeline', 'event', 'interval'],
+        group: 'target',
+      },
+      // For targetType='service_point' — id of the ServicePoint (section/table/seat/...).
+      servicePointId: { type: 'string', group: 'target' },
+      // For targetType='pipeline' — workflow + current stage.
+      workflowName: { type: 'string', group: 'target' },
+      currentStageId: { type: 'string', group: 'target' },
+      // How the reservation got into the system. Drives queue-UI filters and
+      // can be branched on by workflow stages (e.g., walk-in jumps the
+      // confirmation stage). Default 'online' for self-service flows.
+      source: {
+        type: 'string',
+        enum: ['walk-in', 'phone', 'online', 'partner', 'kiosk', 'agent', 'email'],
+        default: 'online',
+        group: 'target',
+      },
+      // Lifecycle timestamps (queue → in-service → done)
+      joinedAt: { type: 'string', format: 'date-time' },
+      notifiedAt: { type: 'string', format: 'date-time' },
+      startedAt: { type: 'string', format: 'date-time' },
+      completedAt: { type: 'string', format: 'date-time' },
+      position: { type: 'number', description: 'Position in queue when status is waiting/notified' },
       customer: {
         type: 'object',
         layout: 'horizontal',

@@ -2,6 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { DataType, ControlType } from '../../types';
 import { AddressSchema } from '../crm/crm-address';
+import {  BusinessLocationsField } from '../_location-fields';
 
 export const SFInvoiceSchema = () => {
   return {
@@ -27,6 +28,7 @@ export const SFInvoiceSchema = () => {
         default: 'USD',
         group: 'number',
       },
+      ...BusinessLocationsField(),
 
       // --- Customer ---
       billTo: {

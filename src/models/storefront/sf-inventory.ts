@@ -3,6 +3,7 @@ import { registerCollection } from '../../default-schema';
 
 
 import { DataType, ControlType } from '../../types';
+import { BusinessLocationField } from '../_location-fields';
 
 export const SFInventorySchema = () => {
   return {
@@ -18,16 +19,7 @@ export const SFInventorySchema = () => {
           label: ['sku', 'name'],
         },
       },
-      location: {
-        type: 'string',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.location,
-          value: 'sk',
-          label: 'name',
-        },
-      },
+      ...BusinessLocationField(),
       supplier: {
         type: 'string',
       },
@@ -46,23 +38,29 @@ export const SFInventoryTransferSchema = () => {
         type: 'string',
         format: 'date-time',
       },
-      from: {
+      fromBusinessLocationId: {
         type: 'string',
+        description: 'Source venue (FK to Business Location)',
         'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
+        maxItems: 1,
         dataSource: {
           source: 'collection',
           collection: DataType.location,
-          value: 'sk',
+          value: 'name',
           label: 'name',
         },
       },
-      to: {
+      toBusinessLocationId: {
         type: 'string',
+        description: 'Destination venue (FK to Business Location)',
         'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
+        maxItems: 1,
         dataSource: {
           source: 'collection',
           collection: DataType.location,
-          value: 'sk',
+          value: 'name',
           label: 'name',
         },
       },
@@ -146,16 +144,7 @@ export const SFInventoryIntakeSchema = () => {
           },
         },
       },
-      location: {
-        type: 'string',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.location,
-          value: 'sk',
-          label: 'name',
-        },
-      },
+      ...BusinessLocationField(),
     },
   } as const;
 };

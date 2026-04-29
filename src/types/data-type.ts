@@ -101,6 +101,7 @@ export enum DataType {
   sf_inventory = 'sf_inventory',
   sf_inventory_intake = 'sf_inventory_intake',
   sf_inventory_transfer = 'sf_inventory_transfer',
+  sf_tax_rate = 'sf_tax_rate',
   location = 'location',
   flexdata = 'flexdata',
   escalation = 'escalation',
@@ -109,7 +110,6 @@ export enum DataType {
   reservationdefinition = 'reservationdefinition',
   reservation = 'reservation',
   service_point = 'service_point',
-  service_point_item = 'service_point_item',
   published = 'published',
   history = 'history',
   auraflow = 'auraflow',
@@ -208,11 +208,23 @@ export enum DataType {
   bm_offboarding = 'bm_offboarding',
   bm_exit_interview = 'bm_exit_interview',
   // Restaurant/Hospitality
-  bm_floor_plan = 'bm_floor_plan',
-  bm_table = 'bm_table',
-  bm_section = 'bm_section',
+  // (floor plan, sections, tables live inline on the location record — no separate collections)
   bm_fulfillment = 'bm_fulfillment',
   bm_tab = 'bm_tab',
+  // Multi-location overlays (entity-level catalog × per-business-location overrides)
+  // Accounts Payable / Bills
+  bm_bill = 'bm_bill',
+  bm_bill_payment = 'bm_bill_payment',
+  bm_vendor = 'bm_vendor',
+  // Operations: queue, check-in, pipelines
+  bm_queue = 'bm_queue',
+  bm_queue_entry = 'bm_queue_entry',
+  bm_checkin = 'bm_checkin',
+  bm_pipeline = 'bm_pipeline',
+  bm_pipeline_item = 'bm_pipeline_item',
+  // Period close + budgets
+  bm_period_close = 'bm_period_close',
+  bm_budget = 'bm_budget',
   // Client Apps
   client_app = 'client_app',
   // Banking

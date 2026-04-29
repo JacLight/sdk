@@ -1,6 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { DataType } from '../../types';
+import { BusinessLocationField } from '../_location-fields';
 
 export const FulfillmentItemSchema = () => {
   return {
@@ -64,9 +65,12 @@ export const FulfillmentSchema = () => {
         description: 'Fulfillment station (kitchen, pickup, bar, etc.)',
         group: 'station',
       },
+      ...BusinessLocationField(),
+      // Seat-level location (table, room, counter, bar seat) WITHIN the venue.
+      // For the venue itself see `businessLocationId` above.
       locationId: {
         type: 'string',
-        description: 'Reference to table, room, counter, etc.',
+        description: 'Reference to table, room, counter — seat-level location WITHIN the venue',
         group: 'location',
       },
       locationName: {

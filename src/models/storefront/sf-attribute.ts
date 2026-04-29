@@ -74,7 +74,13 @@ export const SFAttributeSchema = () => {
           properties: {
             label: { type: 'string' },
             value: { type: 'string' },
+            // Free-form metadata: prep-station override, SKU mapping, etc.
             param: { type: 'string' },
+            // Price adjustment when this option is picked, added to the line
+            // base price (positive = upcharge, negative = discount). Empty/0 =
+            // no adjustment. Used by the order config drawer to compute line
+            // totals.
+            priceDelta: { type: 'number' },
           },
         },
         rules: [

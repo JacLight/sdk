@@ -1,6 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
-import { DataType, ControlType } from '../../types';
+import { DataType } from '../../types';
+import { BusinessLocationField } from '../_location-fields';
 
 export const ShiftBreakSchema = () => {
   return {
@@ -41,6 +42,10 @@ export const ShiftSchema = () => {
       employeeName: {
         type: 'string',
         group: 'employee',
+      },
+      businessLocationId: {
+        type: 'string',
+        description: 'Venue this shift is scheduled at — defaults to schedule\'s venue',
       },
       date: {
         type: 'string',
@@ -105,16 +110,7 @@ export const EmployeeScheduleSchema = () => {
         type: 'string',
         'x-control-variant': 'textarea',
       },
-      locationId: {
-        type: 'string',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.location,
-          value: 'name',
-          label: 'name',
-        },
-      },
+      ...BusinessLocationField(),
       periodStart: {
         type: 'string',
         format: 'date',

@@ -1,6 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { DataType } from '../../types';
+import { BusinessLocationField } from '../_location-fields';
 
 export const TimeEntrySchema = () => {
   return {
@@ -47,6 +48,7 @@ export const TimesheetSchema = () => {
         type: 'string',
         group: 'employee',
       },
+      ...BusinessLocationField(),
       payPeriodStart: {
         type: 'string',
         format: 'date',

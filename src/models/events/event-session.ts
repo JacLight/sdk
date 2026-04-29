@@ -2,6 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { DataType, ControlType } from '../../types';
 import { FileInfoSchema } from '../file-info';
+import { BusinessLocationField } from '../_location-fields';
 
 export const EventSessionSchema = () => {
   return {
@@ -28,6 +29,7 @@ export const EventSessionSchema = () => {
       title: {
         type: 'string',
       },
+      ...BusinessLocationField(),
       type: {
         type: 'string',
         enum: ['talk', 'panel', 'workshop', 'keynote', 'networking', 'break', 'meetup', 'other'],

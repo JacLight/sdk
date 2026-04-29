@@ -1,6 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { DataType, ControlType } from '../../types';
+import { BusinessLocationField } from '../_location-fields';
 
 export const EventBookingSchema = () => {
   return {
@@ -24,6 +25,7 @@ export const EventBookingSchema = () => {
           label: 'title',
         },
       },
+      ...BusinessLocationField(),
       // Buyer
       email: {
         type: 'string',
