@@ -1,6 +1,11 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { registerCollection, registerDefaultData } from '../default-schema';
-import { DataType, ControlType, WorkflowStageTypes, TaskStatus } from '../types';
+import { registerCollection } from '../default-schema';
+import {
+  DataType,
+  ControlType,
+  WorkflowStageTypes,
+  TaskStatus,
+} from '../types';
 
 import { ModelState } from './base.model';
 
@@ -22,7 +27,6 @@ export const WorkflowDefinitionSchema = () => {
       description: {
         type: 'string',
       },
-
       notificationTemplate: {
         type: 'array',
         'x-control': ControlType.selectMany,
@@ -37,40 +41,6 @@ export const WorkflowDefinitionSchema = () => {
           type: 'string',
         },
         group: 'sla',
-      },
-      sla: {
-        type: 'string',
-        title: 'SLA',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.escalation,
-          value: 'sk',
-          label: 'name',
-        },
-        group: 'flow',
-      },
-      startFlow: {
-        type: 'string',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.mintflow,
-          value: 'name',
-          label: 'name',
-        },
-        group: 'flow'
-      },
-      endFlow: {
-        type: 'string',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.mintflow,
-          value: 'name',
-          label: 'name',
-        },
-        group: 'flow'
       },
       stages: {
         type: 'array',
@@ -90,10 +60,10 @@ export const WorkflowDefinitionSchema = () => {
         },
         items: {
           type: 'string',
-        }
-      }
+        },
+      },
     },
-    required: ['name', 'stages']
+    required: ['name', 'stages'],
   } as const;
 };
 
@@ -106,7 +76,7 @@ export const WorkflowStageSchema = () => {
       id: {
         type: ['string', 'number'],
         'x-control': ControlType.uuid,
-        readOnly: true
+        readOnly: true,
       },
       name: {
         type: 'string',
@@ -139,28 +109,6 @@ export const WorkflowStageSchema = () => {
         default: ModelState.inprogress,
         group: 'type',
       },
-      escalation: {
-        type: 'string',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.escalation,
-          value: 'name',
-          label: 'name',
-        },
-        group: 'escalation'
-      },
-      flow: {
-        type: 'string',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.mintflow,
-          value: 'name',
-          label: 'name',
-        },
-        group: 'escalation'
-      },
       notificationTemplate: {
         type: 'array',
         'x-control': ControlType.selectMany,
@@ -174,7 +122,7 @@ export const WorkflowStageSchema = () => {
         items: {
           type: 'string',
         },
-        group: 'sla'
+        group: 'assignTo',
       },
       assignTo: {
         type: 'array',
@@ -186,6 +134,55 @@ export const WorkflowStageSchema = () => {
         dataSource: {
           source: 'function',
           value: 'getAssignToOptions',
+        },
+        group: 'assignTo',
+      },
+      escalations: {
+        type: 'array',
+        title: 'SLA Escalation Tiers',
+        description:
+          'Multi-tier SLA. Each tier fires after its escalateAfter+units elapse on the stage. ' +
+          'Tier 0 sets the initial dueDate; tier N is reached after tiers 0..N-1 have all fired.',
+        collapsible: 'close',
+        showIndex: true,
+        rowSort: true,
+        items: {
+          type: 'object',
+          properties: {
+            escalateAfter: {
+              type: 'number',
+              default: 4,
+              group: 'units',
+            },
+            units: {
+              type: 'string',
+              enum: ['minutes', 'hours', 'days'],
+              default: 'hours',
+              group: 'units',
+            },
+            notificationTemplate: {
+              type: 'array',
+              'x-control': ControlType.selectMany,
+              'x-control-variant': 'chip',
+              dataSource: {
+                source: 'collection',
+                collection: DataType.messagetemplate,
+                value: 'name',
+                label: 'name',
+              },
+              items: { type: 'string' },
+            },
+            escalateTo: {
+              type: 'array',
+              'x-control': ControlType.selectMany,
+              'x-control-variant': 'chip',
+              items: { type: 'string' },
+              dataSource: {
+                source: 'function',
+                value: 'getUserRecipients',
+              },
+            },
+          },
         },
       },
       inputs: {
@@ -200,32 +197,29 @@ export const WorkflowStageSchema = () => {
             },
             type: {
               type: 'string',
-              enum: ['string', 'number', 'boolean', 'date', 'date-time', 'time'],
+              enum: [
+                'string',
+                'number',
+                'boolean',
+                'date',
+                'date-time',
+                'time',
+              ],
             },
             required: {
               type: 'boolean',
             },
-          }
-        }
+          },
+        },
       },
     },
   } as const;
-};
-const genDefaultData = () => {
-  return {
-    stages: [
-      { id: 0, type: 'start', name: 'To Do', modelState: ModelState.new },
-      { id: 0, type: 'intermediate', name: 'In Progress', modelState: ModelState.inprogress },
-      { id: 1, type: 'end', name: 'Done', modelState: ModelState.completed }
-    ]
-  }
 };
 
 const wfd = WorkflowDefinitionSchema();
 export type WorkflowDefinitionModel = FromSchema<typeof wfd>;
 registerCollection(
   'WorkflowDefinition',
-  DataType.workflowdefinition,
+  DataType.workflow_definition,
   WorkflowDefinitionSchema()
 );
-registerDefaultData(DataType.workflowdefinition, genDefaultData)

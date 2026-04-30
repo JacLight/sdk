@@ -1,4 +1,4 @@
-import { registerCollection, registerDefaultData } from '../../default-schema';
+import { registerCollection } from '../../default-schema';
 import { ControlType, DataType } from '../../types';
 import { FromSchema } from 'json-schema-to-ts';
 import { FileInfoSchema } from '../file-info';
@@ -148,8 +148,3 @@ export type FormModel = FromSchema<typeof dd>;
 
 registerCollection('CRM Form', DataType.form, FormSchema());
 
-const genDefaultData = () => {
-  return { status: 'new', priority: 'low', severity: 'minor', stage: 0 };
-};
-
-registerDefaultData(DataType.form, genDefaultData);

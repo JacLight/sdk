@@ -36,13 +36,20 @@ export const TaskSchema = () => {
         disabled: true,
         group: 'stage',
       },
+      escalationTier: {
+        title: 'Escalation Tier',
+        type: 'number',
+        default: 0,
+        readOnly: true,
+        group: 'stage',
+      },
       workflowId: {
         type: 'string',
         readOnly: true,
         'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
-          collection: DataType.workflowdefinition,
+          collection: DataType.workflow_definition,
           value: 'sk',
           label: 'name',
         },
@@ -111,6 +118,12 @@ export const TaskSchema = () => {
             },
           },
         },
+      },
+      payload: {
+        type: 'object',
+        readOnly: true,
+        collapsible: 'close',
+        additionalProperties: true,
       },
     },
   } as const;

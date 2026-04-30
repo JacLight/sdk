@@ -2,7 +2,6 @@ import { DataType, CollectionType, JsonSchemaCustom } from './types';
 import { RoleType } from './types';
 import {
   BaseModel,
-  PageModel,
   UserGroupModel,
   UserModel,
 } from './models';
@@ -64,10 +63,6 @@ export const defaultDataRegister = {
   },
 };
 
-export const registerDefaultData = (datatype: DataType, data: any) => {
-  defaultData.set(datatype, data);
-};
-
 const createUser = (
   firstname: string,
   lastname: string,
@@ -90,36 +85,22 @@ const createGroup = (name: string, description: string, roles: string) => {
 };
 export const groups: UserGroupModel[] = [];
 groups.push(
-  createGroup('Guest', 'Unauthenticated users', [RoleType.Guest].join(','))
+  createGroup('Guest', 'Unauthenticated users', [RoleType.Guest].join(',')) as any
 );
 groups.push(
   createGroup(
     'Agent',
     'Help Desk User Group',
     [RoleType.Reviewer, RoleType.Publisher].join(',')
-  )
+  ) as any
 );
 groups.push(
   createGroup(
     'Customer',
     'Site users, authenticated users',
     [RoleType.User].join(',')
-  )
+  ) as any
 );
 groups.push(
-  createGroup('Admin', 'Omin Administrator', [RoleType.RootAdmin].join(','))
+  createGroup('Admin', 'Omin Administrator', [RoleType.RootAdmin].join(',')) as any
 );
-
-export const rootPage: PageModel = {
-  name: 'rootpage',
-  slug: 'rootpage',
-  title: 'Root Page',
-  childEditing: 'append',
-  animateScroll: true,
-  site: '',
-  breakpoints: [
-    { high: 768, low: 480, columns: 1, name: 'sm' },
-    { high: 1024, low: 768, columns: 2, name: 'md' },
-    { high: 1280, low: 1024, columns: 12, name: 'lg' },
-  ],
-};

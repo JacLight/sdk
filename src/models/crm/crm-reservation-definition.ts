@@ -343,7 +343,7 @@ export const ReservationDefinitionSchema = () => {
         'x-group': 'group2',
         dataSource: {
           source: 'collection',
-          collection: DataType.workflowdefinition,
+          collection: DataType.workflow_definition,
           value: 'sk',
           label: 'name',
         },
@@ -359,6 +359,6 @@ export type ReservationDefinitionModel = FromSchema<typeof cs>;
 
 registerCollection(
   'Reservation Definition',
-  DataType.reservationdefinition,
+  DataType.reservation_definition,
   ReservationDefinitionSchema()
 );

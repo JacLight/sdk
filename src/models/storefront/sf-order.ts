@@ -8,6 +8,11 @@ import { BusinessLocationField } from '../_location-fields';
 const OrderItemSchema = {
   type: 'object',
   properties: {
+    id: {
+      type: 'string',
+      description: 'Stable per-line identifier — unchanged across edits, used for fire/refire bookkeeping',
+      readOnly: true,
+    },
     sku: { type: 'string' },
     name: { type: 'string' },
     image: { type: 'string' },
@@ -151,6 +156,54 @@ const OrderItemSchema = {
       type: 'number',
       description:
         'amount + feesTotal (full cost including fees, rentals only)',
+    },
+    // ========== ITEM PROCESSING / FIRE TRACKING ==========
+    addedAt: {
+      type: 'string',
+      format: 'date-time',
+      description: 'When this line was added to the order',
+      readOnly: true,
+    },
+    addedBy: {
+      type: 'string',
+      description: 'User/operator who added this line',
+      readOnly: true,
+    },
+    course: {
+      type: 'string',
+      description: 'Course / grouping (appetizer, main, dessert, drinks, round-1)',
+    },
+    seat: {
+      type: 'string',
+      description: 'Seat / guest identifier within the order (for splits and per-guest tickets)',
+    },
+    specialInstructions: {
+      type: 'string',
+      description: 'Free-text instructions sent through to the processing station ticket',
+    },
+    suggestedWorkflowId: {
+      type: 'string',
+      description: 'Default workflow inherited from sf_product.workflow at add time. Operator can override at fire.',
+      readOnly: true,
+    },
+    firedTaskIds: {
+      type: 'array',
+      description: 'Tasks this line has been fired into (one line can fire to multiple pipelines or be re-fired)',
+      readOnly: true,
+      items: {
+        type: 'object',
+        properties: {
+          taskId: { type: 'string' },
+          workflowId: { type: 'string' },
+          firedAt: { type: 'string', format: 'date-time' },
+          firedBy: { type: 'string' },
+          status: {
+            type: 'string',
+            enum: ['active', 'cancelled', 'superseded'],
+            description: 'active = current Task; superseded = re-fired and replaced by a newer Task',
+          },
+        },
+      },
     },
   },
 } as const;

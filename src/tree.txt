@@ -111,7 +111,7 @@ Models definitions are here /Users/imzee/projects/sdk/src/models
 │   ├── user.ts
 │   ├── web-activity.ts
 │   ├── web-visit.ts
-│   ├── workflowdefinition.ts
+│   ├── workflow-definition.ts
 │   ├── workspace-item.ts
 │   └── workspace.ts
 ├── rules

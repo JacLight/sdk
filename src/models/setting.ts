@@ -250,7 +250,6 @@ export const SettingSchema = () => {
                 'store',
                 'crm',
                 'ticket',
-                'mintflow',
                 'workflow',
                 'lead',
                 'event',

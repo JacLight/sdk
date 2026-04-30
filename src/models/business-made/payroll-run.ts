@@ -1,7 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { DataType } from '../../types';
-import { BusinessLocationsField } from '../_location-fields';
+import { BusinessLocationField } from '../_location-fields';
 
 export const PayrollEarningSchema = () => {
   return {
@@ -121,7 +121,7 @@ export const PayrollRunSchema = () => {
         type: 'string',
         group: 'name',
       },
-      ...BusinessLocationsField(),
+      ...BusinessLocationField(),
       payPeriodStart: {
         type: 'string',
         format: 'date',

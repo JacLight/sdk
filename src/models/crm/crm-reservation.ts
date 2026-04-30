@@ -8,13 +8,33 @@ export const ReservationSchema = () => {
   return {
     type: 'object',
     properties: {
+      // Reservation = a forward-looking booking note. The live queue / check-in
+      // state is a Task on `reservation-checkin-pipeline` (DataType.task), not a
+      // status on this model. Reservation status is just "is this booking still
+      // valid" — `pending` until used or marked, `used` once a check-in Task linked
+      // back to it, `cancelled`/`no_show` for the bad outcomes.
       status: {
         type: 'string',
-        default: 'new',
+        default: 'pending',
         'x-control': 'label',
         readOnly: true,
-        enum: ['new', 'confirmed', 'waiting', 'notified', 'in_progress', 'completed', 'rescheduled', 'cancelled', 'no_show'],
+        enum: [
+          'new',
+          'pending',
+          'confirmed',
+          'used',
+          'rescheduled',
+          'cancelled',
+          'no_show',
+        ],
         group: 'name',
+      },
+      usedAt: {
+        type: 'string',
+        format: 'date-time',
+        readOnly: true,
+        description:
+          'Stamped when a check-in Task linked back to this reservation',
       },
       name: {
         type: 'string',
@@ -50,16 +70,18 @@ export const ReservationSchema = () => {
       // confirmation stage). Default 'online' for self-service flows.
       source: {
         type: 'string',
-        enum: ['walk-in', 'phone', 'online', 'partner', 'kiosk', 'agent', 'email'],
+        enum: [
+          'walk-in',
+          'phone',
+          'online',
+          'partner',
+          'kiosk',
+          'agent',
+          'email',
+        ],
         default: 'online',
         group: 'target',
       },
-      // Lifecycle timestamps (queue → in-service → done)
-      joinedAt: { type: 'string', format: 'date-time' },
-      notifiedAt: { type: 'string', format: 'date-time' },
-      startedAt: { type: 'string', format: 'date-time' },
-      completedAt: { type: 'string', format: 'date-time' },
-      position: { type: 'number', description: 'Position in queue when status is waiting/notified' },
       customer: {
         type: 'object',
         layout: 'horizontal',
@@ -162,10 +184,6 @@ export const ReservationSchema = () => {
       meetingInfo: {
         type: 'string',
         'x-control-variant': 'textarea',
-      },
-      checkedIn: {
-        type: 'boolean',
-        group: 'time',
       },
       hosts: {
         group: 'hosts',

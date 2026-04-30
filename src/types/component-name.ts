@@ -13,7 +13,6 @@ export enum ComponentName {
   Monitoring = 'Monitoring',
   Logs = 'Logs',
   Trash = 'Trash',
-  Mintflow = 'Mintflow',
   Publish = 'Publish',
   Draft = 'Draft',
   Workflow = 'Workflow',

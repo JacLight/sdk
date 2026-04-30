@@ -465,6 +465,30 @@ export const SFProductSchema = () => {
         description: 'Product-specific commission rate (percentage). Overrides program default. Leave empty to use program rate.',
         group: 'affiliate',
       },
+      workflow: {
+        type: 'object',
+        description: 'Default processing pipeline this product fires into when added to an order (kitchen, bar, lab, prep station, etc.). Operator can override per fire.',
+        collapsible: true,
+        properties: {
+          workflowId: {
+            type: 'string',
+            description: 'Default workflow definition this product routes to',
+            'x-control': ControlType.selectMany,
+            dataSource: {
+              source: 'collection',
+              collection: DataType.workflow_definition,
+              value: 'sk',
+              label: 'name',
+            },
+            group: 'workflow',
+          },
+          defaultCourse: {
+            type: 'string',
+            description: 'Default course/grouping (appetizer, main, dessert, drinks, etc.)',
+            group: 'workflow',
+          },
+        },
+      },
       source: {
         type: 'string',
       },

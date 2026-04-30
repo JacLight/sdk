@@ -83,7 +83,7 @@ export const CollectionSchema = () => {
         'x-control': ControlType.selectMany,
         dataSource: {
           source: 'collection',
-          collection: DataType.workflowdefinition,
+          collection: DataType.workflow_definition,
           value: 'sk',
           label: 'name',
         },

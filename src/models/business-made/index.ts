@@ -33,11 +33,7 @@ export * from './documents';
 // HR - Offboarding
 export * from './offboarding';
 
-// Operations
-// (Tabs are storefront Orders with status='open' attached to a servicePointId
-// — no separate schema. Order already supports partial/multi payment via
-// `amountPaid` + `payments[]`.)
-export * from './fulfillment';
+
 export * from './work-order';
 
 // Per-location variations live as attributes on entity records (storefront sf_attribute pattern)

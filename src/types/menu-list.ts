@@ -74,7 +74,6 @@ export const getMenuList = () => ({
     "Application": {
         value: "Application", label: "Application",
         subMenu: [
-            { value: "Mintflow Designer", label: "Mintflow Designer" },
             { value: "TemplateEditor", label: "TemplateEditor" },
             { value: "CreativeStudio", label: "CreativeStudio" },
         ]

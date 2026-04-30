@@ -16,7 +16,7 @@ export enum DataType {
   email_account_health = 'email_account_health',
   userrole = 'userrole',
   script = 'script',
-  workflowdefinition = 'workflowdefinition',
+  workflow_definition = 'workflow_definition',
   task = 'task',
   sf_price_list= 'sf_price_list',
   usergroup = 'usergroup',
@@ -37,8 +37,6 @@ export enum DataType {
   automation_log = 'automation_log',
   dataviz = 'dataviz',
   dataviz_item = 'dataviz_item',
-  mintflow = 'mintflow',
-  mintflownode = 'mintflownode',
   post = 'post',
   ivr_routing = 'ivr_routing',
   sms_routing = 'sms_routing',
@@ -104,10 +102,9 @@ export enum DataType {
   sf_tax_rate = 'sf_tax_rate',
   location = 'location',
   flexdata = 'flexdata',
-  escalation = 'escalation',
   translation = 'translation',
   event = 'event',
-  reservationdefinition = 'reservationdefinition',
+  reservation_definition = 'reservation_definition',
   reservation = 'reservation',
   service_point = 'service_point',
   published = 'published',
@@ -207,22 +204,12 @@ export enum DataType {
   // HR - Offboarding
   bm_offboarding = 'bm_offboarding',
   bm_exit_interview = 'bm_exit_interview',
-  // Restaurant/Hospitality
-  // (floor plan, sections, tables live inline on the location record — no separate collections)
-  bm_fulfillment = 'bm_fulfillment',
-  bm_tab = 'bm_tab',
-  // Multi-location overlays (entity-level catalog × per-business-location overrides)
+
   // Accounts Payable / Bills
   bm_bill = 'bm_bill',
   bm_bill_payment = 'bm_bill_payment',
   bm_vendor = 'bm_vendor',
   // Operations: queue, check-in, pipelines
-  bm_queue = 'bm_queue',
-  bm_queue_entry = 'bm_queue_entry',
-  bm_checkin = 'bm_checkin',
-  bm_pipeline = 'bm_pipeline',
-  bm_pipeline_item = 'bm_pipeline_item',
-  // Period close + budgets
   bm_period_close = 'bm_period_close',
   bm_budget = 'bm_budget',
   // Client Apps

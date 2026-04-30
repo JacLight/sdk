@@ -1,5 +1,5 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { registerCollection, registerDefaultData } from '../../default-schema';
+import { registerCollection } from '../../default-schema';
 
 import { DataType, ControlType } from '../../types';
 import { FileInfoSchema } from '../file-info';
@@ -28,18 +28,6 @@ export const TicketSchema = () => {
           'done',
           'canceled',
         ],
-        group: 'status',
-      },
-      escalation: {
-        type: 'string',
-        title: 'Escalation Policy',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.escalation,
-          value: 'name',
-          label: 'name',
-        },
         group: 'status',
       },
       reportedBy: {
@@ -88,7 +76,6 @@ export const TicketSchema = () => {
         enum: ['web', 'phone', 'chat', 'mobile', 'api', 'other'],
         group: 'priority',
       },
-      // SLA & Escalation tracking
       assignTo: {
         type: 'string',
         'x-control': ControlType.selectMany,
@@ -108,67 +95,6 @@ export const TicketSchema = () => {
       assignments: {
         type: 'array',
         items: FileInfoSchema(),
-      },
-      sla: {
-        type: 'object',
-        collapsible: 'close',
-        group: 'sla',
-        readOnly: true,
-        properties: {
-          startedAt: {
-            type: 'string',
-            format: 'date-time',
-            title: 'SLA Started',
-          },
-          currentStage: {
-            type: 'number',
-            default: 0,
-            title: 'Current Stage',
-          },
-          breached: {
-            type: 'boolean',
-            default: false,
-            title: 'SLA Breached',
-          },
-          resolvedAt: {
-            type: 'string',
-            format: 'date-time',
-            title: 'Resolved At',
-          },
-          firstResponseAt: {
-            type: 'string',
-            format: 'date-time',
-            title: 'First Response At',
-          },
-          stages: {
-            type: 'array',
-            title: 'Stage History',
-            items: {
-              type: 'object',
-              properties: {
-                index: {
-                  type: 'number',
-                  title: 'Stage Index',
-                },
-                dueAt: {
-                  type: 'string',
-                  format: 'date-time',
-                  title: 'Due At',
-                },
-                triggeredAt: {
-                  type: 'string',
-                  format: 'date-time',
-                  title: 'Triggered At',
-                },
-                breached: {
-                  type: 'boolean',
-                  default: false,
-                  title: 'Breached',
-                },
-              },
-            },
-          },
-        },
       },
       // Ticket resolution details
       resolution: {
@@ -201,7 +127,3 @@ export type TicketModel = FromSchema<typeof tt>;
 
 registerCollection('Ticket', DataType.ticket, TicketSchema());
 
-const genDefaultData = () => {
-  return { status: 'new', priority: 'low', severity: 'minor', stage: 0 };
-};
-registerDefaultData(DataType.ticket, genDefaultData);
