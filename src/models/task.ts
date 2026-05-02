@@ -18,6 +18,9 @@ export const TaskSchema = () => {
         enum: Object.keys(TaskStatus),
         group: 'status',
       },
+      description:{
+        type: 'string',
+      },
       dueDate: {
         type: 'string',
         format: 'date-time',
@@ -42,6 +45,32 @@ export const TaskSchema = () => {
         default: 0,
         readOnly: true,
         group: 'stage',
+      },
+      completedAt: {
+        title: 'Completed',
+        type: 'string',
+        format: 'date-time',
+        readOnly: true,
+        description:
+          'Stamped when the task transitions to status="done". Used by live ' +
+          'queries to show recently-completed tasks within a rolling window.',
+        group: 'stage',
+      },
+      archived: {
+        title: 'Archived',
+        type: 'boolean',
+        default: false,
+        description:
+          'UI-set flag to hide finished/old tasks from the default active view. ' +
+          'Independent of status — preserves the actual outcome (done/canceled/' +
+          'rejected). Default queries exclude archived tasks.',
+      },
+      archivedAt: {
+        title: 'Archived At',
+        type: 'string',
+        format: 'date-time',
+        readOnly: true,
+        description: 'Stamped when archived flag was set to true.',
       },
       workflowId: {
         type: 'string',

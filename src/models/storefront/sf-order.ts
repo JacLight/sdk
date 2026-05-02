@@ -186,23 +186,36 @@ const OrderItemSchema = {
       description: 'Default workflow inherited from sf_product.workflow at add time. Operator can override at fire.',
       readOnly: true,
     },
-    firedTaskIds: {
-      type: 'array',
-      description: 'Tasks this line has been fired into (one line can fire to multiple pipelines or be re-fired)',
+    taskId: {
+      type: 'string',
+      description:
+        'Task this line was fired into. Presence of this field IS what "sent" means. ' +
+        'UI excludes items with taskId from the next fire request. Read task.data.* ' +
+        'for status, dueDate, history, current stage. ' +
+        'Reverse link: the Task carries `data.payload.items[]` (item snapshot) and ' +
+        '`data.payload.itemRefs[]` ({ orderId, itemId }) — KDS reads from there without ' +
+        'joining back to the order.',
       readOnly: true,
-      items: {
-        type: 'object',
-        properties: {
-          taskId: { type: 'string' },
-          workflowId: { type: 'string' },
-          firedAt: { type: 'string', format: 'date-time' },
-          firedBy: { type: 'string' },
-          status: {
-            type: 'string',
-            enum: ['active', 'cancelled', 'superseded'],
-            description: 'active = current Task; superseded = re-fired and replaced by a newer Task',
-          },
-        },
+    },
+    task: {
+      type: 'object',
+      description:
+        'Live task snapshot injected at READ time (not stored). Populated when this item ' +
+        'has a taskId — server resolves the linked Task and stage name in one call. UI ' +
+        'renders item progression directly: stageName, status, dueDate, escalationTier.',
+      readOnly: true,
+      properties: {
+        sk: { type: 'string' },
+        stageId: { type: 'number' },
+        stageName: { type: 'string' },
+        status: { type: 'string' },
+        state: { type: 'string' },
+        dueDate: { type: 'string', format: 'date-time' },
+        title: { type: 'string' },
+        description: { type: 'string' },
+        escalationTier: { type: 'number' },
+        workflowId: { type: 'string' },
+        workflowName: { type: 'string' },
       },
     },
   },

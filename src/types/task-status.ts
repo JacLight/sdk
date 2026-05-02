@@ -7,5 +7,4 @@ export enum TaskStatus {
   rejected = 'rejected',
   approved = 'approved',
   canceled = 'canceled',
-  archived = 'archived',
 }
