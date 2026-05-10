@@ -53,18 +53,7 @@ export const FormSchema = () => {
       },
       schema: {
         type: 'object',
-      },
-      collection: {
-        type: 'string',
-        'x-control': ControlType.selectMany,
-        'x-control-variant': 'chip',
-        dataSource: {
-          source: 'collection',
-          collection: DataType.collection,
-          label: 'name',
-          value: 'name',
-          filter: { 'data.type': 'Defined' },
-        },
+        description: 'Inline JSON-schema describing the form fields. Submissions land in `form_submission` keyed off this form.',
       },
       participants: {
         type: 'array',
@@ -146,5 +135,5 @@ export const FormSchema = () => {
 const dd = FormSchema();
 export type FormModel = FromSchema<typeof dd>;
 
-registerCollection('CRM Form', DataType.form, FormSchema());
+registerCollection('CRM Form', DataType.crm_form, FormSchema());
 

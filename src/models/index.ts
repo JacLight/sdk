@@ -52,3 +52,4 @@ export * from './creative-studio';
 export * from './user-device';
 export * from './user-security';
 export * from './dataviz';
+export * from './device-integrations';

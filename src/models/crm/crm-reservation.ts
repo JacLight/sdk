@@ -144,6 +144,27 @@ export const ReservationSchema = () => {
         type: 'number',
         group: 'service',
       },
+      // Operator-side preference, advisory only. Never holds a service_point;
+      // never affects capacity. Surfaces as a badge on the queue row so the
+      // host can match preferences when seating at arrival time.
+      preferredServicePoint: {
+        type: 'string',
+        description: 'Optional service_point name slug — host sees as a hint at seating, not a hold.',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.service_point,
+          value: 'name',
+          label: 'displayName',
+          filter: { 'data.businessLocationId': '{{businessLocationId}}' },
+        },
+        group: 'service',
+      },
+      preferredServicePointKind: {
+        type: 'string',
+        description: 'Optional kind (table, booth, patio, bar, room, ...). Host matches at seating.',
+        group: 'service',
+      },
       startTime: {
         type: 'string',
         format: 'date-time',

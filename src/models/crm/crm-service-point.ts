@@ -67,8 +67,15 @@ export const ServicePointSchema = () => {
         group: 'state',
       },
       currentReservationId: { type: 'string', group: 'state' },
+      // FK to the active sf_order tab when the SP is held by POS (tab open
+      // at this seat). Set/cleared atomically by storefront's
+      // assignServicePointToTab / releaseServicePointFromTab.
+      currentTabId: { type: 'string', group: 'state' },
       currentServerId: { type: 'string', group: 'state' },
       currentPartySize: { type: 'number', group: 'state' },
+      // Last status-change audit (manager flips, busser clears).
+      lastStatusChangeAt: { type: 'string', format: 'date-time', group: 'state' },
+      lastStatusReason: { type: 'string', group: 'state' },
       seatedAt: { type: 'string', format: 'date-time', group: 'state' },
       estimatedEndTime: { type: 'string', format: 'date-time', group: 'state' },
       features: {

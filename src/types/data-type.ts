@@ -59,8 +59,9 @@ export enum DataType {
   customer_kyc = 'customer_kyc',
   merchant_customer = 'merchant_customer', // Business accounts with invoice billing
   call_log = 'call_log',
-  form = 'form',
+  crm_form = 'crm_form',
   signed_document = 'signed_document',
+  form_submission = 'form_submission',
   chat_message = 'chat_message',
   chat_config = 'chat_config',
   chat_group = 'chat_group',
@@ -166,7 +167,13 @@ export enum DataType {
   bm_schedule = 'bm_schedule',
   bm_pay_stub = 'bm_pay_stub',
   bm_payroll_profile = 'bm_payroll_profile',
+  bm_tax_form = 'bm_tax_form',
   bm_work_order = 'bm_work_order',
+  // Payroll configuration catalogs (configurable per org/region)
+  bm_earning_type = 'bm_earning_type',
+  bm_deduction_type = 'bm_deduction_type',
+  bm_employee_deduction = 'bm_employee_deduction',
+  bm_tax_rule = 'bm_tax_rule',
   // HR - Recruitment
   bm_job_posting = 'bm_job_posting',
   bm_applicant = 'bm_applicant',
@@ -244,4 +251,11 @@ export enum DataType {
   user_device = 'user_device',
   user_security = 'user_security',
   two_factor_backup = 'two_factor_backup',
+  // Device integrations (printers, scanners, drawers, pagers, terminals, etc.)
+  // Each record is one physical or virtual device. `connection` selects how
+  // the dispatcher reaches it: 'direct' for server-side adapters (Twilio SMS,
+  // Stripe Terminal cloud), 'remote' for a hub agent on a Pi/box that talks
+  // back over WebSocket.
+  device_config = 'device_config',
+  device_hub = 'device_hub',
 }

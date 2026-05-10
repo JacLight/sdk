@@ -6,6 +6,12 @@ export * from './pay-stub';
 export * from './employee-payroll-profile';
 export * from './employee-schedule';
 
+// Payroll configuration catalogs (org-configurable, not hardcoded)
+export * from './earning-type';
+export * from './deduction-type';
+export * from './employee-deduction';
+export * from './tax-rule';
+
 // HR - Recruitment
 export * from './recruitment';
 
