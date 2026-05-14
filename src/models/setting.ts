@@ -106,6 +106,9 @@ export const SettingSchema = () => {
         DataType.messagetemplate,
         'security'
       ),
+      posReceiptMerchantTemplate: getSettingItemSchema(DataType.messagetemplate, 'pos'),
+      posReceiptCustomerTemplate: getSettingItemSchema(DataType.messagetemplate, 'pos'),
+      posCheckTemplate: getSettingItemSchema(DataType.messagetemplate, 'pos'),
       inSmsGateway: getSettingItemSchema(DataType.config, 'in-sms'),
       outSmsGateway: getSettingItemSchema(DataType.config, 'in-sms'),
       inEmailGateway: getSettingItemSchema(DataType.config, 'in-email'),
@@ -178,6 +181,15 @@ export const SettingSchema = () => {
               group: 'template',
             },
           },
+        },
+      },
+      notificationCopyTo: {
+        type: 'object',
+        collapsible: 'close',
+        properties: {
+          order: getNotificationCopySchema(),
+          reservation: getNotificationCopySchema(),
+          event: getNotificationCopySchema(),
         },
       },
       socialMediaSync: {
@@ -315,6 +327,22 @@ export const SettingSchema = () => {
     },
   } as const;
 };
+
+const getNotificationCopySchema = () =>
+  ({
+    type: 'object',
+    properties: {
+      sendCopyTo: {
+        type: ['boolean', 'string'],
+        default: true,
+      },
+      deliveryType: {
+        type: 'string',
+        enum: ['email', 'sms', 'push'],
+        default: 'email',
+      },
+    },
+  } as const);
 
 const getSettingItemSchema = (
   datatype: DataType,

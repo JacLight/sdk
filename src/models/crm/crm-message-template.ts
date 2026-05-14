@@ -73,6 +73,12 @@ export const MessageTemplateSchema = () => {
             'notification',
             'sitePopup',
             'siteAlert',
+            // Thermal receipt printer (ESC/POS). Rendered server-side by
+            // StorefrontPosPrintService against an order/payment context;
+            // contentJSON holds the print line tree (text/image/twocol/loop/
+            // divider/feed/cut). Common variants: 'receipt', 'check',
+            // 'queue-ticket', 'kitchen-ticket'.
+            'print',
           ],
         },
         default: 'email',
@@ -81,6 +87,14 @@ export const MessageTemplateSchema = () => {
         type: 'object',
         properties: {},
         hidden: true,
+      },
+      // Marks this template as the active default for its (deliveryType,
+      // variant) pair within the org. Server lookup matches isDefault=true
+      // first; setting it on one template clears it on all other templates
+      // of the same (deliveryType, variant). At most one per pair.
+      isDefault: {
+        type: 'boolean',
+        default: false,
       },
       html: {
         type: 'string',

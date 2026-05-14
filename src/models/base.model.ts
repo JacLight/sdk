@@ -70,7 +70,7 @@ export interface BaseModel<T> {
   publishedDate?: Date;
   author?: string;
   requiredRole?: RequiredRoleModel;
-  comments?: CommentModel[];
+  notes?: { author: string; comment: string; date: Date }[];
   activities?: ActivityModel[];
   messages?: MessageModel[];
   rules?: any[];
