@@ -2,7 +2,11 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../default-schema';
 import { DataType } from '../types';
 
-
+export enum CommentStatus {
+  visible = 'visible',
+  hidden = 'hidden',
+  removed = 'removed',
+}
 
 export const CommentSchema = () => {
   return {
@@ -19,17 +23,48 @@ export const CommentSchema = () => {
         displayStyle: 'outlined',
         rows: 3,
       },
-      rating: { //this is the rating the commenter gave to the owning object
+      rating: { // rating the commenter gave to the owning object
         type: 'number',
         'x-control-variant': 'rating',
         max: 5,
         min: 1,
       },
+      parentComment: { // sk of parent comment when this is a reply
+        type: 'string',
+        hidden: true,
+      },
+      mentions: { // @user references extracted from message
+        type: 'array',
+        items: { type: 'string' },
+        hidden: true,
+      },
+      status: { // moderation state
+        type: 'string',
+        enum: ['visible', 'hidden', 'removed'],
+        default: 'visible',
+      },
+      pinned: {
+        type: 'boolean',
+        default: false,
+      },
+      isEdited: {
+        type: 'boolean',
+        default: false,
+        hidden: true,
+      },
+      editedAt: {
+        type: 'string',
+        format: 'date-time',
+        hidden: true,
+      },
+      reportCount: { // denormalized count of moderation reports
+        type: 'number',
+        default: 0,
+        hidden: true,
+      },
     },
   } as const;
 };
-
-
 
 const cos = CommentSchema();
 export type CommentModel = FromSchema<typeof cos>;

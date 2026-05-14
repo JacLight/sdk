@@ -1,9 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { DataType, ControlType } from '../types';
-import { CommentModel } from './comment';
 import { FileInfoSchema } from './file-info';
-import { ActivityModel } from './activity';
-import { MessageModel } from './crm';
 import { TaskModel } from './task';
 
 export enum SortType {
@@ -53,6 +50,21 @@ export interface BaseModelDTO<T> extends DataOptions {
   fromCache?: boolean;
 }
 
+export interface BaseModelStats {
+  likes?: number;
+  dislikes?: number;
+  views?: number;
+  shares?: number;
+  bookmarks?: number;
+  follows?: number;
+  averageRating?: number;
+  ratingCount?: number;
+  reactions?: { author: string; reaction: string; reacted_at: Date }[];
+  reactionSummary?: { [type: string]: number };
+  last_viewed?: Date;
+  last_activity?: Date;
+}
+
 export interface BaseModel<T> {
   pk: string;
   sk: string;
@@ -71,14 +83,8 @@ export interface BaseModel<T> {
   author?: string;
   requiredRole?: RequiredRoleModel;
   notes?: { author: string; comment: string; date: Date }[];
-  activities?: ActivityModel[];
-  messages?: MessageModel[];
   rules?: any[];
-  shares?: number;
-  likes?: number;
-  dislikes?: number;
-  averageRating?: number;
-  ratingCount?: number;
+  stats?: BaseModelStats;
   owner?: {
     datatype?: DataType;
     id?: string;
@@ -89,15 +95,12 @@ export interface BaseModel<T> {
   state?: ModelState;
   search?: string;
   create_hash?: string;
-  reactions?: any[];
   modified_by?: string;
   created_by?: string;
-  views?: number;
-  last_viewed?: Date;
   client?: string;
 }
 
-export const baseModelSystemFields = ['pk', 'sk', 'name', 'datatype', 'version', 'createdate', 'modifydate', 'publishedDate', 'author', 'comments', 'activities', 'messages', 'schedules', 'rules', 'schedule', 'shares', 'likes', 'dislikes', 'averageRating', 'ratingCount', 'state', 'search', 'create_hash', 'reactions', 'modified_by', 'created_by', 'views', 'last_viewed', 'client'] as const;
+export const baseModelSystemFields = ['pk', 'sk', 'name', 'datatype', 'version', 'createdate', 'modifydate', 'publishedDate', 'author', 'notes', 'schedules', 'rules', 'schedule', 'stats', 'state', 'search', 'create_hash', 'modified_by', 'created_by', 'client'] as const;
 
 export const PostSubSchema = () => {
   return {
