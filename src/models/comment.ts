@@ -38,18 +38,15 @@ export const CommentSchema = () => {
         items: { type: 'string' },
         hidden: true,
       },
-      status: { // moderation state
+      status: { // moderation state (set by CommentsService on create)
         type: 'string',
         enum: ['visible', 'hidden', 'removed'],
-        default: 'visible',
       },
       pinned: {
         type: 'boolean',
-        default: false,
       },
       isEdited: {
         type: 'boolean',
-        default: false,
         hidden: true,
       },
       editedAt: {
@@ -59,7 +56,6 @@ export const CommentSchema = () => {
       },
       reportCount: { // denormalized count of moderation reports
         type: 'number',
-        default: 0,
         hidden: true,
       },
     },
