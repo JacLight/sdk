@@ -52,6 +52,7 @@ export const DeviceConfigSchema = () => {
           'pole-display',  // customer-facing pole / line display
           'card-terminal', // payment terminal (Stripe Terminal, Verifone)
           'scale',         // weight scale
+          'nfc-reader',    // NFC/RFID card reader for quick staff login + card write/erase
         ],
         group: 'identity',
       },
@@ -59,7 +60,7 @@ export const DeviceConfigSchema = () => {
         type: 'array',
         items: {
           type: 'string',
-          enum: ['page', 'print', 'drawer', 'charge', 'weigh', 'display', 'kds'],
+          enum: ['page', 'print', 'drawer', 'charge', 'weigh', 'display', 'kds', 'card-read', 'card-write', 'card-erase'],
         },
         group: 'identity',
       },

@@ -24,6 +24,19 @@ export const UserSchema = () => {
       username: {
         type: 'string',
       },
+      employeeId: {
+        type: 'string',
+        description:
+          'Links this login to a BusinessMade Employee record. Also the identifier typed (or read from an NFC card) together with the passcode for POS quick login.',
+        unique: true,
+        'x-control': ControlType.selectSingle,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.bm_employee,
+          value: 'employeeId',
+          label: ['employeeId', 'name'],
+        },
+      },
       firstName: {
         type: 'string',
       },
@@ -57,6 +70,13 @@ export const UserSchema = () => {
             message: 'Password and Confirm Password must be the same.',
           },
         ],
+      },
+      passcode: {
+        type: 'string',
+        'x-control-variant': 'password',
+        hidden: true,
+        description:
+          'Hashed 6-digit numeric passcode for POS quick login. Always required to sign in, whether the employeeId was typed or read from an NFC card. Stored as salt.hash, never in clear.',
       },
       lockout: {
         type: 'string',

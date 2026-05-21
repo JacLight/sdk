@@ -13,6 +13,7 @@ export * from './setting';
 export * from './site';
 export * from './tag';
 export * from './user';
+export * from './access-card';
 export * from './post';
 export * from './config';
 export * from './script';

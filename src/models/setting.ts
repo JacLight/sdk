@@ -283,6 +283,24 @@ export const SettingSchema = () => {
           },
         },
       },
+      passcodeLoginSettings: {
+        type: 'object',
+        collapsible: 'close',
+        properties: {
+          enable: {
+            type: 'boolean',
+            default: true,
+            description: 'Allow POS passcode login with the BusinessMade employee ID (typed or read from an NFC card)',
+          },
+          mode: {
+            type: 'string',
+            enum: ['passcode', 'instant'],
+            default: 'passcode',
+            description:
+              "'passcode' (recommended) = employee ID + 6-digit pin (two-factor). 'instant' = employee ID / card only, no pin (single factor, fastest).",
+          },
+        },
+      },
       securitySettings: {
         type: 'object',
         collapsible: 'close',

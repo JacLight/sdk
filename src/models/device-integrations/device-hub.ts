@@ -46,6 +46,13 @@ export const DeviceHubSchema = () => {
       lastSeen: { type: 'string', format: 'date-time', group: 'state' },
       lastError: { type: 'string', group: 'state' },
       ipAddress: { type: 'string', group: 'state' },
+      // Endpoints the agent reported in its last `hello` (raw list).
+      endpointsReported: { type: 'array', items: { type: 'object', additionalProperties: true }, group: 'state' },
+      // Per-endpoint reachability the agent actually probed, keyed by the
+      // endpoint name: 'online' only when the device genuinely answers
+      // (a CUPS queue merely existing is reported 'offline'). Drives the
+      // truthful per-device status badge in the admin UI.
+      endpointStatus: { type: 'object', additionalProperties: true, group: 'state' },
       isActive: { type: 'boolean', default: true, group: 'flags' },
     },
     required: ['name'],

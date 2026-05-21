@@ -22,6 +22,7 @@ export enum DataType {
   usergroup = 'usergroup',
   email_broadcast = 'email_broadcast',
   user_invitation = 'user_invitation',
+  access_card = 'access_card',
   email_account = 'email_account',
   ai_assistant= 'ai_assistant',
   creative = 'creative',
@@ -163,6 +164,8 @@ export enum DataType {
   // Business/HR Management
   bm_employee = 'bm_employee',
   bm_timesheet = 'bm_timesheet',
+  bm_payroll_schedule = 'bm_payroll_schedule',
+  bm_pay_period = 'bm_pay_period',
   bm_payroll_run = 'bm_payroll_run',
   bm_schedule = 'bm_schedule',
   bm_pay_stub = 'bm_pay_stub',

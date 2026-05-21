@@ -50,6 +50,23 @@ export interface BaseModelDTO<T> extends DataOptions {
   fromCache?: boolean;
 }
 
+// System-level record sharing. Lives on the record itself so any datatype can
+// be shared without a separate store. The token is the public URL secret; the
+// passcode, if set, is required and is hashed at rest (presence of
+// passcodeHash signals "passcode required" — no separate mode field). Absent
+// expiresAt = no expiry. Whatever the agent doesn't set is not filled in by
+// the server.
+export interface BaseModelShare {
+  token: string;
+  status: 'active' | 'revoked';
+  passcodeHash?: string;
+  expiresAt?: string;
+  notify?: { channel: 'sms' | 'email' | 'whatsapp'; to: string; sentAt?: string }[];
+  createdBy?: string;
+  createdAt?: string;
+  openedAt?: string;
+}
+
 export interface BaseModelStats {
   likes?: number;
   dislikes?: number;
@@ -85,6 +102,7 @@ export interface BaseModel<T> {
   notes?: { author: string; comment: string; date: Date }[];
   rules?: any[];
   stats?: BaseModelStats;
+  share?: BaseModelShare;
   owner?: {
     datatype?: DataType;
     id?: string;
@@ -100,7 +118,7 @@ export interface BaseModel<T> {
   client?: string;
 }
 
-export const baseModelSystemFields = ['pk', 'sk', 'name', 'datatype', 'version', 'createdate', 'modifydate', 'publishedDate', 'author', 'notes', 'schedules', 'rules', 'schedule', 'stats', 'state', 'search', 'create_hash', 'modified_by', 'created_by', 'client'] as const;
+export const baseModelSystemFields = ['pk', 'sk', 'name', 'datatype', 'version', 'createdate', 'modifydate', 'publishedDate', 'author', 'notes', 'schedules', 'rules', 'schedule', 'stats', 'share', 'state', 'search', 'create_hash', 'modified_by', 'created_by', 'client'] as const;
 
 export const PostSubSchema = () => {
   return {
