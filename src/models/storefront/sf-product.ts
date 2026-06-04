@@ -208,7 +208,8 @@ export const SFProductSchema = () => {
         properties: {
           config: {
             type: 'string',
-            description: 'Select shipping configuration (leave empty to use site default)',
+            description:
+              'Select shipping configuration (leave empty to use site default)',
             'x-control': ControlType.selectMany,
             dataSource: {
               source: 'collection',
@@ -228,7 +229,12 @@ export const SFProductSchema = () => {
             type: 'number',
             description: 'Flat rate amount (when override is flat)',
             rules: [
-              { operation: 'notEqual', valueA: '{{override}}', valueB: 'flat', action: 'hide' },
+              {
+                operation: 'notEqual',
+                valueA: '{{override}}',
+                valueB: 'flat',
+                action: 'hide',
+              },
             ],
             group: 'shipping-config',
           },
@@ -264,7 +270,8 @@ export const SFProductSchema = () => {
               excludeStates: {
                 type: 'array',
                 items: { type: 'string' },
-                description: 'States/regions where this product cannot be shipped',
+                description:
+                  'States/regions where this product cannot be shipped',
               },
               requiresSignature: {
                 type: 'boolean',
@@ -319,6 +326,10 @@ export const SFProductSchema = () => {
                   },
                   param: {
                     type: 'string',
+                    group: 'option',
+                  },
+                  price: {
+                    type: 'number',
                     group: 'option',
                   },
                 },
@@ -457,17 +468,20 @@ export const SFProductSchema = () => {
       affiliateEligible: {
         type: 'boolean',
         default: true,
-        description: 'Whether this product is eligible for affiliate commissions',
+        description:
+          'Whether this product is eligible for affiliate commissions',
         group: 'affiliate',
       },
       affiliateCommission: {
         type: 'number',
-        description: 'Product-specific commission rate (percentage). Overrides program default. Leave empty to use program rate.',
+        description:
+          'Product-specific commission rate (percentage). Overrides program default. Leave empty to use program rate.',
         group: 'affiliate',
       },
       workflow: {
         type: 'object',
-        description: 'Default processing pipeline this product fires into when added to an order (kitchen, bar, lab, prep station, etc.). Operator can override per fire.',
+        description:
+          'Default processing pipeline this product fires into when added to an order (kitchen, bar, lab, prep station, etc.). Operator can override per fire.',
         collapsible: true,
         properties: {
           workflowId: {
@@ -484,7 +498,8 @@ export const SFProductSchema = () => {
           },
           defaultCourse: {
             type: 'string',
-            description: 'Default course/grouping (appetizer, main, dessert, drinks, etc.)',
+            description:
+              'Default course/grouping (appetizer, main, dessert, drinks, etc.)',
             group: 'workflow',
           },
         },
