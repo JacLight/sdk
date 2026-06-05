@@ -45,6 +45,11 @@ export const SFProductSchema = () => {
         type: 'boolean',
         group: 'price',
       },
+      hide: {
+        type: 'boolean',
+        'x-control-variant': 'checkbox',
+        group: 'price',
+      },
       // Tiered pricing - can be for all customers or specific groups
       tiers: {
         type: 'array',
