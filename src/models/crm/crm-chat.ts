@@ -300,6 +300,48 @@ export const ChatConfigSchema = () => {
           },
         },
       },
+      missedChat: {
+        type: 'object',
+        collapsible: true,
+        title: 'Missed Chat Notifications',
+        description:
+          'Email the conversation transcript when a customer message goes unanswered by an agent (like Teams missed-chat alerts).',
+        properties: {
+          enabled: {
+            type: 'boolean',
+            default: false,
+            description: 'Email the transcript when no agent responds in time.',
+            group: 'missed',
+          },
+          notifyEmail: {
+            type: 'string',
+            description: 'Where to send missed-chat transcripts (comma-separate for multiple). Falls back to the org email when empty.',
+            group: 'missed',
+            rules: [
+              {
+                operation: 'isFalsy',
+                valueA: '{{enabled}}',
+                action: 'hide',
+              },
+            ],
+          },
+          timeoutMinutes: {
+            type: 'number',
+            default: 5,
+            minimum: 1,
+            maximum: 1440,
+            description: 'Minutes to wait for an agent reply before emailing the transcript.',
+            group: 'missed',
+            rules: [
+              {
+                operation: 'isFalsy',
+                valueA: '{{enabled}}',
+                action: 'hide',
+              },
+            ],
+          },
+        },
+      },
       broadcast: {
         type: 'object',
         collapsible: true,

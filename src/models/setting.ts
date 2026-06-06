@@ -106,8 +106,14 @@ export const SettingSchema = () => {
         DataType.messagetemplate,
         'security'
       ),
-      posReceiptMerchantTemplate: getSettingItemSchema(DataType.messagetemplate, 'pos'),
-      posReceiptCustomerTemplate: getSettingItemSchema(DataType.messagetemplate, 'pos'),
+      posReceiptMerchantTemplate: getSettingItemSchema(
+        DataType.messagetemplate,
+        'pos'
+      ),
+      posReceiptCustomerTemplate: getSettingItemSchema(
+        DataType.messagetemplate,
+        'pos'
+      ),
       posCheckTemplate: getSettingItemSchema(DataType.messagetemplate, 'pos'),
       inSmsGateway: getSettingItemSchema(DataType.config, 'in-sms'),
       outSmsGateway: getSettingItemSchema(DataType.config, 'in-sms'),
@@ -290,7 +296,8 @@ export const SettingSchema = () => {
           enable: {
             type: 'boolean',
             default: true,
-            description: 'Allow POS passcode login with the BusinessMade employee ID (typed or read from an NFC card)',
+            description:
+              'Allow POS passcode login with the BusinessMade employee ID (typed or read from an NFC card)',
           },
           mode: {
             type: 'string',
@@ -350,9 +357,11 @@ const getNotificationCopySchema = () =>
   ({
     type: 'object',
     properties: {
-      sendCopyTo: {
-        type: ['boolean', 'string'],
-        default: true,
+      enable: {
+        type: 'boolean',
+      },
+      to: {
+        type: 'string',
       },
       deliveryType: {
         type: 'string',
