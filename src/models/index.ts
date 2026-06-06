@@ -47,7 +47,6 @@ export * from './finance';
 export * from './events';
 export * from './community';
 export * from './business-made';
-export * from './client-app';
 export * from './banking';
 export * from './creative-studio';
 export * from './user-device';
