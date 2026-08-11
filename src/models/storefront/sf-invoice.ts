@@ -321,6 +321,13 @@ export const SFInvoiceSchema = () => {
         default: 'new',
         group: 'status',
       },
+      orderNumber: {
+        type: 'string',
+        title: 'Order Number',
+        description: 'Order created from this invoice (cross-ref)',
+        readOnly: true,
+        group: 'status',
+      },
       remarks: {
         type: 'string',
         title: 'Customer-Facing Notes',

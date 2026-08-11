@@ -1,10 +1,10 @@
-import { twMerge } from "tailwind-merge";
+import { twMerge } from 'tailwind-merge';
 
 export const toTitleCase = (str: string) => {
   if (!str) return str;
   if (typeof str !== 'string') return str;
 
-  return str.replace(/\w\S*/g, function (txt) {
+  return str.replace(/\w\S*/g, function(txt) {
     return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
   });
 };
@@ -13,9 +13,12 @@ export const toSentenceCase = (str: string) => {
   if (!str || typeof str !== 'string') return str;
 
   // Match an uppercase letter that is followed by a lowercase letter or preceded by a lowercase letter.
-  const result = str.replace(/([a-z])([A-Z])|([A-Z])([A-Z][a-z])/g, (_, p1, p2, p3, p4) => {
-    return p1 && p2 ? `${p1} ${p2}` : `${p3} ${p4}`;
-  });
+  const result = str.replace(
+    /([a-z])([A-Z])|([A-Z])([A-Z][a-z])/g,
+    (_, p1, p2, p3, p4) => {
+      return p1 && p2 ? `${p1} ${p2}` : `${p3} ${p4}`;
+    }
+  );
 
   // Capitalize the first character and return the result
   return result.charAt(0).toUpperCase() + result.slice(1);
@@ -28,7 +31,6 @@ export const deepCopy = (obj: any) => {
   }
   return JSON.parse(JSON.stringify(obj));
 };
-
 
 export const deepCopySimple = (obj: any) => {
   if (!obj) return obj;
@@ -54,14 +56,14 @@ export const isEmpty = (obj: any) => {
   if (typeof obj === 'boolean' || typeof obj === 'number') return false;
   if (typeof obj === 'string' && obj.length > 0) return false;
   if (Array.isArray(obj) && obj.length > 0) return false;
-  if (obj !== null && typeof obj === 'object' && Object.keys(obj).length > 0)
-    return false;
+  if (typeof obj === 'object' && obj.constructor && obj.constructor.name?.toLowerCase().includes('error')) return false;
+  if (typeof obj === 'object' && Object.keys(obj).length > 0) return false;
   return true;
 };
 
 export const isNotEmpty = (obj: any) => {
   return !isEmpty(obj);
-}
+};
 
 export const validUrl = (url: string) => {
   if (!url) return false;
@@ -80,7 +82,8 @@ export function getRandomString(length = 20) {
 
   let result = chars.charAt(Math.floor(Math.random() * chars.length)); // Start with a character
 
-  for (let i = 1; i < length; i++) { // Start loop from 1 since we already have the first character
+  for (let i = 1; i < length; i++) {
+    // Start loop from 1 since we already have the first character
     result += allChars.charAt(Math.floor(Math.random() * allChars.length));
   }
 
@@ -89,7 +92,7 @@ export function getRandomString(length = 20) {
 
 export const shuffleArray = (array: any[]) => {
   return array.sort(() => Math.random() - 0.5);
-}
+};
 
 export function removeEmpty(obj: any): any {
   if (Array.isArray(obj)) {
@@ -100,7 +103,10 @@ export function removeEmpty(obj: any): any {
     return Object.entries(obj)
       .filter(([_, v]) => v != null)
       .reduce(
-        (acc, [k, v]) => ({ ...acc, [k]: v === Object(v) ? removeEmpty(v) : v }),
+        (acc, [k, v]) => ({
+          ...acc,
+          [k]: v === Object(v) ? removeEmpty(v) : v,
+        }),
         {}
       );
   }
@@ -229,31 +235,40 @@ interface AnyObject {
   [key: string]: any;
 }
 
-export function combineObjectArray(arr1: AnyObject[], arr2: AnyObject[], uniqueKey: string): AnyObject[] {
+export function combineObjectArray(
+  arr1: AnyObject[],
+  arr2: AnyObject[],
+  uniqueKey: string
+): AnyObject[] {
   if (!arr1) return arr2;
   if (!arr2) return arr1;
   return Array.from(
-    [...arr1, ...arr2].reduce((acc, obj) => {
-      return acc.set(obj[uniqueKey], obj);
-    }, new Map<any, any>()).values()
+    [...arr1, ...arr2]
+      .reduce((acc, obj) => {
+        return acc.set(obj[uniqueKey], obj);
+      }, new Map<any, any>())
+      .values()
   );
 }
 
 export function classNames(...classes: any) {
-  return twMerge(classes.filter(Boolean).join(' '))
+  return twMerge(classes.filter(Boolean).join(' '));
 }
 
 export function styleToObject(style: string): { [key: string]: string } {
   if (isEmpty(style)) return null;
 
-  return style.split(';')
+  return style
+    .split(';')
     .map(s => s.trim())
     .filter(s => s.length > 0)
     .reduce<{ [key: string]: string }>((obj, item) => {
       const [property, value] = item.split(':').map(s => s.trim());
       if (property && value) {
         // Convert hyphenated property to camelCase
-        const camelCaseProperty = property.replace(/-([a-z])/g, g => g[1].toUpperCase());
+        const camelCaseProperty = property.replace(/-([a-z])/g, g =>
+          g[1].toUpperCase()
+        );
         obj[camelCaseProperty] = value;
       }
       return obj;
@@ -264,14 +279,16 @@ export function stringifyCSSObject(cssObject: any, indent = '') {
   let result = '';
   for (const [key, value] of Object.entries(cssObject)) {
     if (typeof value === 'object') {
-      result += `${indent}${key}: {\n${stringifyCSSObject(value, indent + '  ')}${indent}}\n`;
+      result += `${indent}${key}: {\n${stringifyCSSObject(
+        value,
+        indent + '  '
+      )}${indent}}\n`;
     } else {
       result += `${indent}${key}: ${value};\n`;
     }
   }
   return result;
 }
-
 
 export function formatBytes(bytes: number, decimals = 2): string {
   if (bytes === 0) return '0 Bytes';
@@ -292,12 +309,15 @@ export function isValidEmail(email: string): boolean {
 
 //camelCase to kebab-case
 export const styleObjectToString = (style: { [key: string]: string }) => {
-  return Object.keys(style).map(key => {
-    const kebabCaseKey = key.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2').toLowerCase();
-    return `${kebabCaseKey}:${style[key]}`;
-  }
-  ).join(';');
-}
+  return Object.keys(style)
+    .map(key => {
+      const kebabCaseKey = key
+        .replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2')
+        .toLowerCase();
+      return `${kebabCaseKey}:${style[key]}`;
+    })
+    .join(';');
+};
 
 export const debounce = (func: any, wait: number) => {
   let timeout: any;
@@ -309,10 +329,10 @@ export const debounce = (func: any, wait: number) => {
     clearTimeout(timeout);
     timeout = setTimeout(later, wait);
   };
-}
+};
 
 export const isValidHtmlId = (id: string) => {
   if (!id || typeof id !== 'string') return false;
   const idPattern = /^[A-Za-z][\w\:\-\.]*$/;
   return idPattern.test(id);
-}
+};

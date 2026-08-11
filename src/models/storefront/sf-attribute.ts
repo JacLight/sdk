@@ -32,7 +32,12 @@ export const SFAttributeSchema = () => {
       },
       type: {
         type: 'string',
-        enum: ['selection', 'number', 'date', 'text'],
+        // 'file' = shopper uploads one or more files at purchase (artwork,
+        // print instructions, spec sheets). 'text' = free-text input. Both are
+        // customer-supplied rather than preset choices, so they carry no
+        // `options[]`; a `file` attribute is configured with the file fields
+        // below and stores FileInfo objects on the line item.
+        enum: ['selection', 'number', 'date', 'text', 'file'],
         group: 'name',
       },
       display: {
@@ -40,9 +45,30 @@ export const SFAttributeSchema = () => {
         enum: ['checkbox', 'select', 'radio', 'range-input', 'range-slider', 'image', 'color'],
         group: 'minmax',
         rules: [
+          // text/file are direct inputs with no widget choice — hide display.
+          { operation: 'in', valueA: ['text', 'file'], valueB: '{{type}}', action: 'hide' },
           { operation: 'notIn', valueA: ['price', 'date'], valueB: '{{type}}', action: 'set-property', property: [{ key: 'enum', value: ['checkbox', 'select', 'radio', 'image', 'color'] }] },
           { operation: 'in', valueA: ['price', 'date'], valueB: '{{type}}', action: 'set-property', property: [{ key: 'enum', value: ['checkbox', 'select', 'radio', 'range-input', 'range-slider'] }] },
         ]
+      },
+      // ---- file attribute config (only shown when type === 'file') ----
+      multiple: {
+        type: 'boolean',
+        group: 'file',
+        hint: 'Allow the shopper to upload more than one file (e.g. artwork + a spec sheet).',
+        rules: [{ operation: 'notEqual', valueA: 'file', valueB: '{{type}}', action: 'hide' }],
+      },
+      accept: {
+        type: 'string',
+        group: 'file',
+        hint: 'Comma-separated accepted file types, e.g. ".png,.jpg,.pdf,.ai,.svg". Blank = any.',
+        rules: [{ operation: 'notEqual', valueA: 'file', valueB: '{{type}}', action: 'hide' }],
+      },
+      maxFiles: {
+        type: 'number',
+        group: 'file',
+        hint: 'Maximum number of files (only applies when multiple is on). Blank = unlimited.',
+        rules: [{ operation: 'notEqual', valueA: 'file', valueB: '{{type}}', action: 'hide' }],
       },
       maxValue: {
         type: 'string',

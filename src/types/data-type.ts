@@ -120,6 +120,7 @@ export enum DataType {
   audience = 'audience',
   audience_criteria = 'audience_criteria',
   social_activity = 'social_activity',
+  social_post = 'social_post',
   workspace = 'workspace',
   workspace_item = 'workspace_item',
   apikey = 'apikey',

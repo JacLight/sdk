@@ -164,6 +164,13 @@ export const MessageSchema = () => {
         'x-control': 'label',
         group: 'status',
       },
+      direction: {
+        type: 'string',
+        enum: ['inbound', 'outbound'],
+        default: 'outbound',
+        'x-control': 'label',
+        group: 'status',
+      },
       type: {
         type: 'string',
         group: 'status',

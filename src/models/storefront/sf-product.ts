@@ -173,6 +173,84 @@ export const SFProductSchema = () => {
         items: FileInfoSchema(),
         hideLabel: true,
       },
+      // Live-preview / mockup definition. Lets a product (e.g. a printable
+      // shirt) declare a base mockup image and placement zones so the UI can
+      // composite the customer's uploaded artwork onto it. The server only
+      // stores this config + the base images; the UI does the compositing.
+      // A zone maps to a `file`-type attribute by name; the UI overlays the
+      // file the shopper uploaded for that attribute at the zone's position.
+      preview: {
+        type: 'object',
+        collapsible: true,
+        properties: {
+          enabled: {
+            type: 'boolean',
+            description: 'Show a live design preview on the product page.',
+          },
+          views: {
+            type: 'array',
+            description: 'One entry per angle/side (Front, Back, …), each with its own mockup image and zones.',
+            items: {
+              type: 'object',
+              properties: {
+                name: { type: 'string', description: 'Label for this view, e.g. "Front".' },
+                baseImage: {
+                  type: 'array',
+                  'x-control': ControlType.file,
+                  description: 'The mockup image for this view (the blank shirt). Single file.',
+                  items: FileInfoSchema(),
+                },
+                zones: {
+                  type: 'array',
+                  description: 'Where uploaded artwork is placed on this view.',
+                  items: {
+                    type: 'object',
+                    layout: 'horizontal',
+                    properties: {
+                      attribute: {
+                        type: 'string',
+                        description: 'Name of the file-type attribute whose upload fills this zone (e.g. "artwork").',
+                        'x-control': ControlType.selectMany,
+                        dataSource: { source: 'collection', collection: DataType.sf_attribute, value: 'name', label: 'name' },
+                      },
+                      label: { type: 'string', description: 'Human label for the zone, e.g. "Chest logo".' },
+                      // Position + size as PERCENT of the base image (0–100) so
+                      // the overlay scales with the mockup at any resolution.
+                      x: { type: 'number', description: 'Left offset, % of image width (0–100).' },
+                      y: { type: 'number', description: 'Top offset, % of image height (0–100).' },
+                      width: { type: 'number', description: 'Zone width, % of image width.' },
+                      height: { type: 'number', description: 'Zone height, % of image height.' },
+                      rotation: { type: 'number', description: 'Rotation in degrees (default 0).' },
+                      fit: {
+                        type: 'string',
+                        enum: ['contain', 'cover', 'fill'],
+                        description: 'How the uploaded art fits the zone box.',
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      // Which sales channels this product should be listed on (Google Merchant,
+      // Facebook/Instagram Shop, TikTok Shop, eBay, …). Multi-select; the option
+      // list is DYNAMIC — pulled from the server's channel registry
+      // (GET sales-channel/channels) via the `getSalesChannels` dataSource
+      // function, so new channels appear automatically. Values are channel ids.
+      //
+      // ENFORCED AT SYNC: null / empty  = list on ALL channels (opt-out model);
+      // a non-empty list = list on ONLY those channels. So leaving it blank keeps
+      // the product everywhere; adding channels restricts it to just those.
+      salesChannels: {
+        type: 'array',
+        'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
+        group: 'channels',
+        dataSource: { source: 'function', value: 'getSalesChannels' },
+        items: { type: 'string' },
+      },
       parcel: {
         type: 'object',
         collapsible: true,

@@ -100,6 +100,12 @@ export const ServicePricingSchema = () => {
         description: 'Unit label (e.g., tokens, messages, emails)',
         group: 'units',
       },
+      unitDatatype: {
+        type: 'string',
+        description:
+          'Period-based billing only: the datatype whose records each count as one billable item held (e.g. "phone" — one charge per phone number the org has). Leave empty for a flat fee charged once per period.',
+        group: 'units',
+      },
       unitPrice: {
         type: 'number',
         description: 'Price per unitSize units',

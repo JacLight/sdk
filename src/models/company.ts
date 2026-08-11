@@ -267,6 +267,18 @@ export const CompanySchema = () => {
           },
         },
       },
+      /**
+       * Open key/value store for the org. Anything a provisioning step produces
+       * and needs to remember later, namespaced by whatever produced it — e.g.
+       * `meta.twilio = { subAccountSid, parentAccountSid, apiKeySid }`.
+       *
+       * Identifiers only. Secrets (auth tokens, API secrets) belong in the
+       * integration config, never here.
+       */
+      meta: {
+        type: 'object',
+        additionalProperties: true,
+      },
       businessProfile: BusinessProfileSchema(),
       setupProgress: SetupProgressSchema(),
     },

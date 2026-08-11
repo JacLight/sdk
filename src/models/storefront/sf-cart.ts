@@ -3,6 +3,7 @@ import { registerCollection } from '../../default-schema';
 
 import { DataType } from '../../types';
 import { AddressSchema } from '../crm/crm-address';
+import { FileInfoSchema } from '../file-info';
 
 // Cart item schema - shared between products and rentals
 const CartItemSchema = {
@@ -28,6 +29,41 @@ const CartItemSchema = {
         properties: {
           name: { type: 'string' },
           value: { type: 'string' },
+          // Attribute type this selection came from (mirrors sf_attribute.type).
+          // Preset selections omit it; `text`/`file` set it so downstream code
+          // knows this is customer-supplied, not a preset choice.
+          type: { type: 'string' },
+          // Files the shopper uploaded for a `file`-type attribute (artwork,
+          // instructions, spec sheets). Standard FileInfo objects. For `text`,
+          // the input is in `value`; for `file`, `value` may hold a short
+          // summary (e.g. filename/count) and the real payload is here.
+          files: { type: 'array', items: FileInfoSchema() },
+        },
+      },
+    },
+    // Captured live-preview design (logo-on-shirt, etc.). UI composites the
+    // shopper's artwork onto the product mockup (sf_product.preview) and stores
+    // the proof + placement snapshot here; copied verbatim onto the order line.
+    design: {
+      type: 'object',
+      properties: {
+        composites: { type: 'array', items: FileInfoSchema() },
+        placements: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              view: { type: 'string' },
+              attribute: { type: 'string' },
+              file: FileInfoSchema(),
+              x: { type: 'number' },
+              y: { type: 'number' },
+              width: { type: 'number' },
+              height: { type: 'number' },
+              rotation: { type: 'number' },
+              fit: { type: 'string' },
+            },
+          },
         },
       },
     },

@@ -101,6 +101,13 @@ export const AIAssistantSchema = () => {
           properties: {
             event: { type: 'string' },
             action: { type: 'string' },
+            context: {
+              type: 'string',
+              title: 'Extra Instructions',
+              description:
+                'Instructions given to the assistant whenever this trigger fires, on top of its personality and behaviour rules. Same field the IVR sets as aiAssistantConfig.context.',
+              'x-control-variant': 'textarea',
+            },
             filters: {
               type: 'object',
               description:

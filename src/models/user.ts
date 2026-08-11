@@ -28,7 +28,6 @@ export const UserSchema = () => {
         type: 'string',
         description:
           'Links this login to a BusinessMade Employee record. Also the identifier typed (or read from an NFC card) together with the passcode for POS quick login.',
-        unique: true,
         'x-control': ControlType.selectSingle,
         dataSource: {
           source: 'collection',

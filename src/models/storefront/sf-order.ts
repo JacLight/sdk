@@ -3,6 +3,7 @@ import { registerCollection } from '../../default-schema';
 import { DataType, ControlType } from '../../types';
 import { AddressSchema } from '../crm/crm-address';
 import { BusinessLocationField } from '../_location-fields';
+import { FileInfoSchema } from '../file-info';
 
 // Order item schema - shared between products and rentals
 const OrderItemSchema = {
@@ -43,6 +44,44 @@ const OrderItemSchema = {
         properties: {
           name: { type: 'string' },
           value: { type: 'string' },
+          // Attribute type (mirrors sf_attribute.type). `text`/`file` mark a
+          // customer-supplied input rather than a preset choice.
+          type: { type: 'string' },
+          // Files uploaded for a `file`-type attribute (artwork, instructions).
+          // Standard FileInfo objects — copied verbatim from the cart line.
+          files: { type: 'array', items: FileInfoSchema() },
+        },
+      },
+    },
+    // Captured live-preview design for a customizable product (logo-on-shirt,
+    // etc.). The UI composites the shopper's artwork onto the product mockup
+    // (see sf_product.preview) and stores the result here so fulfillment has an
+    // exact proof and a reproducible placement snapshot.
+    design: {
+      type: 'object',
+      properties: {
+        composites: {
+          type: 'array',
+          description: 'Rendered proof image(s), one per view — what fulfillment prints against.',
+          items: FileInfoSchema(),
+        },
+        placements: {
+          type: 'array',
+          description: 'Snapshot of which uploaded file went where, independent of the product config at fulfillment time.',
+          items: {
+            type: 'object',
+            properties: {
+              view: { type: 'string' },
+              attribute: { type: 'string' },
+              file: FileInfoSchema(),
+              x: { type: 'number' },
+              y: { type: 'number' },
+              width: { type: 'number' },
+              height: { type: 'number' },
+              rotation: { type: 'number' },
+              fit: { type: 'string' },
+            },
+          },
         },
       },
     },
@@ -486,6 +525,11 @@ export const SFOrderSchema = () => {
       },
       paymentGateway: {
         type: 'string',
+      },
+      invoiceNumber: {
+        type: 'string',
+        description: 'Invoice this order was created from (cross-ref)',
+        readOnly: true,
       },
       amountPaid: {
         type: 'number',
