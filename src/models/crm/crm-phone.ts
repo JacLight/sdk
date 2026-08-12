@@ -153,6 +153,38 @@ export const PhoneSchema = () => {
           voicemailGreeting: { type: 'string' },
           recordCalls: { type: 'boolean', default: false },
           transcribeCalls: { type: 'boolean', default: false },
+          recordingMode: {
+            type: 'string',
+            enum: ['all', 'inbound_only', 'outbound_only', 'menu_triggered'],
+            default: 'all',
+            title: 'Recording Mode',
+          },
+          notifyCallers: {
+            type: 'boolean',
+            default: true,
+            title: 'Announce recording to callers',
+          },
+          recordingNotificationMessage: {
+            type: 'string',
+            default: 'This call may be recorded for quality purposes.',
+            title: 'Recording Notice',
+          },
+          unassignedMessage: {
+            type: 'string',
+            default: "Thanks for calling. This number isn't assigned to anyone yet. Please try again later.",
+            title: 'Unassigned Greeting',
+            description: 'Played when an inbound call has no one to ring. Leave blank to hang up silently.',
+          },
+          greetingVoice: {
+            type: 'string',
+            default: 'Polly.Joanna-Neural',
+            title: 'Voice',
+          },
+          greetingLanguage: {
+            type: 'string',
+            default: 'en-US',
+            title: 'Voice Language',
+          },
         },
       },
       // SMS configuration
