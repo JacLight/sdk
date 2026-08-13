@@ -2,6 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 
 import { DataType, ControlType } from '../../types';
+import { VoiceField, VoiceProviderField } from '../_voice-fields';
 
 export const PhoneSchema = () => {
   return {
@@ -184,6 +185,55 @@ export const PhoneSchema = () => {
             type: 'string',
             default: 'en-US',
             title: 'Voice Language',
+          },
+          // How this number answers inbound calls WITHOUT needing a full IVR:
+          //   ring    → ring the assigned softphone(s), then failover (default)
+          //   ai      → an AI assistant answers directly (like a receptionist)
+          //   forward → forward straight to another number
+          inboundMode: {
+            type: 'string',
+            enum: ['ring', 'ai', 'forward'],
+            default: 'ring',
+            title: 'How this number answers',
+          },
+          // AI assistant answers directly (inboundMode = 'ai'). Same shape as the
+          // IVR aiAssistantConfig so both feed the one voice gateway.
+          ai: {
+            type: 'object',
+            title: 'AI Assistant',
+            properties: {
+              assistantId: { type: 'string', title: 'Assistant' },
+              greeting: { type: 'string', title: 'Greeting' },
+              context: { type: 'string', title: 'Context / instructions' },
+              ...VoiceField(),
+              language: { type: 'string', default: 'en-US', title: 'Language' },
+              // How eagerly the AI takes its turn: low = patient (waits for the
+              // caller to finish, won't jump in), high = snappy.
+              eagerness: {
+                type: 'string',
+                enum: ['low', 'medium', 'high'],
+                default: 'low',
+                title: 'Response eagerness',
+              },
+              ...VoiceProviderField(),
+            },
+          },
+          // Failover when nobody answers (inboundMode = 'ring') OR forward target
+          // (inboundMode = 'forward'). No IVR required.
+          failover: {
+            type: 'object',
+            title: 'Failover',
+            properties: {
+              enabled: { type: 'boolean', default: false },
+              action: {
+                type: 'string',
+                enum: ['forward', 'voicemail', 'ai'],
+                default: 'forward',
+                title: 'When no one answers',
+              },
+              forwardTo: { type: 'string', title: 'Forward to number' },
+              ringTimeoutSeconds: { type: 'number', default: 20, title: 'Ring time before failover (s)' },
+            },
           },
         },
       },

@@ -1,6 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { DataType } from '../../types';
+import { VoiceField, VoiceProviderField } from '../_voice-fields';
 
 /**
  * Phone Routing Schema
@@ -652,27 +653,21 @@ export const IVRRoutingSchema = () => {
               'System prompt / context for the AI (business info, what it can help with, transfer rules)',
             'x-control-variant': 'textarea',
           },
-          voice: {
-            type: 'string',
-            title: 'AI Voice',
-            description: 'Voice for OpenAI Realtime API',
-            enum: [
-              'alloy',
-              'echo',
-              'shimmer',
-              'ash',
-              'ballad',
-              'coral',
-              'sage',
-              'verse',
-            ],
-            default: 'coral',
-          },
+          ...VoiceField(),
           language: {
             type: 'string',
             description: 'Language code (e.g., en-US, es-ES)',
             default: 'en-US',
           },
+          // How eagerly the AI takes its turn: low = patient (waits for the caller
+          // to finish, won't jump in or talk over silence), high = snappy.
+          eagerness: {
+            type: 'string',
+            enum: ['low', 'medium', 'high'],
+            default: 'low',
+            title: 'Response eagerness',
+          },
+          ...VoiceProviderField(),
           canTransfer: {
             type: 'boolean',
             description:

@@ -1,6 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { ControlType, DataType } from '../../types';
+import { VoiceField, VoiceProviderField } from '../_voice-fields';
 
 export const AIAssistantSchema = () => {
   return {
@@ -35,23 +36,15 @@ export const AIAssistantSchema = () => {
         'x-control': ControlType.richtext,
         group: 'behavior_personality',
       },
-      voice: {
-        type: 'string',
-        title: 'AI Voice',
-        description: 'Voice for OpenAI Realtime API',
-        enum: [
-          'alloy',
-          'echo',
-          'shimmer',
-          'ash',
-          'ballad',
-          'coral',
-          'sage',
-          'verse',
-        ],
-        default: 'coral',
-        group: 'behavior_voice',
-      },
+      ...(() => {
+        const f = VoiceField();
+        return { voice: { ...f.voice, group: 'behavior_voice' } };
+      })(),
+      // Fallback engine when the number/IVR doesn't specify one.
+      ...(() => {
+        const f = VoiceProviderField();
+        return { voiceProvider: { ...f.voiceProvider, group: 'behavior_voice' } };
+      })(),
       behaviorRules: {
         type: 'array',
         items: { type: 'string' },
