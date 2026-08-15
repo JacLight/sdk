@@ -2,7 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 
 import { DataType, ControlType } from '../../types';
-import { VoiceField, VoiceProviderField } from '../_voice-fields';
+import { CallTranscriptFields, VoiceField, VoiceProviderField } from '../_voice-fields';
 
 export const PhoneSchema = () => {
   return {
@@ -196,6 +196,8 @@ export const PhoneSchema = () => {
             default: 'ring',
             title: 'How this number answers',
           },
+          ...CallTranscriptFields(),
+
           // AI assistant answers directly (inboundMode = 'ai'). Same shape as the
           // IVR aiAssistantConfig so both feed the one voice gateway.
           ai: {

@@ -36,15 +36,8 @@ export const AIAssistantSchema = () => {
         'x-control': ControlType.richtext,
         group: 'behavior_personality',
       },
-      ...(() => {
-        const f = VoiceField();
-        return { voice: { ...f.voice, group: 'behavior_voice' } };
-      })(),
-      // Fallback engine when the number/IVR doesn't specify one.
-      ...(() => {
-        const f = VoiceProviderField();
-        return { voiceProvider: { ...f.voiceProvider, group: 'behavior_voice' } };
-      })(),
+      voice: { ...VoiceField().voice, group: 'behavior_voice' },
+      voiceProvider: { ...VoiceProviderField().voiceProvider, group: 'behavior_voice' },
       behaviorRules: {
         type: 'array',
         items: { type: 'string' },
@@ -57,18 +50,24 @@ export const AIAssistantSchema = () => {
         items: {
           type: 'object',
           properties: {
+            id: {
+              type: 'string',
+              description:
+                'Id of a built-in playbook, from GET /crm/ai-assistant/capabilities (e.g. qualify_leads). Attaching one injects its full step-by-step instructions into the prompt. Store this rather than relying on `name`: the lookup falls back to normalising the display name, so renaming a capability in the UI would silently detach its playbook.',
+            },
             name: {
               type: 'string',
               description: 'Display name (e.g., Lead Qualification)',
             },
             description: {
               type: 'string',
-              description: 'What this capability does',
+              description:
+                'What this capability does. With no matching built-in id, this text IS the playbook — it goes into the prompt verbatim, so it is how a tenant writes their own procedure.',
             },
           },
         },
         description:
-          'What the assistant can do — references built-in AI instruction playbooks',
+          'What the assistant can do — built-in instruction playbooks by id, or custom ones written as a description',
       },
       tools: {
         type: 'array',
@@ -77,13 +76,15 @@ export const AIAssistantSchema = () => {
           properties: {
             key: {
               type: 'string',
+              description: 'Tool key from GET /crm/ai-assistant/tools. Free text, so only those values do anything.',
             },
             description: { type: 'string' },
             enabled: { type: 'boolean', default: true },
           },
           required: ['key'],
         },
-        description: 'How the assistant accomplishes tasks (technical tools)',
+        description:
+          'The actions this assistant may take. Enforced at execution, not merely in the prompt. NOTE the three-state behaviour: omitted means EVERY tool is allowed, [] means none, and a list means only those — so a form that initialises this to [] ships an assistant that can talk but never act.',
       },
 
       // ===== Interaction =====
@@ -92,8 +93,15 @@ export const AIAssistantSchema = () => {
         items: {
           type: 'object',
           properties: {
-            event: { type: 'string' },
-            action: { type: 'string' },
+            event: {
+              type: 'string',
+              description:
+                'What wakes the assistant, from GET /crm/ai-assistant/triggers. Free text, so only those values actually fire — `message.received` covers email, chat, DMs and comments, while SMS has its own `sms.received`. Removing the trigger is how auto-reply is turned off.',
+            },
+            action: {
+              type: 'string',
+              description: 'The task handed to the assistant when this fires, e.g. "Read the customer\'s message and help them".',
+            },
             context: {
               type: 'string',
               title: 'Extra Instructions',
@@ -104,7 +112,7 @@ export const AIAssistantSchema = () => {
             filters: {
               type: 'object',
               description:
-                'Conditions that must match for this trigger to activate',
+                'Which messages this trigger answers. Every condition must match (AND). Empty means ALL of them. Matched against the inbound event: channel, from, activityType, conversationId, postId. Each value is either a literal or one of {equals}, {contains}, {startsWith}, {in:[…]} — so {"channel":{"in":["facebook","instagram"]}} answers Meta only, and {"activityType":"message"} answers private DMs while leaving public comments alone.',
               additionalProperties: true,
             },
           },
@@ -159,6 +167,8 @@ export const AIAssistantSchema = () => {
       permissions: {
         type: 'array',
         items: { type: 'string' },
+        description:
+          'Stated in the system prompt as guidance. NOT a security boundary — nothing checks it at execution. To actually stop an action, remove the tool from `tools`, which IS enforced. Do not present this to users as a permission gate.',
         group: 'security_permissions',
       },
       safety: {
@@ -172,9 +182,15 @@ export const AIAssistantSchema = () => {
       limits: {
         type: 'object',
         properties: {
-          retryCount: { type: 'number', default: 0 },
-          timeoutSeconds: { type: 'number', default: 30 },
+          retryCount: {
+            type: 'number',
+            default: 0,
+            description: 'Not currently enforced — stored but never read. Do not surface it as a working control.',
+          },
+          timeoutSeconds: { type: 'number', default: 30, description: 'How long a single run may take before it is abandoned.' },
         },
+        description:
+          'Run limits. There is NO cap on how many messages an assistant answers — a thousand inbound comments produce a thousand replies. Rate limiting, if wanted, has to come from trigger filters.',
         group: 'security_limits',
       },
 

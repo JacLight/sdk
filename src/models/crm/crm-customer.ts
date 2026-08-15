@@ -2,7 +2,6 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { DataType, ControlType } from '../../types';
 import { FileInfoSchema } from '../file-info';
-import { PhoneSchema } from './crm-phone';
 import { BusinessLocationField } from '../_location-fields';
 
 export const CustomerSchema = () => {
@@ -265,7 +264,28 @@ export const CustomerSchema = () => {
       },
       phones: {
         type: 'array',
-        items: PhoneSchema(),
+        // Inlined, and deliberately minimal. This is a contact's phone number,
+        // not a number the business owns — no carrier account, webhooks, IVR
+        // routing, voice config or SMS registration.
+        //
+        // It used to be `items: PhoneSchema()`, which inlined several hundred
+        // lines of that schema into this one and pushed FromSchema past
+        // TypeScript's instantiation budget. FromSchema does not error there —
+        // it silently yields `unknown`, so CustomerModel lost every property and
+        // dozens of call sites stopped type-checking with nothing pointing here.
+        items: {
+          type: 'object',
+          properties: {
+            phoneNumber: { type: 'string', description: 'Phone number in E.164 format (e.g., +15551234567)' },
+            friendlyName: { type: 'string', description: 'Display name for this number' },
+            countryCode: { type: 'string', description: 'ISO country code (e.g., US, CA, GB)' },
+            extension: { type: 'string' },
+            phoneNumberType: { type: 'string', description: 'local | mobile | landline | toll_free' },
+            purpose: { type: 'string', description: 'contact | business | marketing | support | sales' },
+            primary: { type: 'boolean', default: false },
+            verified: { type: 'boolean', default: false },
+          },
+        },
       },
       emails: {
         type: 'array',

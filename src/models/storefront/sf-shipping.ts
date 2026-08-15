@@ -210,6 +210,11 @@ export const SFShippingSchema = () => {
         type: 'string',
         description: 'Provider shipment ID for label retrieval',
       },
+      ownerOrgId: {
+        type: 'string',
+        description:
+          'Org this shipment belongs to. Set on the COPY held by the shared org: most tenants ship on the shared carrier account, which has a single webhook with no way to say whose parcel moved. This is what ties a carrier scan back to the right customer — for notifying them and for billing.',
+      },
 
       // Notifications
       notificationSent: {

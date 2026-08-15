@@ -1,6 +1,5 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
-
 import { DataType } from '../../types';
 
 /**
@@ -221,6 +220,11 @@ export const CallLogSchema = () => {
         description: 'AI assistant that handled the call',
         group: 'ai',
       },
+      assistantName: {
+        type: 'string',
+        description: 'Display name of the AI assistant that handled the call, stored alongside assistantId so the call log reads without a second lookup',
+        group: 'ai',
+      },
       aiTranscript: {
         type: 'array',
         description: 'AI conversation transcript',
@@ -301,6 +305,12 @@ export const CallLogSchema = () => {
         description: 'Follow-up action needed',
         group: 'notes',
       },
+      transcriptSentAt: {
+        type: 'string',
+        format: 'date-time',
+        description: 'When the call log was emailed/texted to staff. Set once, and checked to avoid sending the same call twice.',
+        group: 'notes',
+      },
       followUpDate: {
         type: 'string',
         format: 'date-time',
@@ -317,6 +327,18 @@ export const CallLogSchema = () => {
       priceUnit: {
         type: 'string',
         description: 'Currency (e.g., USD)',
+        group: 'billing',
+      },
+      billedAt: {
+        type: 'string',
+        format: 'date-time',
+        description:
+          'When this call was charged to the org. Set once, and checked before charging, so a status callback Twilio re-delivers cannot bill the same call twice.',
+        group: 'billing',
+      },
+      billedAmount: {
+        type: 'number',
+        description: 'What the org was charged for this call (the carrier cost plus markup), as opposed to `price`, which is what the carrier charged us.',
         group: 'billing',
       },
 

@@ -614,6 +614,30 @@ export const SFOrderSchema = () => {
               type: 'string',
               description: 'Estimated delivery date',
             },
+
+            // Live carrier state. Written by the tracking updates — either the
+            // carrier's own webhook or an on-demand status check — and read by
+            // the UI to show where a parcel actually is.
+            trackingStatus: {
+              type: 'string',
+              description:
+                "The carrier's own status verbatim (pre_transit, out_for_delivery, …). Finer-grained than `status` and used to detect a real change, so the same scan is never processed or emailed twice. Prefer `status` for display; read this only to show something `status` deliberately collapses, such as out-for-delivery.",
+            },
+            trackingStatusDetail: {
+              type: 'string',
+              description:
+                'Carrier sentence for the latest scan — "Arrived at facility", "Left at front door". Display text; no fixed vocabulary.',
+            },
+            lastTrackedAt: {
+              type: 'string',
+              format: 'date-time',
+              description: 'When the carrier was last heard from. Drives "Updated 4 minutes ago".',
+            },
+            deliveredAt: {
+              type: 'string',
+              format: 'date-time',
+              description: 'When the parcel was delivered. Set once, on the transition — not re-stamped by later scans.',
+            },
             parcel: {
               type: 'object',
               description: 'Primary parcel dimensions',

@@ -313,6 +313,72 @@ export const SocialActivitySchema = () => {
         group: 'legacy',
         description: 'Legacy source ID field',
       },
+
+      // ===== Conversation =====
+      // This collection holds two very different things: high-volume ad metrics
+      // (everything above) and actual conversations — DMs and comments. The
+      // fields below belong to the conversational rows and were being written
+      // by the connectors without ever being declared here.
+      standardActivityType: {
+        type: 'string',
+        description:
+          "What kind of activity this is. 'message' (a DM) and 'comment' are the conversational ones an assistant answers; the rest are engagement and metric rows that must never wake one.",
+        group: 'conversation',
+      },
+      compositeKey: {
+        type: 'string',
+        description: 'platform + sourceType + sourceId, used to dedup a webhook the platform re-delivers.',
+        group: 'conversation',
+      },
+      authorId: {
+        type: 'string',
+        description:
+          "Who wrote it, as the platform's own id. On an OUTBOUND row this is our own page/account id — which is also what stops our own replies being read back as new customer messages.",
+        group: 'conversation',
+      },
+      authorName: {
+        type: 'string',
+        description: 'Display name of the author, when the platform provides one.',
+        group: 'conversation',
+      },
+      recipientId: {
+        type: 'string',
+        description: 'Who it was addressed to. Inbound: our page. Outbound: the customer.',
+        group: 'conversation',
+      },
+      direction: {
+        type: 'string',
+        enum: ['inbound', 'outbound'],
+        description:
+          "Which way it went. Absent on older rows, which are all inbound — platforms only ever delivered us what the customer sent. Set explicitly on everything written from now on, because it is what lets a thread be reconstructed as a conversation rather than a list of the customer's turns.",
+        group: 'conversation',
+      },
+      isAiGenerated: {
+        type: 'boolean',
+        description: 'The assistant wrote this, not a person. Distinguishes an AI reply from one a human agent sent.',
+        group: 'conversation',
+      },
+      assistantId: {
+        type: 'string',
+        description: 'Which assistant wrote it, when isAiGenerated.',
+        group: 'conversation',
+      },
+      postId: {
+        type: 'string',
+        description: 'For a comment, the post the thread hangs off.',
+        group: 'conversation',
+      },
+      messageType: {
+        type: 'string',
+        description: 'Platform-specific message subtype, when it reports one.',
+        group: 'conversation',
+      },
+      attachments: {
+        type: 'array',
+        items: { type: 'string' },
+        description: 'Attachment URLs carried on the message.',
+        group: 'conversation',
+      },
       metadata: {
         type: 'object',
         group: 'advanced',
