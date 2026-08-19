@@ -2,6 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 
 import { DataType, ControlType } from '../../types';
+import { FileInfoSchema } from '../file-info';
 
 export const SFAttributeSchema = () => {
   return {
@@ -70,6 +71,21 @@ export const SFAttributeSchema = () => {
         hint: 'Maximum number of files (only applies when multiple is on). Blank = unlimited.',
         rules: [{ operation: 'notEqual', valueA: 'file', valueB: '{{type}}', action: 'hide' }],
       },
+      allowComments: {
+        type: 'boolean',
+        group: 'file',
+        hint: 'Let the shopper add a note with the upload — print instructions, placement, Pantone reference, etc. Stored alongside the files on the line item.',
+        rules: [{ operation: 'notEqual', valueA: 'file', valueB: '{{type}}', action: 'hide' }],
+      },
+      commentsLabel: {
+        type: 'string',
+        group: 'file',
+        hint: 'Prompt shown above the note box, e.g. "Any printing instructions?". Blank uses a default.',
+        rules: [
+          { operation: 'notEqual', valueA: 'file', valueB: '{{type}}', action: 'hide' },
+          { operation: 'notEqual', valueA: true, valueB: '{{allowComments}}', action: 'hide' },
+        ],
+      },
       maxValue: {
         type: 'string',
         group: 'minmax',
@@ -102,11 +118,20 @@ export const SFAttributeSchema = () => {
             value: { type: 'string' },
             // Free-form metadata: prep-station override, SKU mapping, etc.
             param: { type: 'string' },
-            // Price adjustment when this option is picked, added to the line
-            // base price (positive = upcharge, negative = discount). Empty/0 =
-            // no adjustment. Used by the order config drawer to compute line
-            // totals.
-            priceDelta: { type: 'number' },
+            // How this option LOOKS when `display` is 'color' or 'image'.
+            // Without these, picking "Color swatches" or "Image swatches" gave the
+            // storefront nothing to render — `value` is the stored answer (e.g.
+            // "navy"), not a presentation detail, and overloading it breaks both.
+            color: {
+              type: 'string',
+              hint: 'Swatch colour as hex, e.g. #1e3a8a. Used when the attribute displays as colour swatches.',
+            },
+            image: {
+              type: 'array',
+              'x-control': ControlType.file,
+              items: FileInfoSchema(),
+              hint: 'Swatch image. Used when the attribute displays as image swatches.',
+            },
           },
         },
         rules: [

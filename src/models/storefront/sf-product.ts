@@ -394,6 +394,21 @@ export const SFProductSchema = () => {
               },
               group: 'attribute',
             },
+            // PER-PRODUCT overrides. The referenced sf_attribute is the reusable
+            // definition (e.g. a "color" attribute listing every color, or an
+            // "artwork" file attribute); each product picks its own subset via
+            // `options[]` below and sets whether the attribute is mandatory FOR
+            // THIS PRODUCT here — the same attribute can be required on one
+            // product and optional on another. A required `file` attribute
+            // forces at least one upload before checkout; a required
+            // `text`/`selection` forces a value. Enforced in the storefront
+            // renderer's submit guard.
+            required: {
+              type: 'boolean',
+              group: 'attribute',
+              default: true,
+              hint: 'Shopper must provide this attribute on THIS product before checkout. Off = optional.',
+            },
             options: {
               type: 'array',
               items: {

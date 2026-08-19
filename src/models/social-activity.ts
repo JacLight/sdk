@@ -343,7 +343,20 @@ export const SocialActivitySchema = () => {
       },
       recipientId: {
         type: 'string',
-        description: 'Who it was addressed to. Inbound: our page. Outbound: the customer.',
+        description:
+          'The OTHER PARTY being addressed — the person a reply is going to. Only meaningful on an outbound message; on an inbound one the other party is the author, and this is empty. Never our own account: which of our accounts is involved is `accountId`, always, in both directions.',
+        group: 'conversation',
+      },
+      accountId: {
+        type: 'string',
+        description:
+          "WHICH OF OUR ACCOUNTS this belongs to — the Facebook page id, Instagram account id, WhatsApp business number id, or channel id that received it or sent it. An org can have several pages linked, often one per brand, and without this a message cannot be attributed to the right one: the inbox cannot be filtered by brand, an assistant scoped to one page cannot tell whether a message is its own, and a reply can go out from the wrong account entirely.\n\nAlways OUR side, whichever way the message went — the recipient on an inbound message, the sender on an outbound one. That is what makes it usable as a filter on its own, without having to read `direction` first.",
+        group: 'conversation',
+      },
+      accountName: {
+        type: 'string',
+        description:
+          'Display name of that account — "Acme Support", "Acme Nigeria". What a person actually recognises: an id is unreadable in an inbox, and an org running several brands cannot tell its threads apart by number. Resolved from the connected integration when the activity is stored, because the platform webhooks carry ids only. Filter on `accountId`; show this.',
         group: 'conversation',
       },
       direction: {
@@ -351,6 +364,23 @@ export const SocialActivitySchema = () => {
         enum: ['inbound', 'outbound'],
         description:
           "Which way it went. Absent on older rows, which are all inbound — platforms only ever delivered us what the customer sent. Set explicitly on everything written from now on, because it is what lets a thread be reconstructed as a conversation rather than a list of the customer's turns.",
+        group: 'conversation',
+      },
+      note: {
+        type: 'string',
+        description:
+          "INTERNAL handover note left by whoever sent this — an assistant or a person. Never shown to the customer.\n\nThe message text says what was SAID; this says what was DONE or DECIDED. \"Let me check that\" reads identically whether the order was looked up and found delayed or the lookup failed and nobody followed up. Any assistant can pick up any message regardless of who answered last, so the next responder — AI or human — reads these to avoid repeating work or contradicting a promise already made. Same idea as an agent adding a note to a ticket before passing it on.",
+        group: 'conversation',
+      },
+      aiHold: {
+        type: 'boolean',
+        description:
+          'Set on a HOLD row to stop assistants replying on this conversation. A person turns it on when they are handling something themselves; it stays on until a person turns it off — it never expires, because an "AI stop until I say so" that silently lapses overnight is worse than not having one.\n\nHolds REPLIES ONLY. The assistant still runs and may still raise a ticket, notify a team or update a record — it simply does not speak to the customer.',
+        group: 'conversation',
+      },
+      aiHoldReason: {
+        type: 'string',
+        description: 'Why the hold was put on, so the next person knows whether it is still needed.',
         group: 'conversation',
       },
       isAiGenerated: {

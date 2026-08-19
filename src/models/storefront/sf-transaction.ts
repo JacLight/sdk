@@ -85,6 +85,22 @@ export const SFTransactionSchema = () => {
         type: 'string',
         hidden: true,
       },
+      /**
+       * The org this payment was FOR.
+       *
+       * Credit purchases are owned by the root org — the biller — so the record
+       * itself says nothing about which customer paid. Without this, a
+       * customer's billing history cannot be scoped to them, which is why a
+       * one-off backfill exists to recover it from Stripe metadata on older
+       * rows. It was already being written; declaring it here makes it typed,
+       * queryable and visible rather than an undeclared field riding along.
+       *
+       * Equals the owning org for subscriptions, where the two are the same.
+       */
+      customerOrgId: {
+        type: 'string',
+        readOnly: true,
+      },
     },
   } as const;
 };
