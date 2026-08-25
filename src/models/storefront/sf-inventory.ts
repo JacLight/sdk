@@ -26,6 +26,54 @@ export const SFInventorySchema = () => {
       quantity: {
         type: 'number',
       },
+      // Everything below describes what InventoryService ACTUALLY persists
+      // (`InventoryModel`, src/storefront/services/inventory.service.ts:5). The
+      // schema previously declared only product/location/supplier/quantity, so
+      // most of a stored inventory record had no schema at all — it rendered as
+      // unknown fields in Data Explorer and couldn't be form-edited. The service
+      // is the source of truth; this brings the declaration in line with it.
+      //
+      // `product`/`location` above are the pickers; `sku`/`locationId` are what
+      // the service writes and joins on.
+      sku: {
+        type: 'string',
+      },
+      productName: {
+        type: 'string',
+      },
+      locationId: {
+        type: 'string',
+      },
+      locationName: {
+        type: 'string',
+      },
+      reservedQuantity: {
+        type: 'number',
+      },
+      availableQuantity: {
+        type: 'number',
+      },
+      reorderPoint: {
+        type: 'number',
+      },
+      reorderQuantity: {
+        type: 'number',
+      },
+      lastCountDate: {
+        type: 'string',
+        format: 'date-time',
+      },
+      lastRestockDate: {
+        type: 'string',
+        format: 'date-time',
+      },
+      unitCost: {
+        type: 'number',
+      },
+      currency: {
+        type: 'string',
+      },
+
     },
   } as const;
 };

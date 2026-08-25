@@ -262,4 +262,9 @@ export enum DataType {
   // back over WebSocket.
   device_config = 'device_config',
   device_hub = 'device_hub',
+  // Stowbo
+  stowbo_addon = 'stowbo_addon',
+  stowbo_listing = 'stowbo_listing',
+  stowbo_unit = 'stowbo_unit',
+  stowbo_booking = 'stowbo_booking',
 }

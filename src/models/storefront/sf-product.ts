@@ -40,6 +40,29 @@ export const SFProductSchema = () => {
       cost: {
         type: 'number',
         group: 'price',
+        description: 'Total unit cost — the sum of costComponents when those are used. Margin is price less this.',
+      },
+
+      // Margin is sale price less ALL associated cost, so the components have to be
+      // capturable individually — a single "cost" number hides whether freight and
+      // packaging were counted, and a margin that quietly omits them is wrong in the
+      // direction that flatters the business.
+      costComponents: {
+        type: 'array',
+        title: 'Cost breakdown',
+        collapsible: true,
+        items: {
+          type: 'object',
+          properties: {
+            name: {
+              type: 'string',
+              description: 'e.g. purchase, freight in, packaging, handling, prep labour',
+            },
+            amount: { type: 'number' },
+            note: { type: 'string' },
+          },
+        },
+        group: 'price',
       },
       tax: {
         type: 'boolean',
