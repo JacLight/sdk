@@ -1,6 +1,8 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { DataType, ControlType } from '../../types';
+import { RateScheduleSchema } from './stowbo-rate';
+import { AvailabilitySchema } from './stowbo-availability';
 import { AddressSchema } from '../crm/crm-address';
 import { FileInfoSchema } from '../file-info';
 
@@ -95,12 +97,25 @@ export const StowboListingSchema = () => {
       },
       description: { type: 'string', 'x-control-variant': 'textarea' },
 
-      price: { type: 'number', group: 'price' },
+      /**
+       * What a stay costs. One structure covering free, fixed, hourly, daily,
+       * free periods and graduated bands — see RateScheduleSchema.
+       */
+      rates: { ...RateScheduleSchema(), group: 'price' },
+
+      /**
+       * Superseded by `rates`. Kept so existing listings keep working: when
+       * `rates` has no bands these are read as a single open-ended per_period
+       * band, which is exactly what they always meant. Authoring should use
+       * `rates`; there is one calculation and this is adapted into it.
+       */
+      price: { type: 'number', group: 'price', hidden: true },
       priceUnit: {
         type: 'string',
         'x-control': ControlType.selectSingle,
         dataSource: { source: 'json', json: ['hour', 'day', 'month'] },
         group: 'price',
+        hidden: true,
       },
 
       // Whoever configures the listing sets its terms — these are not platform
@@ -170,6 +185,12 @@ export const StowboListingSchema = () => {
        * the reason travels with it — "why was this shut" is asked far more often than
        * anyone expects.
        */
+      /**
+       * When the host is offering this. Blackouts below are dated exceptions
+       * carved out of it.
+       */
+      availability: { ...AvailabilitySchema(), group: 'space' },
+
       blackouts: {
         type: 'array',
         'x-control': ControlType.table,
