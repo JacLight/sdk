@@ -53,7 +53,6 @@ export const SiteNoticeSchema = () =>
         group: 'meta',
         readOnly: true,
       },
-
       displayType: {
         type: 'string',
         enum: ['popup', 'banner', 'toast', 'modal', 'inline'],
@@ -61,7 +60,6 @@ export const SiteNoticeSchema = () =>
         title: 'Display Type',
         description: 'How the message should appear to the user',
       },
-
       trigger: {
         type: 'string',
         enum: ['onPageLoad', 'onAction', 'onDelay', 'manual'],
@@ -69,7 +67,6 @@ export const SiteNoticeSchema = () =>
         title: 'Trigger',
         description: 'When to display this information',
       },
-
       triggerSelector: {
         type: 'string',
         title: 'Trigger Selector',
@@ -103,7 +100,6 @@ export const SiteNoticeSchema = () =>
         'x-control': ControlType.file,
         items: FileInfoSchema(),
       },
-
       startTime: {
         type: 'string',
         format: 'date-time',
@@ -186,18 +182,37 @@ export const SiteNoticeSchema = () =>
           views: { type: 'number', default: 0 },
           clicks: { type: 'number', default: 0 },
           dismissals: { type: 'number', default: 0 },
+          // Consent/verification notices need the outcome, not just engagement.
+          accepts: { type: 'number', default: 0 },
+          rejects: { type: 'number', default: 0 },
         },
         readOnly: true,
       },
-
-      // Redirect URL (for verification category - where to send users who reject)
       rejectRedirectUrl: {
         type: 'string',
         title: 'Reject Redirect URL',
-        description: 'URL to redirect users who reject/fail verification (e.g., google.com)',
+        description:
+          'URL to redirect users who reject/fail verification (e.g., google.com)',
         rules: [
-          { operation: 'notEqual', valueA: '{{category}}', valueB: 'verification', action: 'hide' },
+          {
+            operation: 'notEqual',
+            valueA: '{{category}}',
+            valueB: 'verification',
+            action: 'hide',
+          },
         ],
+      },
+      targetOrgId: {
+        type: 'string',
+        hidden: true,
+      },
+      // Stable identity for a platform-raised notice, e.g.
+      // `billing:insufficient-credits:Google`. Lets the sender update or expire
+      // the notice it already raised instead of stacking a new row every time
+      // the same condition re-fires. Unset for notices authored in the UI.
+      key: {
+        type: 'string',
+        hidden: true,
       },
     },
   } as const);

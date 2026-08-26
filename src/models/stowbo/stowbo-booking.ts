@@ -128,7 +128,62 @@ export const StowboBookingSchema = () => {
       addOnTotal: { type: 'number', group: 'money' },
       deposit: { type: 'number', group: 'money' },
       overstayCharge: { type: 'number', group: 'money' },
+      // Ledger components are kept apart on purpose: tax is remitted, the
+      // protection fee funds the protection policy, and the service fee is the
+      // platform's. Only `subtotal` + booking adjustments are host-earnable, so
+      // rolling them together would silently pay the host a cut of tax.
+      /** Applied by DiscountService — the platform's one promotion engine. */
+      discountCode: { type: 'string', group: 'money' },
+      discount: { type: 'number', default: 0, group: 'money' },
+      discounts: {
+        type: 'array',
+        group: 'money',
+        readOnly: true,
+        items: {
+          type: 'object',
+          properties: {
+            code: { type: 'string' },
+            name: { type: 'string' },
+            identifier: { type: 'string' },
+            type: { type: 'string' },
+            amount: { type: 'number' },
+            message: { type: 'string' },
+          },
+        },
+      },
+      serviceFee: { type: 'number', group: 'money' },
+      protectionFee: { type: 'number', group: 'money' },
+      tax: { type: 'number', group: 'money' },
+      taxLines: {
+        type: 'array',
+        group: 'money',
+        readOnly: true,
+        items: {
+          type: 'object',
+          properties: {
+            listing: { type: 'string' },
+            jurisdiction: { type: 'string' },
+            rate: { type: 'number' },
+            taxable: { type: 'number' },
+            amount: { type: 'number' },
+          },
+        },
+      },
       total: { type: 'number', group: 'money' },
+
+      /** The cancellation terms in force when this booking was confirmed. */
+      cancellationPolicy: {
+        type: 'object',
+        group: 'money',
+        readOnly: true,
+        properties: {
+          policy: { type: 'string' },
+          freeUntil: { type: 'string', format: 'date-time' },
+          refundablePortion: { type: 'number' },
+        },
+      },
+      /** The pending purchase this came from, for the trail back. */
+      checkout: { type: 'string', readOnly: true, group: 'booking' },
 
       /**
        * Money that happened AFTER the quote — every charge, discount, refund and waiver,

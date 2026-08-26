@@ -103,6 +103,40 @@ export const StowboListingSchema = () => {
         group: 'price',
       },
 
+      // Whoever configures the listing sets its terms — these are not platform
+      // constants. Parking tax in particular varies wildly by city, so a single
+      // national rate would be wrong everywhere; the rate belongs to the
+      // location. Swap this for a tax engine before multi-city launch.
+      taxRate: {
+        type: 'number',
+        default: 0,
+        title: 'Tax rate (%)',
+        description: 'Applied to this listing`s share of the booking. Set per the location`s jurisdiction.',
+        group: 'price',
+      },
+      taxJurisdiction: {
+        type: 'string',
+        title: 'Tax jurisdiction',
+        description: 'Recorded on every booking for the tax ledger.',
+        group: 'price',
+      },
+      protectionFee: {
+        type: 'number',
+        default: 0,
+        title: 'Protection fee',
+        description: 'Per booked unit, per booking. Funds the protection policy for this listing.',
+        group: 'price',
+      },
+      cancellationPolicy: {
+        type: 'string',
+        'x-control': ControlType.selectSingle,
+        // flexible = free until start; moderate = free until 24h before;
+        // strict   = free until 48h before, then half back.
+        dataSource: { source: 'json', json: ['flexible', 'moderate', 'strict'] },
+        default: 'moderate',
+        group: 'booking',
+      },
+
       bookingStyle: {
         type: 'string',
         'x-control': ControlType.selectSingle,

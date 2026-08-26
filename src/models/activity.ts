@@ -39,6 +39,11 @@ export const ActivityTypes: { [key: string]: string } = {
   ai_trigger: 'ai_trigger',
   ai_response: 'ai_response',
   ai_error: 'ai_error',
+  notice_display: 'notice_display',
+  notice_click: 'notice_click',
+  notice_accept: 'notice_accept',
+  notice_reject: 'notice_reject',
+  notice_dismiss: 'notice_dismiss',
 }
 
 export const ActivitySchema = () => {
