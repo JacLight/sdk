@@ -4,18 +4,27 @@ import { DataType, ControlType } from '../../types';
 import { FileInfoSchema } from '../file-info';
 
 /**
- * A booking is an order. The header is the customer and the money; every
- * thing actually booked is a line on `items` — 2 small lockers, 1 large
- * locker and a parking bay go on one booking.
+ * A booking is an ORDER. It centralises what the customer pays.
  *
- * Each line carries its own window, its own assigned unit and its own custody
- * evidence, because lines are dropped off and retrieved independently.
+ * What actually happens at each thing booked lives on `stowbo_booking_item` —
+ * one record per unit, with its own window, its own check-in and check-out, its
+ * own movements and its own status. Book twelve units and you have one booking
+ * and twelve items: two end on Tuesday, three on Friday, one is disputed
+ * because the door would not open, and the rest run on.
  *
- * Lifecycle is not tracked here — set `collection.data.workflow =
- * 'stowbo-custody-pipeline'` and every booking materializes a workflow Task
- * that walks Requested -> Confirmed -> In custody -> Retrieved -> Settled.
- * The stage's SLA tiers drive overstay. `status` is mirrored back by the
- * stage's modelStatus.
+ * Money here, operations there. Nothing about a session belongs on this record.
+ *
+ * Two things are deliberately NOT stored:
+ *
+ *   payments   `PaymentService` writes an `sf_transaction` for every charge,
+ *              authorization, capture and refund, carrying `metadata.booking`.
+ *              There are many per booking — part paid at check-in, a deposit
+ *              held, the balance at check-out, a refund the week after — and a
+ *              copy here would hide them from every cross-booking question.
+ *                find(sf_transaction, { 'data.metadata.booking': <sk> })
+ *
+ *   balance    `total` minus what those transactions come to. Any stored copy
+ *              is wrong the moment money moves from anywhere else.
  */
 export const StowboBookingSchema = () => {
   return {
@@ -42,10 +51,7 @@ export const StowboBookingSchema = () => {
         group: 'name',
       },
 
-      image: {
-        type: 'string',
-        hidden: true,
-      },
+      image: { type: 'string', hidden: true },
       images: {
         type: 'array',
         'x-control': ControlType.file,
@@ -53,9 +59,22 @@ export const StowboBookingSchema = () => {
         hideLabel: true,
       },
 
-      // the order lines
+      /**
+       * The bill. Every charge is a line — the space itself, an add-on, a fee,
+       * tax, a discount, damage added later.
+       *
+       * A fee is a line item, not a column beside them. `serviceFee` and
+       * `protectionFee` as their own fields meant a host wanting a cleaning
+       * fee, a key fee or an oversize fee had nowhere to put it, and every
+       * charge anyone thought of was a schema change.
+       *
+       * Nothing here is ever edited. A mistake is reversed by another line, so
+       * "why is this $40 more than I was quoted" — the question every dispute
+       * opens with — stays answerable.
+       */
       items: {
         type: 'array',
+        title: 'Bill',
         'x-control': ControlType.table,
         operations: ['pick', 'add', 'remove'],
         dataSource: {
@@ -67,19 +86,56 @@ export const StowboBookingSchema = () => {
         items: {
           type: 'object',
           properties: {
+            kind: {
+              type: 'string',
+              enum: ['space', 'addon', 'fee', 'tax', 'discount', 'adjustment', 'overstay'],
+              default: 'space',
+            },
+            /** What the customer reads on the bill. */
+            label: { type: 'string' },
+            /**
+             * Stable key for reporting — 'protection', 'cleaning', 'damage',
+             * 'parking_tax', anything. Free text: a fixed list is a host with a
+             * charge nobody anticipated and nowhere to put it.
+             */
+            code: { type: 'string' },
+            /** SIGNED — a discount is negative, so summing needs no rules. */
+            amount: { type: 'number' },
+            /** Whose charge it is. The platform adds its own the same way. */
+            by: { type: 'string', enum: ['host', 'platform'], default: 'host' },
+            /**
+             * Who absorbs it — not the same as who charged it. Comping a guest
+             * costs the platform; charging for damage pays the host.
+             */
+            bearer: { type: 'string', enum: ['guest', 'host', 'platform'], default: 'guest' },
+            /** How much of this line the host keeps. */
+            hostPortion: { type: 'number', default: 0 },
+            /** Rate, jurisdiction, band breakdown — whatever the kind needs. */
+            meta: { type: 'object', properties: {} },
+            /** Evidence. A damage charge without a photo does not survive a chargeback. */
+            files: { type: 'array', 'x-control': ControlType.file, items: FileInfoSchema() },
+            /** When it was added. Damage lands long after the quote. */
+            at: { type: 'string', format: 'date-time' },
+            addedBy: { type: 'string' },
+            /**
+             * Reversals do not delete. The original stays and these point at
+             * the line that undid it.
+             */
+            reversedBy: { type: 'string', readOnly: true },
+            reversalOf: { type: 'string', readOnly: true },
+            settled: { type: 'boolean', default: false },
+
+            // --- `space` lines only ------------------------------------------
             listing: { type: 'string' },
-            // denormalized from the listing at booking time so the apps can
-            // label the line and reach the host without a second lookup
+            // denormalized at booking time so apps can label the line and reach
+            // the host without a second lookup
             listingTitle: { type: 'string' },
             hostId: { type: 'string' },
             hostEmail: { type: 'string' },
-            // assigned at drop-off, when the listing has numbered units
-            unit: { type: 'string' },
             quantity: { type: 'number', default: 1 },
             startDate: { type: 'string', 'x-control': ControlType.date },
             endDate: { type: 'string', 'x-control': ControlType.date },
-
-            // picked from the catalog, priced at time of booking
+            /** Picked from the catalog, priced at time of booking. */
             addOns: {
               type: 'array',
               'x-control': ControlType.table,
@@ -100,78 +156,64 @@ export const StowboBookingSchema = () => {
                 },
               },
             },
-
-            // custody evidence for this line — code + photo + count, both directions
-            tags: { type: 'array', items: { type: 'string' } },
-            declaredValue: { type: 'number' },
-            condition: { type: 'string' },
-            dropoffPhotos: { type: 'array', items: FileInfoSchema() },
-            pickupPhotos: { type: 'array', items: FileInfoSchema() },
-            state: {
-              type: 'string',
-              enum: ['booked', 'stored', 'retrieved', 'damaged', 'lost', 'abandoned'],
-              default: 'booked',
-            },
-
-            price: { type: 'number' },
-            subtotal: { type: 'number' },
           },
         },
       },
-
-      // no matching code, no hand-back
-      dropoffCode: { type: 'string', group: 'codes' },
-      pickupCode: { type: 'string', group: 'codes' },
 
       currency: { type: 'string', group: 'money' },
-      subtotal: { type: 'number', group: 'money' },
-      addOnTotal: { type: 'number', group: 'money' },
-      deposit: { type: 'number', group: 'money' },
-      overstayCharge: { type: 'number', group: 'money' },
-      // Ledger components are kept apart on purpose: tax is remitted, the
-      // protection fee funds the protection policy, and the service fee is the
-      // platform's. Only `subtotal` + booking adjustments are host-earnable, so
-      // rolling them together would silently pay the host a cut of tax.
-      /** Applied by DiscountService — the platform's one promotion engine. */
-      discountCode: { type: 'string', group: 'money' },
-      discount: { type: 'number', default: 0, group: 'money' },
-      discounts: {
-        type: 'array',
-        group: 'money',
-        readOnly: true,
-        items: {
-          type: 'object',
-          properties: {
-            code: { type: 'string' },
-            name: { type: 'string' },
-            identifier: { type: 'string' },
-            type: { type: 'string' },
-            amount: { type: 'number' },
-            message: { type: 'string' },
-          },
-        },
-      },
-      serviceFee: { type: 'number', group: 'money' },
-      protectionFee: { type: 'number', group: 'money' },
-      tax: { type: 'number', group: 'money' },
-      taxLines: {
-        type: 'array',
-        group: 'money',
-        readOnly: true,
-        items: {
-          type: 'object',
-          properties: {
-            listing: { type: 'string' },
-            jurisdiction: { type: 'string' },
-            rate: { type: 'number' },
-            taxable: { type: 'number' },
-            amount: { type: 'number' },
-          },
-        },
-      },
-      total: { type: 'number', group: 'money' },
 
-      /** The cancellation terms in force when this booking was confirmed. */
+      /**
+       * The sum of `items[].amount`. Stored only because list screens sort and
+       * filter on it, and Mongo cannot sort on something computed at read time.
+       * A pure function of fields on this same record.
+       */
+      total: { type: 'number', group: 'money', readOnly: true },
+
+      /**
+       * Not revenue. Held against something going wrong and returned when it
+       * does not, so it is tracked apart from what was earned — booking a
+       * returned deposit as a refund makes every revenue figure wrong.
+       *
+       * The gateway holds the money and records its own transactions; this is
+       * the outcome, so a list screen need not re-derive it.
+       */
+      deposit: {
+        type: 'object',
+        group: 'money',
+        properties: {
+          amount: { type: 'number', default: 0 },
+          refundable: { type: 'boolean', default: true },
+          status: {
+            type: 'string',
+            enum: ['none', 'held', 'applied', 'returned'],
+            default: 'none',
+            readOnly: true,
+          },
+          method: { type: 'string', enum: ['authorized', 'charged'], readOnly: true },
+          applied: { type: 'number', default: 0, readOnly: true },
+          returned: { type: 'number', default: 0, readOnly: true },
+          heldAt: { type: 'string', format: 'date-time', readOnly: true },
+          returnedAt: { type: 'string', format: 'date-time', readOnly: true },
+        },
+      },
+
+      /**
+       * Payout withheld while something is unresolved. Settlement still runs;
+       * the host is simply not paid yet.
+       */
+      paymentHold: {
+        type: 'object',
+        group: 'money',
+        readOnly: true,
+        properties: {
+          reason: { type: 'string' },
+          note: { type: 'string' },
+          heldAt: { type: 'string', format: 'date-time' },
+          heldBy: { type: 'string' },
+        },
+      },
+
+      /** The terms in force when this booking was confirmed. */
       cancellationPolicy: {
         type: 'object',
         group: 'money',
@@ -182,71 +224,31 @@ export const StowboBookingSchema = () => {
           refundablePortion: { type: 'number' },
         },
       },
-      /** The pending purchase this came from, for the trail back. */
-      checkout: { type: 'string', readOnly: true, group: 'booking' },
 
       /**
-       * Money that happened AFTER the quote — every charge, discount, refund and waiver,
-       * as its own immutable line.
-       *
-       * A booking is not a price, it is a running account: a bag stays three days longer,
-       * a lock gets cut, a host is comped for a bad handover. Storing only a `total`
-       * means the operator can change the number but nobody can ever answer "why is this
-       * $40 more than they were quoted" — which is the question every dispute starts with.
-       * So nothing here is ever edited; a mistake is reversed by another line.
-       *
-       * `bearer` is who the money moves against, because these are not the same event:
-       * comping a guest costs the platform, while charging for damage pays the host.
+       * Which door this was opened through — the app, a host taking someone on
+       * the spot, a scanned code. Free text; the engine never branches on it.
        */
-      adjustments: {
-        type: 'array',
-        'x-control': ControlType.table,
-        operations: ['add', 'remove'],
-        items: {
-          type: 'object',
-          properties: {
-            id: { type: 'string', readOnly: true },
-            kind: {
-              type: 'string',
-              enum: ['charge', 'discount', 'refund', 'waiver'],
-              description: 'charge adds, discount/refund/waiver take away',
-            },
-            category: {
-              type: 'string',
-              enum: [
-                'overstay', 'damage', 'cleaning', 'lost_key', 'lock_cut', 'oversize',
-                'late_cancellation', 'no_show', 'goodwill', 'price_match', 'promo',
-                'service_failure', 'insurance_excess', 'disposal', 'other',
-              ],
-            },
-            amount: { type: 'number' },
-            /** guest pays it, host absorbs it, or the platform eats it. */
-            bearer: { type: 'string', enum: ['guest', 'host', 'platform'], default: 'guest' },
-            /** How much of this line the host keeps. Damage recovery goes to the host;
-             *  a goodwill credit does not come out of their pocket. */
-            hostPortion: { type: 'number', default: 0 },
-            description: { type: 'string' },
-            /** Evidence. A damage charge without a photo does not survive a chargeback. */
-            files: { type: 'array', 'x-control': ControlType.file, items: FileInfoSchema() },
-            /** Which line of the booking it belongs to, when it is item-specific. */
-            line: { type: 'number' },
-            addedAt: { type: 'string', readOnly: true },
-            addedBy: { type: 'string', readOnly: true },
-            /** Reversal marker — the original line stays, this points at the one that undid it. */
-            reversedBy: { type: 'string', readOnly: true },
-            reversalOf: { type: 'string', readOnly: true },
-            settled: { type: 'boolean', default: false },
-          },
-        },
-      },
+      intakeDoor: { type: 'string', readOnly: true, group: 'meta' },
 
       /**
-       * What actually happened, in order.
+       * The pending purchase this came from — a `stowbo_cart` record.
        *
-       * Status is a single word and it forgets. The timeline is the record an operator
-       * reads when a guest says "I dropped it off on Tuesday" — booked, authorised,
-       * dropped off, accessed, window expired, extended, retrieved, settled, paid out,
-       * each with who did it. Derived views can be rebuilt; this cannot.
+       * "Check-out" means ending a session here, and nothing else. What a
+       * customer fills before they buy is a cart.
+       */
+      cart: { type: 'string', readOnly: true, group: 'meta' },
+
+      cancelledAt: { type: 'string', format: 'date-time', readOnly: true, group: 'meta' },
+      cancelReason: { type: 'string', readOnly: true, group: 'meta' },
+
+      /**
+       * What happened to the ORDER, in order — booked, authorised, adjusted,
+       * settled, paid out, cancelled. Per-unit events belong on the booking
+       * item's own record.
+       *
+       * Status is a single word and it forgets. This is what an operator reads
+       * when a customer says "I paid that on Tuesday".
        */
       timeline: {
         type: 'array',
@@ -258,8 +260,7 @@ export const StowboBookingSchema = () => {
             type: {
               type: 'string',
               enum: [
-                'booked', 'authorized', 'dropoff', 'access', 'extended', 'unit_changed',
-                'window_expired', 'retrieve', 'adjustment', 'claim_opened', 'claim_resolved',
+                'booked', 'authorized', 'adjustment', 'extended',
                 'settled', 'paid_out', 'cancelled', 'note',
               ],
             },
@@ -274,52 +275,14 @@ export const StowboBookingSchema = () => {
       },
 
       /**
-       * Damage, loss and disputes — the resolution trail.
-       *
-       * Kept apart from adjustments on purpose: a claim is an ARGUMENT, an adjustment is
-       * MONEY. Most claims resolve to an adjustment, some are withdrawn, and a few are
-       * refused; collapsing them would lose every case that never moved money, which is
-       * exactly the history you need when the same guest claims again.
+       * The ORDER's state. What is happening at each unit is on the booking
+       * item — twelve units can be in twelve different places at once.
        */
-      claims: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            id: { type: 'string', readOnly: true },
-            type: { type: 'string', enum: ['damage', 'loss', 'dispute', 'complaint', 'overcharge'] },
-            openedBy: { type: 'string' },
-            openedByRole: { type: 'string', enum: ['guest', 'host', 'operator'] },
-            openedAt: { type: 'string', readOnly: true },
-            line: { type: 'number' },
-            description: { type: 'string', 'x-control-variant': 'textarea' },
-            claimedAmount: { type: 'number' },
-            files: { type: 'array', 'x-control': ControlType.file, items: FileInfoSchema() },
-            status: {
-              type: 'string',
-              enum: ['open', 'investigating', 'awaiting_evidence', 'resolved', 'refused', 'withdrawn'],
-              default: 'open',
-            },
-            outcome: { type: 'string', 'x-control-variant': 'textarea' },
-            /** The adjustment this claim produced, if it moved money. */
-            adjustmentId: { type: 'string' },
-            resolvedAt: { type: 'string' },
-            resolvedBy: { type: 'string' },
-          },
-        },
-      },
-
-      /** Sum of adjustments, cached so a list does not have to fold the array. */
-      adjustmentTotal: { type: 'number', group: 'money' },
-      /** What the guest still owes (or is owed, when negative) after everything. */
-      balanceDue: { type: 'number', group: 'money' },
-      platformFee: { type: 'number', group: 'money' },
-      hostEarning: { type: 'number', group: 'money' },
-
       status: {
         type: 'string',
-        enum: ['requested', 'confirmed', 'in_custody', 'overdue', 'retrieved', 'settled', 'disputed', 'abandoned', 'cancelled', 'no_show'],
+        enum: ['requested', 'confirmed', 'active', 'completed', 'settled', 'cancelled'],
         default: 'requested',
+        group: 'meta',
       },
     },
   } as const;

@@ -3,15 +3,15 @@ import { registerCollection } from '../../default-schema';
 import { DataType, ControlType } from '../../types';
 
 /**
- * A pending purchase — the customer's cart and how far through checkout they got.
+ * A cart — a pending purchase, and how far through buying it they got.
  *
  * Separate from `stowbo_booking` on purpose. A booking is a commitment: something
- * was paid for and a host is expected to honour it. A checkout is neither of
+ * was paid for and a host is expected to honour it. A cart is neither of
  * those yet, and most of them are abandoned. Keeping them apart means a booking
  * row always means a real booking — nothing has to remember to filter drafts out
  * of earnings, custody lists or availability.
  *
- * ONE checkout can buy SEVERAL different things: a driveway bay for the car, a
+ * ONE cart can buy SEVERAL different things: a driveway bay for the car, a
  * bag drop at a shop round the corner and a locker at the station are three
  * lines on one purchase, each with its own listing, window, quantity and price.
  * That is the point of the product — one trip, one payment — so every line
@@ -24,13 +24,13 @@ import { DataType, ControlType } from '../../types';
  *   abandoned — released by the customer, or superseded.
  *   expired   — the hold lapsed. The cart survives; the claim did not.
  */
-export const StowboCheckoutSchema = () => {
+export const StowboCartSchema = () => {
   return {
     type: 'object',
     properties: {
       name: { type: 'string', readOnly: true },
 
-      /** Email or id of whoever is buying. One open checkout per customer. */
+      /** Email or id of whoever is buying. One open cart per customer. */
       customer: { type: 'string', group: 'who' },
 
       /**
@@ -64,7 +64,22 @@ export const StowboCheckoutSchema = () => {
                 },
               },
             },
-            /** Per-line money, kept apart so a multi-jurisdiction cart adds up. */
+            /**
+             * What this line is — the same set the booking uses, because a
+             * cart becomes one. A fee is a line, not a column.
+             */
+            kind: {
+              type: 'string',
+              enum: ['space', 'addon', 'fee', 'tax', 'discount', 'adjustment', 'overstay'],
+              default: 'space',
+            },
+            label: { type: 'string' },
+            code: { type: 'string' },
+            /** SIGNED — a discount is negative, so summing needs no rules. */
+            amount: { type: 'number' },
+            by: { type: 'string', enum: ['host', 'platform'], default: 'host' },
+            meta: { type: 'object', properties: {} },
+
             price: { type: 'number' },
             addOnTotal: { type: 'number' },
             subtotal: { type: 'number' },
@@ -93,45 +108,19 @@ export const StowboCheckoutSchema = () => {
       },
 
       currency: { type: 'string', default: 'USD', group: 'money' },
-      subtotal: { type: 'number', group: 'money' },
-      addOnTotal: { type: 'number', group: 'money' },
-      /** Applied by DiscountService — the platform's one promotion engine. */
-      discountCode: { type: 'string', group: 'money' },
-      discount: { type: 'number', default: 0, group: 'money' },
-      discounts: {
-        type: 'array',
-        group: 'money',
-        readOnly: true,
-        items: {
-          type: 'object',
-          properties: {
-            code: { type: 'string' },
-            name: { type: 'string' },
-            identifier: { type: 'string' },
-            type: { type: 'string' },
-            amount: { type: 'number' },
-            message: { type: 'string' },
-          },
-        },
-      },
-      serviceFee: { type: 'number', group: 'money' },
-      protectionFee: { type: 'number', group: 'money' },
-      tax: { type: 'number', group: 'money' },
-      taxLines: {
-        type: 'array',
-        group: 'money',
-        items: {
-          type: 'object',
-          properties: {
-            listing: { type: 'string' },
-            jurisdiction: { type: 'string' },
-            rate: { type: 'number' },
-            taxable: { type: 'number' },
-            amount: { type: 'number' },
-          },
-        },
-      },
-      total: { type: 'number', group: 'money' },
+
+      /**
+       * Derived from the line items in `items`, exactly as on the booking this
+       * becomes. A cart is a pending order, so it carries the same lines —
+       * space, add-ons, fees, tax, discounts — and `total` is their sum.
+       *
+       * The flat money fields this replaces (`subtotal`, `addOnTotal`,
+       * `discount`, `serviceFee`, `protectionFee`, `tax` and their companions)
+       * were the same mistake made twice: a named column per kind of charge, so
+       * every new charge was a schema change and a cart and the booking it
+       * became described money differently.
+       */
+      total: { type: 'number', group: 'money', readOnly: true },
 
       status: {
         type: 'string',
@@ -167,7 +156,7 @@ export const StowboCheckoutSchema = () => {
   } as const;
 };
 
-const ps = StowboCheckoutSchema();
-export type StowboCheckoutModel = FromSchema<typeof ps>;
+const ps = StowboCartSchema();
+export type StowboCartModel = FromSchema<typeof ps>;
 
-registerCollection('Stowbo Checkout', DataType.stowbo_checkout, StowboCheckoutSchema());
+registerCollection('Stowbo Cart', DataType.stowbo_cart, StowboCartSchema());

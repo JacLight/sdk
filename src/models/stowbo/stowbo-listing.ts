@@ -104,6 +104,43 @@ export const StowboListingSchema = () => {
       rates: { ...RateScheduleSchema(), group: 'price' },
 
       /**
+       * How much of the bill is taken up front, and what is held against damage.
+       * Two independent things — a host may want either, both, or neither.
+       *
+       * `upfront` is a percentage of the quoted total: 100 is pay-in-advance,
+       * 0 is pay-on-the-way-out, 50 is half now and the balance at check-out.
+       * A binary would have made "part now, rest later" inexpressible, which is
+       * one of the commonest arrangements there is.
+       *
+       * `deposit` is not part of the bill at all. It is held against something
+       * going wrong and returned when it does not, so it stands alongside any
+       * `upfront` figure rather than replacing it — a valet taking nothing up
+       * front and a £200 hold is `upfront: 0, deposit: 200`.
+       *
+       * A metered stay ignores `upfront` — nobody can be charged a percentage of
+       * a total nobody knows yet — but the deposit still applies, which is
+       * exactly how valets and open-ended parking work.
+       *
+       * A deposit marked non-refundable is a fee. It is credited against the
+       * bill at check-out and never returned.
+       */
+      payment: {
+        type: 'object',
+        group: 'price',
+        properties: {
+          upfront: {
+            type: 'number',
+            default: 100,
+            minimum: 0,
+            maximum: 100,
+            title: 'Taken up front (%)',
+          },
+          deposit: { type: 'number', default: 0, title: 'Deposit held' },
+          depositRefundable: { type: 'boolean', default: true, title: 'Deposit refundable' },
+        },
+      },
+
+      /**
        * Superseded by `rates`. Kept so existing listings keep working: when
        * `rates` has no bands these are read as a single open-ended per_period
        * band, which is exactly what they always meant. Authoring should use
@@ -135,12 +172,40 @@ export const StowboListingSchema = () => {
         description: 'Recorded on every booking for the tax ledger.',
         group: 'price',
       },
-      protectionFee: {
-        type: 'number',
-        default: 0,
-        title: 'Protection fee',
-        description: 'Per booked unit, per booking. Funds the protection policy for this listing.',
+      /**
+       * Fees the owner adds to every booking of this space.
+       *
+       * A list, because there is no end to what a host might charge for —
+       * protection, cleaning, a key, an oversize vehicle, out-of-hours access,
+       * a card. Each becomes a line item on the booking, which is where the
+       * customer sees it. The platform adds its own the same way.
+       *
+       * `per` decides the arithmetic and nothing else:
+       *   booking  a flat amount, once
+       *   unit     the amount for each unit taken
+       *   percent  a percentage of the space lines
+       */
+      fees: {
+        type: 'array',
+        title: 'Fees',
         group: 'price',
+        'x-control': ControlType.table,
+        operations: ['add', 'remove'],
+        items: {
+          type: 'object',
+          properties: {
+            code: { type: 'string', title: 'Code' },
+            label: { type: 'string', title: 'Shown as' },
+            amount: { type: 'number', title: 'Amount' },
+            per: {
+              type: 'string',
+              'x-control': ControlType.selectSingle,
+              dataSource: { source: 'json', json: ['booking', 'unit', 'percent'] },
+              default: 'booking',
+            },
+            taxable: { type: 'boolean', default: true },
+          },
+        },
       },
       cancellationPolicy: {
         type: 'string',
@@ -207,6 +272,15 @@ export const StowboListingSchema = () => {
               default: 'servicing',
             },
             note: { type: 'string' },
+            /**
+             * Reduce to this many rather than closing.
+             *
+             * "I can take 5 bags today, not 20" is the same statement as "I am
+             * shut today" with a different number in it — a host short-staffed
+             * for a concert, a lot with half its bays coned off. Empty means
+             * closed, which is the cap at zero.
+             */
+            capacity: { type: 'number' },
             /** Limit the block to specific units; empty means the whole listing. */
             units: { type: 'array', items: { type: 'string' } },
             createdAt: { type: 'string', readOnly: true },

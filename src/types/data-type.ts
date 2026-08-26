@@ -267,5 +267,6 @@ export enum DataType {
   stowbo_listing = 'stowbo_listing',
   stowbo_unit = 'stowbo_unit',
   stowbo_booking = 'stowbo_booking',
-  stowbo_checkout = 'stowbo_checkout',
+  stowbo_cart = 'stowbo_cart',
+  stowbo_booking_item = 'stowbo_booking_item',
 }

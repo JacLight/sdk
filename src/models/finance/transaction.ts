@@ -2,7 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { ControlType, DataType } from '../../types';
 
-export const SFTransactionSchema = () => {
+export const TransactionSchema = () => {
   return {
     type: 'object',
     properties: {
@@ -105,12 +105,12 @@ export const SFTransactionSchema = () => {
   } as const;
 };
 
-const ms = SFTransactionSchema();
-export type SFTransactionModel = FromSchema<typeof ms>;
+const ms = TransactionSchema();
+export type TransactionModel = FromSchema<typeof ms>;
 
 
 registerCollection(
   'Store Transaction',
   DataType.sf_transaction,
-  SFTransactionSchema(),
+  TransactionSchema(),
 );
