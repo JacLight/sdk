@@ -226,6 +226,17 @@ export const StowboBookingSchema = () => {
       },
 
       /**
+       * The two claim codes for the physical handoff, like the halves of a
+       * coat-check ticket. `dropoffCode` is what the customer shows to prove the
+       * reservation is theirs and start dropping off; `pickupCode` is what they
+       * show to collect. Both are stamped when the booking is confirmed so the
+       * customer sees them on the confirmation screen. Short, human-readable,
+       * meant to be read aloud or typed — not secrets, just claim tags.
+       */
+      dropoffCode: { type: 'string', readOnly: true, group: 'handoff' },
+      pickupCode: { type: 'string', readOnly: true, group: 'handoff' },
+
+      /**
        * Which door this was opened through — the app, a host taking someone on
        * the spot, a scanned code. Free text; the engine never branches on it.
        */

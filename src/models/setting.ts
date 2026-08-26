@@ -32,6 +32,11 @@ export const SettingSchema = () => {
         type: 'string',
         group: 'system-info',
       },
+      systemSmsPhone: {
+        type: 'string',
+        title: 'Default SMS Number',
+        group: 'system-info',
+      },
       emails: {
         type: 'array',
         items: {

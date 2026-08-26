@@ -44,6 +44,11 @@ export const PhoneSchema = () => {
         default: false,
         hideIn: ['generator'],
       },
+      primarySms: {
+        type: 'boolean',
+        default: false,
+        hideIn: ['generator'],
+      },
 
       // Provider integration
       provider: {

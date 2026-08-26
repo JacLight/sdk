@@ -28,7 +28,15 @@ export const StowboCartSchema = () => {
   return {
     type: 'object',
     properties: {
-      name: { type: 'string', readOnly: true },
+      // Generated like every other record's key (booking, listing) — a cart
+      // needs an id of its own. Without a transform it was left null on create,
+      // which the write rejects.
+      name: {
+        type: 'string',
+        unique: true,
+        transform: ['random-string::10', 'uri'],
+        readOnly: true,
+      },
 
       /** Email or id of whoever is buying. One open cart per customer. */
       customer: { type: 'string', group: 'who' },
@@ -64,15 +72,6 @@ export const StowboCartSchema = () => {
                 },
               },
             },
-            /**
-             * What this line is — the same set the booking uses, because a
-             * cart becomes one. A fee is a line, not a column.
-             */
-            kind: {
-              type: 'string',
-              enum: ['space', 'addon', 'fee', 'tax', 'discount', 'adjustment', 'overstay'],
-              default: 'space',
-            },
             label: { type: 'string' },
             code: { type: 'string' },
             /** SIGNED — a discount is negative, so summing needs no rules. */
@@ -86,8 +85,22 @@ export const StowboCartSchema = () => {
             /** This line's share of the cart discount, and the goods net of it. */
             discount: { type: 'number' },
             net: { type: 'number' },
-            serviceFee: { type: 'number' },
-            protectionFee: { type: 'number' },
+            /** Fees applied to this line, each snapshotted at order time, and
+             *  their sum. Dynamic rows, never named columns. */
+            feeTotal: { type: 'number' },
+            fees: {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: {
+                  code: { type: 'string' },
+                  label: { type: 'string' },
+                  amount: { type: 'number' },
+                  by: { type: 'string', enum: ['host', 'platform'] },
+                  taxable: { type: 'boolean' },
+                },
+              },
+            },
             taxRate: { type: 'number' },
             taxJurisdiction: { type: 'string' },
             tax: { type: 'number' },
@@ -108,6 +121,14 @@ export const StowboCartSchema = () => {
       },
 
       currency: { type: 'string', default: 'USD', group: 'money' },
+
+      /**
+       * The promo code the customer applied, kept so resuming re-applies it —
+       * a code, unlike its effect, cannot be reconstructed from the lines. The
+       * discount AMOUNT is not stored here; it is a line in `items` (kind
+       * 'discount'), which is the whole point of the line-based model.
+       */
+      discountCode: { type: 'string', group: 'money' },
 
       /**
        * Derived from the line items in `items`, exactly as on the booking this
