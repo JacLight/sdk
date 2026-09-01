@@ -78,6 +78,19 @@ export const StowboListingSchema = () => {
         group: 'access',
       },
 
+      /**
+       * How THIS host runs the hand-off — shown to the guest the moment they
+       * book (confirmation, booking page, email). The platform does not invent a
+       * code; each host says how it works: a gate code they set, which aisle the
+       * locker is in, "text me when you're outside", front-desk hours, etc.
+       */
+      bookingInstructions: {
+        type: 'string',
+        'x-control-variant': 'textarea',
+        group: 'access',
+        description: "Auto-shown to the guest after they book — how to find the space, drop off and collect.",
+      },
+
       features: {
         type: 'string',
         'x-control': ControlType.selectMany,

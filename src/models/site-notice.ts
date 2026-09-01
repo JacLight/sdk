@@ -130,6 +130,20 @@ export const SiteNoticeSchema = () =>
         title: 'Target Audience',
         description: 'Define which users should receive this information',
         properties: {
+          surface: {
+            type: 'string',
+            enum: ['site', 'admin', 'both'],
+            // Deliberately no `default`. json-schema-to-ts promotes a defaulted
+            // property to a required one, so every existing `audience: {...}`
+            // literal would stop compiling. The default lives where it is
+            // actually applied — surfaceScope() in notice.query.ts — and is
+            // "unset means site", which is what pre-existing notices are.
+            title: 'Where it shows',
+            description:
+              "'site' — visitors browsing your website (the default: a promotion or cookie banner is for shoppers). " +
+              "'admin' — the people running the business, in the admin console. " +
+              "'both' — everywhere. A notice with no value set is treated as 'site', because that is what every notice authored before this field existed was written for.",
+          },
           roles: {
             type: 'array',
             items: { type: 'string' },

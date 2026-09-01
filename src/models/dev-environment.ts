@@ -42,6 +42,12 @@ export const DevEnvironmentSchema = () => {
           type: 'string',
         },
       },
+      previewDomains: {
+        type: 'array',
+        items: {
+          type: 'string',
+        },
+      },
       config: {
         type: 'object',
       },

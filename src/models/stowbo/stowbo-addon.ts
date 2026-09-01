@@ -51,6 +51,11 @@ export const StowboAddOnSchema = () => {
       },
       // the guest cannot decline it (resort-fee style)
       required: { type: 'boolean', default: false },
+      // TRUE when the owner physically does something to fulfil it (priority
+      // retrieval, fitting a padlock, a wash-down) rather than it being passive
+      // cover (insurance, a camera). Buying a service add-on raises a fulfilment
+      // request on the booking so it lands in the owner's queue.
+      service: { type: 'boolean', default: false, group: 'charge' },
       status: { type: 'string', enum: ['active', 'inactive'], default: 'active' },
     },
   } as const;

@@ -321,6 +321,20 @@ export const UserSchema = () => {
           },
         },
       },
+      /**
+       * Open key/value store for this person, namespaced by whatever wrote it —
+       * the same pattern as `company.data.meta`, but for facts that belong to a
+       * user rather than the business. e.g.
+       * `meta.onboarding = { welcomedAt, tourCompletedAt, tourSkippedAt }`.
+       *
+       * For preferences and progress only. Never secrets, and never anything the
+       * user should not be able to see: they can read their own record.
+       */
+      meta: {
+        type: 'object',
+        hidden: true,
+        additionalProperties: true,
+      },
     },
     required: ['firstName', 'lastName', 'email'],
   } as const;

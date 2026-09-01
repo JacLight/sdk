@@ -536,6 +536,12 @@ export const SiteSchema = () => {
           googleAnalytic: {
             type: 'string',
           },
+          googleSiteVerification:{
+            type: 'string',
+          },
+          bingSiteVerification:{
+            type: 'string',
+          },
         },
         layoutGroup: 'social',
       },

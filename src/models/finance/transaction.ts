@@ -18,6 +18,20 @@ export const TransactionSchema = () => {
           value: 'getCustomerRecipients',
         },
       },
+      /**
+       * WHO RECEIVES this money — the recipient / merchant, for attribution and
+       * payout.
+       *
+       * Most storefront revenue is attributed through the order → listing →
+       * owner chain, so the payer in `customer` is enough. But an in-person or
+       * ad-hoc take-payment (a tip, a walk-up with no order/booking) has no order
+       * to derive the recipient from — without this the money can't be tied to
+       * the host who earned it. Holds the recipient's customer id. Optional:
+       * order-derived revenue leaves it empty and is attributed the usual way.
+       */
+      merchant: {
+        type: 'string',
+      },
       invoiceType: {
         type: 'string',
         group: 'number',
