@@ -313,6 +313,63 @@ export const SettingSchema = () => {
           },
         },
       },
+      /**
+       * Stowbo Config — the storage marketplace's own numbers, set by the platform
+       * operator from the console and applied live. Every Stowbo money rule reads
+       * from here; the deployment's env values are only the defaults.
+       */
+      stowbo: {
+        type: 'object',
+        title: 'Stowbo Config',
+        hidden: true,
+        collapsible: 'close',
+        group: 'stowbo',
+        properties: {
+          takeRate: {
+            type: 'number',
+            title: 'Take rate (%)',
+            description:
+              "The platform's share of what a host earns on a booking, in percent (1 = 1%). Taken at settle on the earnable amount: the bill minus tax and minus platform fee lines. A booking already settled keeps the rate it was settled at.",
+            minimum: 0,
+            maximum: 100,
+            default: 1,
+          },
+          minPayout: {
+            type: 'number',
+            title: 'Minimum payout',
+            description: 'The floor a host cannot request a payout below. A host who sets their own higher minimum keeps it.',
+            minimum: 0,
+            default: 0,
+          },
+          gateway: {
+            type: 'string',
+            title: 'Payment gateway',
+            description: 'Where card payments, authorisations and refunds are taken.',
+            enum: ['stripe', 'paypal', 'authorize'],
+            default: 'stripe',
+          },
+          holdTtlMinutes: {
+            type: 'number',
+            title: 'Hold on a cart (minutes)',
+            description: 'How long a checkout keeps a space held before it is released back to the calendar.',
+            minimum: 1,
+            maximum: 1440,
+            default: 15,
+          },
+          appUrl: {
+            type: 'string',
+            title: 'Customer app URL',
+            description: 'Where booking links, pay links and receipts point. Leave empty to use the Stowbo site’s domain, then the deployment default.',
+          },
+          site: {
+            type: 'string',
+            title: 'Stowbo site',
+            description: 'The site the marketplace runs on. Setup creates one named "stowbo" if none exists; change it only to move Stowbo onto another site.',
+            'x-control': ControlType.selectSingle,
+            dataSource: { source: 'collection', collection: DataType.site, value: 'name', label: 'title' },
+          },
+        },
+      },
       securitySettings: {
         type: 'object',
         collapsible: 'close',

@@ -101,12 +101,21 @@ export const SFDiscountSchema = () => {
       // Row 6: applyTo, products, categories, rentals
       applyTo: {
         type: 'string',
-        enum: ['cart', 'products', 'categories', 'rentals', 'rental_fees'],
+        enum: ['cart', 'products', 'categories', 'rentals', 'rental_fees', 'stowbo'],
         default: 'cart',
+        group: 'row6',
+      },
+      // The account whose goods/listings this code is for (Stowbo: the host).
+      // With applyTo 'stowbo', the code applies to that merchant's listings;
+      // `products` then narrows it to specific listing codes.
+      merchant: {
+        type: 'string',
+        description: 'Owner of the goods or listings this code applies to',
         group: 'row6',
       },
       products: {
         type: 'array',
+        items: { type: 'string' },
         description: 'Apply to these products',
         'x-control': ControlType.lookup,
         dataSource: {
@@ -127,6 +136,7 @@ export const SFDiscountSchema = () => {
       },
       categories: {
         type: 'array',
+        items: { type: 'string' },
         description: 'Apply to these categories',
         'x-control': ControlType.selectMany,
         'x-control-variant': 'chip',
@@ -148,6 +158,7 @@ export const SFDiscountSchema = () => {
       },
       rentalItems: {
         type: 'array',
+        items: { type: 'string' },
         description: 'Apply to these rental items',
         'x-control': ControlType.lookup,
         dataSource: {
@@ -186,6 +197,7 @@ export const SFDiscountSchema = () => {
       // Row 7: excludeProducts
       excludeProducts: {
         type: 'array',
+        items: { type: 'string' },
         description: 'Never apply to these products',
         'x-control': ControlType.lookup,
         dataSource: {
@@ -218,6 +230,7 @@ export const SFDiscountSchema = () => {
       // Row 9: requireProducts
       requireProducts: {
         type: 'array',
+        items: { type: 'string' },
         description: 'Cart must contain these products',
         'x-control': ControlType.lookup,
         dataSource: {
@@ -232,6 +245,7 @@ export const SFDiscountSchema = () => {
       // Row 10: customerGroups, excludeCustomerGroups, customers
       customerGroups: {
         type: 'array',
+        items: { type: 'string' },
         description: 'Limit to these customer groups (empty = all)',
         'x-control': ControlType.selectMany,
         'x-control-variant': 'chip',
@@ -245,6 +259,7 @@ export const SFDiscountSchema = () => {
       },
       excludeCustomerGroups: {
         type: 'array',
+        items: { type: 'string' },
         description: 'Exclude these customer groups',
         'x-control': ControlType.selectMany,
         'x-control-variant': 'chip',
@@ -258,6 +273,7 @@ export const SFDiscountSchema = () => {
       },
       customers: {
         type: 'array',
+        items: { type: 'string' },
         description: 'Limit to specific customers (empty = all)',
         'x-control': ControlType.lookup,
         dataSource: {
@@ -269,6 +285,7 @@ export const SFDiscountSchema = () => {
       },
       excludeCustomers: {
         type: 'array',
+        items: { type: 'string' },
         description: 'Exclude specific customers (empty = all)',
         'x-control': ControlType.lookup,
         dataSource: {

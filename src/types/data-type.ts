@@ -264,6 +264,7 @@ export enum DataType {
   device_hub = 'device_hub',
   // Stowbo
   stowbo_addon = 'stowbo_addon',
+  stowbo_fee = 'stowbo_fee',
   stowbo_listing = 'stowbo_listing',
   stowbo_unit = 'stowbo_unit',
   stowbo_booking = 'stowbo_booking',

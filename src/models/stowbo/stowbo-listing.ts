@@ -198,26 +198,20 @@ export const StowboListingSchema = () => {
        *   unit     the amount for each unit taken
        *   percent  a percentage of the space lines
        */
+      // Fees attached to this listing, by fee NAME — the same pattern as addOns.
+      // The fee itself (amount, per, taxable, price band) lives on stowbo_fee.
       fees: {
         type: 'array',
         title: 'Fees',
         group: 'price',
-        'x-control': ControlType.table,
-        operations: ['add', 'remove'],
-        items: {
-          type: 'object',
-          properties: {
-            code: { type: 'string', title: 'Code' },
-            label: { type: 'string', title: 'Shown as' },
-            amount: { type: 'number', title: 'Amount' },
-            per: {
-              type: 'string',
-              'x-control': ControlType.selectSingle,
-              dataSource: { source: 'json', json: ['booking', 'unit', 'percent'] },
-              default: 'booking',
-            },
-            taxable: { type: 'boolean', default: true },
-          },
+        'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
+        items: { type: 'string' },
+        dataSource: {
+          source: 'collection',
+          collection: DataType.stowbo_fee,
+          value: 'name',
+          label: 'title',
         },
       },
       cancellationPolicy: {
