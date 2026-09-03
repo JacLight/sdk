@@ -191,6 +191,8 @@ export enum DataType {
   bm_leave_balance = 'bm_leave_balance',
   bm_leave_request = 'bm_leave_request',
   bm_leave_policy = 'bm_leave_policy',
+  // Time & attendance
+  bm_time_policy = 'bm_time_policy',
   // HR - Performance
   bm_goal = 'bm_goal',
   bm_performance_review = 'bm_performance_review',
@@ -270,4 +272,5 @@ export enum DataType {
   stowbo_booking = 'stowbo_booking',
   stowbo_cart = 'stowbo_cart',
   stowbo_booking_item = 'stowbo_booking_item',
+  stowbo_pickup_delegation = 'stowbo_pickup_delegation',
 }

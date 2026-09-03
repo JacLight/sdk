@@ -7,3 +7,4 @@ export * from './stowbo-unit';
 export * from './stowbo-booking';
 export * from './stowbo-cart';
 export * from './stowbo-booking-item';
+export * from './stowbo-pickup-delegation';

@@ -98,6 +98,37 @@ export const StowboBookingItemSchema = () => {
             id: { type: 'string' },
             declaredValue: { type: 'number' },
             releasedTo: { type: 'string' },
+            // Who physically took it (direction 'out') and what the host checked —
+            // the record a delegated pickup leaves behind.
+            collectedBy: {
+              type: 'object',
+              properties: {
+                role: { type: 'string', enum: ['owner', 'delegate', 'host'] },
+                delegation: { type: 'string' },
+                name: { type: 'string' },
+              },
+            },
+            verified: { type: 'array', items: { type: 'string', enum: ['qr', 'name', 'id', 'photo'] } },
+          },
+        },
+      },
+
+      /**
+       * Every time the host turned someone away — not a movement, nothing moved.
+       * Can happen more than once on one item.
+       */
+      refusals: {
+        type: 'array',
+        'x-control': ControlType.table,
+        items: {
+          type: 'object',
+          properties: {
+            at: { type: 'string', format: 'date-time' },
+            by: { type: 'string' },
+            delegation: { type: 'string' },
+            who: { type: 'string' },
+            reason: { type: 'string', enum: ['wrong_person', 'expired', 'revoked', 'id_mismatch', 'other'] },
+            note: { type: 'string' },
           },
         },
       },

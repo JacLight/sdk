@@ -51,6 +51,21 @@ export const BusinessLocationSchema = () => {
         ],
       },
       gridSize: { type: 'number', default: 20 },
+      // Sales tax applied to orders taken at this location (POS tabs, quick sales).
+      // Percent, so 8.875 = 8.875%. The server computes and persists order tax from
+      // this; clients only display it.
+      taxRate: {
+        type: 'number',
+        minimum: 0,
+        maximum: 100,
+        description: 'Sales tax rate for orders at this location, in percent (8.875 = 8.875%). 0 or empty = no tax.',
+        group: 'tax',
+      },
+      taxName: {
+        type: 'string',
+        description: 'Label printed on receipts for the tax line (e.g. "Sales Tax", "VAT").',
+        group: 'tax',
+      },
       status: { type: 'string', enum: ['active', 'inactive'] },
     },
   } as const;

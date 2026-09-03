@@ -359,7 +359,7 @@ export const SettingSchema = () => {
           appUrl: {
             type: 'string',
             title: 'Customer app URL',
-            description: 'Where booking links, pay links and receipts point. Leave empty to use the Stowbo site’s domain, then the deployment default.',
+            description: 'Where booking links, pay links, pickup passes and receipts point (with scheme, e.g. https://stowbo.com). The one place this is set; leave empty to use the deployment default.',
           },
           site: {
             type: 'string',
