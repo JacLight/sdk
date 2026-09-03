@@ -25,3 +25,4 @@ export * from './sf-price-list';
 export * from './sf-customer-tier';
 export * from './sf-checkout-session';
 export * from './sf-payment-button';
+export * from './sf-tax-rate';

@@ -29,6 +29,13 @@ export const TimeEntrySchema = () => {
       approved: { type: 'boolean', default: false },
       approvedById: { type: 'string' },
       approvedAt: { type: 'string', format: 'date-time' },
+      // Set by the stale-punch closer: an open clock-in that was never clocked
+      // out is closed AT its clock-in time (0 payable hours) and flagged, never
+      // given invented hours. `stale` = open past the threshold, `orphaned` =
+      // the employee record no longer exists.
+      autoClosed: { type: 'boolean' },
+      autoClosedReason: { type: 'string', enum: ['stale', 'orphaned'] },
+      autoClosedAt: { type: 'string', format: 'date-time' },
     },
     required: ['id', 'date', 'hours'],
   } as const;
@@ -81,6 +88,9 @@ export const TimesheetSchema = () => {
         collapsible: true,
         items: TimeEntrySchema(),
       },
+      // The employee this sheet belongs to has been deleted; set by the
+      // stale-punch closer when it closes an orphaned entry.
+      orphaned: { type: 'boolean' },
       totalHours: { type: 'number', readOnly: true, group: 'totals' },
       regularHours: { type: 'number', readOnly: true, group: 'totals' },
       overtimeHours: { type: 'number', readOnly: true, group: 'totals' },

@@ -110,6 +110,25 @@ export const CustomerSchema = () => {
         type: 'string',
       },
 
+      // ========== TAX ==========
+      // Set through storefront/tax/apply-exemption / remove-exemption. When true,
+      // TaxService charges no tax on this customer's orders.
+      taxExempt: {
+        type: 'boolean',
+        default: false,
+        group: 'tax',
+      },
+      taxExemptReason: {
+        type: 'string',
+        description: 'Why the customer is exempt (reseller, non-profit, government…)',
+        group: 'tax',
+      },
+      taxExemptCertificate: {
+        type: 'string',
+        description: 'Exemption certificate / permit number on file',
+        group: 'tax',
+      },
+
       // ========== ACCOUNT ==========\
       parent: {
         type: 'string',

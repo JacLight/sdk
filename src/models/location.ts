@@ -66,6 +66,16 @@ export const BusinessLocationSchema = () => {
         description: 'Label printed on receipts for the tax line (e.g. "Sales Tax", "VAT").',
         group: 'tax',
       },
+      // IANA time zone the location trades in. Business dates (POS sales, invoices,
+      // inventory movements, ledger entries) are derived in this zone so a 7 PM local
+      // sale lands on today, not on tomorrow's UTC date. Falls back to the org's
+      // business profile timezone when empty.
+      timezone: {
+        type: 'string',
+        maxLength: 64,
+        description: 'IANA time zone for this location, e.g. "America/Chicago". Sales, invoices and ledger entries are dated in this zone.',
+        group: 'tax',
+      },
       status: { type: 'string', enum: ['active', 'inactive'] },
     },
   } as const;
