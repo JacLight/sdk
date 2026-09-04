@@ -229,6 +229,8 @@ export enum DataType {
   client_app = 'client_app',
   // Banking
   bank_account = 'bank_account',
+  bank_connection = 'bank_connection',
+  bank_transaction = 'bank_transaction',
   bank_account_holder = 'bank_account_holder',
   bank_transfer = 'bank_transfer',
   bank_card = 'bank_card',

@@ -2,7 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { DataType } from '../../types';
 
-export const BankAccountSchema = () => {
+export const DirectDepositAccountSchema = () => {
   return {
     type: 'object',
     properties: {
@@ -150,7 +150,7 @@ export const EmployeePayrollProfileSchema = () => {
       bankAccounts: {
         type: 'array',
         collapsible: true,
-        items: BankAccountSchema(),
+        items: DirectDepositAccountSchema(),
       },
       paymentMethod: {
         type: 'string',

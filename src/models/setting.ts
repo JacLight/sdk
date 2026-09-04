@@ -314,6 +314,59 @@ export const SettingSchema = () => {
         },
       },
       /**
+       * Bank Sync — the org's default policy for syncing connected banks. Every
+       * connected bank inherits this; a single bank can override in its own
+       * bank_connection.sync. Lives here (not a datatype) so more bank settings
+       * can land without a new schema each time.
+       */
+      bank: {
+        type: 'object',
+        title: 'Bank Sync',
+        collapsible: 'close',
+        group: 'bank',
+        properties: {
+          enabled: {
+            type: 'boolean',
+            title: 'Auto-sync',
+            default: true,
+            description: 'Master switch for automatic bank syncing across all connected banks.',
+          },
+          paused: {
+            type: 'boolean',
+            title: 'Pause all syncing',
+            default: false,
+            description: 'Temporarily stop syncing everything without losing the schedule.',
+          },
+          transactions: {
+            type: 'string',
+            title: 'Transaction sync',
+            enum: ['realtime', '6h', '12h', 'daily', 'manual'],
+            default: 'daily',
+            description: 'How often transactions pull in. "realtime" leans on the bank push (webhook); the scheduled sweep is a safety net. "manual" = only when someone clicks Sync.',
+          },
+          balances: {
+            type: 'string',
+            title: 'Balance refresh',
+            enum: ['onSync', 'daily', 'manual'],
+            default: 'daily',
+            description: 'How often live balances refresh. Billed per call, so kept separate from transactions.',
+          },
+          webhook: {
+            type: 'boolean',
+            title: 'Honor bank push (webhook)',
+            default: true,
+            description: 'React to the aggregator\'s push notifications for near-real-time updates.',
+          },
+          applyToNewConnections: {
+            type: 'boolean',
+            title: 'Apply to new banks',
+            default: true,
+            description: 'New connections inherit this policy; each can still override.',
+          },
+        },
+      },
+
+      /**
        * Stowbo Config — the storage marketplace's own numbers, set by the platform
        * operator from the console and applied live. Every Stowbo money rule reads
        * from here; the deployment's env values are only the defaults.
