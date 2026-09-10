@@ -2,7 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { DataType, ControlType } from '../../types';
 import { RateScheduleSchema } from './stowbo-rate';
-import { AvailabilitySchema } from './stowbo-availability';
+import { StowboAvailabilitySchema } from './stowbo-availability';
 import { AddressSchema } from '../crm/crm-address';
 import { FileInfoSchema } from '../file-info';
 
@@ -261,7 +261,7 @@ export const StowboListingSchema = () => {
        * When the host is offering this. Blackouts below are dated exceptions
        * carved out of it.
        */
-      availability: { ...AvailabilitySchema(), group: 'space' },
+      availability: { ...StowboAvailabilitySchema(), group: 'space' },
 
       blackouts: {
         type: 'array',

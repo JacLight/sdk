@@ -48,6 +48,13 @@ export const WorkflowDefinitionSchema = () => {
         minItems: 2,
         items: WorkflowStageSchema(),
       },
+      autoFire: {
+        type: 'boolean',
+        default: true,
+        title: 'Start on create',
+        description: 'When on, every new record of a listed collection gets a task on this workflow automatically. Turn off for workflows a service starts on purpose (a leave request is fired at submit, not at draft) — the collections list then only says whose status this workflow mirrors.',
+        group: 'sla',
+      },
       collections: {
         type: 'array',
         'x-control': ControlType.selectMany,

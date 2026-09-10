@@ -59,3 +59,5 @@ export * from './bank-transaction';
 export * from './ledger-account';
 export * from './ledger-entry';
 export * from './journal-entry';
+export * from './staff-availability';
+export * from './calendar-day';

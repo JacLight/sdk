@@ -190,16 +190,28 @@ export const WalletSchema = () => {
           },
           defaultMethodId: {
             type: 'string',
-            description: 'ID of the default payout method',
+            description: 'ID of the payout method used when a request does not name one',
+            group: 'payout-config',
+          },
+          minPayout: {
+            type: 'number',
+            description:
+              "The owner's own minimum payout. Raises the platform floor for this wallet; it never lowers it.",
             group: 'payout-config',
           },
         },
       },
 
       // Multiple Payout Methods
+      // Where this wallet's money goes. Payout destinations belong to the
+      // wallet, not to the app that collected them, so every product paying the
+      // same owner uses the same list.
       payoutMethods: {
         type: 'array',
         title: 'Payout Methods',
+        description:
+          'Payout destinations for this wallet. Added through any client door (e.g. Stowbo host settings); ' +
+          'the finance module validates the rail, encrypts bank numbers and decides what may be read back.',
         collapsible: true,
         items: {
           type: 'object',
@@ -212,6 +224,9 @@ export const WalletSchema = () => {
             type: {
               type: 'string',
               enum: ['bank', 'paypal', 'venmo', 'cashapp', 'debit_card', 'check', 'wire', 'crypto'],
+              description:
+                'Only the rails with a registered payout executor can actually be sent to — today bank (ACH) and paypal. ' +
+                'The others are legacy values kept so existing records still validate.',
               group: 'method',
             },
             label: {
@@ -236,9 +251,23 @@ export const WalletSchema = () => {
               properties: {
                 bankName: { type: 'string', group: 'bank' },
                 accountType: { type: 'string', enum: ['checking', 'savings'], group: 'bank' },
-                routingNumber: { type: 'string', group: 'routing' },
-                accountNumber: { type: 'string', group: 'routing' },
-                accountNumberLast4: { type: 'string', maxLength: 4, description: 'Last 4 digits (for display)', group: 'routing' },
+                // Encrypted at rest (AES-256-GCM, `enc:v1:` envelope) the moment
+                // they are written, and never returned by a client API — the
+                // ACH file builder is the only reader. Values stored before
+                // encryption existed are plain and still readable.
+                routingNumber: {
+                  type: 'string',
+                  writeOnly: true,
+                  description: 'Encrypted at rest. Write-only — never returned to a client.',
+                  group: 'routing',
+                },
+                accountNumber: {
+                  type: 'string',
+                  writeOnly: true,
+                  description: 'Encrypted at rest. Write-only — never returned to a client.',
+                  group: 'routing',
+                },
+                accountNumberLast4: { type: 'string', maxLength: 4, description: 'Last 4 digits — the only readable part', group: 'routing' },
                 accountHolderName: { type: 'string' },
                 accountHolderType: { type: 'string', enum: ['individual', 'business'] },
               },

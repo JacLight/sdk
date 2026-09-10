@@ -89,7 +89,7 @@ export const LeaveTypeSchema = () => {
         type: 'object',
         collapsible: true,
         properties: {
-          type: { type: 'string', enum: ['unlimited', 'fixed', 'accrued'] },
+          type: { type: 'string', enum: ['unlimited', 'fixed', 'accrued', 'per-event'], description: 'per-event: granted per occurrence (bereavement), never a yearly pot.' },
           annualHours: { type: 'number' },
           canGoNegative: { type: 'boolean', default: false },
           maxNegativeHours: { type: 'number' },
@@ -258,17 +258,58 @@ export const LeaveRequestSchema = () => {
         group: 'status',
       },
       submittedAt: { type: 'string', format: 'date-time' },
+      /** Submission round. 1 on first submit; a resubmission after a rejection is round 2, 3… on the SAME request. */
+      round: { type: 'number', default: 1 },
+      resubmittedAt: { type: 'string', format: 'date-time' },
+      /** Tracking task on the `leave-approval` workflow for the CURRENT round. Rounds never reuse a task. */
+      taskId: { type: 'string' },
+      previousTaskId: { type: 'string' },
+      /** Who the current round is waiting on, resolved from the base flow at submit (HR when nobody else can). */
+      approver: {
+        type: 'object',
+        properties: {
+          mode: { type: 'string', enum: ['supervisor', 'manager', 'hr'] },
+          employeeId: { type: 'string' },
+          name: { type: 'string' },
+          email: { type: 'string' },
+          fallback: { type: 'boolean', description: 'True when the flow\'s first step could not be filled and HR took it.' },
+          reason: { type: 'string' },
+          since: { type: 'string', format: 'date-time' },
+          escalatesAt: { type: 'string', format: 'date-time' },
+        },
+      },
+      /** What the request costs, in the org's leave unit, after skipping non-working days, observed holidays and closures. */
+      cost: {
+        type: 'object',
+        properties: {
+          unit: { type: 'string', enum: ['days', 'hours'] },
+          amount: { type: 'number' },
+          calendarDays: { type: 'number' },
+          workingDays: { type: 'number' },
+          skipped: {
+            type: 'array',
+            items: { type: 'object', properties: { date: { type: 'string', format: 'date' }, reason: { type: 'string' } } },
+          },
+        },
+      },
       approvalChain: {
         type: 'array',
+        description: 'Every step of every round, oldest first. A resubmission appends; nothing is rewritten.',
         items: {
           type: 'object',
           properties: {
+            round: { type: 'number' },
             level: { type: 'number' },
+            mode: { type: 'string', enum: ['supervisor', 'manager', 'hr'] },
             approverId: { type: 'string' },
             approverName: { type: 'string' },
-            status: { type: 'string', enum: ['pending', 'approved', 'rejected', 'skipped'] },
+            approverEmail: { type: 'string' },
+            status: { type: 'string', enum: ['pending', 'approved', 'rejected', 'skipped', 'escalated', 'cancelled'] },
+            assignedAt: { type: 'string', format: 'date-time' },
             decidedAt: { type: 'string', format: 'date-time' },
+            decidedBy: { type: 'string' },
             comments: { type: 'string' },
+            taskId: { type: 'string' },
           },
         },
       },
@@ -305,7 +346,7 @@ export const LeaveRequestSchema = () => {
       },
       notes: { type: 'string', 'x-control-variant': 'textarea' },
     },
-    required: ['employeeId', 'leaveTypeId', 'startDate', 'endDate', 'totalHours'],
+    required: ['employeeId', 'leaveTypeId', 'startDate', 'endDate'],
   } as const;
 };
 
@@ -336,6 +377,29 @@ export const LeavePolicySchema = () => {
         description: 'Leave types included in this policy',
         items: { type: 'string' },
       },
+      entitlements: {
+        type: 'array',
+        description: 'How much of each type this policy grants, in the org\'s leave unit (days or hours — see setting.leave.unit). A type in leaveTypes with no entitlement row is unlimited / per-event and falls back to the type\'s own allowance.',
+        items: {
+          type: 'object',
+          properties: {
+            leaveTypeId: { type: 'string' },
+            amount: { type: 'number', description: 'Per leave year, in the org unit.' },
+            tenureBands: {
+              type: 'array',
+              description: 'Optional. Amount by completed years of service; the highest band the person qualifies for wins, else `amount`.',
+              items: {
+                type: 'object',
+                properties: {
+                  minYears: { type: 'number' },
+                  amount: { type: 'number' },
+                },
+              },
+            },
+          },
+        },
+      },
+      isDefault: { type: 'boolean', default: false, description: 'The org default — everyone who matches no other policy. Exactly one active policy must be the default.' },
       applicableTo: {
         type: 'object',
         collapsible: true,
@@ -350,6 +414,7 @@ export const LeavePolicySchema = () => {
           departments: { type: 'array', items: { type: 'string' } },
           locations: { type: 'array', items: { type: 'string' } },
           jobLevels: { type: 'array', items: { type: 'string' } },
+          minTenureYears: { type: 'number', description: 'Optional. Only people with at least this many completed years of service.' },
         },
       },
       accrualSettings: {

@@ -22,7 +22,7 @@ import { ControlType } from '../../types';
  * No windows means any time, which keeps unattended lots and self-service
  * lockers working exactly as they do now.
  */
-export const AvailabilitySchema = () =>
+export const StowboAvailabilitySchema = () =>
   ({
     type: 'object',
     properties: {

@@ -91,6 +91,8 @@ export const EmployeeSchema = () => {
           },
           jobTitle: { type: 'string', group: 'role' },
           department: { type: 'string', group: 'role' },
+          /** Rung on the org's job-level ladder (leave setup maps titles to levels). */
+          jobLevel: { type: 'string', group: 'role' },
           location: {
             type: 'string',
             'x-control': ControlType.selectMany,

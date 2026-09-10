@@ -133,6 +133,7 @@ export enum DataType {
   delivery_job = 'delivery_job',
   // Finance
   payout = 'payout',
+  payout_batch = 'payout_batch',
   wallet = 'wallet',
   wallet_transaction = 'wallet_transaction',
   // Events
@@ -191,6 +192,8 @@ export enum DataType {
   bm_leave_balance = 'bm_leave_balance',
   bm_leave_request = 'bm_leave_request',
   bm_leave_policy = 'bm_leave_policy',
+  bm_availability = 'bm_availability',
+  bm_calendar_day = 'bm_calendar_day',
   // Time & attendance
   bm_time_policy = 'bm_time_policy',
   // HR - Performance

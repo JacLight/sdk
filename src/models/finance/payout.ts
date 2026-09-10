@@ -200,6 +200,38 @@ export const PayoutSchema = () => {
         type: 'string',
         description: 'Batch ID if part of batch payout',
       },
+      providerRef: {
+        type: 'string',
+        description: 'Identifier returned by the rail that sent the money — PayPal batch id, ACH trace number',
+      },
+      attempts: {
+        type: 'number',
+        default: 0,
+        description: 'How many times a rail has been asked to send this payout',
+      },
+      executionDetail: {
+        type: 'object',
+        description: 'Small payload kept from the rail for support, e.g. the provider status at submission',
+      },
+
+      // ACH batching — a batch is the set of payouts sharing a batchId, so the
+      // file can be regenerated from them instead of being stored.
+      batchId: {
+        type: 'string',
+        description: 'ACH batch this payout was placed in',
+      },
+      batchNumber: {
+        type: 'string',
+        description: 'Batch number as written into the NACHA file',
+      },
+      traceNumber: {
+        type: 'string',
+        description: 'NACHA trace number for this entry',
+      },
+      batchCreatedAt: {
+        type: 'string',
+        description: 'When the batch file was built — replaying it reproduces the identical file',
+      },
 
       // Failure handling
       failureReason: {
