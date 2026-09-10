@@ -297,30 +297,11 @@ export const UserSchema = () => {
           },
         },
       },
-      securitySettings: {
-        type: 'object',
-        collapsible: 'close',
-        group: 'security',
-        properties: {
-          twoFactorEnabled: {
-            type: 'boolean',
-            default: false,
-          },
-          preferredTwoFactorMethod: {
-            type: 'string',
-            enum: ['email', 'sms', 'authenticator'],
-            'x-control': ControlType.selectSingle,
-          },
-          deviceTrustEnabled: {
-            type: 'boolean',
-            default: true,
-          },
-          alertOnNewDevice: {
-            type: 'boolean',
-            default: true,
-          },
-        },
-      },
+      // Security — two-factor, trusted devices, backup codes — is not here. It
+      // lives in one place, the `user_security` record keyed by `userId` +
+      // `userType`, for staff and customers alike. A second copy on the account
+      // was write-only: nothing read it, and it drifted the moment either side
+      // was written alone. See `models/user-security.ts`.
       /**
        * Open key/value store for this person, namespaced by whatever wrote it —
        * the same pattern as `company.data.meta`, but for facts that belong to a

@@ -11,10 +11,20 @@ export const UserSecuritySchema = () => {
         description: 'Reference to user or customer',
         group: 'identity',
       },
+      /**
+       * Which table `userId` points at — a staff account or a customer.
+       *
+       * Both live here on purpose. The machinery is identical for either: same
+       * TOTP, same emailed and texted codes, same backup codes, same trusted
+       * devices. Keeping it out of the account records also keeps a TOTP secret
+       * out of every CRM list, export and enrichment that happens to read a
+       * customer.
+       */
       userType: {
         type: 'string',
         enum: ['user', 'customer'],
-        description: 'Type of user',
+        default: 'user',
+        description: 'Whether userId names a staff user or a customer',
         group: 'identity',
       },
       // 2FA Settings
@@ -51,6 +61,53 @@ export const UserSecuritySchema = () => {
         default: 0,
         disabled: true,
         group: '2fa',
+      },
+      /**
+       * Every second factor this account has enrolled.
+       *
+       * People carry more than one: an authenticator on the phone, SMS as the
+       * fallback when the phone is reflashed, email when travelling without a
+       * SIM. A single `twoFactorMethod` forced a choice of one and silently
+       * replaced the previous enrolment when a second was set up — losing the
+       * first without saying so.
+       *
+       * The singular fields above remain the preferred method and its secret,
+       * so records written before this list still work: read the list, and fall
+       * back to the singular pair when it is empty.
+       */
+      twoFactorMethods: {
+        type: 'array',
+        title: 'Enrolled factors',
+        group: '2fa',
+        items: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', description: 'Stable id for this enrolment' },
+            type: {
+              type: 'string',
+              enum: ['authenticator', 'sms', 'email'],
+              description: 'Only these can actually be challenged',
+            },
+            label: { type: 'string', description: "What the owner calls it — 'iPhone', 'work email'" },
+            secret: { type: 'string', hidden: true, description: 'TOTP secret, authenticator enrolments only' },
+            phone: { type: 'string', description: 'Destination for an SMS enrolment' },
+            email: { type: 'string', description: 'Destination for an email enrolment' },
+            isDefault: {
+              type: 'boolean',
+              default: false,
+              description: 'The one challenged first; any other enrolment can still be chosen at sign-in',
+            },
+            status: {
+              type: 'string',
+              enum: ['pending', 'verified'],
+              default: 'pending',
+              description: 'Pending until a code from it has been entered once',
+            },
+            verifiedAt: { type: 'string', format: 'date-time' },
+            createdAt: { type: 'string', format: 'date-time' },
+            lastUsedAt: { type: 'string', format: 'date-time' },
+          },
+        },
       },
       // Device Settings
       deviceTrustEnabled: {
