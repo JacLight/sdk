@@ -76,6 +76,31 @@ export const BusinessLocationSchema = () => {
         description: 'IANA time zone for this location, e.g. "America/Chicago". Sales, invoices and ledger entries are dated in this zone.',
         group: 'tax',
       },
+      // Where the site actually is, and how close someone must be to clock in
+      // here. Only consulted when a time policy sets requireGeofence — without
+      // coordinates that setting has nothing to check against.
+      latitude: {
+        type: 'number',
+        minimum: -90,
+        maximum: 90,
+        description: 'Decimal degrees, e.g. 32.7767.',
+        group: 'geofence',
+      },
+      longitude: {
+        type: 'number',
+        minimum: -180,
+        maximum: 180,
+        description: 'Decimal degrees, e.g. -96.7970.',
+        group: 'geofence',
+      },
+      geofenceRadius: {
+        type: 'number',
+        minimum: 0,
+        default: 150,
+        description: 'Metres from the point above that count as "at this location". 0 disables the check for this site.',
+        notes: 'Phone GPS is commonly 20-50m out, so anything under ~75m will reject honest punches.',
+        group: 'geofence',
+      },
       status: { type: 'string', enum: ['active', 'inactive'] },
     },
   } as const;

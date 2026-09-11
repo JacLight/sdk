@@ -8,6 +8,7 @@ export * from './payroll-schedule';
 export * from './employee-payroll-profile';
 export * from './employee-schedule';
 export * from './time-policy';
+export * from './clock-event';
 
 // Payroll configuration catalogs (org-configurable, not hardcoded)
 export * from './earning-type';

@@ -91,9 +91,26 @@ export const TimesheetSchema = () => {
       // The employee this sheet belongs to has been deleted; set by the
       // stale-punch closer when it closes an orphaned entry.
       orphaned: { type: 'boolean' },
+      appliedPolicy: {
+        type: 'object',
+        readOnly: true,
+        notes: 'Which time policy produced these totals and how it was chosen (location / state / company / default).',
+        properties: {
+          sk: { type: 'string' },
+          name: { type: 'string' },
+          matchedBy: { type: 'string', enum: ['location', 'state', 'org-wide', 'default'] },
+        },
+        group: 'totals',
+      },
       totalHours: { type: 'number', readOnly: true, group: 'totals' },
       regularHours: { type: 'number', readOnly: true, group: 'totals' },
       overtimeHours: { type: 'number', readOnly: true, group: 'totals' },
+      doubleTimeHours: {
+        type: 'number',
+        readOnly: true,
+        notes: 'Computed from the time policy, not entered. Zero unless a daily double-time threshold is set.',
+        group: 'totals',
+      },
       ptoHours: { type: 'number', readOnly: true, group: 'totals' },
       holidayHours: { type: 'number', readOnly: true, group: 'totals' },
     },

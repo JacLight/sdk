@@ -196,6 +196,7 @@ export enum DataType {
   bm_calendar_day = 'bm_calendar_day',
   // Time & attendance
   bm_time_policy = 'bm_time_policy',
+  bm_clock_event = 'bm_clock_event',
   // HR - Performance
   bm_goal = 'bm_goal',
   bm_performance_review = 'bm_performance_review',
