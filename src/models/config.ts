@@ -28,8 +28,14 @@ export const ConfigSchema = () => {
           type: 'string',
         }
       },
-      default: {
-        type: 'boolean',
+      priority: {
+        type: 'integer',
+        minimum: 0,
+        maximum: 100,
+        default: 1,
+        title: 'Priority',
+        description:
+          'Higher priority gateways are used first when more than one can do the same job (0-100). This is the only thing that picks between them — nothing points at a gateway from anywhere else.',
       },
       provider: {
         type: 'string',
