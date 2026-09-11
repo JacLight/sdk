@@ -106,7 +106,11 @@ export const AffiliateSchema = () => {
       },
       status: {
         type: 'string',
-        enum: ['pending', 'active', 'suspended'],
+        // `rejected` is a decision, not a suspension: an application that was
+        // never approved. Telling someone their account is "suspended" when
+        // they never had one is both wrong and confusing, and the
+        // affiliate-rejected mail already existed with nothing able to send it.
+        enum: ['pending', 'active', 'suspended', 'rejected'],
         default: 'pending',
         group: 'type',
       },

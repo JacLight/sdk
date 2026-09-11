@@ -4,6 +4,9 @@ import { DataType, ControlType } from '../../types';
 import { AddressSchema } from '../crm/crm-address';
 import { getCountryDropDownOptions } from '../../data';
 
+// One list for both sides: a product declares one, an option carries them.
+export const SHIPPING_CLASSES = ['freight', 'oversize', 'fragile', 'hazmat', 'refrigerated'] as const;
+
 export const SFShippingConfigSchema = () => {
   return {
     type: 'object',
@@ -37,11 +40,168 @@ export const SFShippingConfigSchema = () => {
         description: 'Use as default shipping configuration',
         group: 'status',
       },
+      options: {
+        type: 'array',
+        title: 'Shipping Options',
+        collapsible: true,
+        description: 'Local, regional, international, flat fee, freight, pickup — each with the criteria that select it.',
+        items: {
+          type: 'object',
+          properties: {
+            label: { type: 'string', description: 'What the customer sees — "Local delivery", "Standard", "International"', group: 'opt-id' },
+            status: { type: 'string', enum: ['active', 'inactive'], default: 'active', group: 'opt-id' },
+            priority: { type: 'number', default: 0, description: 'Breaks ties between equally specific options', group: 'opt-id' },
+
+            countries: {
+              type: 'array',
+              'x-control': ControlType.selectMany,
+              'x-control-variant': 'chip',
+              dataSource: { source: 'json', json: getCountryDropDownOptions() },
+              items: { type: 'string' },
+              description: 'Empty = anywhere',
+              group: 'opt-where',
+            },
+            states: { type: 'array', items: { type: 'string' }, description: 'State / province codes', group: 'opt-where' },
+            postcodes: { type: 'array', items: { type: 'string' }, description: 'Exact, prefix (750*) or range (75000-75999)', group: 'opt-where' },
+
+            productClasses: {
+              type: 'array',
+              items: { type: 'string', enum: [...SHIPPING_CLASSES] },
+              'x-control': ControlType.selectMany,
+              'x-control-variant': 'chip',
+              description: 'Shipping classes this carries. Empty = ordinary goods.',
+              notes: 'Must match what products declare in Ships As.',
+              group: 'opt-class',
+            },
+
+            minWeight: { type: 'number', group: 'opt-size' },
+            maxWeight: { type: 'number', group: 'opt-size' },
+            weightUnit: { type: 'string', enum: ['lb', 'kg'], default: 'lb', group: 'opt-size' },
+            minQuantity: { type: 'number', group: 'opt-size' },
+            maxQuantity: { type: 'number', group: 'opt-size' },
+            minOrderTotal: { type: 'number', group: 'opt-size' },
+            maxOrderTotal: { type: 'number', group: 'opt-size' },
+
+            method: { type: 'string', enum: ['free', 'flat', 'weight', 'carrier', 'pickup'], default: 'flat', group: 'opt-method' },
+            rate: { type: 'number', description: 'The flat fee, when the method is flat', group: 'opt-method' },
+            perItem: { type: 'boolean', default: false, description: 'Charge the fee per item', group: 'opt-method' },
+            freeOver: { type: 'number', description: 'Free above this order value', group: 'opt-method' },
+            currency: { type: 'string', description: 'Overrides the configuration currency', group: 'opt-method' },
+
+            tiers: {
+              type: 'array',
+              description: 'Weight tiers, when the method is weight',
+              items: {
+                type: 'object',
+                properties: {
+                  name: { type: 'string' },
+                  maxWeight: { type: 'number' },
+                  maxLength: { type: 'number' },
+                  maxWidth: { type: 'number' },
+                  maxHeight: { type: 'number' },
+                  maxGirth: { type: 'number' },
+                  rate: { type: 'number' },
+                },
+              },
+              group: 'opt-tiers',
+            },
+            carrier: {
+              type: 'object',
+              description: 'Live rates, when the method is carrier',
+              properties: {
+                integration: { type: 'string', description: 'Shipping integration (EasyPost, Shippo…)' },
+                allowedServices: {
+                  type: 'array',
+                  items: { type: 'string' },
+                  'x-control': ControlType.selectMany,
+                  'x-control-variant': 'chip',
+                  description: 'Only these services — this is where "FedEx Ground but never USPS" lives',
+                },
+              },
+              group: 'opt-carrier',
+            },
+            pickup: {
+              type: 'object',
+              description: 'Collection, when the method is pickup',
+              properties: {
+                locations: {
+                  type: 'array',
+                  items: { type: 'string' },
+                  'x-control': ControlType.selectMany,
+                  'x-control-variant': 'chip',
+                  dataSource: { source: 'collection', collection: DataType.location, value: 'name', label: 'name' },
+                },
+                fee: { type: 'number', default: 0 },
+                readyInHours: { type: 'number' },
+                instructions: { type: 'string' },
+              },
+              group: 'opt-pickup',
+            },
+
+            minDays: { type: 'number', group: 'opt-eta' },
+            maxDays: { type: 'number', group: 'opt-eta' },
+          },
+        },
+      },
+
+      applies: {
+        type: 'object',
+        title: 'Applies To',
+        collapsible: true,
+        group: 'applies',
+        properties: {
+          countries: {
+            type: 'array',
+            'x-control': ControlType.selectMany,
+            'x-control-variant': 'chip',
+            dataSource: { source: 'json', json: getCountryDropDownOptions() },
+            items: { type: 'string' },
+            description: 'Leave empty for every country',
+            group: 'applies-where',
+          },
+          states: {
+            type: 'array',
+            items: { type: 'string' },
+            description: 'State / province codes (TX, ON, NSW). Leave empty for the whole country.',
+            group: 'applies-where',
+          },
+          postcodes: {
+            type: 'array',
+            items: { type: 'string' },
+            description: 'Exact (75001), prefix (750*), or range (75000-75999)',
+            group: 'applies-where',
+          },
+          minWeight: { type: 'number', description: 'Applies from this total weight up', group: 'applies-weight' },
+          maxWeight: { type: 'number', description: 'Applies below this total weight', group: 'applies-weight' },
+          weightUnit: { type: 'string', enum: ['lb', 'kg'], default: 'lb', group: 'applies-weight' },
+          minQuantity: { type: 'number', description: 'Applies from this many items up', group: 'applies-qty' },
+          maxQuantity: { type: 'number', description: 'Applies below this many items', group: 'applies-qty' },
+          minOrderTotal: { type: 'number', description: 'Applies from this order value up', group: 'applies-total' },
+          maxOrderTotal: { type: 'number', description: 'Applies below this order value', group: 'applies-total' },
+          productClasses: {
+            type: 'array',
+            items: { type: 'string', enum: [...SHIPPING_CLASSES] },
+            'x-control': ControlType.selectMany,
+            'x-control-variant': 'chip',
+            description: 'Shipping classes this carries. Empty = ordinary goods with no class.',
+            notes: 'Must match what products declare in Ships As.',
+            group: 'applies-class',
+          },
+          priority: {
+            type: 'number',
+            default: 0,
+            description: 'Breaks ties between configurations of equal specificity — higher wins',
+            group: 'applies-priority',
+          },
+        },
+      },
       method: {
         type: 'string',
-        enum: ['free', 'flat', 'weight', 'zone', 'carrier'],
+        enum: ['free', 'flat', 'weight', 'carrier', 'pickup'],
         default: 'flat',
-        description: 'free=no cost, flat=single rate, weight=by weight tiers, zone=by region, carrier=real-time rates',
+        description:
+          'free=no cost, flat=single rate, weight=by weight tiers, carrier=real-time rates, pickup=collect in person. ' +
+          'Region is not a method — scope the configuration with "Applies To".',
         group: 'method',
       },
       currency: {
@@ -183,58 +343,24 @@ export const SFShippingConfigSchema = () => {
         },
       },
 
-      // Zone-Based Rate Configuration
-      zoneRates: {
+      pickup: {
         type: 'object',
-        title: 'Zone-Based Rates',
+        title: 'Pickup / Collect In Store',
         collapsible: true,
-        rules: [
-          { operation: 'notEqual', valueA: '{{method}}', valueB: 'zone', action: 'hide' },
-        ],
+        rules: [{ operation: 'notEqual', valueA: '{{method}}', valueB: 'pickup', action: 'hide' }],
         properties: {
-          zones: {
+          locations: {
             type: 'array',
-            title: 'Shipping Zones',
-            items: {
-              type: 'object',
-              properties: {
-                name: {
-                  type: 'string',
-                  group: 'zone-def',
-                },
-                countries: {
-                  type: 'array',
-                  'x-control': ControlType.selectMany,
-                  'x-control-variant': 'chip',
-                  dataSource: {
-                    source: 'json',
-                    json: getCountryDropDownOptions(),
-                  },
-                  items: { type: 'string' },
-                  group: 'zone-def',
-                },
-                states: {
-                  type: 'array',
-                  items: { type: 'string' },
-                  description: 'State/province codes (e.g., TX, CA, NY)',
-                },
-                rate: {
-                  type: 'number',
-                  description: 'Shipping cost for this zone',
-                  group: 'zone-rate',
-                },
-                freeThreshold: {
-                  type: 'number',
-                  description: 'Free shipping above this order amount (0 to disable)',
-                  group: 'zone-rate',
-                },
-              },
-            },
+            'x-control': ControlType.selectMany,
+            'x-control-variant': 'chip',
+            dataSource: { source: 'collection', collection: DataType.location, value: 'name', label: 'name' },
+            items: { type: 'string' },
+            description: 'Where the order can be collected. Empty means every location.',
+            group: 'pickup-where',
           },
-          defaultRate: {
-            type: 'number',
-            description: 'Rate for destinations not in any zone',
-          },
+          fee: { type: 'number', default: 0, description: 'Charge for collecting, if any', group: 'pickup-fee' },
+          readyInHours: { type: 'number', description: 'How long before it is ready to collect', group: 'pickup-fee' },
+          instructions: { type: 'string', 'x-control-variant': 'textarea', description: 'Shown to whoever is collecting' },
         },
       },
 

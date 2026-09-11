@@ -3,6 +3,7 @@ import { registerCollection } from '../../default-schema';
 import { DataType, ControlType } from '../../types';
 import { FileInfoSchema } from '../file-info';
 import { getCountryDropDownOptions } from '../../data';
+import { SHIPPING_CLASSES } from './sf-shipping-config';
 
 // Product is entity-wide catalog. Per-location pricing, tax, availability,
 // and station routing live on `bm_location_product` (LocationProduct overlay).
@@ -312,11 +313,18 @@ export const SFProductSchema = () => {
         type: 'object',
         collapsible: true,
         properties: {
+          shipsAs: {
+            type: 'string',
+            enum: [...SHIPPING_CLASSES],
+            'x-control': ControlType.selectSingle,
+            description: 'How this ships. Empty for ordinary goods.',
+            group: 'shipping-config',
+          },
           config: {
             type: 'string',
-            description:
-              'Select shipping configuration (leave empty to use site default)',
-            'x-control': ControlType.selectMany,
+            description: 'Shipping configuration to price this product (empty = the site default)',
+            notes: 'Rarely needed. Say what the product is with Ships As instead of pointing it at a rate.',
+            'x-control': ControlType.selectSingle,
             dataSource: {
               source: 'collection',
               collection: DataType.sf_shipping_config,
@@ -349,10 +357,36 @@ export const SFProductSchema = () => {
             default: 'USD',
             group: 'shipping-config',
           },
+          boxSizes: {
+            type: 'array',
+            title: 'Packaging (overrides the configuration)',
+            collapsible: true,
+            items: {
+              type: 'object',
+              properties: {
+                name: { type: 'string', description: 'What to call this box' },
+                quantity: { type: 'number', default: 1, description: 'Units of this product per box' },
+                length: { type: 'number' },
+                width: { type: 'number' },
+                height: { type: 'number' },
+                dimensionUnit: { type: 'string', enum: ['in', 'cm'], default: 'in' },
+                weight: { type: 'number', description: 'Weight of the empty box, if it matters' },
+                maxWeight: { type: 'number' },
+                weightUnit: { type: 'string', enum: ['lb', 'kg'], default: 'lb' },
+              },
+            },
+            group: 'shipping-packaging',
+          },
+          shipsAlone: {
+            type: 'boolean',
+            default: false,
+            description: 'Always ships in its own package',
+            group: 'shipping-packaging',
+          },
           shipsFrom: {
             type: 'string',
             description: 'Ship from location (overrides config origin)',
-            'x-control': ControlType.selectMany,
+            'x-control': ControlType.selectSingle,
             dataSource: {
               source: 'collection',
               collection: DataType.location,
@@ -365,7 +399,9 @@ export const SFProductSchema = () => {
             collapsible: true,
             properties: {
               excludeCountries: {
-                type: 'string',
+                type: 'array',
+                items: { type: 'string' },
+                description: 'Countries where this product cannot be shipped',
                 'x-control': ControlType.selectMany,
                 'x-control-variant': 'chip',
                 dataSource: {
