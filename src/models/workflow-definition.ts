@@ -48,6 +48,13 @@ export const WorkflowDefinitionSchema = () => {
         minItems: 2,
         items: WorkflowStageSchema(),
       },
+      enabled: {
+        type: 'boolean',
+        default: false,
+        title: 'Enabled',
+        notes: 'Off by default: nothing starts on this workflow (not on create, not on request) until an admin turns it on. Tasks already open keep going. The platform turns on the ones it needs (access requests) when it seeds them.',
+        group: 'sla',
+      },
       autoFire: {
         type: 'boolean',
         default: true,
@@ -143,6 +150,21 @@ export const WorkflowStageSchema = () => {
           value: 'getAssignToOptions',
         },
         group: 'assignTo',
+      },
+      assignRule: {
+        type: 'object',
+        collapsible: 'close',
+        notes: 'Who decides at this stage, worked out per record when the stage is entered. Wins over assignTo when set. Roles is the usual choice: anyone holding the role sees it, first to decide decides.',
+        properties: {
+          type: { type: 'string', enum: ['roles', 'group', 'users', 'relative', 'field'], default: 'roles', group: 'rule' },
+          roles: { type: 'array', items: { type: 'string' }, 'x-control': ControlType.selectMany, 'x-control-variant': 'chip', group: 'rule' },
+          group: { type: 'string', group: 'rule' },
+          users: { type: 'array', items: { type: 'string' }, notes: 'Emails.' },
+          relative: { type: 'string', enum: ['supervisor', 'manager', 'department-head', 'location-manager'], notes: 'Relative to the requester, from the employee record.' },
+          field: { type: 'string', notes: 'A path on the record holding an email, e.g. data.owner.email.' },
+          mode: { type: 'string', enum: ['any', 'all'], default: 'any', notes: 'any = first decision wins; all = everyone must approve.' },
+          fallbackRoles: { type: 'array', items: { type: 'string' }, notes: 'Used when the rule finds nobody (a relative rule in an org without employees).' },
+        },
       },
       escalations: {
         type: 'array',

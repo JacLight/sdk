@@ -443,12 +443,14 @@ export const UserRoleSchema = () => {
         minLength: 3,
         maxLength: 50,
         unique: true,
+        group: 'name'
       },
       description: {
         type: 'string',
       },
       type: {
         type: 'string',
+        group: 'name' 
       },
       permissions: {
         type: 'object',
@@ -492,6 +494,7 @@ export const UserRoleSchema = () => {
               json: Object.values(menuList),
               children: 'subMenu',
             },
+            hidden: true,
             items: {
               type: 'string',
             },
@@ -505,6 +508,7 @@ export const UserRoleSchema = () => {
               json: Object.values(menuList),
               children: 'subMenu',
             },
+            hidden: true,
             items: {
               type: 'string',
             },

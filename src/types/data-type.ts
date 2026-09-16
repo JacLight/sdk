@@ -31,6 +31,7 @@ export enum DataType {
   permission = 'permission',
   usage = 'usage',
   site_notice = 'site_notice',
+  access_request = 'access_request',
   setting = 'setting',
   customer_group = 'customer_group',
   automation = 'automation',

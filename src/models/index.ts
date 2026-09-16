@@ -41,6 +41,7 @@ export * from './automation';
 export * from './social-activity';
 export * from './dev-environment';
 export * from './site-notice';
+export * from './access-request';
 export * from './service-pricing';
 export * from './logistics';
 export * from './finance';
