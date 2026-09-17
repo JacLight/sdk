@@ -55,6 +55,17 @@ export const WorkflowDefinitionSchema = () => {
         notes: 'Off by default: nothing starts on this workflow (not on create, not on request) until an admin turns it on. Tasks already open keep going. The platform turns on the ones it needs (access requests) when it seeds them.',
         group: 'sla',
       },
+      autoArchive: {
+        type: 'object',
+        title: 'Auto-archive',
+        group: 'sla',
+        notes: 'Done tasks (done, approved, rejected, cancelled) are archived this long after they close — archived is the record state, they leave the board but stay in the table. Anyone can archive sooner from the card.',
+        properties: {
+          enabled: { type: 'boolean', default: true },
+          after: { type: 'number', default: 7, minimum: 0 },
+          units: { type: 'string', enum: ['hours', 'days'], default: 'days' },
+        },
+      },
       autoFire: {
         type: 'boolean',
         default: true,
@@ -209,6 +220,20 @@ export const WorkflowStageSchema = () => {
               dataSource: {
                 source: 'function',
                 value: 'getUserRecipients',
+              },
+            },
+            escalateRule: {
+              type: 'object',
+              collapsible: 'close',
+              notes: 'Who takes it when this tier fires, worked out per record — the same shape as the stage rule. Wins over escalateTo when set. They are added to the task so it lands in their tray.',
+              properties: {
+                type: { type: 'string', enum: ['roles', 'group', 'users', 'relative', 'field'], default: 'roles', group: 'rule' },
+                roles: { type: 'array', items: { type: 'string' }, 'x-control': ControlType.selectMany, 'x-control-variant': 'chip', group: 'rule' },
+                group: { type: 'string', group: 'rule' },
+                users: { type: 'array', items: { type: 'string' } },
+                relative: { type: 'string', enum: ['supervisor', 'manager', 'department-head', 'location-manager'] },
+                field: { type: 'string' },
+                fallbackRoles: { type: 'array', items: { type: 'string' } },
               },
             },
           },

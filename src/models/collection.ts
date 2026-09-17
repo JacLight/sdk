@@ -37,16 +37,6 @@ export const CollectionSchema = () => {
         group: 'title',
         groupLayout: 'flat',
       },
-      parent: {
-        type: 'string',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.collection,
-          value: 'name',
-          label: 'name',
-        },
-      },
       icon: {
         type: 'string',
         'x-control': ControlType.icon,
@@ -58,8 +48,21 @@ export const CollectionSchema = () => {
         group: 'title',
         groupLayout: 'flat',
       },
+      parent: {
+        type: 'string',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.collection,
+          value: 'name',
+          label: 'name',
+        },
+        group: 'type',
+      },
       type: {
         type: 'string',
+        'x-control': ControlType.label,
+        group: 'type',
       },
       mainType: {
         type: 'string',
@@ -99,7 +102,7 @@ export const CollectionSchema = () => {
           collection: DataType.flexdata,
           valueField: 'name',
           labelField: 'name',
-          filter: {'data.application': 'rule-engine'}
+          filter: { 'data.application': 'rule-engine' },
         },
       },
       enableVersioning: {
@@ -159,39 +162,26 @@ export const CollectionSchema = () => {
         'x-control': ControlType.richtext,
         hidden: true,
       },
-       errorMessage: {
+      errorMessage: {
         type: 'string',
         'x-control': ControlType.richtext,
         hidden: true,
-       },
-       successRedirectUrl: {
+      },
+      successRedirectUrl: {
         type: 'string',
         hidden: true,
-       },
-       errorRedirectUrl: {
+      },
+      errorRedirectUrl: {
         type: 'string',
         hidden: true,
-       },
+      },
     },
     required: ['name'],
   };
 };
 
-
 export const CollectionViewSchema = CollectionSchema;
 
-registerCollection(
-  'AuraFlow',
-  DataType.auraflow,
-  CollectionSchema()
-);registerCollection(
-  'Collection',
-  DataType.collection,
-  CollectionSchema()
-);registerCollection(
-  'SubSchema',
-  DataType.subschema,
-  CollectionSchema()
-);
-
-
+registerCollection('AuraFlow', DataType.auraflow, CollectionSchema());
+registerCollection('Collection', DataType.collection, CollectionSchema());
+registerCollection('SubSchema', DataType.subschema, CollectionSchema());
