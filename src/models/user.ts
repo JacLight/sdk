@@ -548,12 +548,30 @@ export const userInvitationSchema = () => {
         type: 'string',
         readOnly: true,
       },
+      // The inviter as a person, for the email: "Ava Owner (ava@…) invited you".
+      invitedByName: {
+        type: 'string',
+      },
       expiryDate: {
         type: 'string',
         format: 'date-time',
       },
       message: {
         type: 'string',
+      },
+      // Workspaces and conversations this person is added to on completing the invitation.
+      workspaces: {
+        type: 'array',
+        hidden: true,
+        items: {
+          type: 'object',
+          properties: {
+            id: { type: 'string' },
+            title: { type: 'string' },
+            accessType: { type: 'string' },
+            expiresAt: { type: 'string' },
+          },
+        },
       },
       groups: {
         type: 'string',

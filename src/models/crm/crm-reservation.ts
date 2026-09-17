@@ -36,6 +36,11 @@ export const ReservationSchema = () => {
         description:
           'Stamped when a check-in Task linked back to this reservation',
       },
+      // What people call it — a meeting's subject. `name` stays the booking reference.
+      title: {
+        type: 'string',
+        group: 'name',
+      },
       name: {
         type: 'string',
         pattern: '^[a-zA-Z_\\-0-9]*$',

@@ -263,6 +263,8 @@ export enum DataType {
   // Security
   user_device = 'user_device',
   user_security = 'user_security',
+  // Shared-org index: which orgs an email can sign into as a user. Never read by clients.
+  account_directory = 'account_directory',
   two_factor_backup = 'two_factor_backup',
   // Device integrations (printers, scanners, drawers, pagers, terminals, etc.)
   // Each record is one physical or virtual device. `connection` selects how

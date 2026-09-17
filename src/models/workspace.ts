@@ -24,6 +24,30 @@ export const WorkspaceSchema = () => {
       description: {
         type: 'string',
       },
+      // A workspace is a project with tracking; a conversation is the same record
+      // without it (members, items, expiry, private flag; no tasks or views).
+      type: {
+        type: 'string',
+        enum: ['workspace', 'conversation'],
+        default: 'workspace',
+        group: 'title',
+      },
+      // Empty = forever. Set = unreadable from that instant; nothing is deleted.
+      // Where this workspace is opened: the workspace app's address on the client that
+      // last wrote to it (Studio or Business Made, on whatever host). Emails deep-link here.
+      appUrl: {
+        type: 'string',
+        hidden: true,
+      },
+      expiresAt: {
+        type: 'string',
+        format: 'date-time',
+      },
+      // Direct conversations: the sorted member emails joined with ',' — one per set of people.
+      directKey: {
+        type: 'string',
+        hidden: true,
+      },
       members: {
         type: 'array',
         items: {
@@ -40,95 +64,40 @@ export const WorkspaceSchema = () => {
             },
             status: {
               type: 'string',
-              enum: ['new', 'invited', 'active', 'inactive'],
+              enum: ['new', 'invited', 'active', 'inactive', 'expired'],
             },
             accessType: {
               type: 'string',
               enum: ['guest', 'member', 'admin'],
             },
-          },
-        },
-      },
-      goals: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            id: {
-              type: 'string',
-              hidden: true,
-              transform: ['random-string::6'],
+            // A temporary or outside person: only what they are named in, no browsing.
+            external: {
+              type: 'boolean',
             },
-            title: {
+            // Membership ends here; empty = forever.
+            expiresAt: {
               type: 'string',
-              inputRequired: true,
+              format: 'date-time',
             },
-            description: {
+            invitedBy: {
               type: 'string',
-              'x-control-variant': 'textarea',
             },
-            color: {
+            joinedAt: {
               type: 'string',
-              'x-control': ControlType.color,
-              inputRequired: true,
+              format: 'date-time',
             },
-            progress: {
+            notify: {
               type: 'string',
-              hidden: true,
+              enum: ['all', 'mentions', 'none'],
             },
-            status: {
+            lastReadAt: {
               type: 'string',
-              hidden: true,
-              group: 'status',
-              enum: [
-                'draft',
-                'not-started',
-                'in-progress',
-                'completed',
-                'blocked',
-                'cancelled',
-              ],
-              default: 'new',
+              format: 'date-time',
             },
-            dueDate: {
+            // When the "while you were away" email last went out, so it is not repeated.
+            lastDigestAt: {
               type: 'string',
-              'x-control': ControlType.date,
-              group: 'status',
-            },
-            deliverables: {
-              type: 'array',
-              items: {
-                type: 'object',
-                properties: {
-                  title: {
-                    type: 'string',
-                  },
-                  description: {
-                    type: 'string',
-                  },
-                  status: {
-                    type: 'string',
-                    group: 'status',
-                    enum: [
-                      'draft',
-                      'not-started',
-                      'in-progress',
-                      'completed',
-                      'blocked',
-                      'cancelled',
-                    ],
-                    default: 'new',
-                  },
-                  dueDate: {
-                    type: 'string',
-                    'x-control': ControlType.date,
-                    group: 'status',
-                  },
-                  report: {
-                    type: 'string',
-                  },
-                },
-              },
+              format: 'date-time',
             },
           },
         },
@@ -147,8 +116,15 @@ export const WorkspaceSchema = () => {
           },
         },
       },
+      // Private: invited or added only, invisible otherwise. Public: anyone in the
+      // org can read; joining makes you a member and lets you post.
       isPrivate: {
         type: 'boolean',
+      },
+      status: {
+        type: 'string',
+        enum: ['active', 'archived'],
+        default: 'active',
       },
       intakeForm: {
         type: 'string',
