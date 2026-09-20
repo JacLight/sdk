@@ -94,6 +94,7 @@ export const UserSecuritySchema = () => {
             email: { type: 'string', description: 'Destination for an email enrolment' },
             isDefault: {
               type: 'boolean',
+              exclusive: true,
               default: false,
               description: 'The one challenged first; any other enrolment can still be chosen at sign-in',
             },

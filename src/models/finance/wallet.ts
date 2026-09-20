@@ -184,13 +184,21 @@ export const WalletSchema = () => {
         properties: {
           frequency: {
             type: 'string',
-            enum: ['instant', 'daily', 'weekly', 'biweekly', 'monthly', 'manual'],
+            enum: [
+              'instant',
+              'daily',
+              'weekly',
+              'biweekly',
+              'monthly',
+              'manual',
+            ],
             default: 'weekly',
             group: 'payout-config',
           },
           defaultMethodId: {
             type: 'string',
-            description: 'ID of the payout method used when a request does not name one',
+            description:
+              'ID of the payout method used when a request does not name one',
             group: 'payout-config',
           },
           minPayout: {
@@ -223,7 +231,16 @@ export const WalletSchema = () => {
             },
             type: {
               type: 'string',
-              enum: ['bank', 'paypal', 'venmo', 'cashapp', 'debit_card', 'check', 'wire', 'crypto'],
+              enum: [
+                'bank',
+                'paypal',
+                'venmo',
+                'cashapp',
+                'debit_card',
+                'check',
+                'wire',
+                'crypto',
+              ],
               description:
                 'Only the rails with a registered payout executor can actually be sent to — today bank (ACH) and paypal. ' +
                 'The others are legacy values kept so existing records still validate.',
@@ -231,11 +248,13 @@ export const WalletSchema = () => {
             },
             label: {
               type: 'string',
-              description: 'User-friendly label (e.g., "Chase Checking", "Personal PayPal")',
+              description:
+                'User-friendly label (e.g., "Chase Checking", "Personal PayPal")',
               group: 'method',
             },
             isDefault: {
               type: 'boolean',
+              exclusive: true,
               default: false,
               group: 'method',
             },
@@ -250,7 +269,11 @@ export const WalletSchema = () => {
               type: 'object',
               properties: {
                 bankName: { type: 'string', group: 'bank' },
-                accountType: { type: 'string', enum: ['checking', 'savings'], group: 'bank' },
+                accountType: {
+                  type: 'string',
+                  enum: ['checking', 'savings'],
+                  group: 'bank',
+                },
                 // Encrypted at rest (AES-256-GCM, `enc:v1:` envelope) the moment
                 // they are written, and never returned by a client API — the
                 // ACH file builder is the only reader. Values stored before
@@ -258,30 +281,48 @@ export const WalletSchema = () => {
                 routingNumber: {
                   type: 'string',
                   writeOnly: true,
-                  description: 'Encrypted at rest. Write-only — never returned to a client.',
+                  description:
+                    'Encrypted at rest. Write-only — never returned to a client.',
                   group: 'routing',
                 },
                 accountNumber: {
                   type: 'string',
                   writeOnly: true,
-                  description: 'Encrypted at rest. Write-only — never returned to a client.',
+                  description:
+                    'Encrypted at rest. Write-only — never returned to a client.',
                   group: 'routing',
                 },
-                accountNumberLast4: { type: 'string', maxLength: 4, description: 'Last 4 digits — the only readable part', group: 'routing' },
+                accountNumberLast4: {
+                  type: 'string',
+                  maxLength: 4,
+                  description: 'Last 4 digits — the only readable part',
+                  group: 'routing',
+                },
                 accountHolderName: { type: 'string' },
-                accountHolderType: { type: 'string', enum: ['individual', 'business'] },
+                accountHolderType: {
+                  type: 'string',
+                  enum: ['individual', 'business'],
+                },
               },
             },
             // Debit Card Details
             debitCard: {
               type: 'object',
               properties: {
-                cardBrand: { type: 'string', enum: ['visa', 'mastercard', 'discover', 'amex'], group: 'card' },
+                cardBrand: {
+                  type: 'string',
+                  enum: ['visa', 'mastercard', 'discover', 'amex'],
+                  group: 'card',
+                },
                 last4: { type: 'string', maxLength: 4, group: 'card' },
                 expirationMonth: { type: 'number', minimum: 1, maximum: 12 },
                 expirationYear: { type: 'number' },
                 cardholderName: { type: 'string' },
-                token: { type: 'string', description: 'Tokenized card reference from payment processor' },
+                token: {
+                  type: 'string',
+                  description:
+                    'Tokenized card reference from payment processor',
+                },
               },
             },
             // PayPal Details
@@ -289,7 +330,10 @@ export const WalletSchema = () => {
               type: 'object',
               properties: {
                 email: { type: 'string', format: 'email' },
-                payerId: { type: 'string', description: 'PayPal payer ID if connected' },
+                payerId: {
+                  type: 'string',
+                  description: 'PayPal payer ID if connected',
+                },
               },
             },
             // Venmo Details
@@ -298,7 +342,10 @@ export const WalletSchema = () => {
               properties: {
                 handle: { type: 'string', description: '@username' },
                 phoneNumber: { type: 'string' },
-                userId: { type: 'string', description: 'Venmo user ID if connected' },
+                userId: {
+                  type: 'string',
+                  description: 'Venmo user ID if connected',
+                },
               },
             },
             // Cash App Details
@@ -313,9 +360,16 @@ export const WalletSchema = () => {
             crypto: {
               type: 'object',
               properties: {
-                currency: { type: 'string', enum: ['BTC', 'ETH', 'USDC', 'USDT'], group: 'crypto' },
+                currency: {
+                  type: 'string',
+                  enum: ['BTC', 'ETH', 'USDC', 'USDT'],
+                  group: 'crypto',
+                },
                 address: { type: 'string', group: 'crypto' },
-                network: { type: 'string', description: 'e.g., mainnet, polygon, etc.' },
+                network: {
+                  type: 'string',
+                  description: 'e.g., mainnet, polygon, etc.',
+                },
               },
             },
             // Verification
@@ -325,7 +379,13 @@ export const WalletSchema = () => {
             },
             verificationMethod: {
               type: 'string',
-              enum: ['micro_deposits', 'instant_verification', 'manual', 'plaid', 'stripe'],
+              enum: [
+                'micro_deposits',
+                'instant_verification',
+                'manual',
+                'plaid',
+                'stripe',
+              ],
             },
             // Metadata
             addedAt: {
@@ -350,7 +410,14 @@ export const WalletSchema = () => {
           properties: {
             reason: {
               type: 'string',
-              enum: ['dispute', 'chargeback', 'security', 'deposit', 'pending_review', 'other'],
+              enum: [
+                'dispute',
+                'chargeback',
+                'security',
+                'deposit',
+                'pending_review',
+                'other',
+              ],
               group: 'hold',
             },
             amount: {
@@ -394,9 +461,18 @@ export const WalletSchema = () => {
             category: {
               type: 'string',
               enum: [
-                'earning', 'tip', 'bonus', 'commission', 'referral',
-                'payout', 'fee', 'refund', 'chargeback', 'adjustment',
-                'deposit_hold', 'deposit_release',
+                'earning',
+                'tip',
+                'bonus',
+                'commission',
+                'referral',
+                'payout',
+                'fee',
+                'refund',
+                'chargeback',
+                'adjustment',
+                'deposit_hold',
+                'deposit_release',
               ],
               group: 'txn',
             },
@@ -432,7 +508,13 @@ export const WalletSchema = () => {
           properties: {
             type: {
               type: 'string',
-              enum: ['fraud_risk', 'chargeback_history', 'high_volume', 'verification_needed', 'other'],
+              enum: [
+                'fraud_risk',
+                'chargeback_history',
+                'high_volume',
+                'verification_needed',
+                'other',
+              ],
               group: 'flag',
             },
             severity: {

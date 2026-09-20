@@ -95,6 +95,7 @@ export const MessageTemplateSchema = () => {
       isDefault: {
         type: 'boolean',
         default: false,
+        exclusive: true,
       },
       html: {
         type: 'string',

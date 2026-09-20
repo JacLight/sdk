@@ -340,7 +340,7 @@ export const OrgChartSchema = () => {
       },
       publishedAt: { type: 'string', format: 'date-time' },
       publishedBy: { type: 'string' },
-      isDefault: { type: 'boolean', default: false },
+      isDefault: { type: 'boolean', default: false, exclusive: true },
       accessControl: {
         type: 'object',
         properties: {

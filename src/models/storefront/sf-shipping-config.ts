@@ -38,6 +38,7 @@ export const SFShippingConfigSchema = () => {
         type: 'boolean',
         default: false,
         description: 'Use as default shipping configuration',
+        exclusive: true,
         group: 'status',
       },
       options: {

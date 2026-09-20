@@ -412,6 +412,7 @@ export const LeadPipelineSchema = () => {
         type: 'boolean',
         title: 'Default Pipeline',
         group: 'core',
+        exclusive: true,
         default: false,
       },
       stages: {

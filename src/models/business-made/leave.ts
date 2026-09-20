@@ -154,7 +154,7 @@ export const LeaveTypeSchema = () => {
       icon: { type: 'string' },
       sortOrder: { type: 'number', default: 0 },
       isActive: { type: 'boolean', default: true },
-      isDefault: { type: 'boolean', default: false },
+      isDefault: { type: 'boolean', default: false, exclusive: true },
     },
     required: ['title', 'code', 'category', 'type'],
   } as const;
@@ -399,7 +399,7 @@ export const LeavePolicySchema = () => {
           },
         },
       },
-      isDefault: { type: 'boolean', default: false, description: 'The org default — everyone who matches no other policy. Exactly one active policy must be the default.' },
+      isDefault: { type: 'boolean', exclusive: true, default: false, description: 'The org default — everyone who matches no other policy. Exactly one active policy must be the default.' },
       applicableTo: {
         type: 'object',
         collapsible: true,

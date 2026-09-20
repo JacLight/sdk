@@ -73,6 +73,7 @@ export const EventBadgeTemplateSchema = () => {
       isDefault: {
         type: 'boolean',
         default: false,
+        exclusive: true,
         title: 'Default Template',
         description: 'Used when no specific template is assigned to a ticket type',
       },

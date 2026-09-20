@@ -134,7 +134,7 @@ export const JobPostingSchema = () => {
             id: { type: 'string' },
             name: { type: 'string' },
             order: { type: 'number' },
-            isDefault: { type: 'boolean' },
+            isDefault: { type: 'boolean', exclusive: true},
           },
         },
         default: [

@@ -32,6 +32,7 @@ export const DeliveryConfigSchema = () => {
       isDefault: {
         type: 'boolean',
         default: false,
+        exclusive: true,
         group: 'status',
       },
 

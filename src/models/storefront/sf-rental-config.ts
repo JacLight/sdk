@@ -32,6 +32,7 @@ export const SFRentalConfigSchema = () => {
       isDefault: {
         type: 'boolean',
         default: false,
+        exclusive: true,
         description: 'Use as default rental configuration',
         group: 'status',
       },

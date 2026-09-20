@@ -57,6 +57,16 @@ export const SiteSchema = () => {
         layoutGroup: 'info',
         group: 'title',
       },
+      isDefault: {
+        type: 'boolean',
+        // At most one site per org holds this. The repository clears it
+        // everywhere else on write — unlike `unique`, which rejects the change
+        // and would leave the old default in place for ever.
+        exclusive: true,
+        group: 'title',
+        default: false,
+        layoutGroup: 'info',
+      },
       domain: {
         type: 'string',
         format: 'hostname',
@@ -213,43 +223,10 @@ export const SiteSchema = () => {
         layoutGroup: 'settings',
         group: 'switch',
       },
-      globalStyle: {
-        type: 'boolean',
-        'x-control-variant': 'switch',
-        group: 'switch',
-      },
       publishedPagesOnly: {
         type: 'boolean',
         'x-control-variant': 'switch',
         group: 'switch',
-      },
-      theme: {
-        type: 'string',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'function',
-          value: 'getThemeSettingsList',
-        },
-        layoutGroup: 'settings',
-        group: 'template',
-      },
-      template: {
-        type: 'string',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'function',
-          value: 'getSiteTemplates',
-        },
-        layoutGroup: 'settings',
-        group: 'template',
-      },
-      colorSwitch: {
-        type: 'string',
-        'x-control': ControlType.selectMany,
-        enum: ['on', 'off'],
-        default: 'off',
-        layoutGroup: 'settings',
-        group: 'theme',
       },
       darkMode: {
         type: 'string',
@@ -282,50 +259,76 @@ export const SiteSchema = () => {
         },
         group: 'chat',
       },
+      /**
+       * What this site does, one row per feature: whether it is on, and for the
+       * features that take over a page, which page.
+       *
+       * One list rather than a chip list of names plus a separate list of pages:
+       * features keep being added, and two places to edit meant a site could
+       * name a page for a feature it had not switched on.
+       *
+       * The named page still renders through the normal [[...slug]] pipeline and
+       * only its BODY is swapped, so the site template keeps wrapping it.
+       * Matching is on the page name, so a child path (`/pay/INV-1042`) reaches
+       * the same feature. Features that are not pages — live chat, audio player
+       * — simply leave `page` empty.
+       */
       features: {
         type: 'array',
-        'x-control': ControlType.selectMany,
-        'x-control-variant': 'chip',
-        options: getSiteFeatureList(),
+        collapsible: true,
         layoutGroup: 'settings',
-        operations: [],
         items: {
-          type: 'string',
+          type: 'object',
+          hideLabel: true,
+          properties: {
+            feature: {
+              type: 'string',
+              'x-control': ControlType.selectMany,
+              options: getSiteFeatureList(),
+              group: 'feature',
+            },
+            enabled: {
+              type: 'boolean',
+              description: 'Off keeps the row but stops the feature running.',
+              group: 'feature',
+            },
+            page: {
+              type: 'string',
+              description:
+                'For features that take over a page. Leave empty for the rest.',
+              'x-control': ControlType.selectMany,
+              dataSource: {
+                source: 'collection',
+                collection: DataType.page,
+                value: 'name',
+                label: 'name',
+                filter: { 'data.site': '{{name}}' },
+              },
+              group: 'feature',
+            },
+          },
         },
       },
       storefront: {
         type: 'object',
         hideLabel: true,
         properties: {
-          storePage: {
-            type: 'string',
-            'x-control': ControlType.selectMany,
-            dataSource: {
-              source: 'collection',
-              collection: DataType.page,
-              value: 'name',
-              label: 'name',
-              filter: { 'data.site': '{{name}}' },
-            },
-            group: 'template',
-          },
           template: {
             type: 'string',
             enum: ['default', 'modern', 'boutique', 'none'],
             group: 'template',
           },
-          shipping: {
+          quickView: {
             type: 'string',
-            description:
-              'Select shipping configuration (leave empty to use site default)',
-            'x-control': ControlType.selectMany,
-            dataSource: {
-              source: 'collection',
-              collection: DataType.sf_shipping_config,
-              value: 'name',
-              label: 'title',
-            },
-            group: 'shipping-config',
+            enum: ['none', 'dialog', 'drawer-left', 'drawer-right'],
+            group: 'template',
+            default: 'left',
+          },
+          extraInfoDisplay: {
+            type: 'string',
+            enum: ['tab', 'accordion', 'post', 'none'],
+            layoutGroup: 'layout',
+            group: 'template',
           },
           showSearch: {
             type: 'boolean',
@@ -336,29 +339,17 @@ export const SiteSchema = () => {
           },
           showComments: {
             type: 'boolean',
-            group: 'comment',
+            group: 'search',
             styling: {
               container: 'w-24',
             },
           },
           showShare: {
             type: 'boolean',
-            group: 'comment',
+            group: 'search',
             styling: {
               container: 'w-24',
             },
-          },
-          quickView: {
-            type: 'string',
-            enum: ['none', 'dialog', 'drawer-left', 'drawer-right'],
-            group: 'search',
-            default: 'left',
-          },
-          extraInfoDisplay: {
-            type: 'string',
-            enum: ['tab', 'accordion', 'post', 'none'],
-            layoutGroup: 'layout',
-            group: 'search',
           },
           filtersPosition: {
             type: 'string',
@@ -536,10 +527,10 @@ export const SiteSchema = () => {
           googleAnalytic: {
             type: 'string',
           },
-          googleSiteVerification:{
+          googleSiteVerification: {
             type: 'string',
           },
-          bingSiteVerification:{
+          bingSiteVerification: {
             type: 'string',
           },
         },
