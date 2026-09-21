@@ -34,6 +34,8 @@ export enum DataType {
   access_request = 'access_request',
   setting = 'setting',
   customer_group = 'customer_group',
+  customer_association = 'customer_association',
+  customer_invitation = 'customer_invitation',
   automation = 'automation',
   automation_execution = 'automation_execution',
   automation_log = 'automation_log',

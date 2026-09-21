@@ -25,6 +25,13 @@ export const DomainRegistrationSchema = () => {
         type: 'boolean',
         default: false,
       },
+      // The registrar's own id for the order. Everything the registrar can be
+      // asked about a domain — details, DNS, renewal — is keyed by it, so a
+      // domain bought through us keeps it or its detail screen has nothing to
+      // ask with.
+      orderId: {
+        type: 'string',
+      },
       contactEmail: {
         type: 'string',
         format: 'email',

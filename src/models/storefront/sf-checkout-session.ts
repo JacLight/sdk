@@ -1,6 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { DataType, ControlType } from '../../types';
+import { SharedAccountField } from '../_shared-account-fields';
 
 export const SFCheckoutSessionSchema = () => {
   return {
@@ -88,6 +89,7 @@ export const SFCheckoutSessionSchema = () => {
         description: 'Processing fees in cents',
         group: 'amount',
       },
+      ...SharedAccountField(),
       currency: {
         type: 'string',
         default: 'USD',

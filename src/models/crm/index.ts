@@ -33,3 +33,5 @@ export * from './crm-merchant-customer';
 export * from './crm-affiliate-program';
 export * from './crm-affiliate';
 export * from './crm-affiliate-referral';
+export * from './crm-customer-association';
+export * from './crm-customer-invitation';

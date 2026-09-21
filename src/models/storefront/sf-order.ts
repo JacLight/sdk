@@ -2,6 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { DataType, ControlType } from '../../types';
 import { AddressSchema } from '../crm/crm-address';
+import { SharedAccountField } from '../_shared-account-fields';
 import { BusinessLocationField } from '../_location-fields';
 import { FileInfoSchema } from '../file-info';
 
@@ -328,6 +329,7 @@ export const SFOrderSchema = () => {
       phone: {
         type: 'string',
       },
+      ...SharedAccountField(),
       currency: {
         type: 'string',
       },

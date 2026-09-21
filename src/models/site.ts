@@ -113,27 +113,12 @@ export const SiteSchema = () => {
         layoutGroup: 'info',
       },
       logo: {
-        type: 'object',
-        title: 'Logo',
-        hideLabel: true,
-        readOnly: true,
-        'x-control': ControlType.file,
-        properties: {
-          hideLogo: {
-            type: 'boolean',
-            group: 'size',
-          },
-          width: {
-            type: 'number',
-            group: 'size',
-          },
-          height: {
-            group: 'size',
-            type: 'number',
-          },
-          ...FileInfoSchema().properties,
-        },
-        layoutGroup: 'info',
+        ...FileInfoSchema(),
+        layoutGroup: 'logo',
+      },
+      image: {
+        ...FileInfoSchema(),
+        layoutGroup: 'logo',
       },
       loginRedirect: {
         type: 'string',

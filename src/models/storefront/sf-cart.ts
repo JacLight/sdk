@@ -3,6 +3,7 @@ import { registerCollection } from '../../default-schema';
 
 import { DataType } from '../../types';
 import { AddressSchema } from '../crm/crm-address';
+import { SharedAccountField } from '../_shared-account-fields';
 import { FileInfoSchema } from '../file-info';
 
 // Cart item schema - shared between products and rentals
@@ -168,6 +169,7 @@ export const SFCartSchema = () => {
       phone: {
         type: 'string',
       },
+      ...SharedAccountField(),
       email: {
         type: 'string',
       },

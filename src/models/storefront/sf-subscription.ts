@@ -3,6 +3,7 @@ import { registerCollection } from '../../default-schema';
 
 
 import { DataType } from '../../types';
+import { SharedAccountField } from '../_shared-account-fields';
 
 export const SFSubscriptionSchema = () => {
   return {
@@ -68,6 +69,7 @@ export const SFSubscriptionSchema = () => {
           },
         },
       },
+      ...SharedAccountField(),
       email: {
         type: 'string',
       },

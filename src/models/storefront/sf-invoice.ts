@@ -2,6 +2,8 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { DataType, ControlType } from '../../types';
 import { AddressSchema } from '../crm/crm-address';
+import { FileInfoSchema } from '../file-info';
+import { SharedAccountField } from '../_shared-account-fields';
 import { BusinessLocationField } from '../_location-fields';
 
 export const SFInvoiceSchema = () => {
@@ -23,6 +25,7 @@ export const SFInvoiceSchema = () => {
         title: 'Purchase Order',
         group: 'number',
       },
+      ...SharedAccountField(),
       currency: {
         type: 'string',
         default: 'USD',
@@ -137,6 +140,25 @@ export const SFInvoiceSchema = () => {
             sku: { type: 'string' },
             name: { type: 'string' },
             description: { type: 'string', hideIn: ['table'] },
+            // Carried over from the product when the line is picked. Public
+            // URL — the emailed invoice renders it beside the description.
+            image: { type: 'string', hideIn: ['table'] },
+            // Options/variants chosen on the line, same shape as the order's.
+            // Shown as chips on the invoice; kept off the picker table.
+            options: {
+              type: 'array',
+              hideIn: ['table'],
+              items: {
+                type: 'object',
+                properties: {
+                  name: { type: 'string' },
+                  value: { type: 'string' },
+                  // Attribute type (mirrors sf_attribute.type).
+                  type: { type: 'string' },
+                  files: { type: 'array', items: FileInfoSchema() },
+                },
+              },
+            },
             price: { type: 'number', readOnly: true },
             quantity: {
               type: 'number',

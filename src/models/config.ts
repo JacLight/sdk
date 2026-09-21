@@ -45,6 +45,11 @@ export const ConfigSchema = () => {
         type: 'object',
         hidden: true,
       },
+      status: {
+        type: 'string',
+        enum: ['active', 'inactive', 'deprecated'],
+        default: 'active',
+      }
     },
   } as const;
 };
