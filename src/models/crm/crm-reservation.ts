@@ -36,6 +36,26 @@ export const ReservationSchema = () => {
         description:
           'Stamped when a check-in Task linked back to this reservation',
       },
+      // Written only by `crm/reservations/reschedule/:id` — one entry per move, oldest first.
+      rescheduleHistory: {
+        type: 'array',
+        readOnly: true,
+        hidden: true,
+        items: {
+          type: 'object',
+          properties: {
+            fromStartTime: { type: 'string', format: 'date-time' },
+            fromEndTime: { type: 'string', format: 'date-time' },
+            toStartTime: { type: 'string', format: 'date-time' },
+            toEndTime: { type: 'string', format: 'date-time' },
+            at: { type: 'string', format: 'date-time' },
+            by: { type: 'string' },
+            byCustomer: { type: 'boolean' },
+            reason: { type: 'string' },
+            overrode: { type: 'array', items: { type: 'string' } },
+          },
+        },
+      },
       // What people call it — a meeting's subject. `name` stays the booking reference.
       title: {
         type: 'string',

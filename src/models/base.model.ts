@@ -115,7 +115,7 @@ export interface BaseModel<T> {
   create_hash?: string;
   modified_by?: string;
   created_by?: string;
-  client?: string;
+  client?: any;
 }
 
 export const baseModelSystemFields = ['pk', 'sk', 'name', 'datatype', 'version', 'createdate', 'modifydate', 'publishedDate', 'author', 'notes', 'schedules', 'rules', 'schedule', 'stats', 'share', 'state', 'search', 'create_hash', 'modified_by', 'created_by', 'client'] as const;
