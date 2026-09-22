@@ -1,5 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
+import { SharedAccountField } from '../_shared-account-fields';
 
 import { DataType, ControlType } from '../../types';
 import { FileInfoSchema } from '../file-info';
@@ -117,6 +118,8 @@ export const TicketSchema = () => {
           },
         },
       },
+      // The company account this ticket is about, when the reporter acts for one.
+      ...SharedAccountField(),
     },
     required: ['reportedBy', 'reportedByEmail', 'title', 'description'],
   } as const;

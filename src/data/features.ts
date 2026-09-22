@@ -82,5 +82,12 @@ export const getSiteFeatureList = () => {
       description: 'Enable audio player on your site',
       enable: false,
     },
+    {
+      value: 'unsubscribe',
+      takesPage: true,
+      label: 'Unsubscribe',
+      description: 'Enable unsubscribe functionality on your site',
+      enable: false,
+    }
   ];
 };

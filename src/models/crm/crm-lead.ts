@@ -1,5 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
+import { SharedAccountField } from '../_shared-account-fields';
 import { DataType } from '../../types';
 
 export const LeadSchema = () => {
@@ -181,6 +182,10 @@ export const LeadSchema = () => {
         title: 'Currency',
         default: 'USD',
       },
+
+      // The company this lead belongs to — the Shared Account, the same record
+      // orders and invoices are billed to. A deal is this lead at a won stage.
+      ...SharedAccountField(),
 
       // Assignment & Ownership — can be a user OR a user group (team)
       assignedTo: {

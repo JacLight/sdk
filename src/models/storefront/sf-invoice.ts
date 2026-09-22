@@ -339,8 +339,51 @@ export const SFInvoiceSchema = () => {
       // --- Status & Notes ---
       status: {
         type: 'string',
-        enum: ['new', 'draft', 'sent', 'paid', 'paid-partial', 'overpaid', 'overdue', 'refunded', 'cancelled'],
+        // A quote is this same document before the customer has agreed to it:
+        // `quote` while it is an offer, `sent` once they accept (it is then an
+        // ordinary invoice awaiting payment), `declined` if they say no.
+        enum: ['new', 'draft', 'quote', 'declined', 'sent', 'paid', 'paid-partial', 'overpaid', 'overdue', 'refunded', 'cancelled'],
         default: 'new',
+        group: 'status',
+      },
+      validUntil: {
+        type: 'string',
+        format: 'date',
+        title: 'Quote Valid Until',
+        description: 'After this date the quote can no longer be accepted',
+        group: 'status',
+      },
+      acceptedAt: {
+        type: 'string',
+        format: 'date-time',
+        title: 'Accepted At',
+        readOnly: true,
+        group: 'status',
+      },
+      acceptedBy: {
+        type: 'string',
+        title: 'Accepted By',
+        description: 'The name the customer signed with',
+        readOnly: true,
+        group: 'status',
+      },
+      acceptanceNote: {
+        type: 'string',
+        title: 'Acceptance Note',
+        readOnly: true,
+        group: 'status',
+      },
+      declinedAt: {
+        type: 'string',
+        format: 'date-time',
+        title: 'Declined At',
+        readOnly: true,
+        group: 'status',
+      },
+      declineReason: {
+        type: 'string',
+        title: 'Decline Reason',
+        readOnly: true,
         group: 'status',
       },
       orderNumber: {

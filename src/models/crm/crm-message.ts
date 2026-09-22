@@ -1,5 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
+import { SharedAccountField } from '../_shared-account-fields';
 import { DataType, ControlType } from '../../types';
 import { FileInfoSchema } from '../file-info';
 
@@ -236,6 +237,8 @@ export const MessageSchema = () => {
           hidden: true,
         },
       },
+      // The company account this conversation belongs to, when it is about one.
+      ...SharedAccountField(),
     },
   } as const;
 };

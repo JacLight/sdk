@@ -323,6 +323,24 @@ export const SFOrderSchema = () => {
       name: {
         type: 'string',
       },
+      // Where the order came from — the campaign page hands its own utm over at
+      // checkout and it is stamped here, so revenue by source is a group-by on
+      // orders and survives the purge of `web_visit`.
+      attribution: {
+        type: 'object',
+        hidden: true,
+        properties: {
+          source: { type: 'string' },
+          medium: { type: 'string' },
+          campaign: { type: 'string' },
+          term: { type: 'string' },
+          content: { type: 'string' },
+          referrer: { type: 'string' },
+          landingPage: { type: 'string' },
+          at: { type: 'string', format: 'date-time' },
+        },
+      },
+
       email: {
         type: 'string',
       },

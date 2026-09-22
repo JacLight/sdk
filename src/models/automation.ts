@@ -42,6 +42,9 @@ export const AutomationSchema = () => {
           'marketing',
           'onboarding',
           'retention',
+          // A sales sequence: steps a rep enrols a lead into (send, wait, task),
+          // that stops itself when the lead replies. Same engine, own screen.
+          'sequence',
         ],
         'x-control': ControlType.selectMany,
         maxItems: 1,
