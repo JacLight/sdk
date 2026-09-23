@@ -21,6 +21,8 @@ export enum RoleType {
   RootUser = 'RootUser',
   RootPowerUser = 'RootPowerUser',
   Customer = 'Customer',
+  /** An AI employee's user. Held in addition to the groups it is given; grants nothing beyond a plain user by itself — it marks the identity as AI (it can never decide approvals or sign in). */
+  AI = 'AI',
 }
 
 const menuList = getMenuList();
@@ -42,6 +44,11 @@ export const getPermission = () => {
       content: [PermissionTypeContent.read, PermissionTypeContent.create],
       component: [PermissionTypeComponent.view],
       menuExclude: [menuList.All.value],
+    },
+    AI: {
+      content: [PermissionTypeContent.read],
+      component: [PermissionTypeComponent.view],
+      menuInclude: [menuList.All.value],
     },
     RootUser: {
       content: [PermissionTypeContent.read, PermissionTypeContent.create],

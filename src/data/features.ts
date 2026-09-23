@@ -88,6 +88,13 @@ export const getSiteFeatureList = () => {
       label: 'Unsubscribe',
       description: 'Enable unsubscribe functionality on your site',
       enable: false,
-    }
+    },
+    {
+      value: 'gift-card',
+      takesPage: true,
+      label: 'Gift Cards',
+      description: 'Check a gift card balance, on a page you name',
+      enable: false,
+    },
   ];
 };

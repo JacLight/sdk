@@ -594,6 +594,35 @@ export const SFProductSchema = () => {
           },
         },
       },
+      /**
+       * Sell this product AS a gift card. When a paid order carries it, the
+       * ledger issues one card per unit at the line's price (or the chosen
+       * denomination) and emails it to the recipient the shopper named. The
+       * product's own price is the default value; `denominations` offers fixed
+       * choices, `allowCustomAmount` lets the shopper type one within the range.
+       */
+      giftCard: {
+        type: 'object',
+        group: 'gift-card',
+        properties: {
+          enabled: { type: 'boolean', description: 'This product is a gift card: buying it issues one.' },
+          denominations: {
+            type: 'array',
+            items: { type: 'number' },
+            description: 'Fixed values the shopper can pick, e.g. 25, 50, 100. Empty means only the product price.',
+          },
+          allowCustomAmount: { type: 'boolean' },
+          minAmount: { type: 'number' },
+          maxAmount: { type: 'number' },
+          cardType: { type: 'string', enum: ['digital', 'physical'], default: 'digital' },
+          expiresAfterDays: {
+            type: 'number',
+            description: 'Days from purchase until the card expires. Empty means never — the default for purchased cards.',
+          },
+          collectRecipient: { type: 'boolean', default: true, description: 'Ask for a recipient name, email and message at checkout.' },
+          allowScheduledDelivery: { type: 'boolean', default: true, description: 'Let the shopper pick a date for the card email.' },
+        },
+      },
       bundle: {
         type: 'array',
         displayStyle: 'table',
