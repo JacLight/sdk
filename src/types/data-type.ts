@@ -28,7 +28,6 @@ export enum DataType {
   ai_employee = 'ai_employee',
   ai_employee_work = 'ai_employee_work',
   ai_employee_config = 'ai_employee_config',
-  ai_employee_template = 'ai_employee_template',
   creative = 'creative',
   creative_studio = 'creative_studio',
   dev_environment = 'dev_environment',
