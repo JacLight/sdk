@@ -26,6 +26,20 @@ export const SFInvoiceSchema = () => {
         group: 'number',
       },
       ...SharedAccountField(),
+      // What this invoice came from — e.g. `[{ datatype: 'lead', id }]` for a
+      // proposal quoted from a lead — the same shape a message's context uses.
+      context: {
+        type: 'array',
+        hidden: true,
+        items: {
+          type: 'object',
+          properties: {
+            datatype: { type: 'string' },
+            id: { type: 'string' },
+            name: { type: 'string' },
+          },
+        },
+      },
       currency: {
         type: 'string',
         default: 'USD',

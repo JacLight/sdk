@@ -38,6 +38,12 @@ export const AIEmployeeSchema = () => {
       icon: { type: 'string', description: 'Templates: its icon.' },
       summary: { type: 'string', description: 'Templates: one line on what it does.' },
       suggestedGroups: { type: 'array', items: { type: 'string' }, description: 'Templates: the access it usually needs — a hint when it is given access.' },
+      budgetToday: { type: 'object', readOnly: true, description: 'Today only (its timezone): credit added on top of the daily budget, and when spend was last reset.', properties: { date: { type: 'string' }, creditUsd: { type: 'number' }, resetAt: { type: 'string', format: 'date-time' }, alerted: { type: 'object', properties: { low: { type: 'string' }, out: { type: 'string' } } } } },
+      listensTo: {
+        type: 'array',
+        items: { type: 'string', enum: ['chat_queue', 'email', 'sms', 'social', 'ticket', 'order', 'form'], enumNames: ['Customer chat queue', 'Email', 'SMS', 'Social media', 'Support tickets', 'Orders', 'Forms'] },
+        description: 'Where it is alerted from, like a person keeping an eye on the desk, the inbox or the orders. Always on: direct messages, mentions, and work assigned to it. Chat queue: a customer is waiting for a person (whoever picks first gets them). Email / SMS: a customer message comes in. Social: a DM, comment or mention on the connected pages. Ticket: a new support ticket. Order: a new order. Form: a form is submitted.',
+      },
       jobTitle: { type: 'string', description: 'Its role, e.g. "Accounts receivable".' },
       avatar: { type: 'string' },
       status: {
@@ -84,7 +90,8 @@ export const AIEmployeeSchema = () => {
       limits: {
         type: 'object',
         properties: {
-          dailyBudgetUsd: { type: 'number', default: 5, minimum: 0, description: 'It stops taking work for the day once its runs have cost this much.' },
+          budgetEnabled: { type: 'boolean', default: true, description: 'Hold it to a daily budget. Off: no daily limit — it is never stopped for spend and no budget alerts are sent.' },
+          dailyBudgetUsd: { type: 'number', default: 5, minimum: 0, description: 'It stops taking work for the day once its runs have cost this much (when the daily budget is on).' },
           maxConcurrentJobs: { type: 'number', default: 1, minimum: 1, maximum: 20 },
           maxAttempts: { type: 'number', default: 2, minimum: 1, maximum: 10, description: 'A failed job is retried up to this many times in total.' },
         },
@@ -134,7 +141,12 @@ export const AIEmployeeWorkSchema = () => {
       ref: {
         type: 'object',
         description: 'The record the work is about.',
-        properties: { datatype: { type: 'string' }, id: { type: 'string' }, label: { type: 'string' } },
+        properties: {
+          datatype: { type: 'string' },
+          id: { type: 'string' },
+          label: { type: 'string' },
+          thread: { type: 'string', description: 'The conversation it belongs to (one customer on one channel), so later messages join the same work.' },
+        },
       },
       attachments: {
         type: 'array',
@@ -306,7 +318,7 @@ export const AIEmployeeConfigSchema = () => {
               end: { type: 'string' },
             },
           },
-          limits: { type: 'object', properties: { dailyBudgetUsd: { type: 'number' }, maxConcurrentJobs: { type: 'number' }, maxAttempts: { type: 'number' } } },
+          limits: { type: 'object', properties: { budgetEnabled: { type: 'boolean' }, dailyBudgetUsd: { type: 'number' }, maxConcurrentJobs: { type: 'number' }, maxAttempts: { type: 'number' } } },
           approvals: {
             type: 'object',
             properties: {
@@ -333,6 +345,8 @@ export const AIEmployeeConfigSchema = () => {
         description: 'The platform\'s own settings, read from the shared organization only.',
         properties: {
           pingMinutes: { type: 'number', minimum: 1, default: 15, description: 'How often the platform checks in with every switched-on AI employee.' },
+          unclaimedMinutes: { type: 'number', minimum: 1, default: 30, description: 'Something that came in and nobody has taken after this long is raised in the AI team workspace.' },
+          handlingMinutes: { type: 'number', minimum: 5, default: 120, description: 'Something taken but not finished after this long is opened again for anyone to take.' },
         },
       },
     },

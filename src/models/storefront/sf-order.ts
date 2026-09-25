@@ -527,6 +527,12 @@ export const SFOrderSchema = () => {
         description:
           'Affiliate code applied to this order (for display / tracking)',
       },
+      affiliateVisitorKey: {
+        type: 'string',
+        description: 'Who placed the order (visitor id, or a hash of IP and browser) — converts the referral their affiliate-link click opened.',
+        readOnly: true,
+        hideIn: ['form'],
+      },
       // Other
       commission: {
         type: 'number',

@@ -67,6 +67,31 @@ export interface BaseModelShare {
   openedAt?: string;
 }
 
+// System-level "who is dealing with this", on any record. The record is the
+// queue: something arriving on a watched channel is stamped `open`; whoever
+// takes it (a person or an AI employee) sets `in_progress` — only while it is
+// still open, so two can never both take it — and finishes it `done` with a
+// one-line outcome, or `no_action` with a reason. Records nobody watches have
+// no `handling` at all.
+export type BaseModelHandlingStatus = 'open' | 'in_progress' | 'done' | 'no_action';
+export interface BaseModelHandling {
+  status: BaseModelHandlingStatus;
+  /** The channel it arrived on (email, sms, social, ticket, order, form…), when it came in on one. */
+  channel?: string;
+  /** What it is, in a line — shown wherever the handling is. */
+  title?: string;
+  /** The conversation it belongs to — records of one thread are taken and finished together. */
+  thread?: string;
+  since?: string;
+  by?: string;
+  byName?: string;
+  takenAt?: string;
+  doneAt?: string;
+  /** What was done (done) or why nothing was (no_action). */
+  outcome?: string;
+  history?: { status: BaseModelHandlingStatus; by?: string; byName?: string; at: string; note?: string }[];
+}
+
 export interface BaseModelStats {
   likes?: number;
   dislikes?: number;
@@ -103,6 +128,7 @@ export interface BaseModel<T> {
   rules?: any[];
   stats?: BaseModelStats;
   share?: BaseModelShare;
+  handling?: BaseModelHandling;
   owner?: {
     datatype?: DataType;
     id?: string;
@@ -118,7 +144,7 @@ export interface BaseModel<T> {
   client?: any;
 }
 
-export const baseModelSystemFields = ['pk', 'sk', 'name', 'datatype', 'version', 'createdate', 'modifydate', 'publishedDate', 'author', 'notes', 'schedules', 'rules', 'schedule', 'stats', 'share', 'state', 'search', 'create_hash', 'modified_by', 'created_by', 'client'] as const;
+export const baseModelSystemFields = ['pk', 'sk', 'name', 'datatype', 'version', 'createdate', 'modifydate', 'publishedDate', 'author', 'notes', 'schedules', 'rules', 'schedule', 'stats', 'share', 'handling', 'state', 'search', 'create_hash', 'modified_by', 'created_by', 'client'] as const;
 
 export const PostSubSchema = () => {
   return {

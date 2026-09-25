@@ -667,12 +667,12 @@ export const SFProductSchema = () => {
       workflow: {
         type: 'object',
         description:
-          'Default processing pipeline this product fires into when added to an order (kitchen, bar, lab, prep station, etc.). Operator can override per fire.',
+          "The product's own publishing/approval workflow — the workflow a product goes through to be approved and published into the catalog. It has nothing to do with orders: order lines are prepared by their prepStation option and fired to prep-pipeline.",
         collapsible: true,
         properties: {
           workflowId: {
             type: 'string',
-            description: 'Default workflow definition this product routes to',
+            description: 'Workflow definition that approves/publishes this product into the catalog (not a kitchen or prep station)',
             'x-control': ControlType.selectMany,
             dataSource: {
               source: 'collection',
