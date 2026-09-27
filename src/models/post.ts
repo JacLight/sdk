@@ -3,6 +3,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { DataType, ControlType } from '../types';
 import { registerCollection } from '../default-schema';
 import { FileInfoSchema } from './file-info';
+import { ProgramSettingsSchema, ProgramStageSchema, ProgramPartSchema, ProgramGateSchema } from './program-structure';
 
 export const PostSchema = () => {
   return {
@@ -10,7 +11,7 @@ export const PostSchema = () => {
     properties: {
       contentType: {
         type: 'string',
-        enum: ['post', 'documentation', 'ebook', 'course', 'blog-series'],
+        enum: ['post', 'documentation', 'ebook', 'course', 'blog-series', 'program'],
         default: 'post',
         'x-control': ControlType.selectMany,
         group: 'template',
@@ -105,8 +106,18 @@ export const PostSchema = () => {
             content: {
               type: 'string',
               description:
-                'BlockNote-mode body. Ignored / absent in Form mode.',
+                'Legacy BlockNote body. New pages use `parts` (html parts for written content).',
             },
+            template: {
+              type: 'string',
+              description: 'Which template made the page (article, video, pdf, collection-form, upload-assignment, quiz, gallery, custom). Informational — the parts are the truth.',
+            },
+            parts: {
+              type: 'array',
+              description: 'The page body in order: html, video, audio, pdf, form, upload, quiz… Written content is HTML.',
+              items: ProgramPartSchema(),
+            },
+            stage: ProgramStageSchema(),
           },
         },
       },
@@ -133,6 +144,7 @@ export const PostSchema = () => {
               type: 'string',
               description: 'Optional heading id inside the page',
             },
+            gate: ProgramGateSchema(),
             children: {
               type: 'array',
               items: { type: 'object', additionalProperties: true },
@@ -140,6 +152,7 @@ export const PostSchema = () => {
           },
         },
       },
+      program: ProgramSettingsSchema(),
       media: {
         type: 'array',
         'x-control': ControlType.file,
