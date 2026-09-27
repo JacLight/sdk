@@ -651,6 +651,25 @@ export const SFProductSchema = () => {
           },
         },
       },
+      /**
+       * Restricted sale (alcohol, tobacco…). At the POS the operator adding the
+       * line must hold the matching permission: the Workforce Readiness `pos`
+       * gate is checked with `permissionScope`, which matches a requirement
+       * rule's `enforcement.pos.permissionScope` (e.g. an alcohol server cert).
+       */
+      restriction: {
+        type: 'object',
+        group: 'restriction',
+        collapsible: true,
+        properties: {
+          ageRestricted: { type: 'boolean', default: false, description: 'Age-restricted product (alcohol, tobacco…)' },
+          minimumAge: { type: 'number', description: 'Minimum customer age, e.g. 21' },
+          permissionScope: {
+            type: 'string',
+            description: 'POS permission the seller needs, e.g. alcohol. Matches a requirement rule’s POS permission scope. Empty with age-restricted on = age_restricted',
+          },
+        },
+      },
       affiliateEligible: {
         type: 'boolean',
         default: true,

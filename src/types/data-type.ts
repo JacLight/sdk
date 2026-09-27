@@ -227,6 +227,12 @@ export enum DataType {
   // HR - Offboarding
   bm_offboarding = 'bm_offboarding',
   bm_exit_interview = 'bm_exit_interview',
+  // HR - Workforce Readiness (requirements, journeys, compliance ledger)
+  bm_requirement_rule = 'bm_requirement_rule',
+  bm_requirement_status = 'bm_requirement_status',
+  bm_journey_template = 'bm_journey_template',
+  bm_journey = 'bm_journey',
+  bm_signoff = 'bm_signoff',
 
   // Accounts Payable / Bills
   bm_bill = 'bm_bill',

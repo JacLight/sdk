@@ -58,6 +58,25 @@ export const PasswordPolicySchema = () => {
         type: 'string',
         description: 'characters not allowed in password',
       },
+      allowSelfServiceChange: {
+        type: 'boolean',
+        default: true,
+        title: 'People can change their own password',
+        description: 'Off: people this policy applies to cannot change their own password (an administrator does it). Finishing a temporary-password sign-in is always allowed.',
+      },
+      allowSelfServiceReset: {
+        type: 'boolean',
+        default: true,
+        title: 'People can reset a forgotten password',
+        description: 'Off: "Forgot password" sends nothing to people this policy applies to.',
+      },
+      isDefault: {
+        type: 'boolean',
+        exclusive: true,
+        default: false,
+        title: 'Organisation default',
+        description: 'Applies to everyone with no policy set on them, their groups or their roles.',
+      },
     },
   } as const;
 };

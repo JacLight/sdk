@@ -1,7 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
-import { ControlType, DataType } from '../../types';
-import { CallTranscriptFields, VoiceField, VoiceProviderField } from '../_voice-fields';
+import { DataType } from '../../types';
+import { CallTranscriptFields } from '../_voice-fields';
 
 /**
  * Phone Routing Schema
@@ -653,38 +653,8 @@ export const IVRRoutingSchema = () => {
               'System prompt / context for the AI (business info, what it can help with, transfer rules)',
             'x-control-variant': 'textarea',
           },
-          // Declared literally, NOT spread from the shared helper: this schema is
-          // `as const` and feeds FromSchema, and spreading a runtime value widens
-          // every type — the generated model degrades to `unknown` and every consumer
-          // silently stops type-checking.
-          voice: {
-            type: 'string',
-            'x-control': ControlType.selectMany,
-            dataSource: {
-              source: 'function',
-              value: 'aiVoices',
-              label: 'info',
-              filter: { platform: '{{voiceProvider}}' },
-            },
-            default: 'ballad',
-            title: 'AI Voice',
-            description: 'Voice character. Mapped to the closest equivalent when the call runs on a different engine.',
-          },
-          language: {
-            type: 'string',
-            description: 'Language code (e.g., en-US, es-ES)',
-            default: 'en-US',
-          },
-          // How eagerly the AI takes its turn: low = patient (waits for the caller
-          // to finish, won't jump in or talk over silence), high = snappy.
-          eagerness: {
-            type: 'string',
-            enum: ['low', 'medium', 'high'],
-            default: 'low',
-            title: 'Response eagerness',
-          },
-          ...VoiceField(),
-          ...VoiceProviderField(),
+          // No voice, engine, language or answer speed here: those belong to the
+          // AI agent that answers.
           canTransfer: {
             type: 'boolean',
             description:
@@ -701,10 +671,6 @@ export const IVRRoutingSchema = () => {
             maximum: 600,
             description: 'Max seconds for AI conversation before transferring',
             default: 120,
-          },
-          phoneConfigId: {
-            type: 'string',
-            description: 'Phone config reference for WebSocket connection',
           },
         },
       },

@@ -110,6 +110,38 @@ export const AIEmployeeSchema = () => {
       },
 
       template: { type: 'string', readOnly: true, description: 'The template it was created from, if any.' },
+
+      voice: {
+        type: 'object',
+        description: 'How it sounds on the phone. Calls to a number assigned to it are answered by it, and calls it places go out from that number — in this voice, from its own instructions.',
+        properties: {
+          enabled: { type: 'boolean', default: true, description: 'Takes phone calls. Off: calls to its numbers are not answered by it, it places no calls, and its voice agent is removed; the chosen voice is kept for when it is turned back on.' },
+          voice: { type: 'string', description: 'The voice: an ElevenLabs voice_id or an OpenAI voice name — whichever the voice list offered.' },
+          platform: { type: 'string', enum: ['elevenlabs', 'openai-realtime'], description: 'The engine the chosen voice belongs to. Set with the voice; not a separate choice.' },
+          voiceName: { type: 'string', description: 'What people call the voice (an ElevenLabs voice_id means nothing to a person). Set with the voice.' },
+          language: { type: 'string', default: 'en', description: 'The language it speaks on calls.' },
+          greeting: { type: 'string', description: 'What it says when it answers, e.g. "Hi, this is Ava from Appmint — how can I help?". Blank: it greets in its own words.' },
+          eagerness: { type: 'string', enum: ['low', 'medium', 'high'], enumNames: ['Patient — waits for long pauses', 'Balanced', 'Quick — answers at short pauses'], default: 'medium', description: 'How quickly it answers once the caller stops talking.' },
+          tools: {
+            type: 'array',
+            items: { type: 'string' },
+            default: ['search_customers', 'create_lead', 'take_message', 'query_knowledge', 'check_availability', 'get_reservation_types', 'create_reservation', 'confirm_reservation', 'modify_reservation', 'cancel_reservation', 'create_ticket', 'confirm_order_status', 'check_transfer_target'],
+            description: 'What it can do during a call. Fewer tools answer faster — every tool is read on every turn.',
+          },
+        },
+      },
+      voiceAgent: {
+        type: 'object',
+        readOnly: true,
+        description: 'Set by the server: the agent its voice runs on at the provider (ElevenLabs keeps one per voiced employee, named appmint-<org>-<record id>). Kept in step with this record on every save.',
+        properties: {
+          platform: { type: 'string' },
+          remoteId: { type: 'string', description: 'The provider\'s own agent id.' },
+          hash: { type: 'string', description: 'Fingerprint of what was last pushed; a mismatch means it is re-pushed.' },
+          syncedAt: { type: 'string', format: 'date-time' },
+          error: { type: 'string', description: 'Why the last push failed, if it did.' },
+        },
+      },
     },
   } as const;
 };
@@ -133,8 +165,8 @@ export const AIEmployeeWorkSchema = () => {
       instructions: { type: 'string', 'x-control': ControlType.richtext },
       source: {
         type: 'string',
-        enum: ['assigned', 'ping', 'direct', 'message'],
-        description: 'assigned: a record was assigned to it. ping: the platform checked in with it, so it carries on with its role on its own. direct: someone asked. message: someone wrote to it in Workspace.',
+        enum: ['assigned', 'ping', 'direct', 'message', 'call'],
+        description: 'assigned: a record was assigned to it. ping: the platform checked in with it, so it carries on with its role on its own. direct: someone asked. message: someone wrote to it in Workspace. call: a phone call it took or made has ended — the transcript is attached, to log and follow up.',
       },
       approvalItem: { type: 'string', readOnly: true, description: 'The approval card posted in the AI team workspace for its current request.' },
       didWork: { type: 'boolean', readOnly: true, description: 'A ping on which it did something (an action step) rather than only checking in.' },
@@ -347,6 +379,7 @@ export const AIEmployeeConfigSchema = () => {
           pingMinutes: { type: 'number', minimum: 1, default: 15, description: 'How often the platform checks in with every switched-on AI employee.' },
           unclaimedMinutes: { type: 'number', minimum: 1, default: 30, description: 'Something that came in and nobody has taken after this long is raised in the AI team workspace.' },
           handlingMinutes: { type: 'number', minimum: 5, default: 120, description: 'Something taken but not finished after this long is opened again for anyone to take.' },
+          voiceAgentSweepHour: { type: 'number', minimum: 0, maximum: 23, default: 4, description: 'Hour of the day (server time) each organization\'s voice agents at the provider are checked: ones whose employee or assistant is gone, or no longer on that provider, are removed; out-of-date ones are re-pushed.' },
         },
       },
     },

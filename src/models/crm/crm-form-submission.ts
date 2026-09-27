@@ -33,6 +33,20 @@ export const FormSubmissionSchema = () => {
         description:
           'sk of the parent crm_form — used to fetch its schema for rendering values.',
       },
+      source: {
+        type: 'object',
+        readOnly: true,
+        description:
+          'What asked for this submission, when something did (a journey pulse survey: datatype bm_journey, id, key = the task key, checkpoint, respondent). Written by the server.',
+        properties: {
+          datatype: { type: 'string' },
+          id: { type: 'string' },
+          key: { type: 'string' },
+          taskId: { type: 'string' },
+          checkpoint: { type: 'string' },
+          respondent: { type: 'string' },
+        },
+      },
       values: {
         type: 'object',
         description:
