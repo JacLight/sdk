@@ -69,6 +69,8 @@ export const TaxRuleSchema = () => {
           'futa',
           'state_income',
           'state_disability',
+          // Employee-paid paid family leave contribution (NY PFL) — a line of its own, apart from SDI.
+          'state_family_leave',
           'suta',
           'local_income',
           'other',
@@ -104,6 +106,17 @@ export const TaxRuleSchema = () => {
       employerRate: {
         type: 'number',
         description: 'Employer-paid rate 0–1 (FICA SS 6.2% employer match; FUTA 0.6%; SUTA varies)',
+        group: 'calc',
+      },
+      employeeMaxPerWeek: {
+        type: 'number',
+        description: 'Cap on the employee contribution per WEEK of the pay period (NY disability: $0.60) — scaled to the pay frequency',
+        group: 'calc',
+      },
+      wageBasis: {
+        type: 'string',
+        enum: ['state', 'fica', 'gross'],
+        description: 'Which wages the rate applies to: state taxable (default), FICA-subject, or gross taxable earnings before pre-tax deductions',
         group: 'calc',
       },
       wageBase: {

@@ -103,6 +103,7 @@ export const AIEmployeeSchema = () => {
         properties: {
           delete: { type: 'string', enum: ['require', 'allow'], default: 'require' },
           bulkSend: { type: 'string', enum: ['require', 'allow'], default: 'require', description: 'Messages to more than a few people at once.' },
+          calls: { type: 'string', enum: ['require', 'allow'], default: 'require', description: 'Placing a phone call (outbound, from its number).' },
           money: { type: 'string', enum: ['require', 'allow'], default: 'require', description: 'Refunds, payments, charges, credits.' },
           moneyThresholdUsd: { type: 'number', default: 0, minimum: 0, description: 'With money on "allow", amounts above this still need an OK.' },
           usersAndPermissions: { type: 'string', enum: ['require', 'allow'], default: 'require' },
@@ -165,8 +166,8 @@ export const AIEmployeeWorkSchema = () => {
       instructions: { type: 'string', 'x-control': ControlType.richtext },
       source: {
         type: 'string',
-        enum: ['assigned', 'ping', 'direct', 'message', 'call'],
-        description: 'assigned: a record was assigned to it. ping: the platform checked in with it, so it carries on with its role on its own. direct: someone asked. message: someone wrote to it in Workspace. call: a phone call it took or made has ended — the transcript is attached, to log and follow up.',
+        enum: ['assigned', 'ping', 'direct', 'message', 'call', 'config'],
+        description: 'assigned: a record was assigned to it. ping: the platform checked in with it, so it carries on with its role on its own. direct: someone asked. message: someone wrote to it in Workspace. call: a phone call it took or made has ended — the transcript is attached, to log and follow up. config: its own setup changed (a number given or taken, its voice, instructions, access) — the facts, so it knows.',
       },
       approvalItem: { type: 'string', readOnly: true, description: 'The approval card posted in the AI team workspace for its current request.' },
       didWork: { type: 'boolean', readOnly: true, description: 'A ping on which it did something (an action step) rather than only checking in.' },
