@@ -15,7 +15,6 @@ export * from './tag';
 export * from './user';
 export * from './access-card';
 export * from './post';
-export * from './program-structure';
 export * from './program';
 export * from './config';
 export * from './script';

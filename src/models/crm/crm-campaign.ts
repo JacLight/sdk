@@ -11,8 +11,6 @@ export const CampaignSchema = () => {
         type: 'string',
         minLength: 1,
         maxLength: 200,
-        pattern: '^[a-zA-Z_\\-0-9]*$',
-        transform: ['random-string::10'],
         group: 'basic',
         description: 'Campaign name',
       },
@@ -43,8 +41,10 @@ export const CampaignSchema = () => {
       },
       status: {
         type: 'string',
-        enum: ['draft', 'active', 'paused', 'completed', 'scheduled'],
+        // Set by the Campaign Manager (launch, schedule, pause…), never typed in.
+        enum: ['draft', 'scheduled', 'active', 'paused', 'completed', 'failed', 'cancelled'],
         default: 'draft',
+        readOnly: true,
         group: 'basic',
         description: 'Campaign status',
       },
@@ -53,6 +53,14 @@ export const CampaignSchema = () => {
         minimum: 0,
         group: 'budget',
         description: 'Total campaign budget',
+      },
+      budgetType: {
+        type: 'string',
+        enum: ['lifetime', 'daily'],
+        enumNames: ['Lifetime total', 'Per day'],
+        default: 'lifetime',
+        group: 'budget',
+        description: 'Whether the budget is the whole run or per day',
       },
       spent: {
         type: 'number',
@@ -90,6 +98,16 @@ export const CampaignSchema = () => {
         },
         group: 'targeting',
         description: 'Target platforms',
+      },
+      adAccountId: {
+        type: 'string',
+        group: 'targeting',
+        description: 'Ad platform account the campaign is created in',
+      },
+      broadcastId: {
+        type: 'string',
+        group: 'basic',
+        description: 'Email campaigns: the email broadcast this campaign sends',
       },
       adFormat: {
         type: 'string',

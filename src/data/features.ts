@@ -90,6 +90,13 @@ export const getSiteFeatureList = () => {
       enable: false,
     },
     {
+      value: 'content-player',
+      takesPage: true,
+      label: 'Content Player',
+      description: 'Courses, applications, trainings and multi-page documents, taken page by page on a page you name',
+      enable: false,
+    },
+    {
       value: 'gift-card',
       takesPage: true,
       label: 'Gift Cards',
