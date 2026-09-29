@@ -28,7 +28,7 @@ export enum DataType {
   ai_employee = 'ai_employee',
   ai_employee_work = 'ai_employee_work',
   ai_employee_config = 'ai_employee_config',
-  program_enrollment = 'program_enrollment',
+  post_progress = 'post_progress',
   creative = 'creative',
   creative_studio = 'creative_studio',
   dev_environment = 'dev_environment',
@@ -180,6 +180,7 @@ export enum DataType {
   bm_pay_stub = 'bm_pay_stub',
   bm_payroll_profile = 'bm_payroll_profile',
   bm_tax_form = 'bm_tax_form',
+  bm_efile_submission = 'bm_efile_submission',
   bm_work_order = 'bm_work_order',
   // Payroll configuration catalogs (configurable per org/region)
   bm_earning_type = 'bm_earning_type',

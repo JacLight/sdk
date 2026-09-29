@@ -16,6 +16,9 @@ export * from './deduction-type';
 export * from './employee-deduction';
 export * from './tax-rule';
 
+// Government e-filing: transmission status ledger
+export * from './efile-submission';
+
 // HR - Recruitment
 export * from './recruitment';
 

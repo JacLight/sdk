@@ -287,6 +287,21 @@ export const EmployeeSchema = () => {
           },
         },
       },
+      tinMatch: {
+        type: 'object',
+        collapsible: true,
+        readOnly: true,
+        title: 'IRS TIN match',
+        description: 'Latest IRS TIN Matching result for this payee (Pub 2108A code 0-8). Written by the server; tinLast4 shows which TIN it was for.',
+        properties: {
+          code: { type: 'string', enum: ['0', '1', '2', '3', '4', '5', '6', '7', '8'] },
+          meaning: { type: 'string' },
+          checkedAt: { type: 'string', format: 'date-time' },
+          method: { type: 'string', enum: ['interactive', 'bulk'] },
+          submissionId: { type: 'string' },
+          tinLast4: { type: 'string' },
+        },
+      },
       notes: {
         type: 'string',
         'x-control-variant': 'textarea',

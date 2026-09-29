@@ -11,7 +11,7 @@ import { EMPLOYEE_DOCUMENT_TYPES } from './documents';
  * certification, a policy acknowledgement, a document, a form, an observed floor
  * sign-off or a one-off task. It says who it applies to, when it is due, how often
  * it renews, what evidence satisfies it, and what happens at each gate (scheduler,
- * clock-in, POS, kitchen station, payroll, access) while it is missing.
+ * clock-in, POS, work station, payroll, access) while it is missing.
  *
  * Readiness itself is computed on the server; `bm_requirement_status` is the
  * append-only ledger of every status change, so "who worked non-compliant, when,
@@ -376,7 +376,8 @@ export const RequirementRuleSchema = () => {
               permissionScope: { type: 'string', description: 'Only this POS permission is gated, e.g. alcohol. Empty = the whole register' },
             },
           },
-          kitchenStation: GateEffectSchema(),
+          // Stored key stays `kitchenStation`; any work line with stations (prep, assembly, service bay).
+          kitchenStation: { ...GateEffectSchema(), title: 'Work station', description: 'Moving a ticket at a station (prep line, assembly, service bay) needs this requirement' },
           payroll: GateEffectSchema(),
           access: {
             type: 'object',

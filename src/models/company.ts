@@ -3,7 +3,7 @@ import { registerCollection } from '../default-schema';
 import { ControlType, DataType } from '../types';
 import { FileInfoSchema } from './file-info';
 import { AddressSchema } from './crm/crm-address';
-import { getCountryDropDownOptions } from '../data/countries/search';
+import { getCurrencies } from '../data/countries/search';
 
 /**
  * Canonical business identity used by Books, Payroll, CRM, etc. Lives on
@@ -25,11 +25,8 @@ export const BusinessProfileSchema = () => {
       fiscalYearStart: { type: 'string', pattern: '^(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$' },
       currency: {
         type: 'string',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'json',
-          value: getCountryDropDownOptions(),
-        },
+        // One currency the business reports in (dashboards, books) — a currency code, not a country
+        enum: getCurrencies(),
         default: 'USD',
       },
       timezone: { type: 'string', maxLength: 64 },

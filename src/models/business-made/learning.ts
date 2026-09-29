@@ -63,6 +63,14 @@ export const CourseSchema = () => {
         description: 'A completion stops counting this many months later. A requirement rule’s renewal wins over this. Empty = never expires.',
         group: 'type',
       },
+      postId: {
+        type: 'string',
+        title: 'Content Studio course',
+        'x-control': ControlType.selectSingle,
+        dataSource: { source: 'collection', collection: DataType.post, value: 'sk', label: 'title' },
+        description: 'A Content Studio course (post sk). When set, the course is taken there: completion and score come only from the person’s post_progress, marked by the server.',
+        group: 'type',
+      },
       marketplace: {
         type: 'object',
         collapsible: true,
@@ -622,6 +630,17 @@ export const CourseEnrollmentSchema = () => {
           completedAt: { type: 'string', format: 'date-time' },
           score: { type: 'number' },
           certificateUrl: { type: 'string' },
+        },
+      },
+      selfReport: {
+        type: 'object',
+        collapsible: true,
+        readOnly: true,
+        description: 'The person said they finished (and the score they gave). Awaiting HR confirmation — never counts as a completion.',
+        properties: {
+          submittedAt: { type: 'string', format: 'date-time' },
+          score: { type: 'number' },
+          timeSpentMinutes: { type: 'number' },
         },
       },
       manualCompletion: {

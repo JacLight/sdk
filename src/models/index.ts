@@ -15,7 +15,7 @@ export * from './tag';
 export * from './user';
 export * from './access-card';
 export * from './post';
-export * from './program';
+export * from './post-progress';
 export * from './config';
 export * from './script';
 export * from './workflow-definition';

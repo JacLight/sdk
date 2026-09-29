@@ -264,7 +264,7 @@ export const PostSchema = () => {
       },
       course: {
         type: 'object',
-        description: 'Set to make this post a course people enroll in. Progress lives in program_enrollment.',
+        description: 'Set to make this post a course people enroll in. Progress lives in post_progress.',
         collapsible: true,
         properties: {
           dueInDays: { type: 'number', minimum: 0 },
@@ -273,6 +273,11 @@ export const PostSchema = () => {
             enum: ['sidebar', 'steps'],
             default: 'sidebar',
             description: 'How the player shows it: `sidebar` lists the outline beside the content (courses, training); `steps` shows one step at a time (applications, multi-stage forms).',
+          },
+          navigation: {
+            type: 'string',
+            enum: ['sidebar', 'top', 'none'],
+            description: 'Where the steps sit: `sidebar` beside the page (sections collapsible), `top` a numbered stepper, `none` progress only. Defaults to `top` for steps, `sidebar` otherwise.',
           },
         },
       },

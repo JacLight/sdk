@@ -3,15 +3,16 @@ import { registerCollection } from '../default-schema';
 import { DataType } from '../types';
 
 /**
- * One record per person per course (a `post` with contentType course).
- * The person is the record's BaseModel `owner`.
+ * One person's way through a multi-page post — a course they are taking, an
+ * application or multi-stage form they are filling in. One record per person
+ * per post; the person is the record's BaseModel `owner`.
  * `progress` holds what the person has done, keyed by page id.
  */
-export const ProgramEnrollmentSchema = () =>
+export const PostProgressSchema = () =>
   ({
     type: 'object',
     properties: {
-      programId: { type: 'string', description: 'sk of the course post' },
+      postId: { type: 'string', description: 'sk of the post' },
       status: { type: 'string', enum: ['active', 'completed', 'withdrawn'], default: 'active' },
       enrolledAt: { type: 'string', format: 'date-time' },
       dueAt: { type: 'string', format: 'date-time' },
@@ -41,10 +42,10 @@ export const ProgramEnrollmentSchema = () =>
         },
       },
     },
-    required: ['programId'],
+    required: ['postId'],
   }) as const;
 
-const pe = ProgramEnrollmentSchema();
-export type ProgramEnrollmentModel = FromSchema<typeof pe>;
+const pp = PostProgressSchema();
+export type PostProgressModel = FromSchema<typeof pp>;
 
-registerCollection('Program Enrollment', DataType.program_enrollment, ProgramEnrollmentSchema());
+registerCollection('Post Progress', DataType.post_progress, PostProgressSchema());
