@@ -11,13 +11,11 @@ export const SFInvoiceSchema = () => {
     type: 'object',
     properties: {
       // --- Invoice Identity ---
+      // Given by the server when the invoice is created, the same way as an order's.
       number: {
         type: 'string',
-        pattern: '^[a-zA-Z_\\-0-9]*$',
-        minLength: 8,
-        maxLength: 8,
         unique: true,
-        transform: ['random-string::8'],
+        readOnly: true,
         group: 'number',
       },
       po: {

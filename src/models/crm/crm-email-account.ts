@@ -28,6 +28,20 @@ export const EmailAccountSchema = () => {
         description: 'e.g., support1@burnerdomain.com',
         group: 'identity',
       },
+      fromName: {
+        type: "string",
+        maxLength: 100,
+        title: 'From Name',
+        description: 'The name people see on mail from this address, e.g. "Ava at Harbor Grill". Blank: the address alone.',
+        group: 'identity',
+      },
+      signature: {
+        type: "string",
+        'x-control': ControlType.richtext,
+        title: 'Signature',
+        description: 'Added to the end of mail written from this address.',
+        group: 'identity',
+      },
 
       // Domain Link
       domainId: {
@@ -42,8 +56,18 @@ export const EmailAccountSchema = () => {
         description: 'e.g., burnerdomain.com',
         group: 'config',
       },
+      hostedBy: {
+        type: "string",
+        enum: ["spinforge", "google", "microsoft", "other"],
+        enumNames: ["SpinForge Mail", "Google Workspace", "Microsoft 365", "Other"],
+        title: 'Mail Hosted By',
+        description: 'The mail system this mailbox lives on — where its owner reads and manages its mail.',
+        group: 'config',
+      },
       provider: {
         type: "string",
+        title: 'Sending Gateway',
+        description: 'The connection mail from this account is sent through by the platform. Blank for a mailbox the platform does not send from.',
         dataSource:{
           collection: DataType.config,
           valueField: 'sk',
@@ -336,7 +360,7 @@ export const EmailAccountSchema = () => {
         items: { type: 'string' },
       },
     },
-    required: ['name', 'accountName', 'emailAddress', 'provider'],
+    required: ['name', 'accountName', 'emailAddress'],
   } as const;
 }
 

@@ -1,7 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { ControlType, DataType } from '../../types';
-import { VoiceField, VoiceProviderField } from '../_voice-fields';
+import { SpeakingSpeedField, VoiceField, VoiceProviderField } from '../_voice-fields';
 
 export const AIAssistantSchema = () => {
   return {
@@ -25,6 +25,12 @@ export const AIAssistantSchema = () => {
       title: {
         type: 'string',
       },
+      aiAgent: {
+        type: 'boolean',
+        readOnly: true,
+        description: "This is the AI Agent's own record: its voice, speed, greeting and instructions are the AI Agent's. Created when voice is turned on for the AI Agent; one per company. Deleting it returns the AI Agent to text only and withdraws its agreement.",
+        group: 'identity_name',
+      },
       description: {
         type: 'string',
         'x-control': ControlType.richtext,
@@ -38,6 +44,7 @@ export const AIAssistantSchema = () => {
       },
       voice: { ...VoiceField().voice, group: 'behavior_voice' },
       voiceProvider: { ...VoiceProviderField().voiceProvider, group: 'behavior_voice' },
+      speakingSpeed: { ...SpeakingSpeedField().speakingSpeed, group: 'behavior_voice' },
       behaviorRules: {
         type: 'array',
         items: { type: 'string' },

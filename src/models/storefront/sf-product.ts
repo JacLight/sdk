@@ -32,6 +32,8 @@ export const SFProductSchema = () => {
         maxLength: 50,
         unique: true,
         textSearch: true,
+        // Left blank, the server makes one from the name when the product is created.
+        placeholder: 'Made from the name if left blank',
         group: 'slug',
       },
       price: {

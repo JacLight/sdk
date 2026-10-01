@@ -1,3 +1,4 @@
+import { SpeakingSpeedField } from './_voice-fields';
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../default-schema';
 import { ControlType, DataType } from '../types';
@@ -123,6 +124,7 @@ export const AIEmployeeSchema = () => {
           language: { type: 'string', default: 'en', description: 'The language it speaks on calls.' },
           greeting: { type: 'string', description: 'What it says when it answers, e.g. "Hi, this is Ava from Appmint — how can I help?". Blank: it greets in its own words.' },
           eagerness: { type: 'string', enum: ['low', 'medium', 'high'], enumNames: ['Patient — waits for long pauses', 'Balanced', 'Quick — answers at short pauses'], default: 'medium', description: 'How quickly it answers once the caller stops talking.' },
+          ...SpeakingSpeedField(),
           tools: {
             type: 'array',
             items: { type: 'string' },

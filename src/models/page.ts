@@ -195,7 +195,7 @@ export const PageSchema = () => {
       },
       appType: {
         type: 'string',
-        enum: ['web', 'mobile', 'form', 'presentation'],
+        enum: ['web', 'mobile'],
         default: 'web',
         hidden: true,
       },
