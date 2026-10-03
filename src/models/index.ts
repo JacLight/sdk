@@ -16,6 +16,7 @@ export * from './user';
 export * from './access-card';
 export * from './post';
 export * from './post-progress';
+export * from './idp-client';
 export * from './config';
 export * from './script';
 export * from './workflow-definition';

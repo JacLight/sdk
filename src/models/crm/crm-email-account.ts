@@ -64,6 +64,27 @@ export const EmailAccountSchema = () => {
         description: 'The mail system this mailbox lives on — where its owner reads and manages its mail.',
         group: 'config',
       },
+      password: {
+        type: "string",
+        format: "password",
+        title: 'Mailbox Password',
+        description: "The mailbox's own password, for a mailbox the platform signs in to as itself (SpinForge Mail) — to send as it and read its inbox. Set when the mailbox is created; reset it there too.",
+        group: 'config',
+      },
+      syncIncoming: {
+        type: "boolean",
+        default: false,
+        title: 'Read Incoming Mail',
+        description: 'Off by default: the owner reads it at webmail. On for a shared or system mailbox — new mail is filed as messages, for the people and AI employees it is assigned to.',
+        group: 'config',
+      },
+      syncFolder: {
+        type: "string",
+        default: "inbox",
+        title: 'Folder to Read',
+        description: 'Which folder of the mailbox is read when incoming mail is on — e.g. inbox, or a folder the owner files support mail into.',
+        group: 'config',
+      },
       provider: {
         type: "string",
         title: 'Sending Gateway',
