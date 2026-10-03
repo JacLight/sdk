@@ -265,24 +265,6 @@ export const SettingSchema = () => {
               },
             },
           },
-          operatingHours: {
-            type: 'array',
-            title: 'Operating hours',
-            description:
-              'When the business is open, per weekday. Shifts outside these hours are flagged.',
-            items: {
-              type: 'object',
-              properties: {
-                day: {
-                  type: 'string',
-                  enum: ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'],
-                },
-                open: { type: 'string' },
-                close: { type: 'string' },
-                closed: { type: 'boolean', default: false },
-              },
-            },
-          },
           patternType: {
             type: 'string',
             enum: ['weekly', 'cycle'],
