@@ -101,6 +101,24 @@ export const BusinessLocationSchema = () => {
         notes: 'Phone GPS is commonly 20-50m out, so anything under ~75m will reject honest punches.',
         group: 'geofence',
       },
+      // When this location is open, one entry per weekday, in the location's own
+      // `timezone`. Same shape as setting.scheduling.operatingHours. Empty = hours
+      // not set; once set, a weekday with no entry or `closed: true` is closed.
+      operatingHours: {
+        type: 'array',
+        title: 'Opening hours',
+        description: 'When this location is open, per weekday, in the location time zone. Empty = hours not set; otherwise a day with no entry or closed=true is closed.',
+        items: {
+          type: 'object',
+          properties: {
+            day: { type: 'string', enum: ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'] },
+            open: { type: 'string', description: 'Opening time, 24-hour HH:mm.' },
+            close: { type: 'string', description: 'Closing time, 24-hour HH:mm. Earlier than open = closes after midnight.' },
+            closed: { type: 'boolean', default: false },
+          },
+        },
+        group: 'hours',
+      },
       status: { type: 'string', enum: ['active', 'inactive'] },
     },
   } as const;

@@ -80,7 +80,8 @@ export const ScheduleSchema = () => {
       },
       status: {
         type: 'string',
-        enum: ['new', 'active', 'stop', 'error', 'done'],
+        // `cancelled`: its queued job was cancelled from the Schedule app (Upcoming › Cancel).
+        enum: ['new', 'active', 'stop', 'error', 'done', 'cancelled'],
         default: 'new',
         group: 'status',
       },
