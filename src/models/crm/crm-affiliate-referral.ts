@@ -41,6 +41,12 @@ export const AffiliateReferralSchema = () => {
         type: 'string',
         format: 'date-time',
       },
+      visitorKey: {
+        type: 'string',
+        description: 'Who clicked — the site visitor id, or a hash of IP and browser. One visitor is one open referral; their order converts it.',
+        readOnly: true,
+        hideIn: ['form'],
+      },
       expiresAt: {
         type: 'string',
         format: 'date-time',

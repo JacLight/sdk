@@ -11,13 +11,11 @@ export const SFInvoiceSchema = () => {
     type: 'object',
     properties: {
       // --- Invoice Identity ---
+      // Given by the server when the invoice is created, the same way as an order's.
       number: {
         type: 'string',
-        pattern: '^[a-zA-Z_\\-0-9]*$',
-        minLength: 8,
-        maxLength: 8,
         unique: true,
-        transform: ['random-string::8'],
+        readOnly: true,
         group: 'number',
       },
       po: {
@@ -26,6 +24,20 @@ export const SFInvoiceSchema = () => {
         group: 'number',
       },
       ...SharedAccountField(),
+      // What this invoice came from — e.g. `[{ datatype: 'lead', id }]` for a
+      // proposal quoted from a lead — the same shape a message's context uses.
+      context: {
+        type: 'array',
+        hidden: true,
+        items: {
+          type: 'object',
+          properties: {
+            datatype: { type: 'string' },
+            id: { type: 'string' },
+            name: { type: 'string' },
+          },
+        },
+      },
       currency: {
         type: 'string',
         default: 'USD',

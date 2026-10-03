@@ -16,6 +16,9 @@ export * from './deduction-type';
 export * from './employee-deduction';
 export * from './tax-rule';
 
+// Government e-filing: transmission status ledger
+export * from './efile-submission';
+
 // HR - Recruitment
 export * from './recruitment';
 
@@ -42,6 +45,10 @@ export * from './documents';
 
 // HR - Offboarding
 export * from './offboarding';
+
+// HR - Workforce Readiness: requirement rules, status ledger, journeys
+export * from './requirement';
+export * from './journey';
 
 
 export * from './work-order';

@@ -452,6 +452,17 @@ export const UserRoleSchema = () => {
         type: 'string',
         group: 'name' 
       },
+      passwordPolicy: {
+        type: 'string',
+        description: 'Password policy for people holding this role (a user or group policy wins over it)',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.passwordpolicy,
+          value: 'name',
+          label: 'name',
+        },
+      },
       permissions: {
         type: 'object',
         properties: {

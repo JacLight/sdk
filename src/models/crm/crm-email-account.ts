@@ -28,6 +28,20 @@ export const EmailAccountSchema = () => {
         description: 'e.g., support1@burnerdomain.com',
         group: 'identity',
       },
+      fromName: {
+        type: "string",
+        maxLength: 100,
+        title: 'From Name',
+        description: 'The name people see on mail from this address, e.g. "Ava at Harbor Grill". Blank: the address alone.',
+        group: 'identity',
+      },
+      signature: {
+        type: "string",
+        'x-control': ControlType.richtext,
+        title: 'Signature',
+        description: 'Added to the end of mail written from this address.',
+        group: 'identity',
+      },
 
       // Domain Link
       domainId: {
@@ -42,8 +56,39 @@ export const EmailAccountSchema = () => {
         description: 'e.g., burnerdomain.com',
         group: 'config',
       },
+      hostedBy: {
+        type: "string",
+        enum: ["spinforge", "google", "microsoft", "other"],
+        enumNames: ["SpinForge Mail", "Google Workspace", "Microsoft 365", "Other"],
+        title: 'Mail Hosted By',
+        description: 'The mail system this mailbox lives on — where its owner reads and manages its mail.',
+        group: 'config',
+      },
+      password: {
+        type: "string",
+        format: "password",
+        title: 'Mailbox Password',
+        description: "The mailbox's own password, for a mailbox the platform signs in to as itself (SpinForge Mail) — to send as it and read its inbox. Set when the mailbox is created; reset it there too.",
+        group: 'config',
+      },
+      syncIncoming: {
+        type: "boolean",
+        default: false,
+        title: 'Read Incoming Mail',
+        description: 'Off by default: the owner reads it at webmail. On for a shared or system mailbox — new mail is filed as messages, for the people and AI employees it is assigned to.',
+        group: 'config',
+      },
+      syncFolder: {
+        type: "string",
+        default: "inbox",
+        title: 'Folder to Read',
+        description: 'Which folder of the mailbox is read when incoming mail is on — e.g. inbox, or a folder the owner files support mail into.',
+        group: 'config',
+      },
       provider: {
         type: "string",
+        title: 'Sending Gateway',
+        description: 'The connection mail from this account is sent through by the platform. Blank for a mailbox the platform does not send from.',
         dataSource:{
           collection: DataType.config,
           valueField: 'sk',
@@ -336,7 +381,7 @@ export const EmailAccountSchema = () => {
         items: { type: 'string' },
       },
     },
-    required: ['name', 'accountName', 'emailAddress', 'provider'],
+    required: ['name', 'accountName', 'emailAddress'],
   } as const;
 }
 

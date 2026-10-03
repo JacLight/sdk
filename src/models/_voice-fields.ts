@@ -107,6 +107,21 @@ export const CallTranscriptFields = () => ({
   },
 } as const);
 
+/**
+ * How fast the AI voice talks on calls, wherever an AI voice is set up (the
+ * assistant, an AI employee). 0.7–1.2 is what ElevenLabs accepts; OpenAI takes
+ * the same value. No default: blank is the voice's own pace (1).
+ */
+export const SpeakingSpeedField = () => ({
+  speakingSpeed: {
+    type: 'number',
+    minimum: 0.7,
+    maximum: 1.2,
+    title: 'Talking speed',
+    description: 'How fast it talks on calls: 0.7 slow to 1.2 fast. Blank or 1: the voice\'s own pace.',
+  },
+}) as const;
+
 export const VoiceProviderField = () => ({
   voiceProvider: {
     type: 'string',

@@ -32,6 +32,8 @@ export const SFProductSchema = () => {
         maxLength: 50,
         unique: true,
         textSearch: true,
+        // Left blank, the server makes one from the name when the product is created.
+        placeholder: 'Made from the name if left blank',
         group: 'slug',
       },
       price: {
@@ -651,6 +653,25 @@ export const SFProductSchema = () => {
           },
         },
       },
+      /**
+       * Restricted sale (alcohol, tobacco…). At the POS the operator adding the
+       * line must hold the matching permission: the Workforce Readiness `pos`
+       * gate is checked with `permissionScope`, which matches a requirement
+       * rule's `enforcement.pos.permissionScope` (e.g. an alcohol server cert).
+       */
+      restriction: {
+        type: 'object',
+        group: 'restriction',
+        collapsible: true,
+        properties: {
+          ageRestricted: { type: 'boolean', default: false, description: 'Age-restricted product (alcohol, tobacco…)' },
+          minimumAge: { type: 'number', description: 'Minimum customer age, e.g. 21' },
+          permissionScope: {
+            type: 'string',
+            description: 'POS permission the seller needs, e.g. alcohol. Matches a requirement rule’s POS permission scope. Empty with age-restricted on = age_restricted',
+          },
+        },
+      },
       affiliateEligible: {
         type: 'boolean',
         default: true,
@@ -667,12 +688,12 @@ export const SFProductSchema = () => {
       workflow: {
         type: 'object',
         description:
-          'Default processing pipeline this product fires into when added to an order (kitchen, bar, lab, prep station, etc.). Operator can override per fire.',
+          "The product's own publishing/approval workflow — the workflow a product goes through to be approved and published into the catalog. It has nothing to do with orders: order lines are prepared by their prepStation option and fired to prep-pipeline.",
         collapsible: true,
         properties: {
           workflowId: {
             type: 'string',
-            description: 'Default workflow definition this product routes to',
+            description: 'Workflow definition that approves/publishes this product into the catalog (not a kitchen or prep station)',
             'x-control': ControlType.selectMany,
             dataSource: {
               source: 'collection',

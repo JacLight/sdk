@@ -1,7 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { SharedAccountField } from '../_shared-account-fields';
-import { DataType } from '../../types';
+import { ControlType, DataType } from '../../types';
 
 export const LeadSchema = () => {
   return {
@@ -233,6 +233,22 @@ export const LeadSchema = () => {
         group: 'dates',
         title: 'Converted Date',
       },
+      // The contact (a person, never the shared account) the lead became on
+      // conversion. Set by the server's convert action, not typed in.
+      convertedToCustomerId: {
+        type: 'string',
+        title: 'Converted To Customer',
+        group: 'dates',
+        readOnly: true,
+        'x-control': ControlType.selectMany,
+        maxItems: 1,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.customer,
+          value: 'sk',
+          label: ['username', 'email'],
+        },
+      },
       qualifiedDate: {
         type: 'string',
         format: 'date-time',
@@ -342,7 +358,7 @@ export const LeadSchema = () => {
           properties: {
             type: {
               type: 'string',
-              enum: ['call', 'email', 'meeting', 'task', 'note'],
+              enum: ['call', 'email', 'sms', 'meeting', 'task', 'note', 'proposal'],
             },
             description: {
               type: 'string',

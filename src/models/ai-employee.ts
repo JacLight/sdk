@@ -1,3 +1,4 @@
+import { SpeakingSpeedField } from './_voice-fields';
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../default-schema';
 import { ControlType, DataType } from '../types';
@@ -38,6 +39,12 @@ export const AIEmployeeSchema = () => {
       icon: { type: 'string', description: 'Templates: its icon.' },
       summary: { type: 'string', description: 'Templates: one line on what it does.' },
       suggestedGroups: { type: 'array', items: { type: 'string' }, description: 'Templates: the access it usually needs — a hint when it is given access.' },
+      budgetToday: { type: 'object', readOnly: true, description: 'Today only (its timezone): credit added on top of the daily budget, and when spend was last reset.', properties: { date: { type: 'string' }, creditUsd: { type: 'number' }, resetAt: { type: 'string', format: 'date-time' }, alerted: { type: 'object', properties: { low: { type: 'string' }, out: { type: 'string' } } } } },
+      listensTo: {
+        type: 'array',
+        items: { type: 'string', enum: ['chat_queue', 'email', 'sms', 'social', 'ticket', 'order', 'form'], enumNames: ['Customer chat queue', 'Email', 'SMS', 'Social media', 'Support tickets', 'Orders', 'Forms'] },
+        description: 'Where it is alerted from, like a person keeping an eye on the desk, the inbox or the orders. Always on: direct messages, mentions, and work assigned to it. Chat queue: a customer is waiting for a person (whoever picks first gets them). Email / SMS: a customer message comes in. Social: a DM, comment or mention on the connected pages. Ticket: a new support ticket. Order: a new order. Form: a form is submitted.',
+      },
       jobTitle: { type: 'string', description: 'Its role, e.g. "Accounts receivable".' },
       avatar: { type: 'string' },
       status: {
@@ -84,7 +91,8 @@ export const AIEmployeeSchema = () => {
       limits: {
         type: 'object',
         properties: {
-          dailyBudgetUsd: { type: 'number', default: 5, minimum: 0, description: 'It stops taking work for the day once its runs have cost this much.' },
+          budgetEnabled: { type: 'boolean', default: true, description: 'Hold it to a daily budget. Off: no daily limit — it is never stopped for spend and no budget alerts are sent.' },
+          dailyBudgetUsd: { type: 'number', default: 5, minimum: 0, description: 'It stops taking work for the day once its runs have cost this much (when the daily budget is on).' },
           maxConcurrentJobs: { type: 'number', default: 1, minimum: 1, maximum: 20 },
           maxAttempts: { type: 'number', default: 2, minimum: 1, maximum: 10, description: 'A failed job is retried up to this many times in total.' },
         },
@@ -96,6 +104,7 @@ export const AIEmployeeSchema = () => {
         properties: {
           delete: { type: 'string', enum: ['require', 'allow'], default: 'require' },
           bulkSend: { type: 'string', enum: ['require', 'allow'], default: 'require', description: 'Messages to more than a few people at once.' },
+          calls: { type: 'string', enum: ['require', 'allow'], default: 'require', description: 'Placing a phone call (outbound, from its number).' },
           money: { type: 'string', enum: ['require', 'allow'], default: 'require', description: 'Refunds, payments, charges, credits.' },
           moneyThresholdUsd: { type: 'number', default: 0, minimum: 0, description: 'With money on "allow", amounts above this still need an OK.' },
           usersAndPermissions: { type: 'string', enum: ['require', 'allow'], default: 'require' },
@@ -103,6 +112,39 @@ export const AIEmployeeSchema = () => {
       },
 
       template: { type: 'string', readOnly: true, description: 'The template it was created from, if any.' },
+
+      voice: {
+        type: 'object',
+        description: 'How it sounds on the phone. Calls to a number assigned to it are answered by it, and calls it places go out from that number — in this voice, from its own instructions.',
+        properties: {
+          enabled: { type: 'boolean', default: true, description: 'Takes phone calls. Off: calls to its numbers are not answered by it, it places no calls, and its voice agent is removed; the chosen voice is kept for when it is turned back on.' },
+          voice: { type: 'string', description: 'The voice: an ElevenLabs voice_id or an OpenAI voice name — whichever the voice list offered.' },
+          platform: { type: 'string', enum: ['elevenlabs', 'openai-realtime'], description: 'The engine the chosen voice belongs to. Set with the voice; not a separate choice.' },
+          voiceName: { type: 'string', description: 'What people call the voice (an ElevenLabs voice_id means nothing to a person). Set with the voice.' },
+          language: { type: 'string', default: 'en', description: 'The language it speaks on calls.' },
+          greeting: { type: 'string', description: 'What it says when it answers, e.g. "Hi, this is Ava from Appmint — how can I help?". Blank: it greets in its own words.' },
+          eagerness: { type: 'string', enum: ['low', 'medium', 'high'], enumNames: ['Patient — waits for long pauses', 'Balanced', 'Quick — answers at short pauses'], default: 'medium', description: 'How quickly it answers once the caller stops talking.' },
+          ...SpeakingSpeedField(),
+          tools: {
+            type: 'array',
+            items: { type: 'string' },
+            default: ['search_customers', 'create_lead', 'take_message', 'query_knowledge', 'check_availability', 'get_reservation_types', 'create_reservation', 'confirm_reservation', 'modify_reservation', 'cancel_reservation', 'create_ticket', 'confirm_order_status', 'check_transfer_target'],
+            description: 'What it can do during a call. Fewer tools answer faster — every tool is read on every turn.',
+          },
+        },
+      },
+      voiceAgent: {
+        type: 'object',
+        readOnly: true,
+        description: 'Set by the server: the agent its voice runs on at the provider (ElevenLabs keeps one per voiced employee, named appmint-<org>-<record id>). Kept in step with this record on every save.',
+        properties: {
+          platform: { type: 'string' },
+          remoteId: { type: 'string', description: 'The provider\'s own agent id.' },
+          hash: { type: 'string', description: 'Fingerprint of what was last pushed; a mismatch means it is re-pushed.' },
+          syncedAt: { type: 'string', format: 'date-time' },
+          error: { type: 'string', description: 'Why the last push failed, if it did.' },
+        },
+      },
     },
   } as const;
 };
@@ -126,15 +168,20 @@ export const AIEmployeeWorkSchema = () => {
       instructions: { type: 'string', 'x-control': ControlType.richtext },
       source: {
         type: 'string',
-        enum: ['assigned', 'ping', 'direct', 'message'],
-        description: 'assigned: a record was assigned to it. ping: the platform checked in with it, so it carries on with its role on its own. direct: someone asked. message: someone wrote to it in Workspace.',
+        enum: ['assigned', 'ping', 'direct', 'message', 'call', 'config'],
+        description: 'assigned: a record was assigned to it. ping: the platform checked in with it, so it carries on with its role on its own. direct: someone asked. message: someone wrote to it in Workspace. call: a phone call it took or made has ended — the transcript is attached, to log and follow up. config: its own setup changed (a number given or taken, its voice, instructions, access) — the facts, so it knows.',
       },
       approvalItem: { type: 'string', readOnly: true, description: 'The approval card posted in the AI team workspace for its current request.' },
       didWork: { type: 'boolean', readOnly: true, description: 'A ping on which it did something (an action step) rather than only checking in.' },
       ref: {
         type: 'object',
         description: 'The record the work is about.',
-        properties: { datatype: { type: 'string' }, id: { type: 'string' }, label: { type: 'string' } },
+        properties: {
+          datatype: { type: 'string' },
+          id: { type: 'string' },
+          label: { type: 'string' },
+          thread: { type: 'string', description: 'The conversation it belongs to (one customer on one channel), so later messages join the same work.' },
+        },
       },
       attachments: {
         type: 'array',
@@ -306,7 +353,7 @@ export const AIEmployeeConfigSchema = () => {
               end: { type: 'string' },
             },
           },
-          limits: { type: 'object', properties: { dailyBudgetUsd: { type: 'number' }, maxConcurrentJobs: { type: 'number' }, maxAttempts: { type: 'number' } } },
+          limits: { type: 'object', properties: { budgetEnabled: { type: 'boolean' }, dailyBudgetUsd: { type: 'number' }, maxConcurrentJobs: { type: 'number' }, maxAttempts: { type: 'number' } } },
           approvals: {
             type: 'object',
             properties: {
@@ -333,6 +380,9 @@ export const AIEmployeeConfigSchema = () => {
         description: 'The platform\'s own settings, read from the shared organization only.',
         properties: {
           pingMinutes: { type: 'number', minimum: 1, default: 15, description: 'How often the platform checks in with every switched-on AI employee.' },
+          unclaimedMinutes: { type: 'number', minimum: 1, default: 30, description: 'Something that came in and nobody has taken after this long is raised in the AI team workspace.' },
+          handlingMinutes: { type: 'number', minimum: 5, default: 120, description: 'Something taken but not finished after this long is opened again for anyone to take.' },
+          voiceAgentSweepHour: { type: 'number', minimum: 0, maximum: 23, default: 4, description: 'Hour of the day (server time) each organization\'s voice agents at the provider are checked: ones whose employee or assistant is gone, or no longer on that provider, are removed; out-of-date ones are re-pushed.' },
         },
       },
     },

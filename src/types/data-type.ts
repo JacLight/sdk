@@ -28,6 +28,8 @@ export enum DataType {
   ai_employee = 'ai_employee',
   ai_employee_work = 'ai_employee_work',
   ai_employee_config = 'ai_employee_config',
+  post_progress = 'post_progress',
+  idp_client = 'idp_client',
   creative = 'creative',
   creative_studio = 'creative_studio',
   dev_environment = 'dev_environment',
@@ -35,6 +37,7 @@ export enum DataType {
   usage = 'usage',
   site_notice = 'site_notice',
   access_request = 'access_request',
+  job = 'job',
   setting = 'setting',
   customer_group = 'customer_group',
   customer_association = 'customer_association',
@@ -179,6 +182,7 @@ export enum DataType {
   bm_pay_stub = 'bm_pay_stub',
   bm_payroll_profile = 'bm_payroll_profile',
   bm_tax_form = 'bm_tax_form',
+  bm_efile_submission = 'bm_efile_submission',
   bm_work_order = 'bm_work_order',
   // Payroll configuration catalogs (configurable per org/region)
   bm_earning_type = 'bm_earning_type',
@@ -227,6 +231,12 @@ export enum DataType {
   // HR - Offboarding
   bm_offboarding = 'bm_offboarding',
   bm_exit_interview = 'bm_exit_interview',
+  // HR - Workforce Readiness (requirements, journeys, compliance ledger)
+  bm_requirement_rule = 'bm_requirement_rule',
+  bm_requirement_status = 'bm_requirement_status',
+  bm_journey_template = 'bm_journey_template',
+  bm_journey = 'bm_journey',
+  bm_signoff = 'bm_signoff',
 
   // Accounts Payable / Bills
   bm_bill = 'bm_bill',

@@ -2,7 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 
 import { DataType, ControlType } from '../../types';
-import { CallTranscriptFields, VoiceField, VoiceProviderField } from '../_voice-fields';
+import { CallTranscriptFields } from '../_voice-fields';
 
 export const PhoneSchema = () => {
   return {
@@ -203,8 +203,8 @@ export const PhoneSchema = () => {
           },
           ...CallTranscriptFields(),
 
-          // AI assistant answers directly (inboundMode = 'ai'). Same shape as the
-          // IVR aiAssistantConfig so both feed the one voice gateway.
+          // AI assistant answers directly (inboundMode = 'ai'): who answers, the
+          // line's greeting and context. Same shape as the IVR aiAssistantConfig.
           ai: {
             type: 'object',
             title: 'AI Assistant',
@@ -212,19 +212,19 @@ export const PhoneSchema = () => {
               assistantId: { type: 'string', title: 'Assistant' },
               greeting: { type: 'string', title: 'Greeting' },
               context: { type: 'string', title: 'Context / instructions' },
-              ...VoiceField(),
-              language: { type: 'string', default: 'en-US', title: 'Language' },
-              // How eagerly the AI takes its turn: low = patient (waits for the
-              // caller to finish, won't jump in), high = snappy.
-              eagerness: {
-                type: 'string',
-                enum: ['low', 'medium', 'high'],
-                default: 'low',
-                title: 'Response eagerness',
-              },
-              ...VoiceProviderField(),
+              // No voice, engine, language or answer speed here: those belong to
+              // the AI agent (assistant or AI employee) that answers.
             },
           },
+          // Whose number shows on the phone a forwarded call rings — the same choice an IVR routing has.
+          callerIdMode: {
+            type: 'string',
+            enum: ['caller', 'office', 'custom'],
+            enumNames: ['The caller (their own number)', 'This number (your office number)', 'A number you choose'],
+            default: 'caller',
+            title: 'Caller ID on forwarded calls',
+          },
+          customCallerId: { type: 'string', title: 'Caller ID to show', description: 'For "A number you choose": one of your numbers, e.g. +15551234567.' },
           // Failover when nobody answers (inboundMode = 'ring') OR forward target
           // (inboundMode = 'forward'). No IVR required.
           failover: {
@@ -234,11 +234,14 @@ export const PhoneSchema = () => {
               enabled: { type: 'boolean', default: false },
               action: {
                 type: 'string',
-                enum: ['forward', 'voicemail', 'ai'],
+                enum: ['forward', 'voicemail', 'ai', 'message'],
+                enumNames: ['Forward to a number', 'Send to voicemail', 'Hand to the AI assistant', 'Say a message, then end the call'],
                 default: 'forward',
                 title: 'When no one answers',
+                description: 'Also what happens while an AI employee answering this number is off. "Hand to the AI assistant" uses the number\'s own AI, else the business\'s main assistant.',
               },
               forwardTo: { type: 'string', title: 'Forward to number' },
+              message: { type: 'string', title: 'Message', description: 'For "Say a message": what the caller hears before the call ends, e.g. "We\'re closed right now — please call back tomorrow from 9am."' },
               ringTimeoutSeconds: { type: 'number', default: 20, title: 'Ring time before failover (s)' },
             },
           },

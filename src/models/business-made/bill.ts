@@ -173,6 +173,21 @@ export const VendorSchema = () => ({
       description: 'Track YTD payments and issue 1099-NEC at year-end',
     },
     w9OnFile: { type: 'boolean', default: false },
+    tinMatch: {
+      type: 'object',
+      collapsible: true,
+      readOnly: true,
+      title: 'IRS TIN match',
+      description: 'Latest IRS TIN Matching result for this payee (Pub 2108A code 0-8). Written by the server; tinLast4 shows which TIN it was for.',
+      properties: {
+        code: { type: 'string', enum: ['0', '1', '2', '3', '4', '5', '6', '7', '8'] },
+        meaning: { type: 'string' },
+        checkedAt: { type: 'string', format: 'date-time' },
+        method: { type: 'string', enum: ['interactive', 'bulk'] },
+        submissionId: { type: 'string' },
+        tinLast4: { type: 'string' },
+      },
+    },
     defaultPaymentTerms: {
       type: 'string',
       enum: ['due_on_receipt', 'net_7', 'net_15', 'net_30', 'net_45', 'net_60', 'net_90'],
