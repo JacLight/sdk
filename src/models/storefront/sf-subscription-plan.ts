@@ -85,7 +85,7 @@ export const SFSubscriptionPlanSchema = () => {
         properties: {
           name: {
             type: 'string',
-            enum: ['stripe', 'paypal', 'paddle'],
+            enum: ['stripe', 'paypal'],
           },
           priceId: {
             type: 'string',
