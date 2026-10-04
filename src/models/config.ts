@@ -47,7 +47,7 @@ export const ConfigSchema = () => {
       },
       status: {
         type: 'string',
-        enum: ['active', 'inactive', 'deprecated'],
+        enum: ['active', 'inactive', 'deprecated', 'use-platform'],
         default: 'active',
       }
     },

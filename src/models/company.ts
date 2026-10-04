@@ -132,6 +132,17 @@ export const CompanySchema = () => {
       spendRate: {
         type: 'number',
       },
+      // Space the company uses, in bytes. Written by the storage measuring job
+      // (not built yet); 0 (or absent) until it runs. The plan's storage limit is checked
+      // against their sum.
+      storageUsedDatabase: {
+        type: 'number',
+        readOnly: true,
+      },
+      storageUsedFiles: {
+        type: 'number',
+        readOnly: true,
+      },
       email: {
         type: 'string',
         format: 'email',
