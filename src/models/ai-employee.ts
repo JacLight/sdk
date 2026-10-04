@@ -379,7 +379,6 @@ export const AIEmployeeConfigSchema = () => {
         type: 'object',
         description: 'The platform\'s own settings, read from the shared organization only.',
         properties: {
-          pingMinutes: { type: 'number', minimum: 1, default: 15, description: 'How often the platform checks in with every switched-on AI employee.' },
           unclaimedMinutes: { type: 'number', minimum: 1, default: 30, description: 'Something that came in and nobody has taken after this long is raised in the AI team workspace.' },
           handlingMinutes: { type: 'number', minimum: 5, default: 120, description: 'Something taken but not finished after this long is opened again for anyone to take.' },
           voiceAgentSweepHour: { type: 'number', minimum: 0, maximum: 23, default: 4, description: 'Hour of the day (server time) each organization\'s voice agents at the provider are checked: ones whose employee or assistant is gone, or no longer on that provider, are removed; out-of-date ones are re-pushed.' },
