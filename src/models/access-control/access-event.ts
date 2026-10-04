@@ -25,21 +25,19 @@ export const AccessEventSchema = () => {
       zone: { type: 'string' },
       scopePath: { type: 'string' },
       direction: { type: 'string', enum: ['in', 'out'] },
-      method: { type: 'string', enum: ['card', 'pin', 'qr', 'door_qr', 'mobile', 'plate', 'fingerprint', 'face', 'remote', 'override'] },
+      method: { type: 'string', enum: ['card', 'qr', 'door_qr', 'mobile', 'plate', 'fingerprint', 'face', 'remote', 'override'] },
       result: { type: 'string', enum: ['granted', 'denied', 'alarm'] },
       reason: {
         type: 'string',
         enum: [
           'no_policy',
           'denied_by_policy',
-          'outside_schedule',
-          'restricted',
-          'passback',
           'capacity_full',
           'credential_inactive',
           'expired',
           'pin_required',
-          'method_not_allowed',
+          'pin_invalid',
+          'pin_locked',
           'lockdown',
           'payment_failed',
           'unknown_credential',
@@ -58,7 +56,7 @@ export const AccessEventSchema = () => {
       offline: { type: 'boolean', default: false, notes: 'Decided on the hub while disconnected, uploaded later.' },
 
       // type: credential
-      action: { type: 'string', enum: ['issued', 'status_changed', 'reassigned', 'validity_changed'] },
+      action: { type: 'string', enum: ['imported', 'issued', 'status_changed', 'reassigned', 'validity_changed', 'pin_changed', 'replaced'] },
       fromStatus: { type: 'string' },
       toStatus: { type: 'string' },
       note: { type: 'string' },

@@ -3,7 +3,7 @@ import { registerCollection } from '../../default-schema';
 import { DataType } from '../../types';
 import { FileInfoSchema } from '../file-info';
 
-export const ACCESS_CREDENTIAL_TYPES = ['card', 'fob', 'pin', 'qr', 'mobile', 'plate', 'fingerprint', 'face'] as const;
+export const ACCESS_CREDENTIAL_TYPES = ['card', 'fob', 'qr', 'mobile', 'plate', 'fingerprint', 'face'] as const;
 
 // What identifies a person at an input device. It is only a link to the person:
 // access comes from their roles and the zones' allow/deny lists, so one
@@ -14,13 +14,26 @@ export const AccessCredentialSchema = () => {
   return {
     type: 'object',
     properties: {
-      type: { type: 'string', enum: [...ACCESS_CREDENTIAL_TYPES], default: 'card', group: 'credential' },
+      type: { type: 'string', enum: [...ACCESS_CREDENTIAL_TYPES], default: 'card', group: 'code' },
       code: {
         type: 'string',
-        description: 'Card/fob chip UID, plate number, QR seed or biometric template ref. PINs are stored hashed.',
-        group: 'credential',
+        description: 'Card/fob chip UID, plate number, QR seed or biometric template ref.',
+        group: 'code',
       },
-      label: { type: 'string', description: 'Friendly name, e.g. "Front-desk guest card #3".', group: 'credential' },
+      label: { type: 'string', description: 'Friendly name, e.g. "Front-desk guest card #3".', group: 'label' },
+      batch: { type: 'string', description: 'Import batch this card came in, e.g. "HID-2026-10". Used to find or revoke a whole box at once.', group: 'label' },
+      pin: {
+        type: 'string',
+        readOnly: true,
+        hidden: true,
+        description: 'This credential\'s PIN as salt.scrypt-hash. When set, the PIN must be entered with the card. Set through the access-control API, never stored or returned in clear.',
+      },
+      pinFailures: {
+        type: 'number',
+        readOnly: true,
+        hidden: true,
+        description: 'Wrong PINs in a row. The card is suspended when it reaches the lockout limit; a correct PIN or a PIN reset clears it.',
+      },
       holder: {
         type: 'object',
         properties: {
@@ -34,7 +47,6 @@ export const AccessCredentialSchema = () => {
           photo: FileInfoSchema(),
         },
         notes: 'The link to the person. A guest\'s details live here. Empty on pool cards until issued.',
-        group: 'credential',
       },
       validFrom: { type: 'string', format: 'date-time', group: 'validity' },
       validUntil: { type: 'string', format: 'date-time', group: 'validity' },
@@ -43,7 +55,6 @@ export const AccessCredentialSchema = () => {
         enum: ['available', 'active', 'suspended', 'returned', 'expired', 'revoked', 'lost'],
         default: 'active',
         description: 'Only "active" credentials open anything. "available" = blank pool card waiting to be issued.',
-        group: 'validity',
       },
       issuedBy: { type: 'string', readOnly: true, group: 'audit' },
       issuedAt: { type: 'string', format: 'date-time', disabled: true, group: 'audit' },

@@ -34,14 +34,14 @@ export const AccessZoneSchema = () => {
         unique: true,
         transform: 'uri',
         pattern: '^[a-zA-Z_\\-0-9]*$',
-        group: 'identity',
+        group: 'name',
       },
-      title: { type: 'string', group: 'identity' },
+      title: { type: 'string', group: 'name' },
       kind: {
         type: 'string',
         enum: ['global', 'country', 'state', 'site', 'building', 'floor', 'wing', 'room', 'cage', 'rack', 'parking', 'lane', 'perimeter'],
         default: 'building',
-        group: 'identity',
+        group: 'kind',
       },
       parent: {
         type: 'string',
@@ -49,22 +49,27 @@ export const AccessZoneSchema = () => {
         'x-control': ControlType.selectMany,
         maxItems: 1,
         dataSource: { source: 'collection', collection: DataType.access_zone, value: 'name', label: ['title', 'name'] },
-        group: 'identity',
+        group: 'kind',
       },
 
       allow: {
         type: 'object',
         properties: { roles: RoleList(), users: UserList() },
-        group: 'access',
       },
       deny: {
         type: 'object',
         properties: { roles: RoleList(), users: UserList() },
         notes: 'Always wins over allow.',
-        group: 'access',
+      },
+      policy: {
+        type: 'string',
+        description: 'Access policy for this zone. Empty = inherited from the parent zone.',
+        'x-control': ControlType.selectMany,
+        maxItems: 1,
+        dataSource: { source: 'collection', collection: DataType.access_policy, value: 'name', label: ['title', 'name'] },
       },
 
-      capacity: { type: 'number', minimum: 0, description: 'Maximum people inside at once. Empty = no limit.', group: 'rules' },
+      capacity: { type: 'number', minimum: 0, description: 'Maximum people inside at once. Empty = no limit.' },
 
       location: {
         type: 'string',
@@ -78,7 +83,6 @@ export const AccessZoneSchema = () => {
         type: 'object',
         properties: AddressSchema().properties,
         notes: 'Only for zones that are not a Business Location (toll plaza, remote gate).',
-        group: 'place',
       },
       timezone: {
         type: 'string',
@@ -97,13 +101,11 @@ export const AccessZoneSchema = () => {
           at: { type: 'string', format: 'date-time' },
         },
         notes: 'Applies to this zone and every zone beneath it.',
-        group: 'state',
       },
       scopePath: {
         type: 'string',
         readOnly: true,
         description: 'Computed from the parent chain, e.g. /global/us/tx/austin-hq/floor-3. Used for lockdown and reporting.',
-        group: 'state',
       },
     },
     required: ['name', 'kind'],
