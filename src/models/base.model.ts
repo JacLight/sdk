@@ -38,6 +38,12 @@ export interface DataOptions {
   hasNext?: boolean;
   excludeFields?: string[];
   includeFields?: string[];
+  /** Fields a read leaves out by default (credentials; on lists, heavy fields and schema `hideIn: ['table']`) that this caller needs — or `true` for the whole record. */
+  withFields?: string[] | true;
+  /** Set by the controller when no staff user is signed in: the query leaves out schema fields marked `hideIn: ['public']`. */
+  publicView?: boolean;
+  /** Read for one site: records whose `data.sites` lists it, or lists no site (they appear everywhere). */
+  site?: string;
   maskFields?: string[];
   random?: boolean;
 }

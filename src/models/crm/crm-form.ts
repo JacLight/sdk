@@ -19,7 +19,9 @@ export const FormSchema = () => {
       },
       accessCode: {
         type: 'string',
+        description: 'The shared code people type when `authenticationType` is `code`.',
         group: 'name',
+        rules: [{ operation: 'notEqual', valueA: '{{authenticationType}}', valueB: 'code', action: 'hide' }],
       },
       status: {
         type: 'string',
@@ -74,16 +76,6 @@ export const FormSchema = () => {
           'Inline JSON-schema describing the form fields, used when no `collection` is bound. Submissions land in ' +
           '`form_submission` keyed off this form. Edited with the schema builder, not by hand.',
       },
-      accessMode: {
-        type: 'string',
-        enum: ['open', 'code', 'participants'],
-        default: 'open',
-        description:
-          'Who may open the form. `open`: anyone who can reach it. `code`: anyone holding the form\'s `accessCode`. ' +
-          '`participants`: only the people listed in `participants`, each opening it with their own code. The server ' +
-          'enforces this on both reading the form and submitting it.',
-        group: 'access',
-      },
       invitationTemplate: {
         type: 'string',
         description: 'Message template used to invite participants. Empty uses the built-in `form-invitation`.',
@@ -104,8 +96,9 @@ export const FormSchema = () => {
         // written back to is worth much less, and `none` made that the default.
         default: 'email',
         description:
-          'How the person filling the form proves who they are before it opens. `none` asks nothing; `magic-link` emails ' +
-          'a link to click; `code` emails a one-time code to type; `password` signs in with username and password; ' +
+          'Who must do what before the form opens — the one access setting, enforced by the server on both reading and submitting. `none` asks nothing; ' +
+          '`magic-link` emails a link (or one-time code) to prove the address; `code` asks for the access code — the shared ' +
+          '`accessCode`, or a participant\'s own code, which their invitation link carries; `password` signs in; ' +
           '`email` only asks for an address and does not verify it.',
         group: 'access',
       },

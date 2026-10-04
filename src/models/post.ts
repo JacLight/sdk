@@ -31,6 +31,23 @@ export const PostSchema = () => {
           filter: { 'data.application': 'ViewComponent' },
         },
       },
+      // The websites this post appears on — one post can be on several sites'
+      // blogs. Blog analytics count a site's posts by it; a post with no sites
+      // listed belongs to every site.
+      sites: {
+        type: 'array',
+        items: {
+          type: 'string',
+        },
+        'x-control-variant': 'chip',
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.site,
+          value: 'name',
+          label: 'name',
+        },
+      },
       title: {
         type: 'string',
       },
@@ -198,46 +215,41 @@ export const PostSchema = () => {
         },
       },
       // Access — same rules as crm_form; the server enforces them on reading the post (and enrolling, for a course).
-      accessMode: {
-        type: 'string',
-        enum: ['open', 'code', 'participants'],
-        default: 'open',
-        description:
-          'Who may open it. `open`: anyone who can reach it. `code`: anyone holding `accessCode`. ' +
-          '`participants`: only the people listed in `participants`, each with their own code.',
-        group: 'access',
-      },
-      accessCode: {
-        type: 'string',
-        group: 'access',
-      },
       authenticationType: {
         type: 'string',
         enum: ['none', 'magic-link', 'code', 'password', 'email'],
         default: 'none',
         description:
-          'How the person proves who they are before it opens. `none` asks nothing; `magic-link` emails a link; ' +
-          '`code` emails a one-time code; `password` signs in; `email` only asks for an address.',
+          'Who must do what before it opens — the one access setting. `none` asks nothing; ' +
+          '`magic-link` emails a link (or one-time code) to prove the address; `code` asks for the access code — the shared ' +
+          '`accessCode`, or a participant\'s own code, which their invitation link carries; `password` signs in; ' +
+          '`email` only asks for an address and does not verify it.',
         group: 'access',
+      },
+      accessCode: {
+        type: 'string',
+        description: 'The shared code people type when `authenticationType` is `code`.',
+        group: 'access',
+        rules: [{ operation: 'notEqual', valueA: '{{authenticationType}}', valueB: 'code', action: 'hide' }],
       },
       startDate: {
         type: 'string',
         format: 'date-time',
         description: 'Not available before this.',
-        group: 'access',
+        group: 'date',
       },
       endDate: {
         type: 'string',
         format: 'date-time',
         description: 'Not available after this.',
-        group: 'access',
+        group: 'date',
       },
       invitationTemplate: {
         type: 'string',
         description: 'Message template used to invite participants.',
         'x-control': ControlType.selectMany,
         maxItems: 1,
-        group: 'access',
+        group: 'date',
         dataSource: {
           source: 'collection',
           collection: DataType.messagetemplate,
