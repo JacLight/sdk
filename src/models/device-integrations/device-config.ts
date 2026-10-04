@@ -53,6 +53,11 @@ export const DeviceConfigSchema = () => {
           'card-terminal', // payment terminal (Stripe Terminal, Verifone)
           'scale',         // weight scale
           'nfc-reader',    // NFC/RFID card reader for quick staff login + card write/erase
+          'lock',          // access control: door lock / strike / maglock relay
+          'gate',          // access control: gate operator
+          'barrier',       // access control: parking / toll barrier arm
+          'turnstile',     // access control: turnstile
+          'elevator',      // access control: elevator floor release
         ],
         group: 'identity',
       },
@@ -60,7 +65,7 @@ export const DeviceConfigSchema = () => {
         type: 'array',
         items: {
           type: 'string',
-          enum: ['page', 'print', 'drawer', 'charge', 'weigh', 'display', 'kds', 'card-read', 'card-write', 'card-erase'],
+          enum: ['page', 'print', 'drawer', 'charge', 'weigh', 'display', 'kds', 'card-read', 'card-write', 'card-erase', 'unlock', 'door-sense'],
         },
         group: 'identity',
       },
@@ -118,6 +123,36 @@ export const DeviceConfigSchema = () => {
       // printer for Kitchen". Leave blank for org-wide devices (single
       // receipt printer in a small shop).
       servicePointName: { type: 'string', group: 'scope' },
+
+      // Granting devices only (lock, gate, barrier, turnstile, elevator): the
+      // access_zone this device lets people into. Who may pass is decided by
+      // that zone's allow/deny lists (inherited up the zone tree).
+      access: {
+        type: 'object',
+        properties: {
+          zone: {
+            type: 'string',
+            'x-control': ControlType.selectMany,
+            maxItems: 1,
+            dataSource: { source: 'collection', collection: DataType.access_zone, value: 'name', label: ['title', 'name'] },
+          },
+          scopePath: { type: 'string', readOnly: true, notes: 'Computed from the zone.' },
+          directions: { type: 'array', items: { type: 'string', enum: ['in', 'out'] } },
+          failMode: { type: 'string', enum: ['safe', 'secure'], default: 'secure', notes: 'safe = unlocks on power loss.' },
+          heldOpenSeconds: { type: 'number', minimum: 0, notes: 'Raise a held_open alarm after this long. Empty = never.' },
+          pricing: {
+            type: 'object',
+            properties: {
+              model: { type: 'string', enum: ['flat', 'zone_pair', 'duration'] },
+              amount: { type: 'number' },
+              currency: { type: 'string' },
+              unpaidAction: { type: 'string', enum: ['deny', 'allow_and_bill'], default: 'deny' },
+            },
+            notes: 'Toll lanes / paid parking only.',
+          },
+        },
+        group: 'access',
+      },
 
       // Auto-discovery flags. Set when the hub agent reported this device
       // on its `hello` message — server upserts a device_config record so

@@ -14,6 +14,15 @@ export const AccessRequestSchema = () => {
   return {
     type: 'object',
     properties: {
+      kind: {
+        type: 'string',
+        enum: ['screen', 'zone'],
+        default: 'screen',
+        notes: 'screen = an app screen (app + path). zone = physical access to access zones.',
+      },
+      zones: { type: 'array', items: { type: 'string' }, notes: 'kind=zone: the access zones asked for.' },
+      validFrom: { type: 'string', format: 'date-time', notes: 'kind=zone: visitor / contractor window start.' },
+      validUntil: { type: 'string', format: 'date-time', notes: 'kind=zone: visitor / contractor window end.' },
       requester: {
         type: 'object',
         properties: {
@@ -79,7 +88,7 @@ export const AccessRequestSchema = () => {
       decidedBy: { type: 'string' },
       comments: { type: 'string' },
     },
-    required: ['requester', 'app', 'path'],
+    required: ['requester'],
   } as const;
 };
 
