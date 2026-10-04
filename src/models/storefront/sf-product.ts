@@ -43,6 +43,7 @@ export const SFProductSchema = () => {
       cost: {
         type: 'number',
         group: 'price',
+        hideIn: ['public'],
         description: 'Total unit cost — the sum of costComponents when those are used. Margin is price less this.',
       },
 
@@ -53,6 +54,7 @@ export const SFProductSchema = () => {
       costComponents: {
         type: 'array',
         title: 'Cost breakdown',
+        hideIn: ['public'],
         collapsible: true,
         items: {
           type: 'object',

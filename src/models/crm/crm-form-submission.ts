@@ -77,7 +77,7 @@ export const FormSubmissionSchema = () => {
             enum: ['none', 'email', 'code', 'magic-link', 'password'],
             default: 'none',
             description:
-              "The form's `authenticationType` at the time. `email` is taken on trust; `code` and `magic-link` are proved by a token only that address could receive; `password` by a signed-in account.",
+              "The form's `authenticationType` at the time. `email` is taken on trust; `magic-link` is proved by a link or one-time code only that address could receive; `code` by the shared access code or a participant's own code from their invitation link; `password` by a signed-in account.",
           },
           status: {
             type: 'string',
