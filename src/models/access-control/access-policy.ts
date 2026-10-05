@@ -6,7 +6,8 @@ import { DataType, ControlType } from '../../types';
 // points at one (access_zone.policy) and zones beneath inherit it until one
 // points at its own.
 //
-// PIN: required for everyone, for people holding one of `pinRoles`, or off.
+// PIN: required for everyone, for members of one of `pinGroups` (access
+// groups), or off.
 // Anyone can still turn it on for themselves by setting a PIN on their card.
 export const AccessPolicySchema = () => {
   return {
@@ -23,18 +24,18 @@ export const AccessPolicySchema = () => {
       description: { type: 'string', 'x-control-variant': 'textarea' },
       requirePin: {
         type: 'string',
-        enum: ['off', 'everyone', 'roles'],
+        enum: ['off', 'everyone', 'groups'],
         default: 'off',
         description: 'Who must enter their card PIN in zones under this policy.',
         notes: 'Off does not mean nobody uses one — a person who set a PIN on their card is always asked for it.',
         group: 'pin',
       },
-      pinRoles: {
+      pinGroups: {
         type: 'array',
         items: { type: 'string' },
-        description: 'requirePin = roles: people holding any of these roles.',
+        description: 'requirePin = groups: members of any of these access groups.',
         'x-control': ControlType.selectMany,
-        dataSource: { source: 'collection', collection: DataType.userrole, value: 'name', label: 'name' },
+        dataSource: { source: 'collection', collection: DataType.access_group, value: 'name', label: ['title', 'name'] },
         group: 'pin',
       },
     },
