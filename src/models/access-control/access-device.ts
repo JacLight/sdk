@@ -1,6 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { DataType, ControlType } from '../../types';
+import { AccessAllowSchema, AccessDenySchema, AccessPolicyRef } from './access-rules';
 
 // An input device: anything that calls the server directly to ask for access
 // — card reader, fingerprint reader, QR scanner, keypad, Android terminal,
@@ -52,6 +53,9 @@ export const AccessDeviceSchema = () => {
         hidden: true,
         description: 'sha256 of the device key. The clear key is shown once when generated.',
       },
+      allow: { ...AccessAllowSchema(), description: 'Who may use this input device, on top of its access point and zone.' },
+      deny: AccessDenySchema(),
+      policy: AccessPolicyRef(),
       status: { type: 'string', enum: ['active', 'disabled'], default: 'active', group: 'state' },
       lastSeenAt: { type: 'string', format: 'date-time', disabled: true, group: 'state' },
     },

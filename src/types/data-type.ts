@@ -28,6 +28,7 @@ export enum DataType {
   access_credential = 'access_credential',
   access_event = 'access_event',
   access_policy = 'access_policy',
+  access_group = 'access_group',
   email_account = 'email_account',
   ai_assistant= 'ai_assistant',
   ai_employee = 'ai_employee',

@@ -2,29 +2,16 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { DataType, ControlType } from '../../types';
 import { AddressSchema } from '../crm/crm-address';
+import { AccessAllowSchema, AccessDenySchema, AccessPolicyRef } from './access-rules';
 
-const RoleList = () => ({
-  type: 'array',
-  items: { type: 'string' },
-  'x-control': ControlType.selectMany,
-  dataSource: { source: 'collection', collection: DataType.userrole, value: 'name', label: 'name' },
-} as const);
-
-const UserList = () => ({
-  type: 'array',
-  items: { type: 'string' },
-  'x-control': ControlType.selectMany,
-  dataSource: { source: 'collection', collection: DataType.user, value: 'sk', label: ['email', 'firstName', 'lastName'] },
-} as const);
 
 // A place access is granted to. Zones form one tree: global → country →
 // state → site/building → floor → room → cage ...
 //
-// Who gets in is held on the zone itself, like menu permissions on a role:
-// a user is let in when one of their roles (direct, or granted by a group) is
-// in allow.roles, or they are named in allow.users. A match in deny always
-// wins. A zone with empty allow and deny lists inherits its parent's; a zone
-// that sets its own lists replaces what it would have inherited.
+// Who gets in is held on the zone (and on its access points and input
+// devices): the access groups it allows or denies, and people by name — see
+// access-rules.ts. Roles do not open doors. Rules add up the tree: an allow
+// here or on any zone above lets a member in; a deny anywhere wins.
 export const AccessZoneSchema = () => {
   return {
     type: 'object',
@@ -52,22 +39,9 @@ export const AccessZoneSchema = () => {
         group: 'kind',
       },
 
-      allow: {
-        type: 'object',
-        properties: { roles: RoleList(), users: UserList() },
-      },
-      deny: {
-        type: 'object',
-        properties: { roles: RoleList(), users: UserList() },
-        notes: 'Always wins over allow.',
-      },
-      policy: {
-        type: 'string',
-        description: 'Access policy for this zone. Empty = inherited from the parent zone.',
-        'x-control': ControlType.selectMany,
-        maxItems: 1,
-        dataSource: { source: 'collection', collection: DataType.access_policy, value: 'name', label: ['title', 'name'] },
-      },
+      allow: AccessAllowSchema(),
+      deny: AccessDenySchema(),
+      policy: { ...AccessPolicyRef(), description: 'Access policy for this zone. Empty = inherited from the parent zone.' },
 
       capacity: { type: 'number', minimum: 0, description: 'Maximum people inside at once. Empty = no limit.' },
 
