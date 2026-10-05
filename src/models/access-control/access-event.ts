@@ -22,6 +22,7 @@ export const AccessEventSchema = () => {
       // type: access
       inputDevice: { type: 'string', notes: 'access_device name.' },
       grantingDevice: { type: 'string', notes: 'device_config name.' },
+      accessPoint: { type: 'string', notes: 'access_point the input (or granting) device belongs to.' },
       zone: { type: 'string' },
       scopePath: { type: 'string' },
       direction: { type: 'string', enum: ['in', 'out'] },

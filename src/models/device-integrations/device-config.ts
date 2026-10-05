@@ -137,6 +137,13 @@ export const DeviceConfigSchema = () => {
             dataSource: { source: 'collection', collection: DataType.access_zone, value: 'name', label: ['title', 'name'] },
           },
           scopePath: { type: 'string', readOnly: true, notes: 'Computed from the zone.' },
+          accessPoint: {
+            type: 'string',
+            notes: 'The access point this device belongs to — where it is.',
+            'x-control': ControlType.selectMany,
+            maxItems: 1,
+            dataSource: { source: 'collection', collection: DataType.access_point, value: 'name', label: ['title', 'name'] },
+          },
           directions: { type: 'array', items: { type: 'string', enum: ['in', 'out'] } },
           failMode: { type: 'string', enum: ['safe', 'secure'], default: 'secure', notes: 'safe = unlocks on power loss.' },
           heldOpenSeconds: { type: 'number', minimum: 0, notes: 'Raise a held_open alarm after this long. Empty = never.' },

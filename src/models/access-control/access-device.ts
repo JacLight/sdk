@@ -20,14 +20,24 @@ export const AccessDeviceSchema = () => {
         group: 'name',
       },
       title: { type: 'string', group: 'name' },
+      accessPoint: {
+        type: 'string',
+        description: 'The access point this device belongs to — where it is.',
+        'x-control': ControlType.selectMany,
+        maxItems: 1,
+        dataSource: { source: 'collection', collection: DataType.access_point, value: 'name', label: ['title', 'name'] },
+      },
       kind: {
         type: 'string',
         enum: ['card-reader', 'fingerprint', 'qr-scanner', 'keypad', 'terminal', 'computer', 'plate-camera', 'handheld'],
+        description: 'What the device is — this decides what it reads.',
+        group: 'kind',
       },
-      methods: {
-        type: 'array',
-        items: { type: 'string', enum: ['card', 'pin', 'qr', 'door_qr', 'mobile', 'plate', 'fingerprint', 'face'] },
-        description: 'What this device can read.',
+      hasKeypad: {
+        type: 'boolean',
+        default: false,
+        description: 'The unit has a keypad for PIN entry. Keypads and terminals always do. Without one, PIN rules are not applied at this device.',
+        group: 'kind',
       },
       triggers: {
         type: 'array',
