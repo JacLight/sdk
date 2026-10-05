@@ -48,7 +48,7 @@ export const JOURNEY_TASK_TYPES = [
 /** Apps without SCIM: what the IT checklist does. */
 export const JOURNEY_MANUAL_ACCOUNT_ACTIONS = ['create', 'revoke', 'revoke_all'] as const;
 
-/** Equipment kinds; `access_card` is issued/revoked through the platform's access_card records. */
+/** Equipment kinds; `access_card` is issued/revoked through the platform's access_credential records (type card). */
 export const JOURNEY_EQUIPMENT_KINDS = ['laptop', 'phone', 'tablet', 'uniform', 'keys', 'access_card', 'badge', 'tools', 'vehicle', 'other'] as const;
 export const JOURNEY_EQUIPMENT_ACTIONS = ['issue', 'collect'] as const;
 export const JOURNEY_EQUIPMENT_STATUSES = ['issued', 'returned', 'lost', 'damaged', 'written_off'] as const;
