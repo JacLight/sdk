@@ -65,6 +65,7 @@ export enum DataType {
   chat = 'chat',
   call = 'call',
   lead = 'lead',
+  raw_contact = 'raw_contact', // a person or business found or met, once; leads point at it
   message = 'message',
   schedule = 'schedule',
   trash = 'trash',
