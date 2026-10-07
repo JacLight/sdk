@@ -83,6 +83,38 @@ export const SettingSchema = () => {
       // every mailbox config, not one chosen winner. SMS goes out through the
       // provider on the phone record it sends from, and bulk email through the
       // sender account the broadcast names.
+      approvalReasons: {
+        type: 'object',
+        collapsible: 'close',
+        title: 'Approval reasons',
+        description: 'The reasons people pick from when they ask for access, and when an approver declines. They can add a detail to any of them.',
+        properties: {
+          request: {
+            type: 'array',
+            title: 'Why someone asks',
+            items: approvalReasonSchema(),
+            default: [
+              { label: 'Part of my job', description: 'My role needs this screen for day-to-day work' },
+              { label: 'Covering for someone', description: 'Filling in while a colleague is away' },
+              { label: 'New responsibility', description: 'I have been given new duties' },
+              { label: 'One-off task', description: 'I need it for a single job, then I am done' },
+              { label: 'Fixing a problem', description: 'Something is wrong and I need to look at it' },
+            ],
+          },
+          decline: {
+            type: 'array',
+            title: 'Why a request is declined',
+            items: approvalReasonSchema(),
+            default: [
+              { label: 'Not needed for this role', description: 'The work can be done without it' },
+              { label: 'Ask your manager first', description: 'Your manager should agree before access is given' },
+              { label: 'Someone else will do it', description: 'This task belongs to another person or team' },
+              { label: 'Too much access', description: 'A narrower role or group fits better' },
+              { label: 'Need more detail', description: 'Say what you need it for, then ask again' },
+            ],
+          },
+        },
+      },
       notificationCopyTo: {
         type: 'object',
         collapsible: 'close',
@@ -612,6 +644,18 @@ export const SettingSchema = () => {
     },
   } as const;
 };
+
+/** One reason in an approval reason list: a short label and what it means. */
+function approvalReasonSchema() {
+  return {
+    type: 'object',
+    layout: 'horizontal',
+    properties: {
+      label: { type: 'string', title: 'Reason' },
+      description: { type: 'string', title: 'What it means' },
+    },
+  } as const;
+}
 
 const getNotificationCopySchema = () =>
   ({

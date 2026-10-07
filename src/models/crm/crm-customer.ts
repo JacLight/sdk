@@ -1,5 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
+import { ContactSourcesFields } from './crm-raw-contact';
 import { DataType, ControlType } from '../../types';
 import { FileInfoSchema } from '../file-info';
 import { BusinessLocationField } from '../_location-fields';
@@ -478,6 +479,9 @@ export const CustomerSchema = () => {
           },
         },
       },
+
+      // Where this person's data came from: every import, form, search find and lead that merged into them.
+      ...ContactSourcesFields(),
 
       // ========== HIDDEN/SYSTEM ==========
       audit: {

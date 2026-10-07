@@ -108,6 +108,7 @@ export const LeadSchema = () => {
           'phone',
           'event',
           'partner',
+          'prospecting',
           'other',
         ],
         group: 'source',
@@ -232,6 +233,22 @@ export const LeadSchema = () => {
         format: 'date-time',
         group: 'dates',
         title: 'Converted Date',
+      },
+      // The person this lead is: their contact, linked when the lead is made.
+      // The same person in several pipelines is one contact with many leads.
+      contactId: {
+        type: 'string',
+        title: 'Contact',
+        group: 'contact',
+        readOnly: true,
+        'x-control': ControlType.selectMany,
+        maxItems: 1,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.customer,
+          value: 'sk',
+          label: ['username', 'email'],
+        },
       },
       // The contact (a person, never the shared account) the lead became on
       // conversion. Set by the server's convert action, not typed in.
