@@ -51,6 +51,7 @@ export enum ComponentName {
   SubscriptionHome = 'SubscriptionHome',
   TranslationView = 'TranslationView',
   InvoiceHome = 'InvoiceHome',
+  /** @deprecated Nothing renders it any more; signed documents are sent through Forms (crm_form.signing). Kept so older consumers still compile. */
   SignedDocument = 'SignedDocument',
   CRMForm = 'CRMForm',
   Workspace = 'Workspace',

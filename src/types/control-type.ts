@@ -38,4 +38,12 @@ export enum ControlType {
   dateRange = 'dateRange',
   lookup = 'lookup',
   legalConsent = 'legalConsent',
+  /**
+   * An e-signature: drawn and/or typed, with explicit consent. The value sent is
+   * `{ image?: data URL, typedName?, consent: true }`; the server validates it,
+   * stores a drawn image as a private file and keeps a FormSignature (role,
+   * signedAt, IP, user agent). Field options: `signerRole`, `signatureModes`
+   * (['draw', 'type']), `inputRequired`.
+   */
+  signature = 'signature',
 }

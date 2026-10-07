@@ -150,6 +150,72 @@ export const FormSchema = () => {
           },
         },
       },
+      signing: {
+        type: 'object',
+        hidden: true,
+        description:
+          'A document the participants sign through this form. Inviting the participants opens a `signed_document` ' +
+          'envelope per send: each participant whose `role` matches a signing role gets their own link ' +
+          '(`/form?form=<name>&sign=<token>`), fills their part of the form and signs their spots. Edited on the ' +
+          "form's Document tab, not by hand.",
+        properties: {
+          enabled: { type: 'boolean', default: true },
+          documents: {
+            type: 'array',
+            description: 'The PDFs to sign. A spot names one by `fileIndex`.',
+            items: {
+              type: 'object',
+              properties: {
+                file: FileInfoSchema(),
+                pages: {
+                  type: 'array',
+                  description: 'Page sizes in PDF points as shown (after rotation).',
+                  items: { type: 'object', properties: { width: { type: 'number' }, height: { type: 'number' } } },
+                },
+              },
+            },
+          },
+          roles: {
+            type: 'array',
+            description: 'Who signs, in signing order. A participant signs as the role named in their `role`.',
+            items: {
+              type: 'object',
+              properties: {
+                id: { type: 'string' },
+                label: { type: 'string' },
+                order: { type: 'number' },
+              },
+            },
+          },
+          spots: {
+            type: 'array',
+            description:
+              'Where each role signs. Positions are PDF points from the bottom-left of the page as shown, so placement ' +
+              'is exact at any zoom. `field` links a spot to a form field (a signature field, or any answer for a text spot).',
+            items: {
+              type: 'object',
+              properties: {
+                id: { type: 'string' },
+                fileIndex: { type: 'number', default: 0 },
+                page: { type: 'number', description: '1-based page number.' },
+                x: { type: 'number' },
+                y: { type: 'number' },
+                width: { type: 'number' },
+                height: { type: 'number' },
+                type: { type: 'string', enum: ['signature', 'initials', 'date', 'name', 'text'] },
+                role: { type: 'string' },
+                field: { type: 'string' },
+                required: { type: 'boolean', default: true },
+                label: { type: 'string' },
+              },
+            },
+          },
+          signingOrder: { type: 'string', enum: ['sequential', 'parallel'], default: 'parallel' },
+          expiresInDays: { type: 'number', default: 30 },
+          reminderDays: { type: 'number', description: 'Days between automatic reminders; 0 or empty for none.' },
+          consentText: { type: 'string', description: 'What the signer agrees to. Empty uses the standard e-sign consent.' },
+        },
+      },
       seo: {
         type: 'object',
         collapsible: 'close', // open, close, true

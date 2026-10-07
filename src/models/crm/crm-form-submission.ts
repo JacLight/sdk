@@ -127,7 +127,7 @@ export const FormSubmissionSchema = () => {
           },
           admittedBy: {
             type: 'string',
-            enum: ['open', 'form-code', 'participant-code', 'link-session', 'signed-in'],
+            enum: ['open', 'form-code', 'participant-code', 'link-session', 'signed-in', 'staff', 'sign-link'],
             description:
               'Which door was used. `method` says what the form asked for; this says what actually let them in — the form\'s shared code, their own invitation code, a link sent to their address, an account, or nothing.',
           },
@@ -137,6 +137,41 @@ export const FormSubmissionSchema = () => {
             description:
               'Where it was opened and sent from (ip, user agent, host) — the evidence behind an invalidation.',
           },
+        },
+      },
+      signatures: {
+        type: 'array',
+        readOnly: true,
+        description:
+          'Every signature field signed in this submission: who, as what role, when, from where. A drawn signature is a private file (`file.path`); the image itself is never kept in the record. Written by the server.',
+        items: {
+          type: 'object',
+          properties: {
+            role: { type: 'string' },
+            name: { type: 'string' },
+            email: { type: 'string' },
+            typedName: { type: 'string' },
+            signatureId: { type: 'string', description: 'The signature field key.' },
+            method: { type: 'string', enum: ['drawn', 'typed'] },
+            file: { type: 'object', properties: { path: { type: 'string' }, mimeType: { type: 'string' } } },
+            consent: { type: 'boolean' },
+            signedAt: { type: 'string', format: 'date-time' },
+            ipAddress: { type: 'string' },
+            userAgent: { type: 'string' },
+          },
+        },
+      },
+      signedDocument: {
+        type: 'object',
+        readOnly: true,
+        description: 'The signed_document envelope this answer was sent with (a signing link), and its state.',
+        properties: {
+          id: { type: 'string' },
+          participantId: { type: 'string' },
+          role: { type: 'string' },
+          status: { type: 'string', enum: ['signing', 'completed'] },
+          completedAt: { type: 'string', format: 'date-time' },
+          sha256: { type: 'string' },
         },
       },
     },

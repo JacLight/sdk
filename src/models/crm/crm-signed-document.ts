@@ -46,7 +46,7 @@ export const SignedDocumentSchema = () => {
       // Lifecycle
       status: {
         type: 'string',
-        enum: ['draft', 'sent', 'in_progress', 'completed', 'cancelled', 'expired', 'voided'],
+        enum: ['draft', 'sent', 'in_progress', 'completed', 'declined', 'cancelled', 'expired', 'voided'],
         default: 'draft',
         group: 'status',
       },
@@ -55,6 +55,47 @@ export const SignedDocumentSchema = () => {
       expiresAt: { type: 'string', format: 'date-time', group: 'status' },
       lastReminderAt: { type: 'string', format: 'date-time', group: 'status' },
       reminderCount: { type: 'number', default: 0, group: 'status' },
+      reminderDays: { type: 'number', description: 'Days between automatic reminders (0 = none).', group: 'status' },
+      allSignedAt: { type: 'string', format: 'date-time', readOnly: true, group: 'status' },
+      closedAt: { type: 'string', format: 'date-time', readOnly: true, group: 'status' },
+      closeReason: { type: 'string', readOnly: true, description: 'Why it was cancelled, voided or declined.', group: 'status' },
+      // Forms e-signing: the form this envelope was sent from.
+      source: { type: 'string', enum: ['form', 'api'], readOnly: true },
+      formId: { type: 'string', readOnly: true, description: 'sk of the crm_form it was sent from.' },
+      formName: { type: 'string', readOnly: true },
+      formTitle: { type: 'string', readOnly: true },
+      ownerEmail: { type: 'string', format: 'email', description: 'Who is told about declines, failures and completion.' },
+      consentText: { type: 'string', 'x-control-variant': 'textarea', description: 'The e-sign consent the signer agrees to.' },
+      roles: {
+        type: 'array',
+        readOnly: true,
+        items: { type: 'object', properties: { id: { type: 'string' }, label: { type: 'string' }, order: { type: 'number' } } },
+      },
+      submissions: {
+        type: 'array',
+        readOnly: true,
+        description: 'The form submission each signer sent with their signature.',
+        items: { type: 'object', properties: { participantId: { type: 'string' }, id: { type: 'string' }, datatype: { type: 'string' } } },
+      },
+      signedSha256: { type: 'string', readOnly: true, description: 'SHA-256 of the signed pages, before the certificate of completion was added.' },
+      certificate: {
+        type: 'object',
+        readOnly: true,
+        properties: { pages: { type: 'number' }, signedPages: { type: 'number' } },
+      },
+      merge: {
+        type: 'object',
+        readOnly: true,
+        description: 'Building the signed PDF. A failure leaves the envelope open and is retried by the upkeep job.',
+        properties: {
+          status: { type: 'string', enum: ['done', 'failed'] },
+          attempts: { type: 'number' },
+          lastError: { type: 'string' },
+          lastAttemptAt: { type: 'string', format: 'date-time' },
+          warnedAt: { type: 'string', format: 'date-time' },
+          completedAt: { type: 'string', format: 'date-time' },
+        },
+      },
       // Where the envelope came from (link back to parent record)
       context: {
         type: 'object',
@@ -77,12 +118,19 @@ export const SignedDocumentSchema = () => {
           properties: {
             ...FileInfoSchema().properties,
             remark: { type: 'string', 'x-control-variant': 'textarea' },
+            sha256: { type: 'string', description: 'Fingerprint of the copy that was sent (stored privately at send).' },
+            pages: {
+              type: 'array',
+              description: 'Page sizes in PDF points as shown (after rotation).',
+              items: { type: 'object', properties: { width: { type: 'number' }, height: { type: 'number' } } },
+            },
           },
         },
       },
       signedFile: {
         ...FileInfoSchema(),
-        description: 'The merged signed PDF (written by service after all participants sign).',
+        description:
+          'The signed PDF with its certificate of completion, written once everyone has signed. Stored privately: served only to staff or through a participant\'s own token.',
       },
       // Where signatures must be placed
       signatureFields: {
@@ -103,21 +151,39 @@ export const SignedDocumentSchema = () => {
               default: 'pending',
               group: 'status',
             },
-            page: { type: 'number', group: 'sign-spot' },
+            // PDF points (1/72 in) from the BOTTOM-LEFT of the page as shown, the spot's
+            // bottom-left corner — the same at any zoom.
+            page: { type: 'number', group: 'sign-spot', description: '1-based page number.' },
             x: { type: 'number', group: 'sign-spot' },
             y: { type: 'number', group: 'sign-spot' },
             width: { type: 'number', group: 'sign-spot' },
             height: { type: 'number', group: 'sign-spot' },
             type: {
               type: 'string',
-              enum: ['initial', 'full', 'date', 'text'],
-              default: 'full',
+              // `full` and `initial` are the older names of `signature` and `initials`.
+              enum: ['signature', 'initials', 'date', 'name', 'text', 'full', 'initial'],
+              default: 'signature',
               group: 'type',
             },
+            role: { type: 'string', group: 'type', description: 'The signer role that fills it.' },
+            field: { type: 'string', group: 'type', description: 'A form field this spot shows.' },
+            required: { type: 'boolean', default: true, group: 'type' },
+            label: { type: 'string', group: 'type' },
             assignedTo: {
               type: 'string',
               description: 'participantId of who must sign here',
               group: 'type',
+            },
+            value: {
+              type: 'object',
+              readOnly: true,
+              description: 'What was put here: an image (private file), a typed signature, or text.',
+              properties: {
+                kind: { type: 'string', enum: ['image', 'script', 'text'] },
+                method: { type: 'string', enum: ['drawn', 'typed'] },
+                text: { type: 'string' },
+                file: { type: 'object', properties: { path: { type: 'string' }, mimeType: { type: 'string' }, sha256: { type: 'string' } } },
+              },
             },
             instructions: {
               type: 'string',
@@ -158,10 +224,11 @@ export const SignedDocumentSchema = () => {
             phone: { type: 'string' },
             role: {
               type: 'string',
-              description: 'signer, witness, cc, approver',
+              description: 'The signing role (from the form), or `cc` for someone who only gets the signed copy.',
             },
+            roleLabel: { type: 'string' },
             // Per-participant tokenized link
-            accessToken: { type: 'string' },
+            accessToken: { type: 'string', hidden: true },
             order: {
               type: 'number',
               default: 0,
@@ -169,12 +236,29 @@ export const SignedDocumentSchema = () => {
             },
             status: {
               type: 'string',
-              enum: ['pending', 'sent', 'viewed', 'signed', 'declined'],
+              enum: ['pending', 'sent', 'viewed', 'signed', 'declined', 'cc'],
               default: 'pending',
             },
             sentAt: { type: 'string', format: 'date-time' },
             viewedAt: { type: 'string', format: 'date-time' },
             signedAt: { type: 'string', format: 'date-time' },
+            declinedAt: { type: 'string', format: 'date-time' },
+            declineReason: { type: 'string' },
+            submissionId: { type: 'string', description: 'The form submission sent with this signature.' },
+            signature: {
+              type: 'object',
+              readOnly: true,
+              description: 'The signature adopted: drawn (private file) or typed, with consent, IP and user agent.',
+              properties: {
+                method: { type: 'string', enum: ['drawn', 'typed'] },
+                typedName: { type: 'string' },
+                file: { type: 'object', properties: { path: { type: 'string' }, mimeType: { type: 'string' }, sha256: { type: 'string' } } },
+                consent: { type: 'boolean' },
+                ip: { type: 'string' },
+                userAgent: { type: 'string' },
+                signedAt: { type: 'string', format: 'date-time' },
+              },
+            },
             expiry: { type: 'string', format: 'date-time' },
           },
           required: ['participantId', 'email', 'role'],
@@ -190,7 +274,7 @@ export const SignedDocumentSchema = () => {
           properties: {
             event: {
               type: 'string',
-              enum: ['created', 'sent', 'viewed', 'signed', 'declined', 'completed', 'reminded', 'cancelled', 'expired'],
+              enum: ['created', 'sent', 'viewed', 'consented', 'signed', 'declined', 'completed', 'reminded', 'cancelled', 'voided', 'expired', 'merge_failed', 'downloaded'],
             },
             participantId: { type: 'string' },
             email: { type: 'string' },
