@@ -67,6 +67,8 @@ export enum DataType {
   lead = 'lead',
   raw_contact = 'raw_contact', // prospecting staging: a found person or business, before the quality check
   prospect_criteria = 'prospect_criteria', // the questions found contacts are qualified against
+  prospect_list = 'prospect_list', // a saved Lead Finder list and the steps that built it
+  blueprint = 'blueprint', // a CRM Blueprint: one canvas of a customer journey, its blocks built as real records
   message = 'message',
   schedule = 'schedule',
   trash = 'trash',

@@ -114,6 +114,21 @@ export const SiteSchema = () => {
         type: 'string',
         layoutGroup: 'info',
       },
+      seo: {
+        type: 'object',
+        layoutGroup: 'info',
+        properties: {
+          noIndex: { type: 'boolean', default: false, description: 'Keep the whole site out of search results (robots.txt and every page say noindex).' },
+        },
+      },
+      sitemap: {
+        type: 'object',
+        layoutGroup: 'info',
+        properties: {
+          pages: { type: 'array', items: { type: 'string' }, description: 'The pages (by name) in the sitemap and open to search; the others say noindex. Not set = every page.' },
+          records: { type: 'array', items: { type: 'string' }, description: 'Data pages (by name — blog, store, events…) whose records are listed under them in the sitemap.' },
+        },
+      },
       logo: {
         ...FileInfoSchema(),
         layoutGroup: 'logo',
@@ -508,6 +523,25 @@ export const SiteSchema = () => {
         type: 'object',
         collapsible: 'open',
         properties: {
+          cookies: {
+            type: 'array',
+            title: 'Cookies',
+            description: 'Cookies set on every visit (a page adds its own, or replaces one of the site\'s by name). A value can take part of the page address: {{query.utm_source}}, {{query.gclid}}.',
+            items: {
+              type: 'object',
+              properties: {
+                name: { type: 'string', title: 'Name' },
+                value: { type: 'string', title: 'Value', description: 'Fixed text, or {{query.<name>}} from the page address (not set when that is empty)' },
+                days: { type: 'number', title: 'Keep for (days)', default: 30 },
+                path: { type: 'string', title: 'Path', default: '/' },
+                domain: { type: 'string', title: 'Domain', description: 'Empty = this site only; .example.com = every subdomain' },
+                sameSite: { type: 'string', title: 'SameSite', enum: ['Lax', 'Strict', 'None'], default: 'Lax' },
+                secure: { type: 'boolean', title: 'Secure (https only)', default: true },
+                keepFirst: { type: 'boolean', title: 'Keep the first value', description: 'Only set when the visitor does not have it yet (first touch)', default: false },
+                afterConsent: { type: 'boolean', title: 'Only after cookie consent', description: 'Set once the visitor accepts cookies', default: false },
+              },
+            },
+          },
           pixel: {
             type: 'string',
           },

@@ -18,6 +18,8 @@ export * from './crm-campaign';
 export * from './crm-lead';
 export * from './crm-raw-contact';
 export * from './crm-prospect-criteria';
+export * from './crm-prospect-list';
+export * from './crm-blueprint';
 export * from './crm-message-template';
 export * from './crm-audience';
 export * from './crm-creative';
