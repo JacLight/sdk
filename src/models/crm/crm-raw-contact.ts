@@ -3,7 +3,7 @@ import { registerCollection } from '../../default-schema';
 import { DataType } from '../../types';
 
 /** Where a piece of a person's data came from. */
-export const RAW_CONTACT_SOURCES = ['pdl', 'diffbot', 'maps', 'spider', 'import', 'form', 'facebook', 'manual', 'lead'] as const;
+export const RAW_CONTACT_SOURCES = ['pdl', 'diffbot', 'maps', 'linkedin', 'spider', 'import', 'form', 'facebook', 'manual', 'lead'] as const;
 
 /**
  * Where a person's data came from, kept on the raw contact and on the contact
@@ -53,7 +53,7 @@ export const ContactSourcesFields = () =>
 
 /**
  * A person (or business) found by prospecting — People Data Labs, Diffbot,
- * Google Maps — waiting to be enriched and quality-checked. Staging only: a
+ * Google Maps, LinkedIn (captured by the Lead Search Chrome plugin) — waiting to be enriched and quality-checked. Staging only: a
  * repeat find merges into the same record (matched on `sourceIds`, email,
  * company domain + name). One that passes is merged into the org's contacts
  * (customer: enrich and merge if the person is known, else created) and gets

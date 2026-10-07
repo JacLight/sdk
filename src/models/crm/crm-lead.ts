@@ -108,6 +108,7 @@ export const LeadSchema = () => {
           'phone',
           'event',
           'partner',
+          'prospecting',
           'other',
         ],
         group: 'source',

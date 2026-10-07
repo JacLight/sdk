@@ -65,7 +65,8 @@ export enum DataType {
   chat = 'chat',
   call = 'call',
   lead = 'lead',
-  raw_contact = 'raw_contact', // a person or business found or met, once; leads point at it
+  raw_contact = 'raw_contact', // prospecting staging: a found person or business, before the quality check
+  prospect_criteria = 'prospect_criteria', // the questions found contacts are qualified against
   message = 'message',
   schedule = 'schedule',
   trash = 'trash',
