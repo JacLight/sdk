@@ -122,11 +122,16 @@ export const SiteSchema = () => {
         },
       },
       sitemap: {
-        type: 'object',
+        type: 'array',
+        title: 'Sitemap',
         layoutGroup: 'info',
-        properties: {
-          pages: { type: 'array', items: { type: 'string' }, description: 'The pages (by name) in the sitemap and open to search; the others say noindex. Not set = every page.' },
-          records: { type: 'array', items: { type: 'string' }, description: 'Data pages (by name — blog, store, events…) whose records are listed under them in the sitemap.' },
+        description: 'Which pages are in the sitemap (and open to search). Empty: every page. A rule on a page covers the pages under it; with any "in" rule, pages no rule reaches are out.',
+        items: {
+          type: 'object',
+          properties: {
+            page: { type: 'string', title: 'Page', description: 'The page, by name.' },
+            rule: { type: 'string', title: 'Rule', enum: ['in', 'out', 'in-not-children'], default: 'out' },
+          },
         },
       },
       logo: {

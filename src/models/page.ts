@@ -154,7 +154,6 @@ export const PageSchema = () => {
             type: 'string',
           },
         },
-        layoutGroup: 'x-layout.main.items.1',
       },
       breakpoints: {
         type: 'array',
@@ -221,16 +220,6 @@ export const PageSchema = () => {
       thumbnail: {
         type: 'string',
         'x-renderer': 'image',
-      },
-    },
-    'x-layout': {
-      main: {
-        type: 'tab',
-        id: 'main',
-        items: [
-          { id: 'info', title: 'Information' },
-          { id: 'seo', title: 'SEO' },
-        ],
       },
     },
     required: ['name', 'slug', 'site'],
