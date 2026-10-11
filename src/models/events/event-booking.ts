@@ -26,6 +26,15 @@ export const EventBookingSchema = () => {
         },
       },
       ...BusinessLocationField(),
+      bookingType: { type: 'string' },
+      bookingRef: { type: 'string' },
+      eventId: { type: 'string', readOnly: true },
+      saleAttemptId: { type: 'string', readOnly: true },
+      reservationReady: { type: 'boolean', readOnly: true },
+      fulfillmentComplete: { type: 'boolean', readOnly: true },
+      paymentMethod: { type: 'string' },
+      cashReceived: { type: 'number' },
+      change: { type: 'number' },
       // Buyer
       email: {
         type: 'string',
@@ -85,6 +94,7 @@ export const EventBookingSchema = () => {
           refundedAt: { type: 'string', format: 'date-time' },
           refundAmount: { type: 'number' },
           stripePaymentIntentId: { type: 'string' },
+          intentStarted: { type: 'boolean', readOnly: true },
           stripeClientSecret: { type: 'string' },
           paypalOrderId: { type: 'string' },
         },

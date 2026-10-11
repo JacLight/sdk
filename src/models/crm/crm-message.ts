@@ -159,6 +159,38 @@ export const MessageSchema = () => {
         'x-control': ControlType.file,
         items: FileInfoSchema(),
       },
+      // WhatsApp: images, documents, audio or video sent with the message.
+      media: {
+        type: 'array',
+        hideIn: ['table'],
+        items: {
+          type: 'object',
+          properties: {
+            url: { type: 'string' },
+            contentType: { type: 'string' },
+            name: { type: 'string' },
+          },
+        },
+        rules: [
+          { operation: 'notIn', valueA: ['whatsapp'], valueB: '{{deliveryType}}', action: 'hide' },
+        ],
+        watchedPaths: ['deliveryType'],
+      },
+      // WhatsApp: the approved message template (Twilio Content) this was sent with.
+      template: {
+        type: 'object',
+        hidden: true,
+        properties: {
+          contentSid: { type: 'string' },
+          variables: { type: 'object', description: "Values for the template's {{1}}, {{2}}… keyed '1', '2'…" },
+        },
+      },
+      // WhatsApp inbound: the sender's WhatsApp profile name.
+      profileName: {
+        type: 'string',
+        hidden: true,
+        'x-control': 'label',
+      },
       source: {
         type: 'string',
         hidden: true,

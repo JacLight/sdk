@@ -244,7 +244,7 @@ export const EmailBroadcastSchema = () => {
           templateId: {
             type: "string",
             title: 'WhatsApp Template ID',
-            description: 'Pre-approved WhatsApp Business template',
+            description: 'A message template (sk) whose WhatsApp approval is approved — its Twilio Content (data.whatsapp.contentSid) is sent.',
           },
           mediaUrl: {
             type: "string",

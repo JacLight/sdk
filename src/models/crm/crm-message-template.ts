@@ -132,6 +132,58 @@ export const MessageTemplateSchema = () => {
           },
         ],
       },
+      // WhatsApp: the template as Twilio Content, approved by Meta. Body = text
+      // above with {{1}}-style variables.
+      whatsapp: {
+        type: 'object',
+        title: 'WhatsApp',
+        collapsible: true,
+        hideIn: ['table'],
+        rules: [
+          { operation: 'notIn', valueA: ['whatsapp'], valueB: '{{deliveryType}}', action: 'hide' },
+        ],
+        watchedPaths: ['deliveryType'],
+        properties: {
+          contentSid: { type: 'string', readOnly: true, description: 'Twilio Content id (HX…) — replaced on each submit.' },
+          category: {
+            type: 'string',
+            enum: ['UTILITY', 'MARKETING', 'AUTHENTICATION'],
+            enumNames: ['Utility', 'Marketing', 'Authentication'],
+            default: 'UTILITY',
+          },
+          language: { type: 'string', default: 'en' },
+          header: {
+            type: 'object',
+            properties: {
+              type: { type: 'string', enum: ['text', 'image', 'document', 'video'] },
+              text: { type: 'string' },
+              mediaUrl: { type: 'string' },
+            },
+          },
+          footer: { type: 'string', maxLength: 60 },
+          buttons: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                type: { type: 'string', enum: ['quick_reply', 'url', 'phone'] },
+                text: { type: 'string', maxLength: 25 },
+                url: { type: 'string' },
+                phone: { type: 'string' },
+              },
+            },
+          },
+          approval: {
+            type: 'object',
+            readOnly: true,
+            properties: {
+              status: { type: 'string', enum: ['draft', 'pending', 'approved', 'rejected'], default: 'draft' },
+              reason: { type: 'string' },
+              updatedAt: { type: 'string', format: 'date-time' },
+            },
+          },
+        },
+      },
       thumbnail: {
         type: 'string',
       },

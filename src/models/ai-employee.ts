@@ -42,8 +42,8 @@ export const AIEmployeeSchema = () => {
       budgetToday: { type: 'object', readOnly: true, description: 'Today only (its timezone): credit added on top of the daily budget, and when spend was last reset.', properties: { date: { type: 'string' }, creditUsd: { type: 'number' }, resetAt: { type: 'string', format: 'date-time' }, alerted: { type: 'object', properties: { low: { type: 'string' }, out: { type: 'string' } } } } },
       listensTo: {
         type: 'array',
-        items: { type: 'string', enum: ['chat_queue', 'email', 'sms', 'social', 'ticket', 'order', 'form'], enumNames: ['Customer chat queue', 'Email', 'SMS', 'Social media', 'Support tickets', 'Orders', 'Forms'] },
-        description: 'Where it is alerted from, like a person keeping an eye on the desk, the inbox or the orders. Always on: direct messages, mentions, and work assigned to it. Chat queue: a customer is waiting for a person (whoever picks first gets them). Email / SMS: a customer message comes in. Social: a DM, comment or mention on the connected pages. Ticket: a new support ticket. Order: a new order. Form: a form is submitted.',
+        items: { type: 'string', enum: ['chat_queue', 'email', 'sms', 'whatsapp', 'social', 'ticket', 'order', 'form'], enumNames: ['Customer chat queue', 'Email', 'SMS', 'WhatsApp', 'Social media', 'Support tickets', 'Orders', 'Forms'] },
+        description: 'Where it is alerted from, like a person keeping an eye on the desk, the inbox or the orders. Always on: direct messages, mentions, and work assigned to it. Chat queue: a customer is waiting for a person (whoever picks first gets them). Email / SMS / WhatsApp: a customer message comes in. Social: a DM, comment or mention on the connected pages. Ticket: a new support ticket. Order: a new order. Form: a form is submitted.',
       },
       jobTitle: { type: 'string', description: 'Its role, e.g. "Accounts receivable".' },
       avatar: { type: 'string' },

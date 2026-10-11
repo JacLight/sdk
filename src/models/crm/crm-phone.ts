@@ -150,6 +150,24 @@ export const PhoneSchema = () => {
           },
         },
       },
+      // WhatsApp on this number — a one-time WhatsApp sender registration with
+      // Twilio (needs the Twilio account linked to a Meta WhatsApp Business Account).
+      whatsapp: {
+        type: 'object',
+        hideIn: ['generator'],
+        properties: {
+          status: {
+            type: 'string',
+            enum: ['off', 'pending', 'on', 'failed'],
+            default: 'off',
+            description: 'off: not turned on. pending: Meta is approving the sender. on: can send and receive WhatsApp. failed: see reason.',
+          },
+          senderSid: { type: 'string', readOnly: true, description: 'Twilio WhatsApp sender id (XE…).' },
+          displayName: { type: 'string', description: 'The business name customers see in WhatsApp.' },
+          reason: { type: 'string', readOnly: true, description: 'Why it is not on, and what to do next.' },
+          updatedAt: { type: 'string', format: 'date-time', readOnly: true },
+        },
+      },
       // Voice configuration — routing is handled by ivr_routing records
       voiceConfig: {
         type: 'object',
