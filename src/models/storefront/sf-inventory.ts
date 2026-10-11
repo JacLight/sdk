@@ -79,75 +79,52 @@ export const SFInventorySchema = () => {
 };
 
 export const SFInventoryTransferSchema = () => {
+  // Matches what the inventory service writes (storefront/services/inventory.service.ts).
+  const locationPicker = {
+    type: 'string',
+    'x-control': ControlType.selectMany,
+    'x-control-variant': 'chip',
+    maxItems: 1,
+    dataSource: { source: 'collection', collection: DataType.location, value: 'name', label: 'name' },
+  } as const;
   return {
     type: 'object',
     properties: {
-      transferDate: {
-        type: 'string',
-        format: 'date-time',
-      },
-      fromBusinessLocationId: {
-        type: 'string',
-        description: 'Source venue (FK to Business Location)',
-        'x-control': ControlType.selectMany,
-        'x-control-variant': 'chip',
-        maxItems: 1,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.location,
-          value: 'name',
-          label: 'name',
-        },
-      },
-      toBusinessLocationId: {
-        type: 'string',
-        description: 'Destination venue (FK to Business Location)',
-        'x-control': ControlType.selectMany,
-        'x-control-variant': 'chip',
-        maxItems: 1,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.location,
-          value: 'name',
-          label: 'name',
-        },
-      },
-      products: {
+      transferId: { type: 'string', readOnly: true },
+      status: { type: 'string', enum: ['pending', 'in_transit', 'completed', 'cancelled'], default: 'pending', readOnly: true },
+      fromLocationId: { ...locationPicker, description: 'Source location' },
+      fromLocationName: { type: 'string' },
+      toLocationId: { ...locationPicker, description: 'Destination location' },
+      toLocationName: { type: 'string' },
+      items: {
         type: 'array',
         items: {
           type: 'object',
           layout: 'horizontal',
           properties: {
-            product: {
+            sku: {
               type: 'string',
               'x-control': ControlType.selectMany,
-              dataSource: {
-                source: 'collection',
-                collection: DataType.sf_product,
-                value: 'sku',
-                label: ['sku', 'name'],
-              },
+              dataSource: { source: 'collection', collection: DataType.sf_product, value: 'sku', label: ['sku', 'name'] },
             },
-            quantity: {
-              type: 'number',
-            },
+            productName: { type: 'string' },
+            quantity: { type: 'number' },
+            receivedQuantity: { type: 'number', readOnly: true },
+            unitCost: { type: 'number', readOnly: true, description: 'Unit cost the units left the source at' },
           },
         },
       },
-      approvedBy: {
-        type: 'string',
-        'x-control': ControlType.selectMany,
-        dataSource: {
-          source: 'collection',
-          collection: DataType.user,
-          value: 'sk',
-          label: ['name', 'email'],
-        },
-      },
+      initiatedBy: { type: 'string', readOnly: true },
+      initiatedAt: { type: 'string', format: 'date-time', readOnly: true },
+      shippedAt: { type: 'string', format: 'date-time', readOnly: true },
+      receivedAt: { type: 'string', format: 'date-time', readOnly: true },
+      receivedBy: { type: 'string', readOnly: true },
+      trackingNumber: { type: 'string' },
+      carrier: { type: 'string' },
+      notes: { type: 'string', 'x-control-variant': 'textarea' },
     },
   } as const;
 };
-
 
 export const SFInventoryIntakeSchema = () => {
   return {
@@ -192,6 +169,7 @@ export const SFInventoryIntakeSchema = () => {
           },
         },
       },
+      purchaseOrderId: { type: 'string', description: 'The purchase order this delivery fills' },
       ...BusinessLocationField(),
     },
   } as const;
@@ -218,7 +196,7 @@ registerCollection(
 registerCollection(
   'Store Inventory',
   DataType.sf_inventory_transfer,
-  SFInventoryIntakeSchema()
+  SFInventoryTransferSchema()
 );
 
 

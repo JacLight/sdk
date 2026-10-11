@@ -50,6 +50,9 @@ export const BillSchema = () => ({
       group: 'vendor',
     },
     vendorName: { type: 'string', group: 'vendor' },
+    kind: { type: 'string', enum: ['bill', 'credit'], default: 'bill', description: 'credit = money the vendor owes back (a supplier return); used up against the next bill' },
+    purchaseOrderId: { type: 'string', description: 'The purchase order this bill is for' },
+    supplierReturnId: { type: 'string', description: 'kind = credit: the supplier return it credits' },
     vendorRef: {
       type: 'string',
       description: 'Vendor\'s own bill / invoice reference number',

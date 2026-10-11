@@ -252,6 +252,11 @@ export enum DataType {
   bm_bill = 'bm_bill',
   bm_bill_payment = 'bm_bill_payment',
   bm_vendor = 'bm_vendor',
+  // Procurement, assets, contracts
+  bm_purchase_order = 'bm_purchase_order',
+  bm_supplier_return = 'bm_supplier_return',
+  bm_asset = 'bm_asset',
+  bm_contract = 'bm_contract',
   // Operations: queue, check-in, pipelines
   bm_period_close = 'bm_period_close',
   bm_budget = 'bm_budget',

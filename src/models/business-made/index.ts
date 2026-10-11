@@ -59,6 +59,11 @@ export * from './work-order';
 // Accounts Payable + Vendors
 export * from './bill';
 
+// Procurement, assets, contracts
+export * from './procurement';
+export * from './asset';
+export * from './contract';
+
 // Operations: queue, check-in, pipelines, period close, budgets
 export * from './operations';
 export * from './bank-account';

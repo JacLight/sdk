@@ -250,6 +250,7 @@ export const EmployeeSchema = () => {
             locationId: { type: 'string' },
             quantity: { type: 'number' },
             assetTag: { type: 'string' },
+            assetIds: { type: 'array', items: { type: 'string' }, description: 'The bm_asset records issued on this line (one per unit when tracked as assets)' },
             serialNumber: { type: 'string' },
             accessCardId: { type: 'string' },
             requiresReturn: { type: 'boolean' },
