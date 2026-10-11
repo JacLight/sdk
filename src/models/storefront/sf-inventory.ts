@@ -170,6 +170,7 @@ export const SFInventoryIntakeSchema = () => {
         },
       },
       purchaseOrderId: { type: 'string', description: 'The purchase order this delivery fills' },
+      receivedAt: { type: 'string', format: 'date-time', readOnly: true },
       ...BusinessLocationField(),
     },
   } as const;

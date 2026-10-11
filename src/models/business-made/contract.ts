@@ -41,6 +41,16 @@ export const ContractSchema = () => ({
     files: { type: 'array', 'x-control': ControlType.file, items: FileInfoSchema() },
     signedDocumentId: { type: 'string', readOnly: true, description: 'The e-sign request it went out on' },
     status: { type: 'string', enum: ['draft', 'out_for_signature', 'active', 'expired', 'terminated'], default: 'draft' },
+    activatedOn: { type: 'string', format: 'date', readOnly: true, description: 'When it went active; Books postings start from this month' },
+    termination: {
+      type: 'object',
+      readOnly: true,
+      properties: {
+        date: { type: 'string', format: 'date' },
+        reason: { type: 'string' },
+        by: { type: 'string' },
+      },
+    },
     startDate: { type: 'string', format: 'date', group: 'term' },
     endDate: { type: 'string', format: 'date', group: 'term' },
     autoRenew: { type: 'boolean', default: false, group: 'term' },
