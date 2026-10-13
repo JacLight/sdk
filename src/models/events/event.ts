@@ -206,7 +206,7 @@ export const EventSchema = () => {
               enum: ['entrance', 'eligibility'],
               default: 'entrance',
               title: 'Scan Type',
-              description: 'entrance = gate in/out (one-time), eligibility = perk/zone check (unlimited)',
+              description: 'entrance = gate entry/exit, eligibility = benefit check for a ticket currently inside the event; benefit usage limits still apply.',
             },
             matchField: {
               type: 'string',

@@ -303,6 +303,11 @@ export enum DataType {
   // back over WebSocket.
   device_config = 'device_config',
   device_hub = 'device_hub',
+  // What a device placed in a zone reported (door opened, beam broken, gas alarm, offline).
+  device_event = 'device_event',
+  // Devices that act alike (every freezer probe) and what devices do when they report something.
+  device_group = 'device_group',
+  device_policy = 'device_policy',
   // Stowbo
   stowbo_addon = 'stowbo_addon',
   stowbo_fee = 'stowbo_fee',

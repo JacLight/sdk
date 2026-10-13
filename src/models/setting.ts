@@ -512,6 +512,53 @@ export const SettingSchema = () => {
       },
 
       /**
+       * How payroll is paid — kept on the payroll direct-deposit setting record
+       * (`name: payroll_ach_config`, beside its NACHA originator fields). Pay
+       * stays gated on the run's approval; this only picks how the approved net
+       * pay leaves: the offline bank file (default), Stripe Treasury ACH, or
+       * Plaid Transfer. Anyone the provider can't pay falls back to the bank
+       * file or a check.
+       */
+      payrollPayout: {
+        type: 'object',
+        title: 'How payroll is paid',
+        hidden: true,
+        collapsible: 'close',
+        group: 'payroll',
+        properties: {
+          payoutProvider: {
+            type: 'string',
+            title: 'How payroll is paid',
+            enum: ['bank_file', 'stripe_ach', 'plaid_transfer'],
+            default: 'bank_file',
+            description:
+              'bank_file: download a NACHA file and upload it to your bank (checks and cash as before). stripe_ach: send each deposit from your Stripe Treasury financial account. plaid_transfer: send each deposit through Plaid Transfer, funded from your linked business checking account.',
+          },
+          stripeFinancialAccountId: {
+            type: 'string',
+            title: 'Stripe financial account',
+            description:
+              'The Stripe Treasury financial account (fa_…) payroll is sent from — chosen from the list Stripe returns, never typed.',
+          },
+          stripeFinancialAccountName: { type: 'string', readOnly: true },
+          plaidFundingAccountId: {
+            type: 'string',
+            title: 'Plaid funding account',
+            description:
+              'The business checking account (a bank_account linked through the Plaid bank feed) that funds Plaid Transfer payouts.',
+            dataSource: {
+              source: 'collection',
+              collection: DataType.bank_account,
+              value: 'sk',
+              label: 'name',
+              filter: { 'data.source': 'plaid' },
+            },
+          },
+          plaidFundingAccountName: { type: 'string', readOnly: true },
+        },
+      },
+
+      /**
        * Stowbo Config — the storage marketplace's own numbers, set by the platform
        * operator from the console and applied live. Every Stowbo money rule reads
        * from here; the deployment's env values are only the defaults.

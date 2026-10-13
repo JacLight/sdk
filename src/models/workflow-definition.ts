@@ -27,6 +27,11 @@ export const WorkflowDefinitionSchema = () => {
       description: {
         type: 'string',
       },
+      ownerStatus: {
+        type: 'string',
+        notes: "The status written onto the record the task is about (a collection listed in the workflow's collections) while it is on this stage, when it differs from modelStatus — e.g. a payroll run is pending_approval while its task is pending.",
+        group: 'type',
+      },
       notificationTemplate: {
         type: 'array',
         'x-control': ControlType.selectMany,
@@ -173,9 +178,23 @@ export const WorkflowStageSchema = () => {
           users: { type: 'array', items: { type: 'string' }, notes: 'Emails.' },
           relative: { type: 'string', enum: ['supervisor', 'manager', 'department-head', 'location-manager'], notes: 'Relative to the requester, from the employee record.' },
           field: { type: 'string', notes: 'A path on the record holding an email, e.g. data.owner.email.' },
-          mode: { type: 'string', enum: ['any', 'all'], default: 'any', notes: 'any = first decision wins; all = everyone must approve.' },
+          mode: { type: 'string', enum: ['any', 'all'], default: 'any', notes: "any = the number in 'required' decides (1 = first decision wins); all = everyone on the stage must act." },
+          required: { type: 'integer', minimum: 1, default: 1, notes: "How many of the stage's people must act before it moves on ('all' = everyone). Everyone is asked at once; actions count in any order, one per person; never more than the people on the stage." },
           fallbackRoles: { type: 'array', items: { type: 'string' }, notes: 'Used when the rule finds nobody (a relative rule in an org without employees).' },
         },
+      },
+      rejectPolicy: {
+        type: 'string',
+        enum: ['any-rejects', 'when-unreachable'],
+        default: 'any-rejects',
+        notes: "any-rejects: one rejection sends the task to the Rejected stage. when-unreachable: a rejection ends it only when the stage's required number can no longer be reached.",
+        group: 'assignTo',
+      },
+      allowAdminOverride: {
+        type: 'boolean',
+        default: true,
+        notes: "An Owner or ConfigAdmin who is not one of the stage's people may act for them, giving a reason (kept with their entry in the task's approvals or rejections). Off: only the stage's people.",
+        group: 'assignTo',
       },
       escalations: {
         type: 'array',

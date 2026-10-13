@@ -58,6 +58,18 @@ export const DeviceConfigSchema = () => {
           'barrier',       // access control: parking / toll barrier arm
           'turnstile',     // access control: turnstile
           'elevator',      // access control: elevator floor release
+          // Sensors and signals placed in a zone (Devices section): they report events.
+          'contact',       // door / window contact
+          'motion',        // motion / presence
+          'beam',          // light beam / line counter
+          'temperature',   // temperature (and humidity) probe
+          'power',         // power / current meter
+          'vibration',     // vibration
+          'gas',           // gas detector
+          'smoke',         // smoke / heat detector
+          'leak',          // water leak
+          'button',        // push button / panic button
+          'siren',         // siren / alarm sounder
         ],
         group: 'identity',
       },
@@ -123,6 +135,15 @@ export const DeviceConfigSchema = () => {
       // printer for Kitchen". Leave blank for org-wide devices (single
       // receipt printer in a small shop).
       servicePointName: { type: 'string', group: 'scope' },
+
+      // What this one device does when it reports something, on top of its groups' policies.
+      policy: {
+        type: 'string',
+        'x-control': ControlType.selectMany,
+        maxItems: 1,
+        dataSource: { source: 'collection', collection: DataType.device_policy, value: 'name', label: ['title', 'name'] },
+        group: 'scope',
+      },
 
       // Granting devices only (lock, gate, barrier, turnstile, elevator): the
       // access_zone this device lets people into. Who may pass is decided by

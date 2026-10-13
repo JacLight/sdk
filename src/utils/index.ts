@@ -335,3 +335,100 @@ export const isValidHtmlId = (id: string) => {
   const idPattern = /^[A-Za-z][\w\:\-\.]*$/;
   return idPattern.test(id);
 };
+
+// ─── Links: hosted video and media kind ───────────────────────────
+// One rule for every module that shows a pasted link or a stored file: Content Studio's
+// video block, supporting material on a policy (server and staff portal), any viewer.
+
+const parseUrl = (url: string): URL | null => {
+  try {
+    return new URL(String(url || '').trim());
+  } catch {
+    return null;
+  }
+};
+
+/** The YouTube video id in any of its URL shapes (watch, youtu.be, shorts, embed, live). */
+export const youtubeId = (url: string): string | null => {
+  const u = parseUrl(url);
+  if (!u) return null;
+  const host = u.hostname.replace(/^www\.|^m\./, '');
+  const ok = (id?: string | null) => (id && /^[A-Za-z0-9_-]{6,20}$/.test(id) ? id : null);
+  if (host === 'youtu.be') return ok(u.pathname.split('/')[1]);
+  if (host === 'youtube.com' || host === 'youtube-nocookie.com' || host === 'music.youtube.com') {
+    if (u.pathname === '/watch') return ok(u.searchParams.get('v'));
+    const m = /^\/(embed|shorts|live|v)\/([^/?#]+)/.exec(u.pathname);
+    if (m) return ok(m[2]);
+  }
+  return null;
+};
+
+/** The Vimeo video id (vimeo.com/123, vimeo.com/channels/x/123, player.vimeo.com/video/123). */
+export const vimeoId = (url: string): string | null => {
+  const u = parseUrl(url);
+  if (!u) return null;
+  const host = u.hostname.replace(/^www\./, '');
+  if (host !== 'vimeo.com' && host !== 'player.vimeo.com') return null;
+  const m = /\/(\d{5,12})(?:\/|$)/.exec(u.pathname);
+  return m ? m[1] : null;
+};
+
+/**
+ * A hosted video's player address, or null. Privacy-enhanced YouTube by default;
+ * `jsApi` gives the player API address a page listens to for "how much was watched".
+ */
+export const videoEmbedUrl = (url?: string, opts: { jsApi?: boolean } = {}): string | null => {
+  if (!url) return null;
+  const y = youtubeId(url);
+  if (y) return opts.jsApi ? `https://www.youtube.com/embed/${y}?enablejsapi=1` : `https://www.youtube-nocookie.com/embed/${y}`;
+  const v = vimeoId(url);
+  return v ? `https://player.vimeo.com/video/${v}` : null;
+};
+
+export type MediaLinkType = 'video' | 'pdf' | 'image' | 'audio' | 'document' | 'link';
+
+const MEDIA_EXT: [MediaLinkType, RegExp][] = [
+  ['pdf', /\.pdf(\?|#|$)/i],
+  ['video', /\.(mp4|m4v|webm|mov|ogv)(\?|#|$)/i],
+  ['audio', /\.(mp3|m4a|wav|ogg|aac|flac)(\?|#|$)/i],
+  ['image', /\.(png|jpe?g|gif|webp|svg|avif|bmp)(\?|#|$)/i],
+  ['document', /\.(docx?|xlsx?|pptx?|odt|ods|odp|rtf|txt|csv|md)(\?|#|$)/i],
+];
+
+/** Company intranets people link to; the name shows on the card. */
+const INTRANETS: [RegExp, string][] = [
+  [/(^|\.)sharepoint\.com$/i, 'SharePoint'],
+  [/(^|\.)sites\.google\.com$/i, 'Google Sites'],
+  [/(^|\.)docs\.google\.com$/i, 'Google Docs'],
+  [/(^|\.)drive\.google\.com$/i, 'Google Drive'],
+  [/(^|\.)notion\.(so|site)$/i, 'Notion'],
+  [/(^|\.)atlassian\.net$/i, 'Confluence'],
+  [/(^|\.)confluence\./i, 'Confluence'],
+  [/(^|\.)dropbox\.com$/i, 'Dropbox'],
+  [/(^|\.)box\.com$/i, 'Box'],
+  [/(^|\.)onedrive\.live\.com$/i, 'OneDrive'],
+];
+
+/**
+ * What a link (or a stored file's path) points at, from its shape alone and the
+ * file's MIME type when known: a hosted video, a PDF, a video / audio / image file,
+ * an office document, an intranet page, or a plain link.
+ */
+export const detectMediaLink = (url: string, mime?: string): { type: MediaLinkType; provider?: 'youtube' | 'vimeo'; source?: string } => {
+  const m = String(mime || '').toLowerCase();
+  if (youtubeId(url)) return { type: 'video', provider: 'youtube', source: 'YouTube' };
+  if (vimeoId(url)) return { type: 'video', provider: 'vimeo', source: 'Vimeo' };
+  const u = parseUrl(url);
+  const path = u ? u.pathname : String(url || ''); // a bare path: a stored file
+  const host = u ? u.hostname : '';
+  if (m === 'application/pdf') return { type: 'pdf' };
+  if (m.startsWith('video/')) return { type: 'video' };
+  if (m.startsWith('audio/')) return { type: 'audio' };
+  if (m.startsWith('image/')) return { type: 'image' };
+  const byExt = MEDIA_EXT.find(([, re]) => re.test(path));
+  if (byExt) return { type: byExt[0] };
+  if (/officedocument|msword|ms-excel|ms-powerpoint|opendocument|text\/(plain|csv)/.test(m)) return { type: 'document' };
+  const intranet = INTRANETS.find(([re]) => re.test(host));
+  if (intranet) return { type: 'link', source: `Intranet (${intranet[1]})` };
+  return { type: 'link' };
+};

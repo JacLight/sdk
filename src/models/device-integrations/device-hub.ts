@@ -1,6 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
-import { DataType } from '../../types';
+import { DataType, ControlType } from '../../types';
 import { BusinessLocationField } from '../_location-fields';
 
 // A DeviceHub is an on-site controller that manages local hardware (USB
@@ -29,6 +29,15 @@ export const DeviceHubSchema = () => {
       displayName: { type: 'string', group: 'identity' },
       description: { type: 'string', 'x-control-variant': 'textarea' },
       ...BusinessLocationField(),
+      // Where the hub is (Devices section). Everything plugged into it is in this zone, and every
+      // event its devices report is recorded (device_event) under it.
+      zone: {
+        type: 'string',
+        'x-control': ControlType.selectMany,
+        maxItems: 1,
+        dataSource: { source: 'collection', collection: DataType.access_zone, value: 'name', label: ['title', 'name'] },
+        group: 'identity',
+      },
       apiKey: {
         type: 'string',
         description: 'Hashed API key the hub agent uses to authenticate. Generated server-side; never echoed back in clear.',
