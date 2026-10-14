@@ -305,6 +305,8 @@ export enum DataType {
   device_hub = 'device_hub',
   // What a device placed in a zone reported (door opened, beam broken, gas alarm, offline).
   device_event = 'device_event',
+  // What a device measured (temperature, power, …), sent by hubs in batches.
+  device_reading = 'device_reading',
   // Devices that act alike (every freezer probe) and what devices do when they report something.
   device_group = 'device_group',
   device_policy = 'device_policy',
