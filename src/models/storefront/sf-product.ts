@@ -4,9 +4,32 @@ import { DataType, ControlType } from '../../types';
 import { FileInfoSchema } from '../file-info';
 import { getCountryDropDownOptions } from '../../data';
 import { SHIPPING_CLASSES } from './sf-shipping-config';
+import { BusinessLocationField, BusinessLocationsField } from '../_location-fields';
 
-// Product is entity-wide catalog. Per-location pricing, tax, availability,
-// and station routing live on `bm_location_product` (LocationProduct overlay).
+/**
+ * Stock held at each business location, kept by the server from the stock ledger
+ * (sf_inventory rows and their movements): one entry per location that holds a row.
+ * The same shape on the product and on each variation; `stock` is the total.
+ */
+const LocationStockField = () => ({
+  type: 'array',
+  title: 'Stock by location',
+  readOnly: true,
+  description: 'Kept by the server from stock movements (receive, sale, return, transfer, count, adjust).',
+  items: {
+    type: 'object',
+    properties: {
+      ...BusinessLocationField(),
+      stock: { type: 'number' },
+    },
+  },
+} as const);
+
+// Product is entity-wide catalog. Prices and availability per REGION (a
+// business location the selling site serves, `site.storefront.businessLocations`)
+// ride on the product itself — `businessLocations` (where it is sold) and
+// `tiers[].businessLocations` — and on pricing tables
+// (`sf_price_list.businessLocations`). No per-location overlay record.
 
 export const SFProductSchema = () => {
   return {
@@ -105,6 +128,7 @@ export const SFProductSchema = () => {
               maximum: 100,
               description: 'Or % discount from base price',
             },
+            ...BusinessLocationsField('Limit to shoppers in these regions (business locations). Empty = every region.'),
             groups: {
               type: 'array',
               description: 'Limit to specific groups (empty = all customers)',
@@ -161,6 +185,7 @@ export const SFProductSchema = () => {
         type: 'number',
         group: 'stock',
       },
+      locationStock: { ...LocationStockField(), group: 'stock' },
       available: {
         type: 'boolean',
         group: 'stock',
@@ -261,6 +286,15 @@ export const SFProductSchema = () => {
             },
           },
         },
+      },
+      // Regions (business locations) this product is sold in. Same opt-in model
+      // as salesChannels: empty = sold everywhere; a non-empty list = sold ONLY to
+      // shoppers whose region (from the selling site) is listed — not listed and
+      // not purchasable elsewhere. A site serving no locations ignores it.
+      businessLocations: {
+        ...BusinessLocationsField('Sold only in these regions (business locations). Empty = every region.').businessLocations,
+        title: 'Sold in regions',
+        group: 'channels',
       },
       // Which sales channels this product should be listed on (Google Merchant,
       // Facebook/Instagram Shop, TikTok Shop, eBay, …). Multi-select; the option
@@ -529,6 +563,16 @@ export const SFProductSchema = () => {
             },
             stock: {
               type: 'number',
+              group: 'sku',
+            },
+            locationStock: LocationStockField(),
+            available: {
+              type: 'boolean',
+              group: 'sku',
+            },
+            hide: {
+              type: 'boolean',
+              'x-control-variant': 'checkbox',
               group: 'sku',
             },
             options: {

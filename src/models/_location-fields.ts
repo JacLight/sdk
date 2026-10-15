@@ -42,3 +42,25 @@ export const BusinessLocationField = () => ({
 } as const);
 
 
+
+/**
+ * Several business locations — the regions a record reaches (a site serving NG and
+ * US, a price tier or pricing table for one region, a product sold only in some).
+ * Stores location `name`s, like BusinessLocationField. Empty means every location.
+ */
+export const BusinessLocationsField = (description = 'Business locations (regions). Empty = every location.') => ({
+  businessLocations: {
+    type: 'array',
+    description,
+    'x-control': ControlType.selectMany,
+    'x-control-variant': 'chip',
+    dataSource: {
+      source: 'collection',
+      collection: DataType.location,
+      value: 'name',
+      label: 'name',
+    },
+    items: { type: 'string' },
+    group: 'businessLocations',
+  },
+} as const);

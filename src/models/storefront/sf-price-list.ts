@@ -1,6 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { DataType, ControlType } from '../../types';
+import { BusinessLocationsField } from '../_location-fields';
 
 export const SFPriceListSchema = () => {
   return {
@@ -127,6 +128,13 @@ export const SFPriceListSchema = () => {
           label: 'name',
         },
         items: { type: 'string' },
+        group: 'targeting',
+      },
+      // Region targeting: the business locations (regions) whose shoppers this
+      // table prices, from the selling site. Empty = every region. Combined with
+      // the customer targeting above (wholesalers in Lagos = both).
+      businessLocations: {
+        ...BusinessLocationsField('Apply only to shoppers in these regions (business locations). Empty = every region.').businessLocations,
         group: 'targeting',
       },
       applyTo: {

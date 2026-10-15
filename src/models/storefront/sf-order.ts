@@ -323,6 +323,20 @@ export const SFOrderSchema = () => {
       name: {
         type: 'string',
       },
+      // The sales channel the order came through — a channel id from the same
+      // server registry products use (GET sales-channel/channels, via the
+      // `getSalesChannels` dataSource function): website, pos, phone, whatsapp,
+      // instagram, facebook, email, in_store, invoice, and the marketplaces.
+      // Tracked by the server wherever it knows it (shop checkout → website,
+      // POS → pos, invoice → invoice). A staff order carries the one picked, if
+      // any. Set once: it may be filled in while empty, never changed after.
+      channel: {
+        type: 'string',
+        'x-control': ControlType.selectMany,
+        maxItems: 1,
+        dataSource: { source: 'function', value: 'getSalesChannels' },
+        description: 'Sales channel the order came through',
+      },
       // Where the order came from — the campaign page hands its own utm over at
       // checkout and it is stamped here, so revenue by source is a group-by on
       // orders and survives the purge of `web_visit`.
@@ -574,6 +588,26 @@ export const SFOrderSchema = () => {
             method: { type: 'string' },
             date: { type: 'string' },
             transactionId: { type: 'string' },
+          },
+        },
+      },
+
+      // Every status move, appended by the server.
+      statusHistory: {
+        type: 'array',
+        readOnly: true,
+        hidden: true,
+        items: {
+          type: 'object',
+          properties: {
+            from: { type: 'string' },
+            to: { type: 'string' },
+            timestamp: { type: 'string', format: 'date-time' },
+            note: { type: 'string' },
+            by: {
+              type: 'string',
+              description: "Who moved it: the acting user's email or name, or 'system'",
+            },
           },
         },
       },

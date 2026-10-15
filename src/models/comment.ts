@@ -58,6 +58,11 @@ export const CommentSchema = () => {
         type: 'number',
         hidden: true,
       },
+      verifiedPurchase: { // set by CommentsService: a rated review on a product the commenter bought
+        type: 'boolean',
+        readOnly: true,
+        description: 'The reviewer has a paid order containing this product',
+      },
     },
   } as const;
 };

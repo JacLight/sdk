@@ -1,6 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { DataType, ControlType } from '../types';
 import { getCurrencies, getLanguages, getSiteFeatureList } from '../data';
+import { BusinessLocationsField } from './_location-fields';
 
 import { registerCollection } from '../default-schema';
 import { FileInfoSchema } from './file-info';
@@ -331,6 +332,12 @@ export const SiteSchema = () => {
             group: 'template',
             default: 'left',
           },
+          // The regions (business locations) this store serves. Tier pricing,
+          // pricing tables and product availability set for a location apply to
+          // shoppers here. One location: always that one. Several: the one whose
+          // address matches the cart's shipping country/state, else the first.
+          // Empty: region pricing and availability do not apply.
+          ...BusinessLocationsField('Regions (business locations) this store serves. Prices and availability set for a location apply to shoppers here.'),
           extraInfoDisplay: {
             type: 'string',
             enum: ['tab', 'accordion', 'post', 'none'],
