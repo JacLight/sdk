@@ -23,7 +23,7 @@ export const WalletSchema = () => {
       balance: {
         type: 'number',
         default: 0,
-        description: 'Available balance (can withdraw)',
+        description: 'Earnings balance — the only balance that can be paid out',
         group: 'balance',
       },
       pendingBalance: {
@@ -43,6 +43,23 @@ export const WalletSchema = () => {
         default: 0,
         description: 'Reserved for pending payouts',
         group: 'balance',
+      },
+
+      // The customer's store balances, beside the earnings `balance`. Spent on purchases
+      // only (points can also become a gift card) — never paid out or withdrawn.
+      storeCredit: {
+        type: 'number',
+        default: 0,
+        minimum: 0,
+        description: 'Store credit (money, in the wallet currency). Spent on purchases only; never paid out.',
+        group: 'customer-balance',
+      },
+      rewardPoints: {
+        type: 'integer',
+        default: 0,
+        minimum: 0,
+        description: 'Reward points. Spent on purchases or converted to a gift card; never paid out.',
+        group: 'customer-balance',
       },
 
       // Lifetime Stats
@@ -575,3 +592,4 @@ const sc = WalletSchema();
 export type WalletModel = FromSchema<typeof sc>;
 
 registerCollection('Wallet', DataType.wallet, WalletSchema());
+

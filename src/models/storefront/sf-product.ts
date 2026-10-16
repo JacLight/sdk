@@ -63,6 +63,13 @@ export const SFProductSchema = () => {
         type: 'number',
         group: 'price',
       },
+      rewardPointsPrice: {
+        type: 'integer',
+        minimum: 1,
+        title: 'Price in reward points',
+        description: 'Reward points needed to buy one unit. Leave empty when it cannot be bought with points.',
+        group: 'price',
+      },
       cost: {
         type: 'number',
         group: 'price',
@@ -198,8 +205,11 @@ export const SFProductSchema = () => {
         type: 'string',
         group: 'discount',
       },
-      points: {
-        type: 'number',
+      rewardPointsContribution: {
+        type: 'integer',
+        minimum: 0,
+        title: 'Reward points earned',
+        description: 'Reward points the buyer earns for each unit bought (on a paid order).',
         group: 'discount',
       },
       download: {
@@ -559,6 +569,20 @@ export const SFProductSchema = () => {
             },
             price: {
               type: 'number',
+              group: 'sku',
+            },
+            rewardPointsPrice: {
+              type: 'integer',
+              minimum: 1,
+              title: 'Price in reward points',
+              description: "Empty = the product's price in reward points",
+              group: 'sku',
+            },
+            rewardPointsContribution: {
+              type: 'integer',
+              minimum: 0,
+              title: 'Reward points earned',
+              description: "Empty = the product's reward points earned",
               group: 'sku',
             },
             stock: {

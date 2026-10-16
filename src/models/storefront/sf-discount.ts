@@ -59,13 +59,16 @@ export const SFDiscountSchema = () => {
           'free_delivery',
           'waive_fees',
           'buy_x_get_y',
+          // A gift to the buyer's wallet when the order is paid, not money off.
+          'reward_points',
+          'store_credit',
         ],
         default: 'percent',
         group: 'row4',
       },
       value: {
         type: 'number',
-        description: 'Discount amount (% or $)',
+        description: 'The % or amount off. For Reward points or Store credit: the points or credit the customer gets when the order is paid.',
         group: 'row4',
       },
       maxDiscount: {

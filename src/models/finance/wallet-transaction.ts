@@ -58,10 +58,30 @@ export const WalletTransactionSchema = () => {
         group: 'type',
       },
 
+      // Which balance moved. `balance` is the earnings balance (affiliates, drivers);
+      // store_credit and reward_points are a customer wallet's.
+      balanceType: {
+        type: 'string',
+        enum: ['balance', 'store_credit', 'reward_points'],
+        default: 'balance',
+        group: 'type',
+      },
+      // Why a customer balance moved (store credit / reward points rows).
+      reason: {
+        type: 'string',
+        enum: ['return_refund', 'order_payment', 'order_refund', 'earned', 'redeemed', 'converted_to_giftcard', 'adjustment', 'reversal', 'promotion'],
+        group: 'type',
+      },
+
       // Amount
       amount: {
         type: 'number',
         description: 'Transaction amount (always positive)',
+        group: 'amount',
+      },
+      change: {
+        type: 'number',
+        description: 'Signed change to the balance: + in, − out (money for store credit, points for reward points)',
         group: 'amount',
       },
       currency: {
@@ -90,7 +110,14 @@ export const WalletTransactionSchema = () => {
       },
       referenceType: {
         type: 'string',
-        enum: ['job', 'payout', 'order', 'adjustment', 'refund', 'other'],
+        enum: ['job', 'payout', 'order', 'adjustment', 'refund', 'return', 'gift_card', 'other'],
+        group: 'ref',
+      },
+
+      // One key per change (e.g. rma:<number>, earn:<order>): the same change sent twice moves the balance once.
+      idempotencyKey: {
+        type: 'string',
+        readOnly: true,
         group: 'ref',
       },
 

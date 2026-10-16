@@ -512,6 +512,27 @@ export const SettingSchema = () => {
       },
 
       /**
+       * Reward points — how many points make 1.00 when a customer spends them (checkout,
+       * the till) or turns them into a gift card. Points are earned from each product's
+       * own `points` × quantity on a paid order.
+       */
+      rewardPoints: {
+        type: 'object',
+        title: 'Reward points',
+        collapsible: 'close',
+        group: 'rewardPoints',
+        properties: {
+          redemptionRate: {
+            type: 'number',
+            minimum: 1,
+            default: 100,
+            title: 'Points per 1.00 when spent',
+            description: 'e.g. 100 = 100 points pay 1.00 at checkout, at the till, or as a gift card.',
+          },
+        },
+      },
+
+      /**
        * How payroll is paid — kept on the payroll direct-deposit setting record
        * (`name: payroll_ach_config`, beside its NACHA originator fields). Pay
        * stays gated on the run's approval; this only picks how the approved net
