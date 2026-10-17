@@ -646,6 +646,27 @@ export const SettingSchema = () => {
           },
         },
       },
+      comments: {
+        // Business-wide comment settings (every site): who and what is blocked. Each site's own rules are site.comments.
+        type: 'object',
+        title: 'Comments',
+        properties: {
+          blockedWords: { type: 'array', items: { type: 'string' }, title: 'Blocked words' },
+          blockedWordsAction: {
+            type: 'string',
+            enum: ['review', 'reject'],
+            default: 'review',
+            title: 'A comment with a blocked word',
+            description: 'review: it waits for a person; reject: it is rejected as spam',
+          },
+          blockedPeople: {
+            type: 'array',
+            items: { type: 'string' },
+            title: 'Blocked people',
+            description: 'Emails, @domains or logins whose comments are rejected as spam on every site',
+          },
+        },
+      },
       securitySettings: {
         type: 'object',
         collapsible: 'close',

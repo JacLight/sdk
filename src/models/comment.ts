@@ -2,11 +2,31 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../default-schema';
 import { DataType } from '../types';
 
+/**
+ * Where a comment stands. Only `approved` shows on a site; editing a comment sets it back to `new`.
+ * new → pending (picked up for review) → approved | hidden | rejected, or review (passed to a person) → a final state.
+ */
 export enum CommentStatus {
-  visible = 'visible',
+  /** Just posted or edited, not picked up for review yet. */
+  new = 'new',
+  /** Picked up for review (the AI assistant is checking it); no result yet. */
+  pending = 'pending',
+  /** The AI could not decide and passed it to a person (also: no assistant picked, held by a rule, reported enough times). */
+  review = 'review',
+  /** Final: shows on the site. */
+  approved = 'approved',
+  /** Final: kept, not shown. */
   hidden = 'hidden',
-  removed = 'removed',
+  /** Final: never shows; `classification` says why. */
+  rejected = 'rejected',
+  /** Deleted by its author; kept, never shown. */
+  deleted = 'deleted',
 }
+
+/** Why someone reported a comment. */
+export const COMMENT_REPORT_REASONS = ['spam', 'harassment', 'inappropriate', 'other'] as const;
+/** What a comment is judged to be (data.classification): fine, or why it was rejected. Spam is a classification, never a status. */
+export const COMMENT_CLASSIFICATIONS = ['clean', 'spam', 'harassment', 'inappropriate', 'other'] as const;
 
 export const CommentSchema = () => {
   return {
@@ -38,9 +58,9 @@ export const CommentSchema = () => {
         items: { type: 'string' },
         hidden: true,
       },
-      status: { // moderation state (set by CommentsService on create)
+      status: { // new → pending → approved | hidden | rejected, or review (a person); deleted. Only approved shows; an edit sets it back to new.
         type: 'string',
-        enum: ['visible', 'hidden', 'removed'],
+        enum: ['new', 'pending', 'review', 'approved', 'hidden', 'rejected', 'deleted'],
       },
       pinned: {
         type: 'boolean',
