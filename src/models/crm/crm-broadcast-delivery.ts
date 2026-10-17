@@ -91,6 +91,33 @@ export const BroadcastDeliverySchema = () => {
         group: 'delivery',
       },
 
+      // Voice call: one row is one person's progress through a voice broadcast, until an outcome,
+      // giving up, or being asked not to be called. Each try is a call_log (callSid).
+      voiceState: {
+        type: 'string',
+        enum: ['waiting', 'calling', 'deciding', 'done', 'gave_up', 'stopped', 'skipped'],
+        title: 'Call progress',
+        group: 'voice',
+      },
+      attempts: { type: 'number', title: 'Tries', default: 0, group: 'voice' },
+      lastResult: {
+        type: 'string',
+        enum: ['answered', 'voicemail', 'no-answer', 'busy', 'failed', 'canceled'],
+        title: 'Last result',
+        group: 'voice',
+      },
+      outcome: { type: 'string', title: 'Outcome', group: 'voice' },
+      outcomeKind: { type: 'string', enum: ['success', 'not_success', 'callback', 'stop'], title: 'Outcome counts as', group: 'voice' },
+      answers: { type: 'object', title: 'Answers', group: 'voice' },
+      note: { type: 'string', title: 'Note', group: 'voice' },
+      nextAttemptAt: { type: 'string', format: 'date-time', title: 'Next try', group: 'voice' },
+      callSid: { type: 'string', title: 'Current call', group: 'voice' },
+      callSids: { type: 'array', title: 'Calls', items: { type: 'string' }, group: 'voice' },
+      callEndedAt: { type: 'string', format: 'date-time', title: 'Last call ended', group: 'voice' },
+      recipientDatatype: { type: 'string', title: 'Recipient record type', group: 'recipient' },
+      contactId: { type: 'string', title: 'Contact made', description: 'The contact this person became', group: 'voice' },
+      actionsRun: { type: 'array', title: 'Actions run', items: { type: 'object' }, group: 'voice' },
+
       // Error tracking
       error: {
         type: 'string',

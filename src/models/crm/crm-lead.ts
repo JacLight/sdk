@@ -1,6 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { SharedAccountField } from '../_shared-account-fields';
+import { AutoArchiveField } from '../_auto-archive-field';
 import { ControlType, DataType } from '../../types';
 
 export const LeadSchema = () => {
@@ -511,6 +512,7 @@ export const LeadPipelineSchema = () => {
           rottenLeadHandling: { type: 'string', enum: ['notify', 'auto_move', 'archive', 'ignore'], default: 'notify' },
           allowSkipStages: { type: 'boolean', default: true },
           requireStageComments: { type: 'boolean', default: false },
+          ...AutoArchiveField('Finished leads (won, lost, converted, disqualified) are archived this long after they close — archived is the record state: they leave the board, keep their outcome and history, and can be restored. Anyone can archive sooner from the board.'),
           workingHours: {
             type: 'object',
             properties: {

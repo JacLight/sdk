@@ -38,7 +38,7 @@ export const SubscriberSchema = () => {
       },
       channel: {
         type: 'string',
-        enum: ['email', 'sms'],
+        enum: ['email', 'sms', 'voice'],
         default: 'email',
         description: 'Communication channel',
         group: 'subscription',

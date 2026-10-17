@@ -1,6 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
-import { DataType } from '../../types';
+import { ControlType, DataType } from '../../types';
 
 export const EmailBroadcastSchema = () => {
   return {
@@ -23,7 +23,7 @@ export const EmailBroadcastSchema = () => {
       },
       type: {
         type: "string",
-        enum: ["email", "sms", "whatsapp", "multi_channel"],
+        enum: ["email", "sms", "whatsapp", "voice", "multi_channel"],
         title: 'Broadcast Type',
         default: "email",
         group: 'identity',
@@ -35,7 +35,7 @@ export const EmailBroadcastSchema = () => {
         group: 'identity',
         items: {
           type: "string",
-          enum: ["email", "sms", "whatsapp"],
+          enum: ["email", "sms", "whatsapp", "voice"],
         },
       },
 
@@ -230,6 +230,68 @@ export const EmailBroadcastSchema = () => {
       },
 
       // WhatsApp Content
+      // Voice call: an AI Assistant calls each person, works toward the campaign's outcomes and
+      // records which one it reached. Calls go through the platform's AI call engine.
+      voiceConfig: {
+        type: "object",
+        title: "Voice Call",
+        group: 'content',
+        properties: {
+          from: { type: "string", title: 'Call from', description: 'One of the org\'s numbers that can make calls' },
+          assistantId: {
+            type: "string",
+            title: 'AI Assistant',
+            description: 'The voice on every call',
+            'x-control': ControlType.lookup,
+            dataSource: { source: 'collection', collection: DataType.ai_assistant, value: 'sk', label: 'title' },
+          },
+          instructions: { type: "string", title: 'What the call is about', 'x-control-variant': 'textarea', description: 'The assistant\'s instructions for this campaign. Fields like {{firstName}} work.' },
+          greeting: { type: "string", title: 'First thing it says' },
+          questions: {
+            type: "array",
+            title: 'What to find out',
+            items: {
+              type: "object",
+              properties: {
+                question: { type: "string", title: 'Question' },
+                field: { type: "string", title: 'Contact field', description: 'The contact field the answer fills' },
+              },
+            },
+          },
+          outcomes: {
+            type: "array",
+            title: 'Outcomes',
+            items: {
+              type: "object",
+              properties: {
+                name: { type: "string", title: 'Outcome' },
+                kind: { type: "string", title: 'Counts as', enum: ["success", "not_success", "callback", "stop"], default: "success" },
+                makeContact: { type: "boolean", title: 'Make them a contact', default: false },
+                actions: {
+                  type: "array",
+                  title: 'Then',
+                  description: 'Automation actions run for the person when this outcome is reached',
+                  items: { type: "object", properties: { type: { type: "string" }, config: { type: "object" } } },
+                },
+              },
+            },
+          },
+          retries: { type: "number", title: 'Retries', minimum: 0, maximum: 5, default: 2 },
+          retryAfterMinutes: { type: "number", title: 'Wait between tries (minutes)', minimum: 5, default: 240 },
+          onVoicemail: { type: "string", title: 'On voicemail', enum: ["retry", "message"], default: "retry" },
+          voicemailMessage: { type: "string", title: 'Voicemail message', 'x-control-variant': 'textarea' },
+          callingHours: {
+            type: "object",
+            title: 'Calling hours',
+            properties: {
+              from: { type: "string", title: 'From', default: '09:00' },
+              to: { type: "string", title: 'To', default: '18:00' },
+              weekdaysOnly: { type: "boolean", title: 'Weekdays only', default: true },
+            },
+          },
+          concurrency: { type: "number", title: 'Calls at once', minimum: 1, maximum: 10, default: 3 },
+        },
+      },
       whatsappConfig: {
         type: "object",
         title: "WhatsApp Configuration",

@@ -300,6 +300,10 @@ export const CallLogSchema = () => {
         description: 'Call outcome',
         group: 'notes',
       },
+      // A voice broadcast's call: which broadcast and which person's row, and the campaign outcome it reached.
+      broadcastId: { type: 'string', description: 'Voice broadcast this call was part of', group: 'notes' },
+      deliveryId: { type: 'string', description: 'The broadcast row of the person called', group: 'notes' },
+      campaignOutcome: { type: 'string', description: "The broadcast's outcome this call reached", group: 'notes' },
       followUpRequired: {
         type: 'boolean',
         description: 'Follow-up action needed',
