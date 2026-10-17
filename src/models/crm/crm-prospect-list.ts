@@ -61,7 +61,8 @@ export const ProspectListSchema = () => {
       lastRunAt: { type: 'string', format: 'date-time', readOnly: true },
       lastJobId: { type: 'string', readOnly: true, description: 'The latest run (a job) — running until it shows in runs.' },
       count: { type: 'number', title: 'Members', readOnly: true },
-      status: { type: 'string', enum: ['active', 'archived'], default: 'active' },
+      /** `search`: kept automatically for each search a person ran (Lead Finder › Lists › Past searches); `active`: a list someone saved. */
+      status: { type: 'string', enum: ['active', 'search', 'archived'], default: 'active' },
     },
     required: ['name'],
   } as const;

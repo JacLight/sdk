@@ -169,6 +169,21 @@ export const SiteSchema = () => {
         layoutGroup: 'settings',
         group: 'login',
       },
+      // Contact (customer) fields the sign-up page asks for, besides name and email.
+      signupFields: {
+        type: 'array',
+        title: 'Sign-up fields',
+        layoutGroup: 'settings',
+        group: 'login',
+        items: {
+          type: 'object',
+          properties: {
+            field: { type: 'string' },
+            label: { type: 'string' },
+            required: { type: 'boolean' },
+          },
+        },
+      },
       currencies: {
         type: 'array',
         'x-control-variant': 'chip',
