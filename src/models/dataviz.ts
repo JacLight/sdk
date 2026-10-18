@@ -40,7 +40,7 @@ export const DataVizItemSchema = () => {
       description: { type: 'string', 'x-control-variant': 'textarea' },
       type: {
         type: 'string',
-        enum: ['text', 'table', 'chart'],
+        enum: ['text', 'table', 'chart', 'query'],
         default: 'text',
       },
       content: {
