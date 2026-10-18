@@ -24,7 +24,13 @@ export const CustomerGroupSchema = () => {
       },
       query: {
         type: 'string',
-        description: 'Advanced: a smart group\'s own database query on contact records (JSON text; {"$date": "…"} for a date). When set, it decides who is in the group instead of the rules.',
+        description: 'A smart group\'s query — the one truth of who is in it (JSON text): a filter on contact records, or a Data Viz pipeline on them ({"$date": "…"} for a date). Simple mode writes it from the rules; Advanced edits it by hand.',
+      },
+      queryMode: {
+        type: 'string',
+        enum: ['simple', 'advanced'],
+        default: 'simple',
+        description: 'How the query is written: simple (assisted, from the rules) or advanced (the JSON by hand).',
       },
       addRules: {
         type: 'array',
