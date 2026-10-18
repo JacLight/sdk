@@ -18,6 +18,13 @@ export const BroadcastDeliverySchema = () => {
         group: 'identity',
       },
 
+      // The run this row belongs to (a repeating broadcast sends again and again from one record).
+      runId: { type: 'string', title: 'Run', group: 'identity' },
+      // From a query list: the record this message is for (`<collection>:<id>`). A later run skips it.
+      sentFor: { type: 'string', title: 'Sent for', group: 'identity' },
+      // No record to read back at send time (typed in, or a query's own row): its fields for the message.
+      fields: { type: 'object', title: 'Fields', group: 'recipient' },
+
       // Channel
       channel: {
         type: 'string',
@@ -70,7 +77,7 @@ export const BroadcastDeliverySchema = () => {
       // Delivery status
       status: {
         type: 'string',
-        enum: ['pending', 'sent', 'delivered', 'opened', 'clicked', 'bounced', 'failed', 'complained', 'unsubscribed', 'rejected'],
+        enum: ['pending', 'sent', 'delivered', 'opened', 'clicked', 'bounced', 'failed', 'complained', 'unsubscribed', 'rejected', 'cancelled'],
         title: 'Status',
         default: 'pending',
         'x-control': ControlType.label,

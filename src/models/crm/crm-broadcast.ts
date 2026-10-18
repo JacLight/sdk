@@ -125,6 +125,14 @@ export const EmailBroadcastSchema = () => {
           },
         },
       },
+      resendEachRun: {
+        type: "boolean",
+        title: 'Send again each run',
+        description: 'A query list sends once per record (a cart is emailed once, not every day). On: everyone the query finds, every run.',
+        default: false,
+        group: 'recipients',
+      },
+      jobId: { type: "string", title: 'Sending job', description: 'The Jobs engine job sending the current run', group: 'schedule' },
       recipientCount: {
         type: "number",
         title: 'Total Recipients',

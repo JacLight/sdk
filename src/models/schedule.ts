@@ -46,6 +46,8 @@ export const ScheduleSchema = () => {
         type: 'string',
         group: 'name',
       },
+      // Made by its record's own save (a broadcast's "Schedule"): the next save of that record replaces it.
+      fromSource: { type: 'boolean', hidden: true },
       type: {
         type: 'string',
         enum: ['simple', 'cron'],
