@@ -250,6 +250,7 @@ export const AIEmployeeWorkSchema = () => {
             by: { type: 'string' },
             note: { type: 'string' },
             at: { type: 'string', format: 'date-time' },
+            usedAt: { type: 'string', format: 'date-time', description: 'When the approval was used. One approval covers one action.' },
           },
         },
       },

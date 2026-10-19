@@ -73,7 +73,7 @@ export const getSiteFeatureList = () => {
       value: 'community',
       takesPage: true,
       label: 'Community',
-      description: 'Mordern forum and community system',
+      description: 'A members-only community on your site: feed, stories, groups, meetups and messages',
       enable: false,
     },
     {
