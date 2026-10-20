@@ -316,6 +316,68 @@ export const UserSchema = () => {
         hidden: true,
         additionalProperties: true,
       },
+      /**
+       * App identity, only on an app credential (`userType: 'app'`): how AppEngine checks that
+       * a phone app signing in with this appId is the genuine app (Apple App Attest / Google
+       * Play Integrity) instead of a shipped secret. The Play keys and debug-token hashes are
+       * server-only: responses carry `android.keysSet` and debug tokens without `hash`.
+       */
+      app: {
+        type: 'object',
+        hidden: true,
+        properties: {
+          attestation: {
+            type: 'string',
+            enum: ['off', 'monitor', 'enforce'],
+            default: 'off',
+            description: 'off: secret sign-in only. monitor: secret still works, attestation sign-ins and failures are recorded. enforce: the secret is refused.',
+          },
+          allowDebugTokens: {
+            type: 'boolean',
+            default: false,
+          },
+          ios: {
+            type: 'object',
+            properties: {
+              teamId: { type: 'string' },
+              bundleId: { type: 'string' },
+            },
+          },
+          android: {
+            type: 'object',
+            properties: {
+              packageName: { type: 'string' },
+              certSha256: {
+                type: 'array',
+                description: 'SHA-256 of the app signing certificates (hex or base64)',
+                items: { type: 'string' },
+              },
+              decryptionKey: { type: 'string', hidden: true, description: 'Play Console response encryption key (base64). Server-only.' },
+              verificationKey: { type: 'string', hidden: true, description: 'Play Console response verification key (base64). Server-only.' },
+            },
+          },
+          web: {
+            type: 'object',
+            properties: {
+              domains: { type: 'array', items: { type: 'string' } },
+            },
+          },
+          debugTokens: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                id: { type: 'string' },
+                name: { type: 'string' },
+                prefix: { type: 'string' },
+                hash: { type: 'string', hidden: true },
+                createdAt: { type: 'string', format: 'date-time' },
+                lastUsedAt: { type: 'string', format: 'date-time' },
+              },
+            },
+          },
+        },
+      },
     },
     required: ['firstName', 'lastName', 'email'],
   } as const;

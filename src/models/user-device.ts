@@ -116,6 +116,17 @@ export const UserDeviceSchema = () => {
         description: 'Auto-generated device name (e.g., "Chrome on macOS")',
         group: 'display',
       },
+      appAttest: {
+        type: 'object',
+        hidden: true,
+        description: 'Apple App Attest key of an app install (deviceId = keyId), on an app credential',
+        properties: {
+          publicKey: { type: 'string', description: 'PEM of the attested key' },
+          counter: { type: 'number' },
+          env: { type: 'string', enum: ['production', 'development'] },
+          attestedAt: { type: 'string', format: 'date-time' },
+        },
+      },
     },
     required: ['userId', 'userType', 'deviceId'],
   } as const;
