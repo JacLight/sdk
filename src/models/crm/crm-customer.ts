@@ -12,8 +12,17 @@ export const CustomerSchema = () => {
       // ========== IDENTITY (Important First) ==========
       accountType: {
         type: 'string',
-        options: ['subscriber', 'contact', 'customer'],
+        options: ['subscriber', 'contact', 'customer', 'user-as-customer'],
         group: 'account',
+      },
+      // Set only by linking an employee to a customer account (Business Made): the person signs
+      // in here with their work login's password. The server sets accountType 'user-as-customer' with it.
+      employeeId: {
+        type: 'string',
+        hidden: true,
+        readOnly: true,
+        description: 'The BusinessMade employee this customer account belongs to (bm_employee.employeeId).',
+        hideIn: ['generator'],
       },
       // Optional. Null = company-wide customer (default — they can be served at any venue).
       // Set when this customer is "owned" by a single venue (loyalty / acquired by that venue).
@@ -94,6 +103,11 @@ export const CustomerSchema = () => {
       company: {
         type: 'string',
         group: 'work',
+      },
+      department: {
+        type: 'string',
+        group: 'work',
+        description: 'The department or division within their company or agency.',
       },
       jobTitle: {
         type: 'string',

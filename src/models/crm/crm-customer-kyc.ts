@@ -571,6 +571,86 @@ export const CustomerKYCSchema = () => {
         },
       },
 
+      // Bank CIP (31 CFR 1020.220): how identity was verified, recorded by the bank's KYC staff.
+      cip: {
+        type: 'object',
+        title: 'Customer identification (CIP)',
+        collapsible: true,
+        properties: {
+          status: { type: 'string', enum: ['pending', 'verified', 'failed'], default: 'pending', readOnly: true },
+          tinSource: {
+            type: 'string',
+            enum: ['customer', 'third_party'],
+            default: 'customer',
+            description: 'customer: the full TIN came from the customer. third_party: the customer gave part (e.g. the last 4) and the rest came from a reliable source.',
+          },
+          tinLast4: { type: 'string', readOnly: true },
+          methods: { type: 'array', items: { type: 'string', enum: ['documentary', 'non_documentary'] } },
+          nonDocProvider: { type: 'string', description: 'The database, bureau or reference used for non-documentary verification.' },
+          nonDocResult: { type: 'string', enum: ['pass', 'fail', 'refer'] },
+          discrepancies: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                item: { type: 'string' },
+                resolution: { type: 'string' },
+                resolvedBy: { type: 'string', readOnly: true },
+                resolvedAt: { type: 'string', format: 'date-time', readOnly: true },
+              },
+            },
+          },
+          noticeGivenAt: { type: 'string', format: 'date-time', description: 'When the CIP notice was given to the customer.' },
+          verifyBy: { type: 'string', format: 'date', description: 'Verification must be done by this date (pending verification).' },
+        },
+      },
+
+      // Risk rating factors (each with its weight); the server adds them up into riskScore.
+      riskFactors: {
+        type: 'array',
+        title: 'Risk factors',
+        items: {
+          type: 'object',
+          properties: {
+            factor: {
+              type: 'string',
+              enum: [
+                'cash_intensive',
+                'money_services_business',
+                'third_party_payment_processor',
+                'non_resident_alien',
+                'pep',
+                'foreign_correspondent',
+                'private_banking',
+                'high_risk_country',
+                'marijuana_related_business',
+                'nonprofit',
+                'virtual_assets',
+                'adverse_media',
+                'activity_mismatch',
+                'other',
+              ],
+            },
+            weight: { type: 'integer', minimum: 0, maximum: 100 },
+            note: { type: 'string' },
+          },
+          required: ['factor', 'weight'],
+        },
+      },
+
+      // Enhanced due diligence
+      edd: {
+        type: 'object',
+        title: 'Enhanced due diligence',
+        collapsible: true,
+        properties: {
+          required: { type: 'boolean', default: false },
+          notes: { type: 'string', 'x-control-variant': 'textarea' },
+          completedAt: { type: 'string', format: 'date-time', readOnly: true },
+          completedBy: { type: 'string', readOnly: true },
+        },
+      },
+
       // Notes
       internalNotes: {
         type: 'string',

@@ -58,4 +58,5 @@ export * from './user-security';
 export * from './dataviz';
 export * from './device-integrations';
 export * from './stowbo';
+export * from './banking';
 export * from './account-directory';

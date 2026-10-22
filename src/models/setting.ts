@@ -1,6 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../default-schema';
 import { DataType, ControlType } from '../types';
+import { BANKING_CASH_DEFAULTS, BANKING_COLLECTIONS_DEFAULTS, BANKING_LENDING_DEFAULTS, BANKING_REGCC_DEFAULTS, BankingApprovalsField } from './banking/_banking-fields';
 
 export const SettingSchema = () => {
   return {
@@ -642,6 +643,133 @@ export const SettingSchema = () => {
               collection: DataType.site,
               value: 'name',
               label: 'title',
+            },
+          },
+        },
+      },
+      /**
+       * Banking Config — the bank's identity and operating rules, set by the bank operator and
+       * applied live. Rails need the sponsor bank's or processor's own credentials, which stay in
+       * secrets; only what is not secret is here.
+       */
+      banking: {
+        type: 'object',
+        title: 'Banking Config',
+        hidden: true,
+        collapsible: 'close',
+        group: 'banking',
+        properties: {
+          bankName: { type: 'string', title: 'Bank name', description: 'As customers see it on statements and disclosures.' },
+          sponsorBank: { type: 'string', title: 'Sponsor bank', description: 'The chartered bank that holds the deposits ("Banking services provided by …, Member FDIC").' },
+          routingNumber: { type: 'string', pattern: '^[0-9]{9}$', title: 'Routing number', description: 'The routing number on every account.' },
+          accountNumberPrefix: { type: 'string', pattern: '^[0-9]{0,6}$', description: 'Digits every new account number starts with.' },
+          timezone: { type: 'string', default: 'America/New_York', description: 'The bank’s business day — cutoffs, statement dates and interest days run on it.' },
+          ach: {
+            type: 'object',
+            title: 'ACH',
+            properties: {
+              originatorId: { type: 'string', title: 'Company ID', description: 'The 10-character ID on outgoing ACH (Immediate Origin / Company Identification).' },
+              originatorName: { type: 'string', title: 'Company name', maxLength: 16 },
+              cutoffs: { type: 'array', items: { type: 'string', pattern: '^[0-2][0-9]:[0-5][0-9]$' }, description: 'Times of day (bank time) a file goes out. Same-day ACH needs one before 14:45.' },
+              incomingHoldDays: { type: 'integer', minimum: 0, default: 0, description: 'Business days an incoming ACH credit stays held before it is available.' },
+            },
+          },
+          wire: {
+            type: 'object',
+            title: 'Wires',
+            properties: {
+              cutoff: { type: 'string', pattern: '^[0-2][0-9]:[0-5][0-9]$', default: '17:00' },
+            },
+          },
+          checkHoldDays: { type: 'integer', minimum: 0, default: 2, description: 'Business days a deposited check is held (Reg CC allows more for large or new-account deposits).' },
+          dormantAfterDays: { type: 'integer', minimum: 30, default: 365, description: 'An account with no customer activity this long becomes dormant.' },
+          disputeDecideDays: { type: 'integer', minimum: 1, default: 10, description: 'Business days to decide a dispute or give provisional credit (Reg E).' },
+          disputeResolveDays: { type: 'integer', minimum: 1, default: 45 },
+          approvals: BankingApprovalsField(),
+          cash: {
+            type: 'object',
+            title: 'Cash and BSA',
+            collapsible: true,
+            properties: {
+              ctrThreshold: { type: 'integer', minimum: 1, default: BANKING_CASH_DEFAULTS.ctrThreshold, description: 'A person’s cash in, or out, above this in one business day needs a CTR. In cents (31 CFR 1010.311).' },
+              milMin: { type: 'integer', minimum: 1, default: BANKING_CASH_DEFAULTS.milMin, description: 'Currency purchases of official checks or money orders from this amount go on the Monetary Instrument Log. In cents.' },
+              milMax: { type: 'integer', minimum: 1, default: BANKING_CASH_DEFAULTS.milMax, description: 'Up to and including this amount. In cents.' },
+              drawerMinimum: { type: 'integer', minimum: 0, default: BANKING_CASH_DEFAULTS.drawerMinimum, description: 'A till’s least cash when it sets none. In cents.' },
+              drawerMaximum: { type: 'integer', minimum: 0, default: BANKING_CASH_DEFAULTS.drawerMaximum, description: 'A till’s most cash when it sets none. In cents.' },
+              overShortTolerance: { type: 'integer', minimum: 0, default: BANKING_CASH_DEFAULTS.overShortTolerance, description: 'A balancing difference above this needs a head teller’s sign-off. In cents.' },
+              cashOutLimit: { type: 'integer', minimum: 0, default: BANKING_CASH_DEFAULTS.cashOutLimit, description: 'A teller pays out more cash than this in one transaction only with a supervisor’s override. In cents.' },
+              checkCashingFee: { type: 'integer', minimum: 0, default: BANKING_CASH_DEFAULTS.checkCashingFee, description: 'Fee to cash a check for someone who is not a customer. In cents; 0 for none.' },
+              officialCheckFee: { type: 'integer', minimum: 0, default: BANKING_CASH_DEFAULTS.officialCheckFee, description: 'Fee for a cashier’s or teller’s check. In cents; 0 for none.' },
+              moneyOrderFee: { type: 'integer', minimum: 0, default: BANKING_CASH_DEFAULTS.moneyOrderFee, description: 'Fee for a money order. In cents; 0 for none.' },
+            },
+          },
+          regcc: {
+            type: 'object',
+            title: 'Funds availability (Reg CC)',
+            collapsible: true,
+            description: 'The Reg CC dollar figures in force from effectiveFrom (12 CFR 229.11; next adjustment July 1, 2030).',
+            properties: {
+              effectiveFrom: { type: 'string', format: 'date', default: BANKING_REGCC_DEFAULTS.effectiveFrom },
+              nextDayAmount: { type: 'integer', minimum: 0, default: BANKING_REGCC_DEFAULTS.nextDayAmount, description: 'Of other checks deposited in a day, this much is available the next business day. In cents.' },
+              largeDeposit: { type: 'integer', minimum: 0, default: BANKING_REGCC_DEFAULTS.largeDeposit, description: 'Check deposits above this in a day may get a large-deposit hold on the excess; also the new-account and repeated-overdraft figure. In cents.' },
+              cashWithdrawal: { type: 'integer', minimum: 0, default: BANKING_REGCC_DEFAULTS.cashWithdrawal, description: 'Released for cash withdrawal by 5 pm on the availability day. In cents.' },
+              newAccountDays: { type: 'integer', minimum: 0, default: BANKING_REGCC_DEFAULTS.newAccountDays, description: 'An account is new for this many calendar days.' },
+              depositCutoff: { type: 'string', pattern: '^[0-2][0-9]:[0-5][0-9]$', default: BANKING_REGCC_DEFAULTS.depositCutoff, description: 'Teller deposits after this time (bank time) count on the next banking day. Not before 14:00 (229.19(a)(5)).' },
+              newAccountHoldDays: { type: 'integer', minimum: 1, default: BANKING_REGCC_DEFAULTS.newAccountHoldDays, description: 'New account: checks past the first large-deposit amount are available by this business day after deposit (229.13(a)).' },
+              exceptionExtraDays: { type: 'integer', minimum: 0, default: BANKING_REGCC_DEFAULTS.exceptionExtraDays, description: 'Business days an exception hold adds to a check’s normal availability (229.13(h) safe harbor: 5).' },
+              onUsExtraDays: { type: 'integer', minimum: 0, default: BANKING_REGCC_DEFAULTS.onUsExtraDays, description: 'Business days an exception hold adds to an on-us check (safe harbor: 1).' },
+              overdraftDays: { type: 'integer', minimum: 1, default: BANKING_REGCC_DEFAULTS.overdraftDays, description: 'Repeated overdrafts: overdrawn on this many banking days in the look-back (229.13(d)).' },
+              overdraftLargeDays: { type: 'integer', minimum: 1, default: BANKING_REGCC_DEFAULTS.overdraftLargeDays, description: '…or on this many banking days by the large-deposit amount or more.' },
+              overdraftLookbackMonths: { type: 'integer', minimum: 1, default: BANKING_REGCC_DEFAULTS.overdraftLookbackMonths, description: 'Months looked back for repeated overdrafts.' },
+            },
+          },
+          lending: {
+            type: 'object',
+            title: 'Lending',
+            collapsible: true,
+            properties: {
+              lateFeeGraceDays: { type: 'integer', minimum: 0, default: BANKING_LENDING_DEFAULTS.lateFeeGraceDays, description: 'Days after a due date before a late fee, when the product sets none.' },
+              nonaccrualDays: { type: 'integer', minimum: 1, default: BANKING_LENDING_DEFAULTS.nonaccrualDays, description: 'Days past due when a loan stops accruing interest.' },
+              chargeOffDaysClosedEnd: { type: 'integer', minimum: 1, default: BANKING_LENDING_DEFAULTS.chargeOffDaysClosedEnd, description: 'Days past due when a closed-end loan is charged off (FFIEC retail policy).' },
+              chargeOffDaysOpenEnd: { type: 'integer', minimum: 1, default: BANKING_LENDING_DEFAULTS.chargeOffDaysOpenEnd, description: 'Days past due when a line of credit is charged off.' },
+              regBNoticeDays: { type: 'integer', minimum: 1, default: BANKING_LENDING_DEFAULTS.regBNoticeDays, description: 'Days from a complete application to the notice of action (Reg B 1002.9).' },
+              counterofferNoticeDays: { type: 'integer', minimum: 1, default: BANKING_LENDING_DEFAULTS.counterofferNoticeDays, description: 'Days after a counteroffer not taken to send the adverse-action notice.' },
+              capitalAndSurplus: { type: 'integer', minimum: 0, default: BANKING_LENDING_DEFAULTS.capitalAndSurplus, description: 'Capital and unimpaired surplus, from the latest Call Report. In cents (Reg O thresholds).' },
+              capitalAsOf: { type: 'string', format: 'date', description: 'The quarter-end the capital figure is from.' },
+              insiderBoardMinimum: { type: 'integer', minimum: 0, default: BANKING_LENDING_DEFAULTS.insiderBoardMinimum, description: 'Reg O 215.4(b): an insider’s credit above the greater of this and the share of capital below needs the board’s prior approval. In cents.' },
+              insiderBoardPercentBps: { type: 'integer', minimum: 0, default: BANKING_LENDING_DEFAULTS.insiderBoardPercentBps, description: 'Share of capital and surplus, in basis points (500 = 5%).' },
+              insiderBoardAlways: { type: 'integer', minimum: 0, default: BANKING_LENDING_DEFAULTS.insiderBoardAlways, description: 'Above this an insider’s credit always needs board approval. In cents.' },
+              insiders: {
+                type: 'array',
+                title: 'Insiders (Reg O)',
+                description: 'Executive officers, directors and principal shareholders, and the companies they control. Reviewed at least yearly (215.8).',
+                items: {
+                  type: 'object',
+                  properties: {
+                    customer: { type: 'string', 'x-control': ControlType.selectMany, dataSource: { source: 'collection', collection: DataType.customer, value: 'sk', label: 'email' } },
+                    kind: { type: 'string', enum: ['executive_officer', 'director', 'principal_shareholder', 'related_interest'] },
+                    relatedTo: { type: 'string', description: 'A related interest: the insider who controls it.' },
+                    note: { type: 'string' },
+                  },
+                  required: ['customer', 'kind'],
+                },
+              },
+              mlaMaprCapBps: { type: 'integer', minimum: 0, default: BANKING_LENDING_DEFAULTS.mlaMaprCapBps, description: 'Most MAPR to a covered borrower (Military Lending Act), in basis points.' },
+              scraRateCapBps: { type: 'integer', minimum: 0, default: BANKING_LENDING_DEFAULTS.scraRateCapBps, description: 'Most rate on a servicemember’s pre-service debt (SCRA), in basis points.' },
+              creditorAddress: { type: 'string', description: 'The bank’s address on adverse-action notices.' },
+              regulatorName: { type: 'string', description: 'The bank’s federal regulator, named on adverse-action notices (ECOA).' },
+              regulatorAddress: { type: 'string' },
+            },
+          },
+          collections: {
+            type: 'object',
+            title: 'Collections',
+            collapsible: true,
+            properties: {
+              callsPer7Days: { type: 'integer', minimum: 1, default: BANKING_COLLECTIONS_DEFAULTS.callsPer7Days, description: 'Most call attempts per debt in 7 days (Reg F).' },
+              windowStart: { type: 'string', pattern: '^[0-2][0-9]:[0-5][0-9]$', default: BANKING_COLLECTIONS_DEFAULTS.windowStart, description: 'Earliest contact, in the borrower’s local time.' },
+              windowEnd: { type: 'string', pattern: '^[0-2][0-9]:[0-5][0-9]$', default: BANKING_COLLECTIONS_DEFAULTS.windowEnd, description: 'Latest contact, in the borrower’s local time.' },
+              conversationCooldownDays: { type: 'integer', minimum: 0, default: BANKING_COLLECTIONS_DEFAULTS.conversationCooldownDays, description: 'Days after a phone conversation about a debt before the next call (Reg F 1006.14(b)(2)).' },
             },
           },
         },

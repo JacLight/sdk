@@ -319,4 +319,33 @@ export enum DataType {
   stowbo_cart = 'stowbo_cart',
   stowbo_booking_item = 'stowbo_booking_item',
   stowbo_pickup_delegation = 'stowbo_pickup_delegation',
+  // AppMint Banking — the bank's own records. Not the `bank_*` types above, which are a
+  // business's accounts at other banks (Business Made books and payroll).
+  banking_product = 'banking_product',
+  banking_account = 'banking_account',
+  banking_transaction = 'banking_transaction',
+  banking_entry = 'banking_entry',
+  banking_hold = 'banking_hold',
+  banking_counterparty = 'banking_counterparty',
+  banking_card = 'banking_card',
+  banking_statement = 'banking_statement',
+  banking_dispute = 'banking_dispute',
+  banking_file = 'banking_file',
+  // Banking monitoring
+  banking_rule = 'banking_rule',
+  banking_alert = 'banking_alert',
+  banking_case = 'banking_case',
+  // Banking staff: maker-checker, teller and cash, lending, compliance
+  banking_approval = 'banking_approval',
+  banking_drawer = 'banking_drawer',
+  banking_teller_session = 'banking_teller_session',
+  banking_ctr = 'banking_ctr',
+  banking_ctr_exemption = 'banking_ctr_exemption',
+  banking_instrument_sale = 'banking_instrument_sale',
+  banking_loan_product = 'banking_loan_product',
+  banking_loan_application = 'banking_loan_application',
+  banking_loan = 'banking_loan',
+  banking_collection_activity = 'banking_collection_activity',
+  banking_screening = 'banking_screening',
+  banking_314a_request = 'banking_314a_request',
 }
