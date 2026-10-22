@@ -690,7 +690,7 @@ export const SiteSchema = () => {
         items: [
           { id: 'info', title: 'Info' },
           { id: 'settings', title: 'Settings' },
-          { id: 'social', title: 'Socila & Tracking' },
+          { id: 'social', title: 'Social & Tracking' },
           { id: 'spam', title: 'Spam Protection' },
           { id: 'store', title: 'Storefront' },
           { id: 'account', title: 'My Account' },

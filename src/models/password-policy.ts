@@ -35,9 +35,12 @@ export const PasswordPolicySchema = () => {
       },
       allowDictionary: {
         type: 'boolean',
+        title: 'Allow dictionary words',
       },
       minLenght: {
         type: 'number',
+        // The stored key keeps its historical spelling (policies already saved use it); people read the right word.
+        title: 'Min length',
       },
       minLowercase: {
         type: 'number',
@@ -85,7 +88,7 @@ const pps = PasswordPolicySchema();
 export type PasswordPolicyModel = FromSchema<typeof pps>;
 
 registerCollection(
-  'PasswordPolicy',
+  'Password Policy',
   DataType.passwordpolicy,
   PasswordPolicySchema()
 );
