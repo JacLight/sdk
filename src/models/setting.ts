@@ -123,6 +123,7 @@ export const SettingSchema = () => {
           order: getNotificationCopySchema(),
           reservation: getNotificationCopySchema(),
           event: getNotificationCopySchema(),
+          registration: getNotificationCopySchema(),
         },
       },
       socialMediaSync: {
@@ -878,16 +879,20 @@ const getNotificationCopySchema = () =>
   ({
     type: 'object',
     properties: {
+      layout: 'horizontal',
       enable: {
         type: 'boolean',
+        group: 'notification',
       },
       to: {
         type: 'string',
+        group: 'notification',
       },
       deliveryType: {
         type: 'string',
         enum: ['email', 'sms', 'push'],
         default: 'email',
+        group: 'notification',
       },
     },
   } as const);
