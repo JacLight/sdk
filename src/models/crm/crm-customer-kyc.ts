@@ -1,5 +1,5 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { registerCollection } from '../../default-schema';
+import { registerBankingCollection as registerCollection } from '../banking/_banking-register';
 import { DataType, ControlType } from '../../types';
 import { FileInfoSchema } from '../file-info';
 
@@ -7,6 +7,16 @@ export const CustomerKYCSchema = () => {
   return {
     type: 'object',
     properties: {
+      bankingReceiving: { type: 'object', hidden: true, readOnly: true, description: 'Bank-scoped member receiving preference; does not change global customer identity.', properties: {
+        enabled: { type: 'boolean', default: false }, account: { type: 'string', dataSource: { source: 'collection', collection: DataType.banking_account, value: 'sk', label: 'accountNumber' } },
+        revision: { type: 'string' }, updatedAt: { type: 'string', format: 'date-time' },
+      } },
+      bankingVerification: {
+        type: 'object', hidden: true, readOnly: true,
+        description: 'Bank-approved enrolled authenticator identity; never stores a secret or code.',
+        properties: { factorId: { type: 'string' }, fingerprint: { type: 'string' }, approvedBy: { type: 'string' }, approvedAt: { type: 'string', format: 'date-time' } },
+        required: ['factorId', 'fingerprint', 'approvedBy', 'approvedAt'],
+      },
       // Link to customer
       customer: {
         type: 'string',

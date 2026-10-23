@@ -1,5 +1,5 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { registerCollection } from '../../default-schema';
+import { registerBankingCollection as registerCollection } from './_banking-register';
 import { DataType } from '../../types';
 import { bankingRef, cents } from './_banking-fields';
 
@@ -20,9 +20,16 @@ export const BankingHoldSchema = () => {
       },
       status: {
         type: 'string',
-        enum: ['active', 'released', 'captured', 'expired'],
+        enum: ['pending', 'active', 'releasing', 'released', 'captured', 'expired'],
         default: 'active',
         description: 'captured: the money left with the transaction it was for. released: it went back to available.',
+      },
+      effect: {
+        type: 'object', hidden: true, readOnly: true,
+        properties: { version: { type: 'integer', enum: [1] }, hash: { type: 'string' }, checkAvailable: { type: 'boolean' },
+          refused: { type: 'boolean' }, reserveStartedAt: { type: 'string', format: 'date-time' }, releaseStartedAt: { type: 'string', format: 'date-time' }, reservedAt: { type: 'string', format: 'date-time' }, releasedAt: { type: 'string', format: 'date-time' },
+          releaseStatus: { type: 'string', enum: ['released', 'expired'] },
+        }, required: ['version', 'hash', 'checkAvailable'],
       },
       transaction: bankingRef(DataType.banking_transaction, 'reference'),
       expiresAt: { type: 'string', format: 'date-time', description: 'Released on its own at this time (card authorizations, check holds).' },

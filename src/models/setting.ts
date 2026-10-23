@@ -1,7 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../default-schema';
 import { DataType, ControlType } from '../types';
-import { BANKING_CASH_DEFAULTS, BANKING_COLLECTIONS_DEFAULTS, BANKING_LENDING_DEFAULTS, BANKING_REGCC_DEFAULTS, BankingApprovalsField } from './banking/_banking-fields';
+import { BANKING_CASH_DEFAULTS, BANKING_COLLECTIONS_DEFAULTS, BANKING_LENDING_DEFAULTS, BANKING_REGCC_DEFAULTS, BankingApprovalsField, BankingEscheatPoliciesField } from './banking/_banking-fields';
 
 export const SettingSchema = () => {
   return {
@@ -687,6 +687,13 @@ export const SettingSchema = () => {
           disputeDecideDays: { type: 'integer', minimum: 1, default: 10, description: 'Business days to decide a dispute or give provisional credit (Reg E).' },
           disputeResolveDays: { type: 'integer', minimum: 1, default: 45 },
           approvals: BankingApprovalsField(),
+          customerVerification: { type: 'object', properties: { money: { type: 'string', enum: ['off', 'authenticator'], default: 'off' } } },
+          autopay: { type: ['object', 'null'], description: 'Unavailable unless a bank reviewer supplies its authorization form and explicit restricted policy.', properties: {
+            authorizationForm: { type: 'string' }, version: { type: 'string' }, amount: { type: 'string', enum: ['scheduled_remaining'] }, date: { type: 'string', enum: ['calendar_due_date'] },
+            maximum: { type: 'integer', minimum: 1 }, failure: { type: 'string', enum: ['pause'] }, adminReview: { type: 'boolean' }, reviewed: { type: 'boolean', title: 'Bank policy reviewed' },
+            reviewedBy: { type: 'string', readOnly: true }, reviewedAt: { type: 'string', format: 'date-time', readOnly: true },
+          } },
+          escheat: BankingEscheatPoliciesField(),
           cash: {
             type: 'object',
             title: 'Cash and BSA',

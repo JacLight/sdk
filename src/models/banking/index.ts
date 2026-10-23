@@ -8,6 +8,7 @@ export * from './banking-transaction';
 export * from './banking-entry';
 export * from './banking-hold';
 export * from './banking-counterparty';
+export * from './banking-money-request';
 export * from './banking-card';
 export * from './banking-statement';
 export * from './banking-dispute';

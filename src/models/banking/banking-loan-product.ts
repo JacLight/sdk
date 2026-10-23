@@ -1,5 +1,5 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { registerCollection } from '../../default-schema';
+import { registerBankingCollection as registerCollection } from './_banking-register';
 import { cents } from './_banking-fields';
 import { DataType } from '../../types';
 
@@ -51,6 +51,7 @@ export const BankingLoanProductSchema = () => {
       },
       dayCount: { type: 'string', enum: ['actual_365', 'actual_360', '30_360'], default: 'actual_365' },
       schedule: { type: 'string', enum: ['level_payment', 'equal_principal', 'interest_only', 'balloon'], default: 'level_payment' },
+      amortizationMonths: { type: 'integer', minimum: 1, description: 'Balloon only: explicit total amortization term in months, longer than the contractual loan term.' },
       frequency: { type: 'string', enum: ['monthly', 'biweekly', 'weekly'], default: 'monthly' },
       graceDays: { type: 'integer', minimum: 0, description: 'Days after a due date before the late fee. Empty: Banking Config lending.lateFeeGraceDays.' },
       fees: {

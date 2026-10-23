@@ -1,5 +1,5 @@
 {
-  "version": "0.146.95",
+  "version": "0.146.95-banking.10",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",

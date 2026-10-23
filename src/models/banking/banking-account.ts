@@ -1,7 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { registerCollection } from '../../default-schema';
+import { registerBankingCollection as registerCollection } from './_banking-register';
 import { DataType } from '../../types';
-import { BankingLimitsField, bankingRef, cents } from './_banking-fields';
+import { BankingLimitsField, bankingRef, cents, BankingEscheatAssignmentField } from './_banking-fields';
 
 /**
  * A deposit account at the bank — or one of the bank's own books.
@@ -21,6 +21,45 @@ export const BankingAccountSchema = () => {
   return {
     type: 'object',
     properties: {
+      holdEffects: {
+        type: 'object', hidden: true, readOnly: true,
+        additionalProperties: { type: 'object', properties: {
+          hash: { type: 'string' }, amount: { type: 'integer' }, reservedAt: { type: 'string', format: 'date-time' },
+          releasedAt: { type: 'string', format: 'date-time' }, releaseStatus: { type: 'string', enum: ['released', 'expired'] },
+        }, required: ['hash', 'amount'] },
+      },
+      postingReceipts: {
+        type: 'object', hidden: true, readOnly: true,
+        description: 'Private untrimmed posting recovery proof, committed atomically with each account leg.',
+        additionalProperties: { type: 'object', properties: {
+          planHash: { type: 'string' }, legs: { type: 'object', additionalProperties: { type: 'object', properties: {
+            key: { type: 'string' }, index: { type: 'integer', minimum: 0 }, account: { type: 'string' }, side: { type: 'string', enum: ['debit', 'credit'] },
+            amount: { type: 'integer', minimum: 1 }, delta: { type: 'integer' }, heldDelta: { type: 'integer' }, balanceAfter: { type: 'integer' }, postedAt: { type: 'string', format: 'date-time' },
+            captureHold: { type: 'string' }, state: { type: 'string', enum: ['applied', 'reverted'] }, revertedAt: { type: 'string', format: 'date-time' }, revertedBalanceAfter: { type: 'integer' },
+          }, required: ['key', 'index', 'account', 'side', 'amount', 'delta', 'heldDelta', 'balanceAfter', 'postedAt', 'state'] } },
+        }, required: ['planHash', 'legs'] },
+      },
+      initialHeldCredits: {
+        type: 'object', hidden: true, readOnly: true,
+        description: 'Private crash-recovery proof for atomic initial deposit credit and hold publication. Removed only after durable transaction proof and hold materialization.',
+        additionalProperties: { type: 'object', properties: {
+          planHash: { type: 'string' }, amount: { type: 'integer', minimum: 0 }, appliedKey: { type: 'string' }, creditedAt: { type: 'string', format: 'date-time' },
+          receipts: { type: 'array', items: { type: 'object', properties: {
+            key: { type: 'string' }, account: { type: 'string' }, side: { type: 'string', enum: ['debit', 'credit'] }, amount: { type: 'integer', minimum: 0 }, balanceAfter: { type: 'integer' },
+          }, required: ['key', 'account', 'side', 'amount', 'balanceAfter'] } },
+        }, required: ['planHash', 'amount', 'appliedKey', 'creditedAt', 'receipts'] },
+      },
+      checkStops: {
+        type: 'array', title: 'Check stop instructions', readOnly: true,
+        description: 'Bank-reviewed on-us check instructions; not a sponsor-network transmission.',
+        items: { type: 'object', properties: {
+          id: { type: 'string' }, checkNumber: { type: 'string' }, status: { type: 'string', enum: ['active', 'released'] },
+          effectiveDate: { type: 'string', format: 'date' }, expiresOn: { type: 'string', format: 'date' }, reason: { type: 'string' },
+          requestedBy: { type: 'string' }, createdAt: { type: 'string', format: 'date-time' }, approvalId: { type: 'string' },
+          releasedAt: { type: 'string', format: 'date-time' }, releasedBy: { type: 'string' }, releaseReason: { type: 'string' },
+        }, required: ['id', 'checkNumber', 'status', 'effectiveDate', 'expiresOn', 'reason', 'requestedBy', 'createdAt'] },
+      },
+      escheat: BankingEscheatAssignmentField(),
       accountNumber: {
         type: 'string',
         unique: true,

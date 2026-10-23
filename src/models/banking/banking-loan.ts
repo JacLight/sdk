@@ -1,5 +1,5 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { registerCollection } from '../../default-schema';
+import { registerBankingCollection as registerCollection } from './_banking-register';
 import { DataType } from '../../types';
 import { bankingRef, cents } from './_banking-fields';
 
@@ -49,6 +49,7 @@ export const BankingLoanSchema = () => {
           schedule: { type: 'string', enum: ['level_payment', 'equal_principal', 'interest_only', 'balloon'] },
           frequency: { type: 'string', enum: ['monthly', 'biweekly', 'weekly'] },
           termMonths: { type: 'integer', minimum: 1 },
+          amortizationMonths: { type: 'integer', minimum: 1, description: 'Balloon total amortization term, including elapsed payments.' },
           paymentAmount: cents('Each regular payment.'),
           firstPaymentDate: { type: 'string', format: 'date' },
           maturityDate: { type: 'string', format: 'date' },
@@ -102,6 +103,10 @@ export const BankingLoanSchema = () => {
         properties: {
           accrued: { type: 'number', description: 'Interest accrued, in cents (may carry a fraction until it posts).' },
           accruedThrough: { type: 'string', format: 'date' },
+          dayBoundaryVersion: { type: 'integer', enum: [2], readOnly: true, description: 'New-loan value-day accrual convention; absent on legacy loans.' },
+          segmentStart: { type: 'string', format: 'date', readOnly: true },
+          segmentBaseAccrued: { type: 'number', minimum: 0, readOnly: true },
+          segmentPostedInterest: { type: 'integer', minimum: 0, readOnly: true },
         },
       },
       nextDue: {
@@ -134,7 +139,19 @@ export const BankingLoanSchema = () => {
       autopay: {
         type: 'object',
         collapsible: true,
-        properties: { enabled: { type: 'boolean', default: false }, account: bankingRef(DataType.banking_account, 'accountNumber') },
+        readOnly: true,
+        properties: {
+          enabled: { type: 'boolean', default: false }, account: bankingRef(DataType.banking_account, 'accountNumber'),
+          id: { type: 'string' }, status: { type: 'string', enum: ['off', 'preparing', 'awaiting_agreement', 'review_preparing', 'consented', 'awaiting_review', 'active', 'paused', 'revoked', 'completed'] },
+          snapshot: { type: 'object', hidden: true, properties: {
+            instructionId: { type: 'string' }, loan: { type: 'string' }, customer: { type: 'string' }, email: { type: 'string' }, fundingAccount: { type: 'string' },
+            policyHash: { type: 'string' }, policyVersion: { type: 'string' }, form: { type: 'string' }, formHash: { type: 'string' }, contractHash: { type: 'string' },
+            amount: { type: 'string', enum: ['scheduled_remaining'] }, date: { type: 'string', enum: ['calendar_due_date'] }, failure: { type: 'string', enum: ['pause'] }, maximum: { type: 'integer', minimum: 1 }, startsOn: { type: 'string', format: 'date' },
+          } }, snapshotHash: { type: 'string', hidden: true }, texts: { type: 'object', hidden: true, additionalProperties: { type: 'string' } },
+          envelope: { type: 'string' }, signedHash: { type: 'string', hidden: true }, approvalId: { type: 'string' }, reason: { type: 'string' }, approvedBy: { type: 'string' },
+          createdAt: { type: 'string', format: 'date-time' }, activatedAt: { type: 'string', format: 'date-time' }, revokedAt: { type: 'string', format: 'date-time' },
+          attempt: { type: 'object', properties: { date: { type: 'string', format: 'date' }, amount: { type: 'integer', minimum: 1 }, key: { type: 'string', hidden: true }, status: { type: 'string' }, transaction: { type: 'string' } } },
+        },
       },
       pledge: bankingRef(DataType.banking_hold, 'reason', 'Deposit-secured: the hold on the pledged account, released when it is paid off.'),
       scra: {
