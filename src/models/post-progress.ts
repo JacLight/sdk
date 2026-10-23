@@ -17,6 +17,14 @@ export const PostProgressSchema = () =>
       enrolledAt: { type: 'string', format: 'date-time' },
       dueAt: { type: 'string', format: 'date-time' },
       completedAt: { type: 'string', format: 'date-time' },
+      accessUntil: { type: 'string', format: 'date-time', description: 'Bought for a time (product contentAccessDays): open until then. Empty: for good.' },
+      percent: { type: 'number', description: 'Kept by the server on every save: % of the post done, so learners sort and filter in the database.' },
+      waitingReview: { type: 'array', items: { type: 'string' }, description: 'Kept by the server on every save: the items sent in and waiting for a reviewer.' },
+      source: {
+        type: 'object',
+        description: 'Where it came from when it was bought: the order and the product.',
+        properties: { orderId: { type: 'string' }, product: { type: 'string' } },
+      },
       progress: {
         type: 'object',
         description: 'Keyed by toc node id.',
@@ -28,6 +36,16 @@ export const PostProgressSchema = () =>
             score: { type: 'number' },
             percent: { type: 'number', description: 'Watched % for video content.' },
             answerRef: { type: 'string', description: 'datatype/sk of the record the page saved (form answer, upload).' },
+            certificate: {
+              type: 'object',
+              description: 'A certificate page: the signed_document issued for this person.',
+              properties: {
+                envelopeId: { type: 'string' },
+                number: { type: 'string' },
+                status: { type: 'string', enum: ['issued', 'waiting'], description: 'waiting: sent to a signer who signs each one.' },
+                issuedAt: { type: 'string', format: 'date-time' },
+              },
+            },
             review: {
               type: 'object',
               description: 'Set when the item needs approval: the decision is recorded here, no workflow.',

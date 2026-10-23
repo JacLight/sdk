@@ -133,10 +133,74 @@ export const PostSchema = () => {
             },
             type: {
               type: 'string',
-              enum: ['text', 'video', 'audio', 'pdf', 'quiz', 'form', 'assignment', 'download'],
-              description: 'Course posts: what the item is — the player shows its icon.',
+              enum: ['text', 'video', 'audio', 'pdf', 'quiz', 'form', 'assignment', 'download', 'appointment', 'certificate'],
+              description: 'Course posts: what the item is — the player shows its icon. `appointment` books a session (done when attended); `certificate` issues the learner\'s certificate when it opens.',
+            },
+            appointment: {
+              type: 'object',
+              description: 'An `appointment` page: the learner books a session of this booking type there; the page is done when the booking is marked attended.',
+              properties: {
+                definition: { type: 'string', description: 'sk of the reservation_definition (booking type) to book.' },
+                service: { type: 'string', description: 'One of that booking type\'s services, by name. Empty: the learner picks.' },
+              },
+            },
+            certificate: {
+              type: 'object',
+              description:
+                'A `certificate` page: issued as a signed_document when the page opens for a learner (its conditions hold). ' +
+                'Same template shape as an e-sign form (`documents` + `spots`). Spot role `learner` is filled by the server — ' +
+                'type name = their name, date = completion date, text with field `course` | `number` | `issuer` (the business). ' +
+                'Any other role is a signer from `signers`. No documents: the system\'s default certificate.',
+              properties: {
+                documents: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      file: { type: 'object', properties: { path: { type: 'string' }, url: { type: 'string' }, name: { type: 'string' }, mimeType: { type: 'string' } } },
+                      pages: { type: 'array', items: { type: 'object', properties: { width: { type: 'number' }, height: { type: 'number' } } } },
+                    },
+                  },
+                },
+                spots: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    additionalProperties: true,
+                    properties: {
+                      id: { type: 'string' },
+                      fileIndex: { type: 'number' },
+                      page: { type: 'number' },
+                      x: { type: 'number' },
+                      y: { type: 'number' },
+                      width: { type: 'number' },
+                      height: { type: 'number' },
+                      type: { type: 'string', enum: ['signature', 'initials', 'date', 'name', 'text'] },
+                      role: { type: 'string' },
+                      field: { type: 'string' },
+                      label: { type: 'string' },
+                    },
+                  },
+                },
+                signers: {
+                  type: 'array',
+                  description: 'Who signs it, one per role. `saved`: their signature, captured here once, goes on every certificate. `each`: every certificate is sent to them to sign (e-sign); the learner gets it once they have.',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      role: { type: 'string' },
+                      name: { type: 'string' },
+                      title: { type: 'string', description: 'Shown under the signature, e.g. "Program Director".' },
+                      email: { type: 'string', format: 'email' },
+                      mode: { type: 'string', enum: ['saved', 'each'], default: 'saved' },
+                      signature: { type: 'object', properties: { path: { type: 'string' }, url: { type: 'string' }, mimeType: { type: 'string' } } },
+                    },
+                  },
+                },
+              },
             },
             duration: { type: 'string', description: 'Course posts: how long it takes, as shown (e.g. "5 min").' },
+            free: { type: 'boolean', description: 'Open to anyone, even when the post is for buyers only (a free lesson of a paid course).' },
             reviewers: { type: 'array', items: { type: 'string' }, description: 'Course posts: who marks this content when it needs a human (emails or groups).' },
             answerKey: {
               type: 'object',
@@ -195,6 +259,7 @@ export const PostSchema = () => {
               type: 'array',
               items: { type: 'object', additionalProperties: true },
             },
+            free: { type: 'boolean', description: 'Open to anyone, even when the post is for buyers only — a chapter marks everything under it.' },
             conditions: {
               type: 'array',
               description: 'Course posts: this opens only when every condition holds. Put them exactly where progress should wait.',
@@ -217,13 +282,14 @@ export const PostSchema = () => {
       // Access — same rules as crm_form; the server enforces them on reading the post (and enrolling, for a course).
       authenticationType: {
         type: 'string',
-        enum: ['none', 'magic-link', 'code', 'password', 'email'],
+        enum: ['none', 'magic-link', 'code', 'password', 'email', 'purchase'],
         default: 'none',
         description:
           'Who must do what before it opens — the one access setting. `none` asks nothing; ' +
           '`magic-link` emails a link (or one-time code) to prove the address; `code` asks for the access code — the shared ' +
           '`accessCode`, or a participant\'s own code, which their invitation link carries; `password` signs in; ' +
-          '`email` only asks for an address and does not verify it.',
+          '`email` only asks for an address and does not verify it; `purchase` opens to buyers — the people a product ' +
+          'that sells this post (product `content`) was bought by — and to anything marked `free`.',
         group: 'access',
       },
       accessCode: {

@@ -11,6 +11,11 @@ const getAccountFeatures = () => [
   { label: 'Projects', value: 'projects' },
   { label: 'Files', value: 'files' },
   { label: 'Orders', value: 'orders' },
+  { label: 'Courses', value: 'courses' },
+  { label: 'Returns', value: 'returns' },
+  { label: 'Subscriptions', value: 'subscriptions' },
+  { label: 'Gift Cards', value: 'gift-cards' },
+  { label: 'Store Credit', value: 'store-credit' },
   { label: 'Shared Accounts', value: 'shared-accounts' },
   { label: 'Events', value: 'events' },
   { label: 'Wishlists', value: 'wishlists' },
@@ -346,6 +351,16 @@ export const SiteSchema = () => {
             enum: ['none', 'dialog', 'drawer-left', 'drawer-right'],
             group: 'template',
             default: 'left',
+          },
+          // Who sees prices in this store; a product's own `priceShown` wins.
+          // in_cart: "Add to cart to see the price"; signed_in: guests see
+          // "Sign in to see the price" and cannot add to cart.
+          priceShown: {
+            type: 'string',
+            title: 'Price shown',
+            enum: ['always', 'in_cart', 'signed_in'],
+            default: 'always',
+            group: 'template',
           },
           // The regions (business locations) this store serves. Tier pricing,
           // pricing tables and product availability set for a location apply to

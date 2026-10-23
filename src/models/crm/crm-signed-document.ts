@@ -60,7 +60,9 @@ export const SignedDocumentSchema = () => {
       closedAt: { type: 'string', format: 'date-time', readOnly: true, group: 'status' },
       closeReason: { type: 'string', readOnly: true, description: 'Why it was cancelled, voided or declined.', group: 'status' },
       // Forms e-signing: the form this envelope was sent from.
-      source: { type: 'string', enum: ['form', 'api'], readOnly: true },
+      source: { type: 'string', enum: ['form', 'api', 'course-certificate'], readOnly: true },
+      certificateNumber: { type: 'string', readOnly: true, description: 'A course certificate\'s public number (source course-certificate): anyone can check it is genuine.' },
+      auditPage: { type: 'boolean', default: true, readOnly: true, description: 'false: the finished PDF has no audit page appended (a course certificate is the document itself).' },
       formId: { type: 'string', readOnly: true, description: 'sk of the crm_form it was sent from.' },
       formName: { type: 'string', readOnly: true },
       formTitle: { type: 'string', readOnly: true },

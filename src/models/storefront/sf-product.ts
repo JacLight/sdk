@@ -175,6 +175,30 @@ export const SFProductSchema = () => {
         },
         group: 'status',
       },
+      /**
+       * Content Studio posts (a course, an ebook, a video) this product sells. A paid
+       * order gives the buyer each one (a post_progress), for `contentAccessDays` or for good.
+       */
+      content: {
+        type: 'array',
+        title: 'Content it sells',
+        'x-control': ControlType.selectMany,
+        items: { type: 'string' },
+        dataSource: {
+          source: 'collection',
+          collection: DataType.post,
+          value: 'sk',
+          label: 'title',
+        },
+        group: 'status',
+      },
+      contentAccessDays: {
+        type: 'integer',
+        minimum: 1,
+        title: 'Access for (days)',
+        description: 'How long a buyer keeps the content. Empty: for good.',
+        group: 'status',
+      },
       status: {
         type: 'string',
         group: 'status',
@@ -739,6 +763,78 @@ export const SFProductSchema = () => {
           permissionScope: {
             type: 'string',
             description: 'POS permission the seller needs, e.g. alcohol. Matches a requirement rule’s POS permission scope. Empty with age-restricted on = age_restricted',
+          },
+        },
+      },
+      /**
+       * Who sees the price on the site. `site` follows `site.storefront.priceShown`.
+       * `in_cart`: lists and the product page show "Add to cart to see the price";
+       * `signed_in`: guests see "Sign in to see the price" and cannot add it. The
+       * server strips every price field from what it sends a shopper who may not
+       * see it; staff screens always see prices.
+       */
+      priceShown: {
+        type: 'string',
+        title: 'Price shown',
+        enum: ['site', 'always', 'in_cart', 'signed_in'],
+        default: 'site',
+        group: 'access',
+      },
+      /**
+       * What a shopper must meet to buy this product. Empty rules = anyone. The
+       * server checks it on every shopper read, on add to cart and at payment;
+       * at the POS the reason is shown and staff may sell anyway.
+       */
+      purchaseRequirements: {
+        type: 'object',
+        collapsible: true,
+        group: 'access',
+        properties: {
+          match: { type: 'string', enum: ['all', 'any'], default: 'all', description: 'Met when all rules hold, or any one' },
+          whenNotMet: {
+            type: 'string',
+            enum: ['locked', 'hidden'],
+            default: 'locked',
+            description: 'Locked: listed, with the reason. Hidden: left out of lists for that shopper; a direct link opens it locked.',
+          },
+          message: { type: 'string', description: 'Optional sentence shown instead of the reason the store writes from the rules' },
+          rules: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                kind: { type: 'string', enum: ['membership', 'group', 'benefit', 'in_cart', 'bought_before'] },
+                plans: {
+                  type: 'array',
+                  items: { type: 'string' },
+                  description: 'membership: an active or trial subscription to one of these plans',
+                  'x-control': ControlType.selectMany,
+                  dataSource: { source: 'collection', collection: DataType.sf_subscription_plan, value: 'name', label: 'name' },
+                },
+                groups: {
+                  type: 'array',
+                  items: { type: 'string' },
+                  description: 'group: in one of these customer groups',
+                  'x-control': ControlType.selectMany,
+                  dataSource: { source: 'collection', collection: DataType.customer_group, value: 'name', label: 'name' },
+                },
+                benefits: {
+                  type: 'array',
+                  items: { type: 'string' },
+                  description: 'benefit: an approved or active enrollment in one of these program benefits',
+                  'x-control': ControlType.selectMany,
+                  dataSource: { source: 'collection', collection: DataType.benefit, value: 'name', label: 'name' },
+                },
+                products: {
+                  type: 'array',
+                  items: { type: 'string' },
+                  description: 'in_cart / bought_before: these products (any variation counts)',
+                  'x-control': ControlType.lookup,
+                  dataSource: { source: 'collection', collection: DataType.sf_product, value: 'sku', label: 'name' },
+                },
+                minQuantity: { type: 'integer', minimum: 1, default: 1, description: 'in_cart / bought_before: at least this many, in total' },
+              },
+            },
           },
         },
       },
