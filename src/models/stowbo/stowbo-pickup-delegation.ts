@@ -49,6 +49,19 @@ export const StowboPickupDelegationSchema = () => {
       token: { type: 'string', readOnly: true, group: 'handoff' },
       sentAt: { type: 'string', format: 'date-time', readOnly: true, group: 'handoff' },
       sentVia: { type: 'string', enum: ['sms', 'email', 'both', 'none'], readOnly: true, group: 'handoff' },
+      // The pass's own code set on the items' smart lock / locker door (Device Hub
+      // devices) for the pass window; revoked when collected, revoked or expired.
+      deviceAccess: {
+        type: 'object',
+        readOnly: true,
+        properties: {
+          code: { type: 'string' },
+          endsAt: { type: 'string', format: 'date-time' },
+          revokedAt: { type: 'string', format: 'date-time' },
+          grants: { type: 'array', items: { type: 'object', properties: { device: { type: 'string' }, title: { type: 'string' }, accessCodeId: { type: 'string' } } } },
+        },
+        group: 'handoff',
+      },
 
       status: { type: 'string', enum: ['active', 'revoked', 'completed', 'expired'], default: 'active', group: 'status' },
       revokedAt: { type: 'string', format: 'date-time', readOnly: true, group: 'status' },

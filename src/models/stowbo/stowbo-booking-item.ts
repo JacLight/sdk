@@ -75,6 +75,42 @@ export const StowboBookingItemSchema = () => {
       collector: { type: 'string', group: 'meta' },
 
       /**
+       * The keypad code issued for this item on its unit's smart lock / locker door
+       * and its site's gate (Device Hub devices), for the item's window. `pickup` is a
+       * parcel's one-collection code; it is revoked at check-out or cancellation.
+       */
+      deviceAccess: {
+        type: 'object',
+        readOnly: true,
+        properties: {
+          code: { type: 'string' },
+          purpose: { type: 'string', enum: ['access', 'pickup'] },
+          startsAt: { type: 'string', format: 'date-time' },
+          endsAt: { type: 'string', format: 'date-time' },
+          issuedAt: { type: 'string', format: 'date-time' },
+          revokedAt: { type: 'string', format: 'date-time' },
+          grants: {
+            type: 'array',
+            items: { type: 'object', properties: { device: { type: 'string' }, kind: { type: 'string' }, title: { type: 'string' }, accessCodeId: { type: 'string' } } },
+          },
+          // the booking's drop-off code on the site gate: one use, for a courier, until check-in
+          dropoff: {
+            type: 'object',
+            properties: {
+              code: { type: 'string' },
+              issuedAt: { type: 'string', format: 'date-time' },
+              revokedAt: { type: 'string', format: 'date-time' },
+              grants: {
+                type: 'array',
+                items: { type: 'object', properties: { device: { type: 'string' }, kind: { type: 'string' }, title: { type: 'string' }, accessCodeId: { type: 'string' } } },
+              },
+            },
+          },
+        },
+        group: 'meta',
+      },
+
+      /**
        * In and out, unlimited, append-only. Presence is the direction of the
        * last entry — never a stored flag, because being out at 2pm means at
        * lunch, not finished.

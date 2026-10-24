@@ -30,6 +30,8 @@ export const StowboUnitSchema = () => {
       },
       // what the customer sees on the door: A-142, Bay 7
       unitNumber: { type: 'string', group: 'name' },
+      // door / space size; on a parcel locker bank S, M or L — the smallest free door that fits gets the parcel
+      size: { type: 'string', group: 'name' },
 
       // the bookable listing this unit belongs to (the unit type)
       listing: {
@@ -78,6 +80,21 @@ export const StowboUnitSchema = () => {
         hideLabel: true,
       },
       accessCode: { type: 'string', group: 'access' },
+      // The smart lock / locker door on this unit — a Device Hub device (device_config.name).
+      // With one, Stowbo issues each booking its own keypad code for its window, opens it
+      // on request and records what the door reports on the booking's timeline.
+      deviceName: {
+        type: 'string',
+        'x-control': ControlType.selectMany,
+        maxItems: 1,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.device_config,
+          value: 'name',
+          label: ['displayName', 'name'],
+        },
+        group: 'access',
+      },
       notes: { type: 'string', 'x-control-variant': 'textarea' },
     },
   } as const;

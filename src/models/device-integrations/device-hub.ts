@@ -38,6 +38,21 @@ export const DeviceHubSchema = () => {
         dataSource: { source: 'collection', collection: DataType.access_zone, value: 'name', label: ['title', 'name'] },
         group: 'identity',
       },
+      // agent = an on-site hub agent holds a WebSocket (the default).
+      // cloud = a vendor's cloud API stands in for the agent: smart locks, gates and
+      // parcel lockers reached through their maker's API. Commands go to `provider`
+      // (an integration implementing `hubCommand`) and its webhooks bring the events.
+      connection: {
+        type: 'string',
+        enum: ['agent', 'cloud'],
+        default: 'agent',
+        group: 'identity',
+      },
+      provider: {
+        type: 'string',
+        description: "For connection=cloud: the integration that serves this hub (e.g. SmartAccessProvider).",
+        group: 'identity',
+      },
       apiKey: {
         type: 'string',
         description: 'Hashed API key the hub agent uses to authenticate. Generated server-side; never echoed back in clear.',

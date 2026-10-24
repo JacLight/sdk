@@ -36,6 +36,9 @@ export const PostProgressSchema = () =>
             score: { type: 'number' },
             percent: { type: 'number', description: 'Watched % for video content.' },
             answerRef: { type: 'string', description: 'datatype/sk of the record the page saved (form answer, upload).' },
+            tries: { type: 'number', description: 'A scored page: how many times its answers were marked.' },
+            triesBefore: { type: 'number', description: "Tries before a reviewer last asked for changes — they don't count against the page's `quiz.attempts`." },
+            marks: { type: 'object', additionalProperties: { type: 'boolean' }, description: 'A scored page: which questions of the last try were right, by name.' },
             certificate: {
               type: 'object',
               description: 'A certificate page: the signed_document issued for this person.',
@@ -44,6 +47,14 @@ export const PostProgressSchema = () =>
                 number: { type: 'string' },
                 status: { type: 'string', enum: ['issued', 'waiting'], description: 'waiting: sent to a signer who signs each one.' },
                 issuedAt: { type: 'string', format: 'date-time' },
+              },
+            },
+            reviews: {
+              type: 'array',
+              description: 'Every reviewer decision on the item, oldest first; `review` is the one that stands.',
+              items: {
+                type: 'object',
+                properties: { status: { type: 'string', enum: ['approved', 'changes'] }, by: { type: 'string' }, at: { type: 'string', format: 'date-time' }, note: { type: 'string' } },
               },
             },
             review: {

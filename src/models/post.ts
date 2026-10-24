@@ -213,6 +213,22 @@ export const PostSchema = () => {
                 properties: { correct: { type: 'array', items: { type: 'string' } } },
               },
             },
+            quiz: {
+              type: 'object',
+              description: 'A page with an `answerKey`: how it is taken. All optional.',
+              properties: {
+                attempts: { type: 'number', minimum: 0, description: 'How many times its answers can be sent. Empty or 0: as often as the learner likes.' },
+                shuffle: { type: 'boolean', description: 'The questions in a different order for each learner and each try.' },
+                shuffleChoices: { type: 'boolean', description: "Each question's choices in a different order too." },
+                draw: { type: 'number', minimum: 0, description: "Ask this many of the page's questions, a fresh pick each try. Empty: all of them." },
+                showResults: {
+                  type: 'string',
+                  enum: ['questions', 'answers', 'score', 'none'],
+                  default: 'questions',
+                  description: 'What the learner sees after sending: each question right or not; that and the right answer to the ones they got wrong; only the score; or nothing (only passed or not, when it opens a later step).',
+                },
+              },
+            },
             conditions: {
               type: 'array',
               description: 'Course posts: this opens only when every condition holds. Put them exactly where progress should wait.',

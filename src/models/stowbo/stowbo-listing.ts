@@ -77,6 +77,21 @@ export const StowboListingSchema = () => {
         dataSource: { source: 'json', json: ['manned', 'unmanned'] },
         group: 'access',
       },
+      // The site's gate (or entrance door) — a Device Hub device (device_config.name). Every
+      // booking under this listing (and its child listings) gets a code for it, valid for
+      // the booking's window.
+      deviceName: {
+        type: 'string',
+        'x-control': ControlType.selectMany,
+        maxItems: 1,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.device_config,
+          value: 'name',
+          label: ['displayName', 'name'],
+        },
+        group: 'access',
+      },
 
       /**
        * How THIS host runs the hand-off — shown to the guest the moment they
