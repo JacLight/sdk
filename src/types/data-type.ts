@@ -327,6 +327,7 @@ export enum DataType {
   banking_entry = 'banking_entry',
   banking_hold = 'banking_hold',
   banking_counterparty = 'banking_counterparty',
+  banking_money_request = 'banking_money_request',
   banking_card = 'banking_card',
   banking_statement = 'banking_statement',
   banking_dispute = 'banking_dispute',

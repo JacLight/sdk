@@ -1,5 +1,5 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { registerCollection } from '../../default-schema';
+import { registerBankingCollection as registerCollection } from './_banking-register';
 import { DataType } from '../../types';
 import { bankingRef } from './_banking-fields';
 import { AddressSchema } from '../crm/crm-address';

@@ -1,5 +1,5 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { registerCollection } from '../../default-schema';
+import { registerBankingCollection as registerCollection } from './_banking-register';
 import { DataType } from '../../types';
 import { bankingRef, cents } from './_banking-fields';
 import { AddressSchema } from '../crm/crm-address';
@@ -50,6 +50,15 @@ export const BankingCardSchema = () => {
           international: { type: 'boolean', default: false },
           blockedCategories: { type: 'array', items: { type: 'string' }, description: 'Merchant category codes refused.' },
           allowedCategories: { type: 'array', items: { type: 'string' }, description: 'When set, only these merchant category codes.' },
+        },
+      },
+      customerLimits: {
+        type: 'object', title: 'Customer spending preferences',
+        description: 'Optional personal limits, bounded by bank-approved controls. Null resets to the bank ceiling.',
+        properties: {
+          perTransaction: { type: ['integer', 'null'], minimum: 0, description: 'Personal per-purchase preference in cents; null uses the bank limit.' },
+          dailySpend: { type: ['integer', 'null'], minimum: 0, description: 'Personal daily purchase preference in cents; null uses the bank limit.' },
+          dailyAtm: { type: ['integer', 'null'], minimum: 0, description: 'Personal daily ATM preference in cents; null uses the bank limit.' },
         },
       },
       pinSet: { type: 'boolean', readOnly: true, default: false },

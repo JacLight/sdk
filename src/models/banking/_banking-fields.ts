@@ -139,6 +139,10 @@ export const BANKING_APPROVAL_ACTIONS = [
   'journal_entry',
   'rule_change',
   'sar_decision',
+  'risk_rating',
+  'check_stop',
+  'customer_authenticator',
+  'loan_autopay',
   'ctr_exemption',
   'teller_override',
   'loan_decision',
@@ -169,6 +173,10 @@ export const BANKING_APPROVAL_DEFAULTS: Record<BankingApprovalAction, BankingApp
   journal_entry: { required: true, roles: ['Controller', 'Owner'] },
   rule_change: { required: true, roles: ['BSAOfficer', 'Owner'] },
   sar_decision: { required: true, roles: ['BSAOfficer', 'Owner'] },
+  risk_rating: { required: true, roles: ['BSAOfficer', 'ComplianceOfficer', 'Owner'] },
+  check_stop: { required: true, roles: ['HeadTeller', 'BranchManager', 'Owner'] },
+  customer_authenticator: { required: true, roles: ['Owner', 'BSAOfficer'] },
+  loan_autopay: { required: true, roles: ['Owner', 'BranchManager'] },
   ctr_exemption: { required: true, roles: ['BSAOfficer', 'Owner'] },
   teller_override: { required: true, roles: ['HeadTeller', 'BranchManager', 'Owner'] },
   loan_decision: { required: true, roles: ['Underwriter', 'BranchManager', 'Owner'] },
@@ -262,3 +270,24 @@ export const BankingApprovalsField = () =>
     description: 'Which actions wait for a second person, who may approve them, and the amount under which they run at once.',
     properties: Object.fromEntries(BANKING_APPROVAL_ACTIONS.map(a => [a, approvalRule(a)])) as Record<BankingApprovalAction, ReturnType<typeof approvalRule>>,
   } as const);
+
+/** Bank-maintained, explicitly reviewed jurisdiction policies. No legal periods are supplied by the SDK. */
+export const BankingEscheatPoliciesField = () => ({
+  type: 'object', title: 'Reviewed escheat policies', collapsible: true,
+  properties: { rules: { type: 'array', default: [], items: { type: 'object', properties: {
+    jurisdiction: { type: 'string', pattern: '^US-[A-Z]{2}$' },
+    propertyType: { type: 'string', enum: ['deposit', 'official_check'] },
+    dormancyYears: { type: 'integer', minimum: 1, maximum: 50 },
+    dueDiligenceDays: { type: 'integer', minimum: 0, maximum: 730 },
+    authority: { type: 'string', description: 'Reviewed legal/policy authority reference, supplied by the bank.' },
+    effectiveFrom: { type: 'string', format: 'date' },
+    reviewed: { type: 'boolean', description: 'Attest the new/changed policy has been reviewed. Server stamps the reviewer.' },
+    reviewedBy: { type: 'string', readOnly: true }, reviewedAt: { type: 'string', format: 'date-time', readOnly: true },
+  }, required: ['jurisdiction', 'propertyType', 'dormancyYears', 'dueDiligenceDays', 'authority', 'effectiveFrom'] } } },
+} as const);
+
+/** Explicit staff assignment; no jurisdiction is inferred from an address. */
+export const BankingEscheatAssignmentField = () => ({
+  type: 'object', title: 'Reviewed escheat jurisdiction', readOnly: true,
+  properties: { jurisdiction: { type: 'string' }, authorityNote: { type: 'string' }, assignedBy: { type: 'string' }, assignedAt: { type: 'string', format: 'date-time' } },
+} as const);

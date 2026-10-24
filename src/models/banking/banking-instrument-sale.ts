@@ -1,7 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
-import { registerCollection } from '../../default-schema';
+import { registerBankingCollection as registerCollection } from './_banking-register';
 import { DataType } from '../../types';
-import { BankingIdentifiedPersonField, bankingRef, cents } from './_banking-fields';
+import { BankingIdentifiedPersonField, bankingRef, cents, BankingEscheatAssignmentField } from './_banking-fields';
 
 /**
  * An official check (cashier's check, teller's check, bank draft) or money order the bank sold.
@@ -14,6 +14,7 @@ export const BankingInstrumentSaleSchema = () => {
   return {
     type: 'object',
     properties: {
+      escheat: BankingEscheatAssignmentField(),
       kind: { type: 'string', enum: ['cashiers_check', 'teller_check', 'bank_draft', 'money_order', 'travelers_check'] },
       serialNumber: { type: 'string', unique: true },
       amount: { ...cents('Face amount.'), minimum: 1 },

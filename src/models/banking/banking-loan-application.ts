@@ -1,5 +1,6 @@
+import { FileInfoSchema } from '../file-info';
 import { FromSchema } from 'json-schema-to-ts';
-import { registerCollection } from '../../default-schema';
+import { registerBankingCollection as registerCollection } from './_banking-register';
 import { DataType } from '../../types';
 import { bankingRef, cents } from './_banking-fields';
 
@@ -40,6 +41,14 @@ export const BankingLoanApplicationSchema = () => {
   return {
     type: 'object',
     properties: {
+      supportingDocuments: {
+        type: 'array', title: 'Supporting documents',
+        items: { ...FileInfoSchema(), properties: { ...FileInfoSchema().properties,
+          kind: { type: 'string' }, customer: { type: 'string', readOnly: true },
+          submittedAt: { type: 'string', format: 'date-time', readOnly: true },
+          conditionIndex: { type: 'integer', minimum: 0 }, note: { type: 'string' },
+        } },
+      },
       number: { type: 'string', unique: true, readOnly: true, transform: ['random-string::8', 'uppercase'] },
       product: bankingRef(DataType.banking_loan_product, 'title'),
       status: {
