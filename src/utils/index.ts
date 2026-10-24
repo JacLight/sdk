@@ -1,5 +1,6 @@
 import { twMerge } from 'tailwind-merge';
 
+
 export const toTitleCase = (str: string) => {
   if (!str) return str;
   if (typeof str !== 'string') return str;

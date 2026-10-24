@@ -127,6 +127,8 @@ export interface BaseModel<T> {
   version: number;
   createdate?: Date;
   modifydate?: Date;
+  /** When the record really entered the system: set on create, never changed. A createdate that differs was edited (a migration giving the record its real date). */
+  timestamp?: Date;
   publishedDate?: Date;
   author?: string;
   requiredRole?: RequiredRoleModel;
@@ -150,7 +152,7 @@ export interface BaseModel<T> {
   client?: any;
 }
 
-export const baseModelSystemFields = ['pk', 'sk', 'name', 'datatype', 'version', 'createdate', 'modifydate', 'publishedDate', 'author', 'notes', 'schedules', 'rules', 'schedule', 'stats', 'share', 'handling', 'state', 'search', 'create_hash', 'modified_by', 'created_by', 'client'] as const;
+export const baseModelSystemFields = ['pk', 'sk', 'name', 'datatype', 'version', 'createdate', 'modifydate', 'timestamp', 'publishedDate', 'author', 'notes', 'schedules', 'rules', 'schedule', 'stats', 'share', 'handling', 'state', 'search', 'create_hash', 'modified_by', 'created_by', 'client'] as const;
 
 export const PostSubSchema = () => {
   return {
