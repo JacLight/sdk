@@ -107,7 +107,6 @@ export const SFShippingSchema = () => {
       },
       currency: {
         type: 'string',
-        default: 'USD',
         group: 'cost',
       },
 
@@ -263,7 +262,7 @@ export const SFShippingSchema = () => {
         properties: {
           insured: { type: 'boolean', default: false },
           amount: { type: 'number' },
-          currency: { type: 'string', default: 'USD' },
+          currency: { type: 'string' },
         },
       },
     },

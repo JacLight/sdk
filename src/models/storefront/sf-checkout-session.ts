@@ -2,11 +2,13 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { DataType, ControlType } from '../../types';
 import { SharedAccountField } from '../_shared-account-fields';
+import { SaleRateFields } from '../_sale-rate-fields';
 
 export const SFCheckoutSessionSchema = () => {
   return {
     type: 'object',
     properties: {
+      ...SaleRateFields(),
       // Session Identification
       sessionId: {
         type: 'string',
@@ -92,7 +94,6 @@ export const SFCheckoutSessionSchema = () => {
       ...SharedAccountField(),
       currency: {
         type: 'string',
-        default: 'USD',
         group: 'amount',
       },
 

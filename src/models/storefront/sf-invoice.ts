@@ -5,11 +5,13 @@ import { AddressSchema } from '../crm/crm-address';
 import { FileInfoSchema } from '../file-info';
 import { SharedAccountField } from '../_shared-account-fields';
 import { BusinessLocationField } from '../_location-fields';
+import { SaleRateFields } from '../_sale-rate-fields';
 
 export const SFInvoiceSchema = () => {
   return {
     type: 'object',
     properties: {
+      ...SaleRateFields(),
       // --- Invoice Identity ---
       // Given by the server when the invoice is created, the same way as an order's.
       number: {
@@ -40,7 +42,6 @@ export const SFInvoiceSchema = () => {
       },
       currency: {
         type: 'string',
-        default: 'USD',
         group: 'number',
       },
       ...BusinessLocationField(),

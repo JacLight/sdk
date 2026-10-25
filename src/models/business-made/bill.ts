@@ -67,7 +67,7 @@ export const BillSchema = () => ({
       enum: ['due_on_receipt', 'net_7', 'net_15', 'net_30', 'net_45', 'net_60', 'net_90', 'cod', 'prepay', 'custom'],
       group: 'dates',
     },
-    currency: { type: 'string', default: 'USD' },
+    currency: { type: 'string' },
     status: {
       type: 'string',
       enum: ['draft', 'awaiting_approval', 'approved', 'partially_paid', 'paid', 'overdue', 'voided', 'disputed'],
@@ -122,6 +122,8 @@ export const BillPaymentSchema = () => ({
     ...BusinessLocationField(),
     paymentDate: { type: 'string', format: 'date' },
     amount: { type: 'number' },
+    // The bill's currency; the server fills the org base currency when empty.
+    currency: { type: 'string', title: 'Currency' },
     method: {
       type: 'string',
       enum: ['ach', 'check', 'wire', 'card', 'cash', 'other'],

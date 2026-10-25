@@ -34,7 +34,7 @@ export const BankingProductSchema = () => {
         default: 'any',
         group: 'kind',
       },
-      currency: { type: 'string', default: 'USD', group: 'kind' },
+      currency: { type: 'string', group: 'kind' },
       status: {
         type: 'string',
         enum: ['draft', 'active', 'retired'],

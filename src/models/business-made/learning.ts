@@ -252,7 +252,7 @@ export const CourseSchema = () => {
         type: 'object',
         properties: {
           amount: { type: 'number' },
-          currency: { type: 'string', default: 'USD' },
+          currency: { type: 'string' },
           costCenter: { type: 'string' },
           requiresApproval: { type: 'boolean', default: false },
         },

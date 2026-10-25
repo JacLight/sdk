@@ -42,7 +42,7 @@ export const SalaryGradeSchema = () => {
           minimum: { type: 'number' },
           midpoint: { type: 'number' },
           maximum: { type: 'number' },
-          currency: { type: 'string', default: 'USD' },
+          currency: { type: 'string' },
         },
       },
       hourlyRange: {
@@ -270,7 +270,7 @@ export const BonusSchema = () => {
       title: { type: 'string', group: 'name' },
       description: { type: 'string', 'x-control-variant': 'textarea' },
       amount: { type: 'number', group: 'amount' },
-      currency: { type: 'string', default: 'USD', group: 'amount' },
+      currency: { type: 'string', group: 'amount' },
       calculationMethod: {
         type: 'string',
         enum: ['fixed', 'percentage-of-salary', 'formula', 'discretionary'],

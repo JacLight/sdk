@@ -75,7 +75,6 @@ export const SFGiftCardSchema = () => {
       },
       currency: {
         type: 'string',
-        default: 'USD',
         group: 'value',
       },
       initialAmount: {

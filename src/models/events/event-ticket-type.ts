@@ -52,7 +52,6 @@ export const EventTicketTypeSchema = () => {
       },
       currency: {
         type: 'string',
-        default: 'USD',
       },
 
       // Capacity & Sales

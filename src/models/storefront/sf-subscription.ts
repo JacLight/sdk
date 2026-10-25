@@ -4,11 +4,13 @@ import { registerCollection } from '../../default-schema';
 
 import { DataType } from '../../types';
 import { SharedAccountField } from '../_shared-account-fields';
+import { SaleRateFields } from '../_sale-rate-fields';
 
 export const SFSubscriptionSchema = () => {
   return {
     type: 'object',
     properties: {
+      ...SaleRateFields(),
       status: {
         type: 'string',
         group: 'status',

@@ -58,6 +58,8 @@ export const DeviceConfigSchema = () => {
           'barrier',       // access control: parking / toll barrier arm
           'turnstile',     // access control: turnstile
           'elevator',      // access control: elevator floor release
+          'camera',        // camera with a live view (a space's camera add-on)
+          'thermostat',    // climate unit: air conditioning / heat with a set point
           // Sensors and signals placed in a zone (Devices section): they report events.
           'contact',       // door / window contact
           'motion',        // motion / presence

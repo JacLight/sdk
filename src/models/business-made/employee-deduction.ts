@@ -23,6 +23,8 @@ export const EmployeeDeductionSchema = () => {
   return {
     type: 'object',
     properties: {
+      // The currency the amounts are stored in; the server fills the org base currency when empty.
+      currency: { type: 'string', title: 'Currency' },
       employeeId: {
         type: 'string',
         group: 'employee',

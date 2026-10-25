@@ -12,6 +12,8 @@ export const SFReturnSchema = () => {
       order: {
         type: 'string',
       },
+      // The currency the amounts are stored in; the server fills the org base currency when empty.
+      currency: { type: 'string', title: 'Currency' },
       product: {
         type: 'string',
       },

@@ -8,6 +8,8 @@ export const DeliveryJobSchema = () => {
   return {
     type: 'object',
     properties: {
+      // The currency the amounts are stored in; the server fills the org base currency when empty.
+      currency: { type: 'string', title: 'Currency' },
       // Identification
       jobNumber: {
         type: 'string',
@@ -434,7 +436,6 @@ export const DeliveryJobSchema = () => {
         properties: {
           currency: {
             type: 'string',
-            default: 'USD',
           },
           basePrice: {
             type: 'number',
@@ -733,7 +734,6 @@ export const DeliveryJobSchema = () => {
           },
           currency: {
             type: 'string',
-            default: 'USD',
             group: 'payment-transaction',
           },
           transactionId: { type: 'string', group: 'payment-transaction' },

@@ -1,6 +1,7 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { DataType, ControlType } from '../../types';
+import { SaleRateFields } from '../_sale-rate-fields';
 
 /**
  * A cart — a pending purchase, and how far through buying it they got.
@@ -28,6 +29,7 @@ export const StowboCartSchema = () => {
   return {
     type: 'object',
     properties: {
+      ...SaleRateFields(),
       // Generated like every other record's key (booking, listing) — a cart
       // needs an id of its own. Without a transform it was left null on create,
       // which the write rejects.
@@ -120,7 +122,7 @@ export const StowboCartSchema = () => {
         },
       },
 
-      currency: { type: 'string', default: 'USD', group: 'money' },
+      currency: { type: 'string', group: 'money' },
 
       /**
        * The promo code the customer applied, kept so resuming re-applies it —

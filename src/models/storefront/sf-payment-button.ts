@@ -57,7 +57,6 @@ export const SFPaymentButtonSchema = () => {
       },
       currency: {
         type: 'string',
-        default: 'USD',
         group: 'amount',
       },
 

@@ -70,7 +70,7 @@ export const ContractSchema = () => ({
       },
     },
     value: { type: 'number', group: 'money' },
-    currency: { type: 'string', default: 'USD', group: 'money' },
+    currency: { type: 'string', group: 'money' },
     schedule: {
       type: 'object',
       description: 'type = loan / prepaid / accrual: what the server posts to Books each month',

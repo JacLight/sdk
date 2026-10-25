@@ -81,7 +81,7 @@ export const BankingAccountSchema = () => {
         enum: ['individual', 'business', 'bank'],
         group: 'kind',
       },
-      currency: { type: 'string', default: 'USD', group: 'kind' },
+      currency: { type: 'string', group: 'kind' },
       status: {
         type: 'string',
         enum: ['pending', 'open', 'frozen', 'dormant', 'closed'],

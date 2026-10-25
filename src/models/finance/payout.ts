@@ -47,7 +47,6 @@ export const PayoutSchema = () => {
       // Amount
       currency: {
         type: 'string',
-        default: 'USD',
         group: 'amount',
       },
       amount: {

@@ -63,6 +63,15 @@ export const SFProductSchema = () => {
         type: 'number',
         group: 'price',
       },
+      // The currency the prices were stored in. Prices are entered in the org's base
+      // currency, and the server writes the base here on save when it is empty.
+      currency: {
+        type: 'string',
+        title: 'Currency',
+        description: 'The currency the prices are stored in: your base currency when they were saved.',
+        readOnly: true,
+        group: 'price',
+      },
       rewardPointsPrice: {
         type: 'integer',
         minimum: 1,
@@ -424,9 +433,9 @@ export const SFProductSchema = () => {
             ],
             group: 'shipping-config',
           },
+          // Products are priced in the org's base currency; empty here means the base too.
           currency: {
             type: 'string',
-            default: 'USD',
             group: 'shipping-config',
           },
           boxSizes: {

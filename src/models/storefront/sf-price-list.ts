@@ -352,7 +352,6 @@ export const SFPriceListSchema = () => {
       },
       currency: {
         type: 'string',
-        default: 'USD',
         group: 'general',
       },
     },

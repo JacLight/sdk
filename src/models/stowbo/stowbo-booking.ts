@@ -2,6 +2,7 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { DataType, ControlType } from '../../types';
 import { FileInfoSchema } from '../file-info';
+import { SaleRateFields } from '../_sale-rate-fields';
 
 /**
  * A booking is an ORDER. It centralises what the customer pays.
@@ -30,6 +31,7 @@ export const StowboBookingSchema = () => {
   return {
     type: 'object',
     properties: {
+      ...SaleRateFields(),
       // the booking reference — generated, and unique across the platform
       name: {
         type: 'string',

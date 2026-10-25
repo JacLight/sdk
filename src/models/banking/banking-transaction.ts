@@ -66,7 +66,7 @@ export const BankingTransactionSchema = () => {
       counterpartyName: { type: 'string', readOnly: true, description: 'Who the other side is, as shown to the customer.' },
 
       amount: { ...cents('Always positive; `direction` says which way.'), minimum: 1 },
-      currency: { type: 'string', default: 'USD' },
+      currency: { type: 'string' },
       status: {
         type: 'string',
         enum: ['pending', 'in_review', 'posted', 'returned', 'failed', 'cancelled', 'reversed'],

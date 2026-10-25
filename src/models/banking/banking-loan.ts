@@ -14,6 +14,8 @@ export const BankingLoanSchema = () => {
   return {
     type: 'object',
     properties: {
+      // The currency the amounts are stored in; the server fills the org base currency when empty.
+      currency: { type: 'string', title: 'Currency' },
       number: { type: 'string', unique: true, readOnly: true, transform: ['random-string::10', 'uppercase'] },
       application: bankingRef(DataType.banking_loan_application, 'number'),
       product: bankingRef(DataType.banking_loan_product, 'title'),

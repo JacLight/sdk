@@ -10,6 +10,8 @@ export const StowboListingSchema = () => {
   return {
     type: 'object',
     properties: {
+      // The currency the amounts are stored in; the server fills the org base currency when empty.
+      currency: { type: 'string', title: 'Currency' },
       // the listing code — generated, and the key that booking lines,
       // units and child listings all point at. `title` is the host's label.
       name: {
@@ -89,6 +91,20 @@ export const StowboListingSchema = () => {
           collection: DataType.device_config,
           value: 'name',
           label: ['displayName', 'name'],
+        },
+        group: 'access',
+      },
+      // Cameras / thermostats of the space that add-ons sold with it reach (child listings inherit them).
+      addonDevices: {
+        type: 'array',
+        items: { type: 'string' },
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.device_config,
+          value: 'name',
+          label: ['displayName', 'name'],
+          filter: { 'data.kind': { $in: ['camera', 'thermostat'] } },
         },
         group: 'access',
       },

@@ -1,11 +1,13 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { ControlType, DataType } from '../../types';
+import { SaleRateFields } from '../_sale-rate-fields';
 
 export const TransactionSchema = () => {
   return {
     type: 'object',
     properties: {
+      ...SaleRateFields(),
       customer: {
         type: 'string',
         'x-control': ControlType.selectMany,

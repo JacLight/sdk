@@ -63,7 +63,7 @@ export const BankAccountSchema = () => {
       verified: { type: 'boolean', default: false, description: 'Account + routing verified via aggregator Auth.', group: 'numbers' },
 
       // Balances (in the account currency — dollars, not cents)
-      currency: { type: 'string', default: 'USD', group: 'balance' },
+      currency: { type: 'string', group: 'balance' },
       currentBalance: { type: 'number', default: 0, description: 'Current balance in currency units.', group: 'balance' },
       availableBalance: { type: 'number', description: 'Available balance in currency units.', group: 'balance' },
       balanceAsOf: { type: 'string', format: 'date-time', description: 'When the live balance was last pulled.', group: 'balance' },

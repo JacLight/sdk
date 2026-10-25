@@ -19,7 +19,7 @@ const createConcreteCollection = (name: string, data: any): BaseModel<any> => {
 
 export const concreteCollections = new Map<String, BaseModel<any>>();
 
-const withHistory = ['page', 'sf_product', 'site', 'post', 'collection', 'automation', 'rules', 'campaign', 'user', 'customer', 'company'];
+const withHistory = ['page', 'sf_product', 'site', 'post', 'collection', 'automation', 'rules', 'campaign', 'user', 'customer', 'company', 'currency'];
 const withHSubschema = [ 'sf_product', 'post', 'customer'];
 
 export const registerCollection = (

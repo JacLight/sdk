@@ -4,11 +4,15 @@ import { DataType, ControlType } from '../../types';
 import { AddressSchema } from '../crm/crm-address';
 import { FileInfoSchema } from '../file-info';
 import { BusinessLocationField } from '../_location-fields';
+import { SaleRateFields } from '../_sale-rate-fields';
 
 export const SFRentalSchema = () => {
   return {
     type: 'object',
     properties: {
+      ...SaleRateFields(),
+      // The currency the amounts are stored in; the server fills the org base currency when empty.
+      currency: { type: 'string', title: 'Currency' },
       // Identification
       name: {
         type: 'string',
@@ -291,7 +295,6 @@ export const SFRentalSchema = () => {
         properties: {
           currency: {
             type: 'string',
-            default: 'USD',
             group: 'currency',
           },
           baseRate: {

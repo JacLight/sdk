@@ -12,6 +12,8 @@ export const BankingHoldSchema = () => {
   return {
     type: 'object',
     properties: {
+      // The currency the amounts are stored in; the server fills the org base currency when empty.
+      currency: { type: 'string', title: 'Currency' },
       account: bankingRef(DataType.banking_account, 'accountNumber'),
       amount: { ...cents('Kept back.'), minimum: 1 },
       reason: {

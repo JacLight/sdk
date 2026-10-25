@@ -17,6 +17,8 @@ export const StowboAddOnSchema = () => {
   return {
     type: 'object',
     properties: {
+      // The currency the amounts are stored in; the server fills the org base currency when empty.
+      currency: { type: 'string', title: 'Currency' },
       name: {
         type: 'string',
         pattern: '^[a-zA-Z_\\-0-9]*$',
@@ -56,6 +58,11 @@ export const StowboAddOnSchema = () => {
       // cover (insurance, a camera). Buying a service add-on raises a fulfilment
       // request on the booking so it lands in the owner's queue.
       service: { type: 'boolean', default: false, group: 'charge' },
+      // What it is backed by: a camera (live view), climate control (temperature, on/off), a lock option
+      // (self-serve or host-held) — or nothing. The space's own device is linked by the operator.
+      device: { type: 'string', enum: ['none', 'camera', 'climate', 'lock'], default: 'none', group: 'charge' },
+      // lock only: 'self' = the renter opens and locks it and sees the log; 'host' = it opens only through the host or a pass
+      lockMode: { type: 'string', enum: ['self', 'host'], group: 'charge' },
       status: { type: 'string', enum: ['active', 'inactive'], default: 'active' },
     },
   } as const;

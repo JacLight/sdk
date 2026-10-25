@@ -226,7 +226,6 @@ export const DeliveryConfigSchema = () => {
         properties: {
           currency: {
             type: 'string',
-            default: 'USD',
             group: 'general',
           },
           minimumFee: {

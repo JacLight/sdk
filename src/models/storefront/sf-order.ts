@@ -5,6 +5,7 @@ import { AddressSchema } from '../crm/crm-address';
 import { SharedAccountField } from '../_shared-account-fields';
 import { BusinessLocationField } from '../_location-fields';
 import { FileInfoSchema } from '../file-info';
+import { SaleRateFields } from '../_sale-rate-fields';
 
 // Order item schema - shared between products and rentals
 const OrderItemSchema = {
@@ -265,6 +266,7 @@ export const SFOrderSchema = () => {
   return {
     type: 'object',
     properties: {
+      ...SaleRateFields(),
       ...BusinessLocationField(),
       // Seat / table / bar-spot this tab is held at. Empty for retail / walk-up
       // / online orders. The picker filters service points to the order's

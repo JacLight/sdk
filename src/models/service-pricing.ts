@@ -85,7 +85,6 @@ export const ServicePricingSchema = () => {
       },
       currency: {
         type: 'string',
-        default: 'USD',
         group: 'cost',
       },
       pricingDisplay: {

@@ -45,7 +45,6 @@ export const SFRentalConfigSchema = () => {
         properties: {
           currency: {
             type: 'string',
-            default: 'USD',
             group: 'currency',
           },
           taxRate: {

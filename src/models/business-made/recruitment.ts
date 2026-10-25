@@ -75,7 +75,7 @@ export const JobPostingSchema = () => {
         properties: {
           min: { type: 'number', group: 'range' },
           max: { type: 'number', group: 'range' },
-          currency: { type: 'string', default: 'USD', group: 'range' },
+          currency: { type: 'string', group: 'range' },
           period: {
             type: 'string',
             enum: ['hourly', 'weekly', 'monthly', 'annually'],
@@ -178,6 +178,8 @@ export const ApplicantSchema = () => {
   return {
     type: 'object',
     properties: {
+      // The currency the amounts are stored in; the server fills the org base currency when empty.
+      currency: { type: 'string', title: 'Currency' },
       name: {
         type: 'string',
         pattern: '^[a-zA-Z_\\-0-9]*$',
@@ -449,6 +451,8 @@ export const OfferSchema = () => {
   return {
     type: 'object',
     properties: {
+      // The currency the amounts are stored in; the server fills the org base currency when empty.
+      currency: { type: 'string', title: 'Currency' },
       name: {
         type: 'string',
         pattern: '^[a-zA-Z_\\-0-9]*$',
@@ -479,7 +483,7 @@ export const OfferSchema = () => {
         collapsible: true,
         properties: {
           baseSalary: { type: 'number', group: 'salary' },
-          currency: { type: 'string', default: 'USD', group: 'salary' },
+          currency: { type: 'string', group: 'salary' },
           payFrequency: {
             type: 'string',
             enum: ['weekly', 'bi-weekly', 'semi-monthly', 'monthly'],

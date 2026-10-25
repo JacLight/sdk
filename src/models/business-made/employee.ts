@@ -139,7 +139,7 @@ export const EmployeeSchema = () => {
           },
           baseSalary: { type: 'number', group: 'pay' },
           hourlyRate: { type: 'number', group: 'pay' },
-          currency: { type: 'string', default: 'USD', group: 'pay' },
+          currency: { type: 'string', group: 'pay' },
           payFrequency: {
             type: 'string',
             enum: ['weekly', 'bi-weekly', 'monthly', 'quarterly', 'annually'],

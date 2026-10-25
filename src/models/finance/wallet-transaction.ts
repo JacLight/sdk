@@ -86,7 +86,6 @@ export const WalletTransactionSchema = () => {
       },
       currency: {
         type: 'string',
-        default: 'USD',
         group: 'amount',
       },
 

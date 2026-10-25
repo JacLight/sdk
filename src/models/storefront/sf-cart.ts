@@ -5,6 +5,7 @@ import { DataType } from '../../types';
 import { AddressSchema } from '../crm/crm-address';
 import { SharedAccountField } from '../_shared-account-fields';
 import { FileInfoSchema } from '../file-info';
+import { SaleRateFields } from '../_sale-rate-fields';
 
 // Cart item schema - shared between products and rentals
 const CartItemSchema = {
@@ -160,6 +161,9 @@ export const SFCartSchema = () => {
   return {
     type: 'object',
     properties: {
+      ...SaleRateFields(),
+      // The currency the cart's amounts are in; the server fills the org base currency when empty.
+      currency: { type: 'string', title: 'Currency' },
       status: {
         type: 'string',
       },

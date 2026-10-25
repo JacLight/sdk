@@ -2,11 +2,13 @@ import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../../default-schema';
 import { DataType, ControlType } from '../../types';
 import { BusinessLocationField } from '../_location-fields';
+import { SaleRateFields } from '../_sale-rate-fields';
 
 export const EventBookingSchema = () => {
   return {
     type: 'object',
     properties: {
+      ...SaleRateFields(),
       name: {
         type: 'string',
         pattern: '^[a-zA-Z_\\-0-9]*$',
@@ -79,7 +81,7 @@ export const EventBookingSchema = () => {
       discount: { type: 'number', default: 0 },
       tax: { type: 'number', default: 0 },
       total: { type: 'number', default: 0 },
-      currency: { type: 'string', default: 'USD' },
+      currency: { type: 'string' },
       promoCode: { type: 'string' },
 
       // Payment

@@ -16,7 +16,7 @@ export const BankingEntrySchema = () => {
       account: bankingRef(DataType.banking_account, 'accountNumber'),
       side: { type: 'string', enum: ['debit', 'credit'] },
       amount: { ...cents('Always positive.'), minimum: 1 },
-      currency: { type: 'string', default: 'USD' },
+      currency: { type: 'string' },
       balanceAfter: cents('The account’s posted balance once this line applied.'),
       effectiveDate: { type: 'string', format: 'date' },
       postedAt: { type: 'string', format: 'date-time' },

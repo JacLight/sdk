@@ -85,7 +85,6 @@ export const LedgerAccountSchema = () => {
       },
       currency: {
         type: 'string',
-        default: 'USD',
         group: 'balance',
       },
 

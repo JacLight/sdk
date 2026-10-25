@@ -16,5 +16,6 @@ export enum ConfigType {
     SocialMedia = "SocialMedia",
     Analytics = "Analytics",
     Marketplace = "Marketplace",
-    AI="AI"
+    AI="AI",
+    SignIn="SignIn"
 }

@@ -207,7 +207,6 @@ export const SFShippingConfigSchema = () => {
       },
       currency: {
         type: 'string',
-        default: 'USD',
         group: 'method',
       },
 

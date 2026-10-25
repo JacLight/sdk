@@ -75,7 +75,6 @@ export const JournalEntrySchema = () => {
       },
       currency: {
         type: 'string',
-        default: 'USD',
         group: 'totals',
       },
       isBalanced: {

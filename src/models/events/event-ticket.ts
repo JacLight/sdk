@@ -140,7 +140,7 @@ export const EventTicketSchema = () => {
           bookingId: { type: 'string' },
           transactionId: { type: 'string' },
           amount: { type: 'number' },
-          currency: { type: 'string', default: 'USD' },
+          currency: { type: 'string' },
           purchasedAt: { type: 'string', format: 'date-time' },
           paymentMethod: { type: 'string' },
           promoCode: { type: 'string' },
@@ -149,6 +149,8 @@ export const EventTicketSchema = () => {
       },
 
       amountPaid: { type: 'number', default: 0, readOnly: true },
+      // The booking's currency; the server fills the org base currency when empty.
+      currency: { type: 'string', title: 'Currency' },
       payments: {
         type: 'array', readOnly: true, items: {
           type: 'object', properties: {

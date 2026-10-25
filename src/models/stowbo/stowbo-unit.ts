@@ -95,6 +95,21 @@ export const StowboUnitSchema = () => {
         },
         group: 'access',
       },
+      // Cameras / thermostats in this unit that add-ons sold with it reach (a renter who bought the camera
+      // watches it; the one who bought climate control sees and sets it). Linked by the operator, like deviceName.
+      addonDevices: {
+        type: 'array',
+        items: { type: 'string' },
+        'x-control': ControlType.selectMany,
+        dataSource: {
+          source: 'collection',
+          collection: DataType.device_config,
+          value: 'name',
+          label: ['displayName', 'name'],
+          filter: { 'data.kind': { $in: ['camera', 'thermostat'] } },
+        },
+        group: 'access',
+      },
       notes: { type: 'string', 'x-control-variant': 'textarea' },
     },
   } as const;

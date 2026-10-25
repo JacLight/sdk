@@ -179,10 +179,8 @@ export const LeadSchema = () => {
       },
       currency: {
         type: 'string',
-        enum: ['USD', 'EUR', 'GBP', 'CAD', 'AUD'],
         group: 'scoring',
         title: 'Currency',
-        default: 'USD',
       },
 
       // The company this lead belongs to — the Shared Account, the same record

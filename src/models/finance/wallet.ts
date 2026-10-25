@@ -15,7 +15,6 @@ export const WalletSchema = () => {
       },
       currency: {
         type: 'string',
-        default: 'USD',
         group: 'status',
       },
 

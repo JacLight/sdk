@@ -77,7 +77,6 @@ export const LedgerEntrySchema = () => {
       },
       currency: {
         type: 'string',
-        default: 'USD',
         group: 'amount',
       },
 

@@ -53,7 +53,7 @@ export const PurchaseOrderSchema = () => ({
     },
     lines: { type: 'array', items: PurchaseOrderLineSchema() },
     contractId: { type: 'string', description: 'The supplier agreement this order buys under (bm_contract)' },
-    currency: { type: 'string', default: 'USD' },
+    currency: { type: 'string' },
     subtotal: { type: 'number', default: 0, readOnly: true },
     taxTotal: { type: 'number', default: 0 },
     total: { type: 'number', default: 0, readOnly: true },
@@ -108,6 +108,8 @@ export const SupplierReturnSchema = () => ({
       },
     },
     total: { type: 'number', default: 0, readOnly: true },
+    // The currency the amounts are stored in (the purchase order's); the server fills the org base currency when empty.
+    currency: { type: 'string', title: 'Currency' },
     outcome: { type: 'string', enum: ['credit', 'replace', 'refund'], default: 'credit' },
     status: { type: 'string', enum: ['draft', 'sent', 'credited', 'replaced', 'refunded', 'cancelled'], default: 'draft', readOnly: true },
     sentAt: { type: 'string', format: 'date-time', readOnly: true },

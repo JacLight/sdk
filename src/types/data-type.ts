@@ -155,6 +155,8 @@ export enum DataType {
   payout_batch = 'payout_batch',
   wallet = 'wallet',
   wallet_transaction = 'wallet_transaction',
+  currency = 'currency',
+  exchange_rate = 'exchange_rate',
   // Events
   event_booking = 'event_booking',
   event_ticket = 'event_ticket',

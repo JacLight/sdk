@@ -7,6 +7,8 @@ export const AffiliateProgramSchema = () => {
   return {
     type: 'object',
     properties: {
+      // The currency the amounts are stored in; the server fills the org base currency when empty.
+      currency: { type: 'string', title: 'Currency' },
       name: {
         type: 'string',
         minLength: 2,
@@ -119,7 +121,7 @@ export const AffiliateProgramSchema = () => {
             productId: { type: 'string' },
             name: { type: 'string' },
             price: { type: 'number' },
-            currency: { type: 'string', default: 'USD' },
+            currency: { type: 'string' },
             commissionOverride: { type: 'number', description: 'Per-product commission % (overrides program default)' },
             image: { type: 'string', format: 'uri' },
           },

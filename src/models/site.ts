@@ -1,6 +1,6 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { DataType, ControlType } from '../types';
-import { getCurrencies, getLanguages, getSiteFeatureList } from '../data';
+import { getLanguages, getSiteFeatureList } from '../data';
 import { BusinessLocationsField } from './_location-fields';
 
 import { registerCollection } from '../default-schema';
@@ -189,24 +189,89 @@ export const SiteSchema = () => {
           },
         },
       },
+      // How customers sign in on this site. Left unset: password and email link, as before.
+      // Google and GitHub use the business's own sign-in app (the GoogleSignIn / GitHubSignIn
+      // integration); switched on here, their button shows on this site's sign-in page.
+      signIn: {
+        type: 'object',
+        title: 'Sign-in',
+        layoutGroup: 'settings',
+        group: 'login',
+        properties: {
+          password: { type: 'boolean', title: 'Password', default: true },
+          magicLink: { type: 'boolean', title: 'Email link', default: true },
+          code: { type: 'boolean', title: 'Sign-in code', default: false },
+          google: { type: 'boolean', title: 'Google', default: false },
+          github: { type: 'boolean', title: 'GitHub', default: false },
+        },
+      },
+      // Which page answers an address the site has no page for: old links (a business moving
+      // here from another platform), each error, and every address while the site is offline.
+      routing: {
+        type: 'object',
+        title: 'URL routing',
+        layoutGroup: 'settings',
+        properties: {
+          paths: {
+            type: 'array',
+            title: 'Old links',
+            description: 'An exact path (/collections/sale) or everything under one (/women/shorts/*), and the page that answers it.',
+            items: {
+              type: 'object',
+              properties: {
+                match: { type: 'string', title: 'Path' },
+                page: { type: 'string', title: 'Page', description: 'The page, by name.' },
+                mode: { type: 'string', title: 'Answer', enum: ['show', 'redirect'], default: 'show', description: 'show: the page at the old address. redirect: a permanent move (301) to the page\'s own address.' },
+              },
+              required: ['match', 'page'],
+            },
+          },
+          errors: {
+            type: 'array',
+            title: 'Error pages',
+            items: {
+              type: 'object',
+              properties: {
+                code: { type: 'string', title: 'Error', enum: ['404', '500'], description: '404: no page at that address. 500: the page could not be shown.' },
+                page: { type: 'string', title: 'Page', description: 'The page, by name.' },
+              },
+              required: ['code', 'page'],
+            },
+          },
+          offline: {
+            type: 'object',
+            title: 'Site offline',
+            properties: {
+              on: { type: 'boolean', title: 'Offline', default: false },
+              page: { type: 'string', title: 'Page', description: 'The one page every address shows while the site is offline.' },
+              until: { type: 'string', format: 'date-time', title: 'Back online at', description: 'Optional. The site comes back by itself at this time.' },
+            },
+          },
+        },
+      },
       currencies: {
         type: 'array',
+        description: "The currencies this site sells in, from the business's own: its base currency and the ones on Currencies. Empty = the base currency only.",
         'x-control-variant': 'chip',
         'x-control': ControlType.selectMany,
         dataSource: {
-          source: 'json',
-          json: getCurrencies(),
+          source: 'collection',
+          collection: DataType.currency,
+          value: 'name',
+          label: 'name',
         },
         layoutGroup: 'settings',
         group: 'currencies',
       },
       defaultCurrency: {
         type: 'string',
-        'x-control': ControlType.selectMany,
+        description: "The currency the site opens in. Empty = the business's base currency; a site may pick another of its currencies.",
+        'x-control': ControlType.selectSingle,
         dataSource: {
-          source: 'self',
-          value: 'currencies',
-          label: 'currencies',
+          source: 'collection',
+          collection: DataType.currency,
+          value: 'name',
+          label: 'name',
         },
         layoutGroup: 'settings',
         group: 'currencies',

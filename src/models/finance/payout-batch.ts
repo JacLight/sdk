@@ -56,7 +56,7 @@ export const PayoutBatchSchema = () => {
 
       entryCount: { type: 'number', default: 0, readOnly: true, group: 'totals' },
       totalAmount: { type: 'number', default: 0, readOnly: true, group: 'totals' },
-      currency: { type: 'string', default: 'USD', group: 'totals' },
+      currency: { type: 'string', group: 'totals' },
       returnedCount: { type: 'number', default: 0, readOnly: true, group: 'totals' },
       returnedAmount: { type: 'number', default: 0, readOnly: true, group: 'totals' },
 
