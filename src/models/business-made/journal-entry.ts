@@ -77,6 +77,21 @@ export const JournalEntrySchema = () => {
         type: 'string',
         group: 'totals',
       },
+      // A sale in another currency posts in the base (`currency`): what it was in, and the rate used.
+      sourceCurrency: {
+        type: 'string',
+        title: 'Sale currency',
+        description: 'The currency of the sale this entry records, when it was not the base.',
+        readOnly: true,
+        group: 'totals',
+      },
+      sourceExchangeRate: {
+        type: 'number',
+        title: 'Rate used',
+        description: '1 base = this many of the sale currency: the rate the sale was made at.',
+        readOnly: true,
+        group: 'totals',
+      },
       isBalanced: {
         type: 'boolean',
         default: false,

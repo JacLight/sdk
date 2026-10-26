@@ -103,5 +103,12 @@ export const getSiteFeatureList = () => {
       description: 'Check a gift card balance, on a page you name',
       enable: false,
     },
+    {
+      value: 'rental',
+      takesPage: true,
+      label: 'Rentals',
+      description: 'Equipment and items rented by the hour, day, week or month, on a page you name',
+      enable: false,
+    },
   ];
 };
