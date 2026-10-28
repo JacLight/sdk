@@ -62,7 +62,7 @@ export const SiteNoticeSchema = () =>
       },
       trigger: {
         type: 'string',
-        enum: ['onPageLoad', 'onAction', 'onDelay', 'manual'],
+        enum: ['onPageLoad', 'onAction', 'onDelay', 'onScroll', 'manual'],
         default: 'onPageLoad',
         title: 'Trigger',
         description: 'When to display this information',
@@ -80,6 +80,62 @@ export const SiteNoticeSchema = () =>
         description:
           'Optional delay before showing the message, in milliseconds',
         default: 0,
+      },
+      scrollPx: {
+        type: 'number',
+        title: 'Scroll Distance (px)',
+        description: 'For the onScroll trigger: how far down the page the visitor scrolls before it shows',
+        rules: [{ operation: 'notEqual', valueA: '{{trigger}}', valueB: 'onScroll', action: 'hide' }],
+      },
+      minPageViews: {
+        type: 'number',
+        title: 'From Page View',
+        description: 'Wait until the visitor has opened this many pages of the site (2 = from their second page). Blank shows it from the first.',
+      },
+      showAgainAfterDays: {
+        type: 'number',
+        title: 'Show Again After (days)',
+        description: 'Once closed, bring it back after this many days. Blank: Show Frequency alone decides.',
+      },
+      hideOnMobile: {
+        type: 'boolean',
+        title: 'Hide on Phones',
+        description: 'Not shown on screens narrower than 768px',
+      },
+      promotion: {
+        type: 'string',
+        title: 'Sign-up Form',
+        description: 'A CRM promotion (a mailing list or offer): the notice carries its sign-up form, and every address entered joins it',
+        dataSource: {
+          source: 'collection',
+          collection: DataType.promotion,
+          value: 'name',
+          label: 'title',
+        },
+      },
+      width: {
+        type: 'number',
+        title: 'Width (px)',
+        description: 'Popup: how wide it grows on a large screen',
+        group: 'appearance',
+      },
+      backgroundImage: {
+        ...FileInfoSchema(),
+        title: 'Background Image',
+        description: 'Popup: an image behind the content',
+        group: 'appearance',
+      },
+      backgroundColor: {
+        type: 'string',
+        'x-control': ControlType.color,
+        title: 'Background Color',
+        group: 'appearance',
+      },
+      textColor: {
+        type: 'string',
+        'x-control': ControlType.color,
+        title: 'Text Color',
+        group: 'appearance',
       },
       bodyHtml: {
         type: 'string',

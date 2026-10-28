@@ -469,6 +469,139 @@ export const DeliveryConfigSchema = () => {
         },
       },
 
+      // What a rider or sender picks from: ride types, package sizes and food delivery.
+      // Each is priced from the route price above (times its multiplier, never below its minimum).
+      serviceOptions: {
+        type: 'array',
+        title: 'Ride Types and Package Sizes',
+        description: 'The choices customers see when they book. Each one is priced from the route price.',
+        collapsible: true,
+        items: {
+          type: 'object',
+          properties: {
+            title: { type: 'string', title: 'Name', description: 'What customers see, e.g. Comfort or Medium', group: 'name' },
+            id: {
+              type: 'string',
+              title: 'Code',
+              description: 'Short code, lower case (e.g. comfort). Do not change it once in use.',
+              pattern: '^[a-z0-9_\\-]*$',
+              group: 'name',
+            },
+            kind: {
+              type: 'string',
+              title: 'Used for',
+              enum: ['ride', 'package', 'food'],
+              'x-control': ControlType.selectSingle,
+              dataSource: {
+                source: 'json',
+                json: [
+                  { label: 'Ride', value: 'ride' },
+                  { label: 'Package', value: 'package' },
+                  { label: 'Food delivery', value: 'food' },
+                ],
+              },
+              default: 'ride',
+              group: 'kind',
+            },
+            icon: {
+              type: 'string',
+              enum: ['car', 'seat', 'user', 'box', 'bag'],
+              'x-control': ControlType.selectSingle,
+              dataSource: {
+                source: 'json',
+                json: [
+                  { label: 'Car', value: 'car' },
+                  { label: 'Seat', value: 'seat' },
+                  { label: 'People', value: 'user' },
+                  { label: 'Box', value: 'box' },
+                  { label: 'Bag', value: 'bag' },
+                ],
+              },
+              group: 'kind',
+            },
+            description: { type: 'string', description: 'One line under the name, e.g. Newer cars with extra legroom' },
+            multiplier: {
+              type: 'number',
+              title: 'Price multiplier',
+              description: '1 = the route price, 1.3 = 30% more, 0.6 = 40% less',
+              default: 1,
+              minimum: 0.1,
+              maximum: 10,
+              group: 'price',
+            },
+            minimumFee: { type: 'number', title: 'Minimum price', minimum: 0, group: 'price' },
+            seats: {
+              type: 'number',
+              title: 'Seats',
+              description: 'Riders it takes',
+              minimum: 1,
+              maximum: 15,
+              group: 'size',
+              rules: [{ operation: 'notEqual', valueA: '{{kind}}', valueB: 'ride', action: 'hide' }],
+            },
+            maxWeight: {
+              type: 'number',
+              title: 'Heaviest package (lb)',
+              minimum: 0,
+              group: 'size',
+              rules: [{ operation: 'notEqual', valueA: '{{kind}}', valueB: 'package', action: 'hide' }],
+            },
+            vehicleTypes: {
+              type: 'array',
+              title: 'Vehicles that can take it',
+              description: 'Leave empty for any vehicle',
+              'x-control': ControlType.selectMany,
+              'x-control-variant': 'chip',
+              items: { type: 'string' },
+              dataSource: {
+                source: 'json',
+                json: ['car', 'suv', 'van', 'truck', 'motorcycle', 'scooter', 'bicycle'],
+              },
+            },
+            sort: { type: 'number', title: 'Order', description: 'Lower shows first', group: 'show' },
+            enabled: { type: 'boolean', title: 'Offered', default: true, group: 'show' },
+          },
+        },
+      },
+      cancellationPolicy: {
+        type: 'object',
+        title: 'Cancellation',
+        collapsible: true,
+        properties: {
+          graceMinutes: { type: 'number', title: 'Free for (minutes)', description: 'Free to cancel for this long after a driver is on the way', default: 2, minimum: 0, group: 'fee' },
+          fee: { type: 'number', title: 'Fee after that', default: 5, minimum: 0, group: 'fee' },
+          driverShare: { type: 'number', title: 'Driver share of the fee (%)', default: 100, minimum: 0, maximum: 100, group: 'fee' },
+        },
+      },
+      verification: {
+        type: 'object',
+        title: 'Trip PINs',
+        collapsible: true,
+        properties: {
+          ridePin: { type: 'boolean', title: 'Rides: rider gives the driver a PIN at pickup', default: false, group: 'pin' },
+          deliveryPin: { type: 'boolean', title: 'Packages: recipient gives the driver a PIN at drop-off', default: true, group: 'pin' },
+        },
+      },
+      scheduling: {
+        type: 'object',
+        title: 'Scheduled Trips',
+        collapsible: true,
+        properties: {
+          leadMinutes: { type: 'number', title: 'Earliest (minutes ahead)', default: 30, minimum: 0, group: 'window' },
+          maxDaysAhead: { type: 'number', title: 'Latest (days ahead)', default: 30, minimum: 1, group: 'window' },
+        },
+      },
+      paymentMethodTypes: {
+        type: 'array',
+        title: 'Payment methods',
+        description: 'How customers can pay for trips. Card includes Apple Pay and Google Pay.',
+        'x-control': ControlType.selectMany,
+        'x-control-variant': 'chip',
+        items: { type: 'string' },
+        default: ['card'],
+        dataSource: { source: 'json', json: ['card', 'link', 'cashapp', 'us_bank_account', 'klarna', 'afterpay_clearpay', 'affirm'] },
+      },
+
       // Assignment Rules
       assignmentRules: {
         type: 'object',

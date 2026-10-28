@@ -104,13 +104,15 @@ export const SFDiscountSchema = () => {
       // Row 6: applyTo, products, categories, rentals
       applyTo: {
         type: 'string',
-        enum: ['cart', 'products', 'categories', 'rentals', 'rental_fees', 'stowbo'],
+        enum: ['cart', 'products', 'categories', 'rentals', 'rental_fees', 'stowbo', 'events'],
         default: 'cart',
         group: 'row6',
       },
       // The account whose goods/listings this code is for (Stowbo: the host).
       // With applyTo 'stowbo', the code applies to that merchant's listings;
       // `products` then narrows it to specific listing codes.
+      // With applyTo 'events', the code applies to event tickets (the organizer's
+      // events when `merchant` is set; `products` then narrows it to event ids).
       merchant: {
         type: 'string',
         description: 'Owner of the goods or listings this code applies to',

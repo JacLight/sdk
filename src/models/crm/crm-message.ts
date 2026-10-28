@@ -51,6 +51,21 @@ export const MessageSchema = () => {
         },
         group: 'name',
       },
+      // Set by the server when a template made this message: the business's own (org), the shared
+      // org's, or the built-in one (a file, no record) — a message that went out wrong leads to it.
+      template: {
+        type: 'object',
+        readOnly: true,
+        group: 'name',
+        properties: {
+          id: { type: 'string', description: 'The template record (empty for a built-in template)' },
+          name: { type: 'string' },
+          source: { type: 'string', enum: ['org', 'shared', 'built-in'] },
+          org: { type: 'string', description: 'The org whose template it is' },
+          version: { type: 'number' },
+          modifydate: { type: 'string', description: 'When the template was last changed before this message' },
+        },
+      },
       from: {
         type: 'string',
         group: 'from',
