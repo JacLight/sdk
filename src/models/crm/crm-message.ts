@@ -53,6 +53,7 @@ export const MessageSchema = () => {
       },
       // Set by the server when a template made this message: the business's own (org), the shared
       // org's, or the built-in one (a file, no record) — a message that went out wrong leads to it.
+      // WhatsApp: the approved message template (Twilio Content) it was sent with.
       template: {
         type: 'object',
         readOnly: true,
@@ -64,6 +65,8 @@ export const MessageSchema = () => {
           org: { type: 'string', description: 'The org whose template it is' },
           version: { type: 'number' },
           modifydate: { type: 'string', description: 'When the template was last changed before this message' },
+          contentSid: { type: 'string' },
+          variables: { type: 'object', description: "Values for the template's {{1}}, {{2}}… keyed '1', '2'…" },
         },
       },
       from: {
@@ -190,15 +193,6 @@ export const MessageSchema = () => {
           { operation: 'notIn', valueA: ['whatsapp'], valueB: '{{deliveryType}}', action: 'hide' },
         ],
         watchedPaths: ['deliveryType'],
-      },
-      // WhatsApp: the approved message template (Twilio Content) this was sent with.
-      template: {
-        type: 'object',
-        hidden: true,
-        properties: {
-          contentSid: { type: 'string' },
-          variables: { type: 'object', description: "Values for the template's {{1}}, {{2}}… keyed '1', '2'…" },
-        },
       },
       // WhatsApp inbound: the sender's WhatsApp profile name.
       profileName: {

@@ -46,7 +46,7 @@ export const DataVizItemSchema = () => {
       content: {
         type: 'object',
         additionalProperties: true,
-        description: 'For text: { text: "..." }. For table/chart: { mongoQuery, viewConfig }',
+        description: 'For text: { text: "..." }. For table/chart: { collection, mongoQuery, viewConfig, keep } — keep: true stores the query\'s result per day (dataviz_aggregate)',
       },
       tags: { type: 'array', items: { type: 'string' } },
     },
@@ -144,8 +144,68 @@ export const DataVizSchema = () => {
 };
 
 // ----------------------------------------------------------------------------
+// DataViz Aggregate — one run of a query for one day (or month)
+// ----------------------------------------------------------------------------
+//
+// The record's createdate is the day it stands for (00:00 UTC of the business
+// date); timestamp is when the run started, modifydate when it finished. A run
+// for a day replaces the one before it (`replaced`, `replacedBy`); the day's
+// figures are the `meta` of its `current` (or `outdated`) run. A `skipped` run
+// holds no figures: the days from its createdate to `skip.until` are left out.
+export const DataVizAggregateSchema = () => {
+  return {
+    type: 'object',
+    textSearch: false,
+    properties: {
+      name: { type: 'string', description: 'The run' },
+      query: { type: 'string', description: 'Built-in query name, or a dataviz_item sk; * on a skip = every query' },
+      span: { type: 'string', enum: ['day', 'month'], default: 'day' },
+      meta: {
+        type: 'object',
+        additionalProperties: true,
+        description: 'The summary: what the query returned for the day',
+      },
+      status: {
+        type: 'string',
+        enum: ['running', 'current', 'outdated', 'failed', 'replaced', 'skipped'],
+      },
+      trigger: {
+        type: 'string',
+        enum: ['night', 'first_night', 'outdated', 'query_changed', 'run_now', 'skip'],
+      },
+      queryVersion: { type: 'number' },
+      read: { type: 'number', description: 'Source records the run read' },
+      attempt: { type: 'number' },
+      error: {
+        type: 'object',
+        properties: {
+          message: { type: 'string' },
+          reason: { type: 'string' },
+          stage: { type: 'string', enum: ['read', 'compute', 'write'] },
+        },
+      },
+      replacedBy: { type: 'string' },
+      jobRun: { type: 'string', description: 'The scheduled job run it was part of' },
+      remarks: { type: 'array', items: { type: 'string' } },
+      skip: {
+        type: 'object',
+        properties: {
+          reason: { type: 'string' },
+          until: { type: 'string', format: 'date-time' },
+          by: { type: 'string' },
+        },
+      },
+    },
+    required: ['name', 'query', 'span'],
+  } as const;
+};
+
+// ----------------------------------------------------------------------------
 // Types
 // ----------------------------------------------------------------------------
+const dvAggregate = DataVizAggregateSchema();
+export type DataVizAggregateModel = FromSchema<typeof dvAggregate>;
+
 const dvItem = DataVizItemSchema();
 export type DataVizItemModel = FromSchema<typeof dvItem>;
 
@@ -165,3 +225,4 @@ export type DataVizModel = FromSchema<typeof dvMain>;
 // ----------------------------------------------------------------------------
 registerCollection('DataViz', DataType.dataviz, DataVizSchema());
 registerCollection('DataVizItem', DataType.dataviz_item, DataVizItemSchema());
+registerCollection('DataVizAggregate', DataType.dataviz_aggregate, DataVizAggregateSchema());

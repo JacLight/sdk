@@ -53,6 +53,7 @@ export enum DataType {
   automation_log = 'automation_log',
   dataviz = 'dataviz',
   dataviz_item = 'dataviz_item',
+  dataviz_aggregate = 'dataviz_aggregate', // a query's result for one day (or month), kept so periods read stored days
   post = 'post',
   ivr_routing = 'ivr_routing',
   sms_routing = 'sms_routing',
