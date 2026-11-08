@@ -44,8 +44,20 @@ export interface DataOptions {
   publicView?: boolean;
   /** Read for one site: records whose `data.sites` lists it, or lists no site (they appear everywhere). */
   site?: string;
+  /** Only records in the published state (a public blog listing its posts). Opt-in: `?published=true`. */
+  publishedOnly?: boolean;
+  /**
+   * A filter every read of the request is held to, whatever query it sends: set by the repository
+   * controller for a customer limited to their own records (record-access.ts). Server code leaves it unset.
+   */
+  ownerScope?: Record<string, any>;
   maskFields?: string[];
   random?: boolean;
+  /**
+   * With `random`: one shuffled order this seed repeats, so every page of a random listing
+   * comes from the same order (no record on two pages). Without a seed, `random` samples afresh.
+   */
+  randomSeed?: string;
 }
 
 export interface BaseModelDTO<T> extends DataOptions {

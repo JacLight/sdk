@@ -153,6 +153,11 @@ export const PageSchema = () => {
           googleAnalytic: {
             type: 'string',
           },
+          googleTagManager: {
+            type: 'string',
+            title: 'Google Tag Manager',
+            description: 'Container ID (GTM-XXXXXXX). Loads the container on every page; set up GA4, Ads and other tags inside Tag Manager.',
+          },
         },
       },
       breakpoints: {
