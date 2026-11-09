@@ -356,6 +356,54 @@ export const SFProductSchema = () => {
         dataSource: { source: 'function', value: 'getSalesChannels' },
         items: { type: 'string' },
       },
+      // What a marketplace asks the seller to declare per product before it lists it. The server describes each
+      // marketplace's details (its own categories and values) and checks them at sync
+      // (appengine sales-channel/listing-details.ts); the product form's marketplace sections write here.
+      // Etsy: createDraftListing taxonomy_id, who_made, when_made, is_supply — Etsy's own values, nothing assumed.
+      etsy: {
+        type: 'object',
+        title: 'Etsy details',
+        collapsible: true,
+        group: 'channels',
+        properties: {
+          taxonomyId: { type: 'integer', title: 'Etsy category' },
+          categoryLabel: { type: 'string', title: 'Etsy category name' },
+          whoMade: { type: 'string', title: 'Who made it', enum: ['i_did', 'someone_else', 'collective'] },
+          whenMade: {
+            type: 'string',
+            title: 'When it was made',
+            enum: [
+              'made_to_order', '2020_2026', '2010_2019', '2007_2009', 'before_2007', '2000_2006', '1990s', '1980s', '1970s', '1960s',
+              '1950s', '1940s', '1930s', '1920s', '1910s', '1900s', '1800s', '1700s', 'before_1700',
+            ],
+          },
+          isSupply: { type: 'boolean', title: "It's a supply or tool for making things" },
+        },
+      },
+      // eBay: the category on the seller's eBay site (marketplaceId), the item condition (eBay ConditionEnum) and the
+      // category's item specifics by eBay's aspect name ({ Brand: ['Clayworks'] }). Specifics the product already
+      // says (a same-named field, attribute or variation option) need no entry here.
+      ebay: {
+        type: 'object',
+        title: 'eBay details',
+        collapsible: true,
+        group: 'channels',
+        properties: {
+          marketplaceId: { type: 'string', title: 'eBay site' },
+          categoryId: { type: 'string', title: 'eBay category' },
+          categoryLabel: { type: 'string', title: 'eBay category name' },
+          condition: {
+            type: 'string',
+            title: 'Condition',
+            enum: [
+              'NEW', 'LIKE_NEW', 'NEW_OTHER', 'NEW_WITH_DEFECTS', 'CERTIFIED_REFURBISHED', 'EXCELLENT_REFURBISHED', 'VERY_GOOD_REFURBISHED',
+              'GOOD_REFURBISHED', 'SELLER_REFURBISHED', 'USED_EXCELLENT', 'PRE_OWNED_EXCELLENT', 'PRE_OWNED_FAIR', 'USED_VERY_GOOD',
+              'USED_GOOD', 'USED_ACCEPTABLE', 'FOR_PARTS_OR_NOT_WORKING',
+            ],
+          },
+          aspects: { type: 'object', title: 'Item specifics', additionalProperties: { type: 'array', items: { type: 'string' } } },
+        },
+      },
       parcel: {
         type: 'object',
         collapsible: true,
