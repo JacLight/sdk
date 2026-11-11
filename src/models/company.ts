@@ -287,6 +287,16 @@ export const CompanySchema = () => {
         type: 'object',
         additionalProperties: true,
       },
+      // The signup form's address, as the form sent it at signup.
+      signupUrl: {
+        type: 'string',
+        readOnly: true,
+      },
+      // The affiliate code the org signed up with (the affiliate link's ?ref=).
+      affiliate: {
+        type: 'string',
+        readOnly: true,
+      },
       businessProfile: BusinessProfileSchema(),
       setupProgress: SetupProgressSchema(),
     },
