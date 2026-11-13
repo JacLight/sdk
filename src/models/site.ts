@@ -758,7 +758,7 @@ export const SiteSchema = () => {
         layoutGroup: 'spam',
       },
       devEnvironment: {
-        type: 'object ',
+        type: 'object',
         hidden: true,
         properties: {},
       },

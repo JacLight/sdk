@@ -1,9 +1,9 @@
 'use strict'
 
-import Condition from '../src/condition'
-import defaultOperators from '../src/engine-default-operators'
-import Almanac from '../src/almanac'
-import Fact from '../src/fact'
+import Condition from '../src/rules/condition'
+import defaultOperators from '../src/rules/engine-default-operators'
+import Almanac from '../src/rules/almanac'
+import Fact from '../src/rules/fact'
 
 const operators = new Map()
 defaultOperators.forEach(o => operators.set(o.name, o))

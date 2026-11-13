@@ -58,6 +58,13 @@ export interface DataOptions {
    * comes from the same order (no record on two pages). Without a seed, `random` samples afresh.
    */
   randomSeed?: string;
+  /**
+   * The language the person reading chose (a code from the UI's language list: 'en', 'de', 'zh-TW'…).
+   * Set by the server from the request's `Accept-Language`, which the apps send from the chosen
+   * language. Text the server writes for people (labels, captions, messages) and dates/numbers it
+   * formats follow it; stored data is never changed by it. Unset = English.
+   */
+  language?: string;
 }
 
 export interface BaseModelDTO<T> extends DataOptions {

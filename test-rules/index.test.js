@@ -1,6 +1,6 @@
 'use strict'
 
-import subject from '../src/index'
+import subject from '../src/rules/index'
 
 describe('json-business-subject', () => {
   it('treats each rule engine independently', () => {

@@ -1,6 +1,6 @@
 'use strict'
 
-import engineFactory from '../src/index'
+import engineFactory from '../src/rules/index'
 import sinon from 'sinon'
 
 describe('Engine: rule priorities', () => {

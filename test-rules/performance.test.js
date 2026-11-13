@@ -1,6 +1,6 @@
 'use strict'
 
-import engineFactory from '../src/index'
+import engineFactory from '../src/rules/index'
 import perfy from 'perfy'
 import deepClone from 'clone'
 

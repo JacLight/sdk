@@ -2,7 +2,7 @@
 
 import sinon from 'sinon'
 import { get } from 'lodash'
-import engineFactory from '../src/index'
+import engineFactory from '../src/rules/index'
 
 const CHILD = 14
 const ADULT = 75

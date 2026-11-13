@@ -1,7 +1,7 @@
 'use strict'
 
-import Engine from '../src/index'
-import Rule from '../src/rule'
+import Engine from '../src/rules/index'
+import Rule from '../src/rules/rule'
 import sinon from 'sinon'
 
 describe('Rule', () => {

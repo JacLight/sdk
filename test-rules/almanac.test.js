@@ -1,5 +1,5 @@
-import { Fact } from '../src/index'
-import Almanac from '../src/almanac'
+import { Fact } from '../src/rules/index'
+import Almanac from '../src/rules/almanac'
 import sinon from 'sinon'
 
 describe('Almanac', () => {
@@ -104,7 +104,7 @@ describe('Almanac', () => {
     })
   })
 
-  describe('_getFact', _ => {
+  describe('_getFact', () => {
     it('retrieves the fact object', () => {
       const facts = new Map()
       const fact = new Fact('id', 1)

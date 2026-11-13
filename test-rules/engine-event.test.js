@@ -1,7 +1,7 @@
 'use strict'
 
-import engineFactory from '../src/index'
-import Almanac from '../src/almanac'
+import engineFactory from '../src/rules/index'
+import Almanac from '../src/rules/almanac'
 import sinon from 'sinon'
 
 describe('Engine: event', () => {

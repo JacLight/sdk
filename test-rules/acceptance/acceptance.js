@@ -2,7 +2,7 @@
 
 import sinon from 'sinon'
 import { expect } from 'chai'
-import { Engine } from '../../src/index'
+import { Engine } from '../../src/rules/index'
 
 /**
  * acceptance tests are intended to use features that, when used in combination,

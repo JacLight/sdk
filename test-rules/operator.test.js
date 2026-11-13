@@ -1,6 +1,6 @@
 'use strict'
 
-import { Operator } from '../src/index'
+import { Operator } from '../src/rules/index'
 
 describe('Operator', () => {
   describe('constructor()', () => {

@@ -1,6 +1,6 @@
 'use strict'
 
-import engineFactory, { Fact, Rule } from '../src/index'
+import engineFactory, { Fact, Rule } from '../src/rules/index'
 
 describe('Engine: custom properties', () => {
   let engine

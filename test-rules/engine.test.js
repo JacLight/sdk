@@ -1,8 +1,8 @@
 'use strict'
 
 import sinon from 'sinon'
-import engineFactory, { Fact, Rule, Operator } from '../src/index'
-import defaultOperators from '../src/engine-default-operators'
+import engineFactory, { Fact, Rule, Operator } from '../src/rules/index'
+import defaultOperators from '../src/rules/engine-default-operators'
 
 describe('Engine', () => {
   const operatorCount = defaultOperators.length

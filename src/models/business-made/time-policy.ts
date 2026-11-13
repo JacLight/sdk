@@ -26,7 +26,7 @@ export const TimePolicySchema = () => {
         description: 'Two-letter state code; only used when scope is "state"',
         maxLength: 2,
       },
-      businessLocationId: BusinessLocationField(),
+      businessLocationId: BusinessLocationField().businessLocation,
       weeklyOTThreshold: {
         type: 'number',
         description: 'Hours per week before overtime applies',

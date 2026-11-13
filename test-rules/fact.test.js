@@ -1,6 +1,6 @@
 'use strict'
 
-import { Fact } from '../src/index'
+import { Fact } from '../src/rules/index'
 
 describe('Fact', () => {
   function subject (id, definition, options) {

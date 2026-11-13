@@ -885,8 +885,8 @@ function approvalReasonSchema() {
 const getNotificationCopySchema = () =>
   ({
     type: 'object',
+    layout: 'horizontal',
     properties: {
-      layout: 'horizontal',
       enable: {
         type: 'boolean',
         group: 'notification',

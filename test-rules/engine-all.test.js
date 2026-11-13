@@ -1,7 +1,7 @@
 'use strict'
 
 import sinon from 'sinon'
-import engineFactory from '../src/index'
+import engineFactory from '../src/rules/index'
 
 async function factSenior (params, engine) {
   return 65
