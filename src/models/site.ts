@@ -649,6 +649,23 @@ export const SiteSchema = () => {
               },
             },
           },
+          goals: {
+            type: 'array',
+            title: 'Goals',
+            description: 'What counts as a result on this site, reported to Google Analytics, Tag Manager and the Meta Pixel set here. Sign-up, sign-in, product viewed, add to cart, checkout started, purchase, subscription, invoice payment, event registration or ticket, lead (a form, a support request, a newsletter sign-up) and booking are reported without any setup. Add a row to turn one off, rename it, attach a Google Ads conversion or a value, or to count a page of your own (a thank-you page).',
+            items: {
+              type: 'object',
+              properties: {
+                goal: { type: 'string', title: 'Goal', enum: ['sign_up', 'login', 'view_item', 'add_to_cart', 'begin_checkout', 'purchase', 'subscribe', 'invoice_payment', 'event_registration', 'generate_lead', 'book_appointment', 'page'], description: '"page" = a goal of your own: counted when the page below is opened' },
+                enabled: { type: 'boolean', title: 'Report it', default: true },
+                eventName: { type: 'string', title: 'Event name', description: 'The name sent to analytics. Empty = the goal\'s own name. Required for a page goal, e.g. quote_requested' },
+                page: { type: 'string', title: 'Page', description: 'Page goal only: the address that counts, e.g. /thank-you (end with * to include what follows)' },
+                adsConversion: { type: 'string', title: 'Google Ads conversion', description: 'Also report this Ads conversion: AW-123456789/AbCdEfGh' },
+                value: { type: 'number', title: 'Value', description: 'What one of these is worth, for goals that carry no amount (a lead, a sign-up, a booking)' },
+                currency: { type: 'string', title: 'Currency', description: 'For the value above, e.g. USD' },
+              },
+            },
+          },
           pixel: {
             type: 'string',
           },
