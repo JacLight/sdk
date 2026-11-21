@@ -380,15 +380,46 @@ export const SiteSchema = () => {
               options: getSiteFeatureList(),
               group: 'feature',
             },
+            // enable: on, with the feature's built-in component on its pages.
+            // disable: off — the row is kept, the feature stops running.
+            // custom: on, but the built-in component is turned off at its pages
+            // (page, detailPage): only the page's own content loads there (a
+            // custom store built from page blocks); addresses, links and data
+            // still work. Rows saved before this hold true (enable) / false (disable).
             enabled: {
-              type: 'boolean',
-              description: 'Off keeps the row but stops the feature running.',
+              type: ['string', 'boolean'],
+              enum: ['enable', 'disable', 'custom', true, false],
+              'x-control': ControlType.selectMany,
+              options: [
+                { label: 'Enable', value: 'enable' },
+                { label: 'Disable', value: 'disable' },
+                { label: 'Custom', value: 'custom' },
+              ],
+              default: 'enable',
+              description: "Enable: on with the built-in component. Disable: off, the row is kept. Custom: on, only the page's own content loads.",
               group: 'feature',
             },
             page: {
               type: 'string',
               description:
                 'For features that take over a page. Leave empty for the rest.',
+              'x-control': ControlType.selectMany,
+              dataSource: {
+                source: 'collection',
+                collection: DataType.page,
+                value: 'name',
+                label: 'name',
+                filter: { 'data.site': '{{name}}' },
+              },
+              group: 'feature',
+            },
+            // A feature with a list and one-item pages (the store: products) can show
+            // one item on its own page: the store's list on `page`, a product at
+            // /{detailPage}/{slug}. Links, redirects, feeds and the sitemap follow it.
+            detailPage: {
+              type: 'string',
+              description:
+                'For features with a list and item pages (the store): the page that shows one item. Empty: the page above.',
               'x-control': ControlType.selectMany,
               dataSource: {
                 source: 'collection',

@@ -110,5 +110,12 @@ export const getSiteFeatureList = () => {
       description: 'Equipment and items rented by the hour, day, week or month, on a page you name',
       enable: false,
     },
+    {
+      value: 'events',
+      takesPage: true,
+      label: 'Events',
+      description: 'Your events, their tickets and ticket look-up, on a page you name',
+      enable: false,
+    },
   ];
 };
