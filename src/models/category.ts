@@ -23,6 +23,22 @@ export const CategorySchema = () => {
         'x-control-variant': 'textarea',
       },
       image: FileInfoSchema(),
+      // How a store category is listed on each sales channel: the channel's own category, by channel id
+      // ({ tiktok: { id: '601226', label: 'Jewelry Accessories › Necklaces', tree: 'US' } }). id is what the channel's
+      // API takes; label is for people; tree is the channel's category list it belongs to (TikTok: the shop's region,
+      // eBay: its site), so a category picked for another country's list is caught. Edited in its own panel.
+      channels: {
+        type: 'object',
+        hidden: true,
+        additionalProperties: {
+          type: 'object',
+          properties: {
+            id: { type: 'string' },
+            label: { type: 'string' },
+            tree: { type: 'string' },
+          },
+        },
+      },
       children: {
         type: 'array',
         hidden: true,
