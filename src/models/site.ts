@@ -458,6 +458,16 @@ export const SiteSchema = () => {
             default: 'always',
             group: 'template',
           },
+          // Off: a shopper who is not signed in cannot check out — the server refuses the
+          // order (403 GUEST_CHECKOUT_OFF) and the checkout asks them to sign in. Staff and
+          // POS sales are not affected. Unset = on.
+          guestCheckout: {
+            type: 'boolean',
+            title: 'Guest checkout',
+            default: true,
+            description: 'Off: shoppers sign in, or create an account, before they check out.',
+            group: 'template',
+          },
           // The regions (business locations) this store serves. Tier pricing,
           // pricing tables and product availability set for a location apply to
           // shoppers here. One location: always that one. Several: the one whose
