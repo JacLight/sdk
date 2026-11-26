@@ -3,7 +3,7 @@ import { registerCollection } from '../../default-schema';
 import { DataType } from '../../types';
 
 /** Where a piece of a person's data came from. */
-export const RAW_CONTACT_SOURCES = ['pdl', 'diffbot', 'maps', 'linkedin', 'spider', 'import', 'form', 'facebook', 'manual', 'lead'] as const;
+export const RAW_CONTACT_SOURCES = ['pdl', 'diffbot', 'maps', 'linkedin', 'spider', 'import', 'form', 'facebook', 'manual', 'lead', 'cart', 'web_visit', 'crm'] as const;
 
 /**
  * Where a person's data came from, kept on the raw contact and on the contact

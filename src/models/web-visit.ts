@@ -10,6 +10,10 @@ export const WebVisitSchema = () => {
       // Identity
       visitorId: { type: 'string' },
       sessionId: { type: 'string' },
+      // The visit this row is part of (server-stamped; a visit ends after 30 minutes without a row).
+      visitStart: { type: 'boolean', description: 'The first row of a visit' },
+      visitNumber: { type: 'number', description: 'Which visit of this visitor to this site (1 = first)' },
+      returning: { type: 'boolean', description: 'The visitor had been to this site before this visit' },
       email: { type: 'string' },
       username: { type: 'string' },
       firstName: { type: 'string' },

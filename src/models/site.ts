@@ -189,6 +189,21 @@ export const SiteSchema = () => {
           },
         },
       },
+      // New accounts made on this site wait on this workflow (by name) until approved, and cannot sign in
+      // until then. Empty: accounts open right away. Staff-added and imported customers never wait.
+      signupApproval: {
+        type: 'string',
+        title: 'Sign-up approval',
+        description: 'The workflow new accounts wait on until approved. Empty: accounts open right away.',
+        dataSource: {
+          source: 'collection',
+          collection: DataType.workflow_definition,
+          value: 'name',
+          label: 'title',
+        },
+        layoutGroup: 'settings',
+        group: 'login',
+      },
       // How customers sign in on this site. Left unset: password and email link, as before.
       // Google and GitHub use the business's own sign-in app (the GoogleSignIn / GitHubSignIn
       // integration); switched on here, their button shows on this site's sign-in page.

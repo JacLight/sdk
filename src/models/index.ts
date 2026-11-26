@@ -44,6 +44,7 @@ export * from './social-activity';
 export * from './dev-environment';
 export * from './site-notice';
 export * from './access-request';
+export * from './action-link';
 export * from './access-control';
 export * from './job';
 export * from './service-pricing';

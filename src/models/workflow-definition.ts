@@ -130,6 +130,13 @@ export const WorkflowStageSchema = () => {
         default: ModelState.inprogress,
         group: 'type',
       },
+      outcome: {
+        type: 'string',
+        enum: ['', 'approved', 'rejected'],
+        title: 'Decides',
+        description: 'A final stage that is the yes or the no of an approval. The task lands approved or rejected and shows in the approvers\' tray, while the record keeps the status its own module sets (a stage with Status approved or rejected also decides, and writes that status onto the record).',
+        group: 'type',
+      },
       notificationTemplate: {
         type: 'array',
         'x-control': ControlType.selectMany,

@@ -53,6 +53,32 @@ export const SettingSchema = () => {
         },
         group: 'emails',
       },
+      // Added to every message the org sends (Message Templates › Prefix & suffix). Plain text: the server
+      // escapes it, keeps its line breaks and links its web addresses; it checks the lengths when it is saved.
+      messageAdditions: {
+        type: 'object',
+        title: 'Prefix & suffix',
+        description: 'Text added to every email and SMS this business sends.',
+        properties: {
+          email: {
+            type: 'object',
+            properties: {
+              subjectPrefix: { type: 'string', maxLength: 60, title: 'Subject prefix', description: 'Put before every email subject.' },
+              subjectSuffix: { type: 'string', maxLength: 60, title: 'Subject suffix', description: 'Put after every email subject.' },
+              before: { type: 'string', maxLength: 2000, title: 'Text before', description: 'Shown at the top of every email.', 'x-control-variant': 'textarea' },
+              after: { type: 'string', maxLength: 2000, title: 'Text after', description: 'Shown at the bottom of every email.', 'x-control-variant': 'textarea' },
+            },
+          },
+          sms: {
+            type: 'object',
+            properties: {
+              before: { type: 'string', maxLength: 160, title: 'Text before', description: 'Put before every SMS.' },
+              after: { type: 'string', maxLength: 160, title: 'Text after', description: 'Put after every SMS.' },
+            },
+          },
+        },
+        group: 'message-additions',
+      },
       address: getSettingItemSchema(
         DataType.location,
         'address',
@@ -785,6 +811,7 @@ export const SettingSchema = () => {
       comments: {
         // Business-wide comment settings (every site): who and what is blocked. Each site's own rules are site.comments.
         type: 'object',
+        collapsible: 'close',
         title: 'Comments',
         properties: {
           blockedWords: { type: 'array', items: { type: 'string' }, title: 'Blocked words' },

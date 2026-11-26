@@ -43,6 +43,7 @@ export enum DataType {
   usage = 'usage',
   site_notice = 'site_notice',
   access_request = 'access_request',
+  action_link = 'action_link',
   job = 'job',
   setting = 'setting',
   customer_group = 'customer_group',

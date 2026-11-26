@@ -164,18 +164,89 @@ export const SFCartSchema = () => {
       ...SaleRateFields(),
       // The currency the cart's amounts are in; the server fills the org base currency when empty.
       currency: { type: 'string', title: 'Currency' },
+      // Written by the server only (cart-journey.ts in appengine); a cart write from a browser never sets these.
       status: {
         type: 'string',
+        enum: ['active', 'ordered'],
+        description: 'active until the cart became an order; an ordered cart is kept for its history and never handed back as a live cart',
       },
       source: {
         type: 'string',
       },
+      // The person, once known: a signed-in customer, or the customer whose email the shopper typed.
+      customerId: { type: 'string', description: 'The customer this cart belongs to (sk), when known' },
+      name: { type: 'string', description: "The customer's name, when known" },
       phone: {
         type: 'string',
       },
       ...SharedAccountField(),
       email: {
         type: 'string',
+      },
+      signedInAs: { type: 'string', description: 'The signed-in shopper who saved this cart first (email/username); only they may change it' },
+
+      // ========== WHERE IT CAME FROM / WHAT THE SHOPPER DID ==========
+      from: {
+        type: 'object',
+        description: 'The request the cart was started from, in a few words (the full request is the record\'s `client`)',
+        properties: {
+          site: { type: 'string', description: 'The site (host) the cart was started on' },
+          page: { type: 'string' },
+          referrer: { type: 'string' },
+          place: { type: 'string', description: 'City, region, country' },
+          countryCode: { type: 'string' },
+          ip: { type: 'string' },
+          device: { type: 'string', description: 'e.g. Chrome on macOS' },
+          deviceType: { type: 'string' },
+          timezone: { type: 'string' },
+          language: { type: 'string' },
+          visitorId: { type: 'string', description: "The browser's device id (the site's visitor cookie)" },
+          sessionId: { type: 'string', description: 'The visit the cart was started in (web_visit sessionId)' },
+          visitNumber: { type: 'number', description: "Which of the visitor's visits to the site the cart was started on (1 = first)" },
+        },
+      },
+      journey: {
+        type: 'array',
+        description: 'One entry per thing the shopper did, oldest first (the last 200)',
+        items: {
+          type: 'object',
+          properties: {
+            at: { type: 'string', format: 'date-time' },
+            type: { type: 'string', enum: ['started', 'added', 'removed', 'quantity', 'coupon', 'coupon_removed', 'address', 'email', 'signed_in', 'ordered'] },
+            sku: { type: 'string' },
+            name: { type: 'string' },
+            quantity: { type: 'number' },
+            from: { type: 'number', description: 'Quantity before (quantity changes)' },
+            to: { type: 'number', description: 'Quantity after (quantity changes)' },
+            code: { type: 'string' },
+            email: { type: 'string' },
+            place: { type: 'string' },
+            orderId: { type: 'string' },
+            orderNumber: { type: 'string' },
+          },
+        },
+      },
+      firstItemAt: { type: 'string', format: 'date-time', description: 'When the first line went in' },
+      lastActivityAt: { type: 'string', format: 'date-time', description: 'When the shopper last did anything' },
+      orderId: { type: 'string', description: 'The order this cart became' },
+      orderNumber: { type: 'string' },
+      orderedAt: { type: 'string', format: 'date-time' },
+      abandonedAt: { type: 'string', format: 'date-time', description: 'When the cart counted as abandoned (lines in it, not ordered, no activity for the abandoned-cart automations\' wait); cleared by the shopper\'s next step' },
+      recoveryUrl: { type: 'string', description: 'The site link that brings this cart back (set when it is abandoned), for reminders' },
+      match: {
+        type: 'object',
+        description: 'Who the shopper is, as the Lead Finder found it (crm look-up, IP look-up): kept on the cart it was found for',
+        properties: {
+          status: { type: 'string', enum: ['customer', 'possible', 'prospect', 'none'] },
+          customerId: { type: 'string', description: 'A sure match (same email, phone or device)' },
+          candidates: {
+            type: 'array',
+            description: 'Possible matches (same network recently) — never linked on their own',
+            items: { type: 'object', properties: { customerId: { type: 'string' }, name: { type: 'string' }, email: { type: 'string' }, why: { type: 'string' } } },
+          },
+          prospectId: { type: 'string', description: 'The raw contact (prospect) found for it' },
+          at: { type: 'string', format: 'date-time' },
+        },
       },
 
       // ========== ITEMS ==========
