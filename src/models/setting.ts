@@ -1,7 +1,14 @@
 import { FromSchema } from 'json-schema-to-ts';
 import { registerCollection } from '../default-schema';
 import { DataType, ControlType } from '../types';
-import { BANKING_CASH_DEFAULTS, BANKING_COLLECTIONS_DEFAULTS, BANKING_LENDING_DEFAULTS, BANKING_REGCC_DEFAULTS, BankingApprovalsField, BankingEscheatPoliciesField } from './banking/_banking-fields';
+import {
+  BANKING_CASH_DEFAULTS,
+  BANKING_COLLECTIONS_DEFAULTS,
+  BANKING_LENDING_DEFAULTS,
+  BANKING_REGCC_DEFAULTS,
+  BankingApprovalsField,
+  BankingEscheatPoliciesField,
+} from './banking/_banking-fields';
 
 export const SettingSchema = () => {
   return {
@@ -53,38 +60,12 @@ export const SettingSchema = () => {
         },
         group: 'emails',
       },
-      // Added to every message the org sends (Message Templates › Prefix & suffix). Plain text: the server
-      // escapes it, keeps its line breaks and links its web addresses; it checks the lengths when it is saved.
-      messageAdditions: {
-        type: 'object',
-        title: 'Prefix & suffix',
-        description: 'Text added to every email and SMS this business sends.',
-        properties: {
-          email: {
-            type: 'object',
-            properties: {
-              subjectPrefix: { type: 'string', maxLength: 60, title: 'Subject prefix', description: 'Put before every email subject.' },
-              subjectSuffix: { type: 'string', maxLength: 60, title: 'Subject suffix', description: 'Put after every email subject.' },
-              before: { type: 'string', maxLength: 2000, title: 'Text before', description: 'Shown at the top of every email.', 'x-control-variant': 'textarea' },
-              after: { type: 'string', maxLength: 2000, title: 'Text after', description: 'Shown at the bottom of every email.', 'x-control-variant': 'textarea' },
-            },
-          },
-          sms: {
-            type: 'object',
-            properties: {
-              before: { type: 'string', maxLength: 160, title: 'Text before', description: 'Put before every SMS.' },
-              after: { type: 'string', maxLength: 160, title: 'Text after', description: 'Put after every SMS.' },
-            },
-          },
-        },
-        group: 'message-additions',
-      },
       address: getSettingItemSchema(
         DataType.location,
         'address',
         'name',
         undefined,
-        { property: 'data.type', value: 'address' }
+        { 'data.type': 'address' }
       ),
       domainAccountId: {
         type: 'string',
@@ -114,18 +95,34 @@ export const SettingSchema = () => {
         type: 'object',
         collapsible: 'close',
         title: 'Approval reasons',
-        description: 'The reasons people pick from when they ask for access, and when an approver declines. They can add a detail to any of them.',
+        description:
+          'The reasons people pick from when they ask for access, and when an approver declines. They can add a detail to any of them.',
         properties: {
           request: {
             type: 'array',
             title: 'Why someone asks',
             items: approvalReasonSchema(),
             default: [
-              { label: 'Part of my job', description: 'My role needs this screen for day-to-day work' },
-              { label: 'Covering for someone', description: 'Filling in while a colleague is away' },
-              { label: 'New responsibility', description: 'I have been given new duties' },
-              { label: 'One-off task', description: 'I need it for a single job, then I am done' },
-              { label: 'Fixing a problem', description: 'Something is wrong and I need to look at it' },
+              {
+                label: 'Part of my job',
+                description: 'My role needs this screen for day-to-day work',
+              },
+              {
+                label: 'Covering for someone',
+                description: 'Filling in while a colleague is away',
+              },
+              {
+                label: 'New responsibility',
+                description: 'I have been given new duties',
+              },
+              {
+                label: 'One-off task',
+                description: 'I need it for a single job, then I am done',
+              },
+              {
+                label: 'Fixing a problem',
+                description: 'Something is wrong and I need to look at it',
+              },
             ],
           },
           decline: {
@@ -133,11 +130,26 @@ export const SettingSchema = () => {
             title: 'Why a request is declined',
             items: approvalReasonSchema(),
             default: [
-              { label: 'Not needed for this role', description: 'The work can be done without it' },
-              { label: 'Ask your manager first', description: 'Your manager should agree before access is given' },
-              { label: 'Someone else will do it', description: 'This task belongs to another person or team' },
-              { label: 'Too much access', description: 'A narrower role or group fits better' },
-              { label: 'Need more detail', description: 'Say what you need it for, then ask again' },
+              {
+                label: 'Not needed for this role',
+                description: 'The work can be done without it',
+              },
+              {
+                label: 'Ask your manager first',
+                description: 'Your manager should agree before access is given',
+              },
+              {
+                label: 'Someone else will do it',
+                description: 'This task belongs to another person or team',
+              },
+              {
+                label: 'Too much access',
+                description: 'A narrower role or group fits better',
+              },
+              {
+                label: 'Need more detail',
+                description: 'Say what you need it for, then ask again',
+              },
             ],
           },
         },
@@ -555,11 +567,165 @@ export const SettingSchema = () => {
             minimum: 1,
             default: 100,
             title: 'Points per 1.00 when spent',
-            description: 'e.g. 100 = 100 points pay 1.00 at checkout, at the till, or as a gift card.',
+            description:
+              'e.g. 100 = 100 points pay 1.00 at checkout, at the till, or as a gift card.',
           },
         },
       },
-
+      // Added to every message the org sends (Message Templates › Prefix & suffix). Plain text: the server
+      // escapes it, keeps its line breaks and links its web addresses; it checks the lengths when it is saved.
+      messageAdditions: {
+        type: 'object',
+        title: 'Prefix & suffix',
+        collapsible: 'close',
+        description: 'Text added to every email and SMS this business sends.',
+        properties: {
+          email: {
+            type: 'object',
+            properties: {
+              subjectPrefix: {
+                type: 'string',
+                maxLength: 60,
+                title: 'Subject prefix',
+                description: 'Put before every email subject.',
+              },
+              subjectSuffix: {
+                type: 'string',
+                maxLength: 60,
+                title: 'Subject suffix',
+                description: 'Put after every email subject.',
+              },
+              before: {
+                type: 'string',
+                maxLength: 20000,
+                title: 'Text before',
+                description:
+                  'Shown at the top of every email (email-safe HTML, cleaned by the server).',
+                'x-control': ControlType.richtext,
+              },
+              after: {
+                type: 'string',
+                maxLength: 20000,
+                title: 'Text after',
+                description:
+                  'Shown at the bottom of every email (email-safe HTML, cleaned by the server).',
+                'x-control': ControlType.richtext,
+              },
+            },
+          },
+          sms: {
+            type: 'object',
+            properties: {
+              before: {
+                type: 'string',
+                maxLength: 160,
+                title: 'Text before',
+                description: 'Put before every SMS.',
+              },
+              after: {
+                type: 'string',
+                maxLength: 160,
+                title: 'Text after',
+                description: 'Put after every SMS.',
+              },
+            },
+          },
+        },
+        group: 'message-additions',
+      },
+      securitySettings: {
+        type: 'object',
+        collapsible: 'close',
+        properties: {
+          passcodeLogin: {
+            type: 'boolean',
+            group: 'passcodeLogin',
+            default: true,
+            description:
+              'Allow POS passcode login with the BusinessMade employee ID (typed or read from an NFC card)',
+          },
+          passcodeLoginMode: {
+            type: 'string',
+            enum: ['passcode', 'instant'],
+            default: 'passcode',
+            group: 'passcodeLogin',
+            description:
+              "'passcode' (recommended) = employee ID + 6-digit pin (two-factor). 'instant' = employee ID / card only, no pin (single factor, fastest).",
+          },
+          enableTwoFactorForUsers: {
+            type: 'boolean',
+            default: false,
+            description: 'Require 2FA for every user in this organisation',
+            notes:
+              'Off does not mean nobody has it — anyone can still turn 2FA on for their own account.',
+            group: '2fa',
+          },
+          enableTwoFactorForCustomers: {
+            type: 'boolean',
+            default: false,
+            description: 'Require 2FA for every customer in this organisation',
+            notes:
+              'Off does not mean nobody has it — a customer can still turn 2FA on for their own account.',
+            group: '2fa',
+          },
+          twoFactorMethods: {
+            type: 'array',
+            items: {
+              type: 'string',
+              enum: ['email', 'authenticator', 'sms'],
+            },
+            default: ['email', 'authenticator'],
+            description: 'Available 2FA methods. SMS incurs additional costs.',
+          },
+          enableNewDeviceAuthentication: {
+            type: 'boolean',
+            default: false,
+            description:
+              'Require verification when logging in from new device (password login only)',
+            group: 'newdevice',
+          },
+          alertOnNewDeviceLogin: {
+            type: 'boolean',
+            default: false,
+            description: 'Send email alert when login from new device',
+            group: 'newdevice',
+          },
+          deviceTrustDays: {
+            type: 'number',
+            default: 30,
+            description: 'Days to remember trusted devices',
+            group: 'newdevice',
+          },
+        },
+      },
+      comments: {
+        // Business-wide comment settings (every site): who and what is blocked. Each site's own rules are site.comments.
+        type: 'object',
+        collapsible: 'close',
+        title: 'Comments',
+        properties: {
+          blockedWords: {
+            type: 'array',
+            items: { type: 'string' },
+            title: 'Blocked words',
+          },
+          blockedWordsAction: {
+            type: 'string',
+            enum: ['review', 'reject'],
+            default: 'review',
+            title: 'A comment with a blocked word',
+            description:
+              'review: it waits for a person; reject: it is rejected as spam',
+          },
+          blockedPeople: {
+            type: 'array',
+            items: { type: 'string' },
+            title: 'Blocked people',
+            description:
+              'Emails, @domains or logins whose comments are rejected as spam on every site',
+          },
+        },
+      },
       /**
        * How payroll is paid — kept on the payroll direct-deposit setting record
        * (`name: payroll_ach_config`, beside its NACHA originator fields). Pay
@@ -686,75 +852,290 @@ export const SettingSchema = () => {
         collapsible: 'close',
         group: 'banking',
         properties: {
-          bankName: { type: 'string', title: 'Bank name', description: 'As customers see it on statements and disclosures.' },
-          sponsorBank: { type: 'string', title: 'Sponsor bank', description: 'The chartered bank that holds the deposits ("Banking services provided by …, Member FDIC").' },
-          routingNumber: { type: 'string', pattern: '^[0-9]{9}$', title: 'Routing number', description: 'The routing number on every account.' },
-          accountNumberPrefix: { type: 'string', pattern: '^[0-9]{0,6}$', description: 'Digits every new account number starts with.' },
-          timezone: { type: 'string', default: 'America/New_York', description: 'The bank’s business day — cutoffs, statement dates and interest days run on it.' },
+          bankName: {
+            type: 'string',
+            title: 'Bank name',
+            description: 'As customers see it on statements and disclosures.',
+          },
+          sponsorBank: {
+            type: 'string',
+            title: 'Sponsor bank',
+            description:
+              'The chartered bank that holds the deposits ("Banking services provided by …, Member FDIC").',
+          },
+          routingNumber: {
+            type: 'string',
+            pattern: '^[0-9]{9}$',
+            title: 'Routing number',
+            description: 'The routing number on every account.',
+          },
+          accountNumberPrefix: {
+            type: 'string',
+            pattern: '^[0-9]{0,6}$',
+            description: 'Digits every new account number starts with.',
+          },
+          timezone: {
+            type: 'string',
+            default: 'America/New_York',
+            description:
+              'The bank’s business day — cutoffs, statement dates and interest days run on it.',
+          },
           ach: {
             type: 'object',
             title: 'ACH',
             properties: {
-              originatorId: { type: 'string', title: 'Company ID', description: 'The 10-character ID on outgoing ACH (Immediate Origin / Company Identification).' },
-              originatorName: { type: 'string', title: 'Company name', maxLength: 16 },
-              cutoffs: { type: 'array', items: { type: 'string', pattern: '^[0-2][0-9]:[0-5][0-9]$' }, description: 'Times of day (bank time) a file goes out. Same-day ACH needs one before 14:45.' },
-              incomingHoldDays: { type: 'integer', minimum: 0, default: 0, description: 'Business days an incoming ACH credit stays held before it is available.' },
+              originatorId: {
+                type: 'string',
+                title: 'Company ID',
+                description:
+                  'The 10-character ID on outgoing ACH (Immediate Origin / Company Identification).',
+              },
+              originatorName: {
+                type: 'string',
+                title: 'Company name',
+                maxLength: 16,
+              },
+              cutoffs: {
+                type: 'array',
+                items: { type: 'string', pattern: '^[0-2][0-9]:[0-5][0-9]$' },
+                description:
+                  'Times of day (bank time) a file goes out. Same-day ACH needs one before 14:45.',
+              },
+              incomingHoldDays: {
+                type: 'integer',
+                minimum: 0,
+                default: 0,
+                description:
+                  'Business days an incoming ACH credit stays held before it is available.',
+              },
             },
           },
           wire: {
             type: 'object',
             title: 'Wires',
             properties: {
-              cutoff: { type: 'string', pattern: '^[0-2][0-9]:[0-5][0-9]$', default: '17:00' },
+              cutoff: {
+                type: 'string',
+                pattern: '^[0-2][0-9]:[0-5][0-9]$',
+                default: '17:00',
+              },
             },
           },
-          checkHoldDays: { type: 'integer', minimum: 0, default: 2, description: 'Business days a deposited check is held (Reg CC allows more for large or new-account deposits).' },
-          dormantAfterDays: { type: 'integer', minimum: 30, default: 365, description: 'An account with no customer activity this long becomes dormant.' },
-          disputeDecideDays: { type: 'integer', minimum: 1, default: 10, description: 'Business days to decide a dispute or give provisional credit (Reg E).' },
+          checkHoldDays: {
+            type: 'integer',
+            minimum: 0,
+            default: 2,
+            description:
+              'Business days a deposited check is held (Reg CC allows more for large or new-account deposits).',
+          },
+          dormantAfterDays: {
+            type: 'integer',
+            minimum: 30,
+            default: 365,
+            description:
+              'An account with no customer activity this long becomes dormant.',
+          },
+          disputeDecideDays: {
+            type: 'integer',
+            minimum: 1,
+            default: 10,
+            description:
+              'Business days to decide a dispute or give provisional credit (Reg E).',
+          },
           disputeResolveDays: { type: 'integer', minimum: 1, default: 45 },
           approvals: BankingApprovalsField(),
-          customerVerification: { type: 'object', properties: { money: { type: 'string', enum: ['off', 'authenticator'], default: 'off' } } },
-          autopay: { type: ['object', 'null'], description: 'Unavailable unless a bank reviewer supplies its authorization form and explicit restricted policy.', properties: {
-            authorizationForm: { type: 'string' }, version: { type: 'string' }, amount: { type: 'string', enum: ['scheduled_remaining'] }, date: { type: 'string', enum: ['calendar_due_date'] },
-            maximum: { type: 'integer', minimum: 1 }, failure: { type: 'string', enum: ['pause'] }, adminReview: { type: 'boolean' }, reviewed: { type: 'boolean', title: 'Bank policy reviewed' },
-            reviewedBy: { type: 'string', readOnly: true }, reviewedAt: { type: 'string', format: 'date-time', readOnly: true },
-          } },
+          customerVerification: {
+            type: 'object',
+            properties: {
+              money: {
+                type: 'string',
+                enum: ['off', 'authenticator'],
+                default: 'off',
+              },
+            },
+          },
+          autopay: {
+            type: ['object', 'null'],
+            description:
+              'Unavailable unless a bank reviewer supplies its authorization form and explicit restricted policy.',
+            properties: {
+              authorizationForm: { type: 'string' },
+              version: { type: 'string' },
+              amount: { type: 'string', enum: ['scheduled_remaining'] },
+              date: { type: 'string', enum: ['calendar_due_date'] },
+              maximum: { type: 'integer', minimum: 1 },
+              failure: { type: 'string', enum: ['pause'] },
+              adminReview: { type: 'boolean' },
+              reviewed: { type: 'boolean', title: 'Bank policy reviewed' },
+              reviewedBy: { type: 'string', readOnly: true },
+              reviewedAt: {
+                type: 'string',
+                format: 'date-time',
+                readOnly: true,
+              },
+            },
+          },
           escheat: BankingEscheatPoliciesField(),
           cash: {
             type: 'object',
             title: 'Cash and BSA',
             collapsible: true,
             properties: {
-              ctrThreshold: { type: 'integer', minimum: 1, default: BANKING_CASH_DEFAULTS.ctrThreshold, description: 'A person’s cash in, or out, above this in one business day needs a CTR. In cents (31 CFR 1010.311).' },
-              milMin: { type: 'integer', minimum: 1, default: BANKING_CASH_DEFAULTS.milMin, description: 'Currency purchases of official checks or money orders from this amount go on the Monetary Instrument Log. In cents.' },
-              milMax: { type: 'integer', minimum: 1, default: BANKING_CASH_DEFAULTS.milMax, description: 'Up to and including this amount. In cents.' },
-              drawerMinimum: { type: 'integer', minimum: 0, default: BANKING_CASH_DEFAULTS.drawerMinimum, description: 'A till’s least cash when it sets none. In cents.' },
-              drawerMaximum: { type: 'integer', minimum: 0, default: BANKING_CASH_DEFAULTS.drawerMaximum, description: 'A till’s most cash when it sets none. In cents.' },
-              overShortTolerance: { type: 'integer', minimum: 0, default: BANKING_CASH_DEFAULTS.overShortTolerance, description: 'A balancing difference above this needs a head teller’s sign-off. In cents.' },
-              cashOutLimit: { type: 'integer', minimum: 0, default: BANKING_CASH_DEFAULTS.cashOutLimit, description: 'A teller pays out more cash than this in one transaction only with a supervisor’s override. In cents.' },
-              checkCashingFee: { type: 'integer', minimum: 0, default: BANKING_CASH_DEFAULTS.checkCashingFee, description: 'Fee to cash a check for someone who is not a customer. In cents; 0 for none.' },
-              officialCheckFee: { type: 'integer', minimum: 0, default: BANKING_CASH_DEFAULTS.officialCheckFee, description: 'Fee for a cashier’s or teller’s check. In cents; 0 for none.' },
-              moneyOrderFee: { type: 'integer', minimum: 0, default: BANKING_CASH_DEFAULTS.moneyOrderFee, description: 'Fee for a money order. In cents; 0 for none.' },
+              ctrThreshold: {
+                type: 'integer',
+                minimum: 1,
+                default: BANKING_CASH_DEFAULTS.ctrThreshold,
+                description:
+                  'A person’s cash in, or out, above this in one business day needs a CTR. In cents (31 CFR 1010.311).',
+              },
+              milMin: {
+                type: 'integer',
+                minimum: 1,
+                default: BANKING_CASH_DEFAULTS.milMin,
+                description:
+                  'Currency purchases of official checks or money orders from this amount go on the Monetary Instrument Log. In cents.',
+              },
+              milMax: {
+                type: 'integer',
+                minimum: 1,
+                default: BANKING_CASH_DEFAULTS.milMax,
+                description: 'Up to and including this amount. In cents.',
+              },
+              drawerMinimum: {
+                type: 'integer',
+                minimum: 0,
+                default: BANKING_CASH_DEFAULTS.drawerMinimum,
+                description: 'A till’s least cash when it sets none. In cents.',
+              },
+              drawerMaximum: {
+                type: 'integer',
+                minimum: 0,
+                default: BANKING_CASH_DEFAULTS.drawerMaximum,
+                description: 'A till’s most cash when it sets none. In cents.',
+              },
+              overShortTolerance: {
+                type: 'integer',
+                minimum: 0,
+                default: BANKING_CASH_DEFAULTS.overShortTolerance,
+                description:
+                  'A balancing difference above this needs a head teller’s sign-off. In cents.',
+              },
+              cashOutLimit: {
+                type: 'integer',
+                minimum: 0,
+                default: BANKING_CASH_DEFAULTS.cashOutLimit,
+                description:
+                  'A teller pays out more cash than this in one transaction only with a supervisor’s override. In cents.',
+              },
+              checkCashingFee: {
+                type: 'integer',
+                minimum: 0,
+                default: BANKING_CASH_DEFAULTS.checkCashingFee,
+                description:
+                  'Fee to cash a check for someone who is not a customer. In cents; 0 for none.',
+              },
+              officialCheckFee: {
+                type: 'integer',
+                minimum: 0,
+                default: BANKING_CASH_DEFAULTS.officialCheckFee,
+                description:
+                  'Fee for a cashier’s or teller’s check. In cents; 0 for none.',
+              },
+              moneyOrderFee: {
+                type: 'integer',
+                minimum: 0,
+                default: BANKING_CASH_DEFAULTS.moneyOrderFee,
+                description: 'Fee for a money order. In cents; 0 for none.',
+              },
             },
           },
           regcc: {
             type: 'object',
             title: 'Funds availability (Reg CC)',
             collapsible: true,
-            description: 'The Reg CC dollar figures in force from effectiveFrom (12 CFR 229.11; next adjustment July 1, 2030).',
+            description:
+              'The Reg CC dollar figures in force from effectiveFrom (12 CFR 229.11; next adjustment July 1, 2030).',
             properties: {
-              effectiveFrom: { type: 'string', format: 'date', default: BANKING_REGCC_DEFAULTS.effectiveFrom },
-              nextDayAmount: { type: 'integer', minimum: 0, default: BANKING_REGCC_DEFAULTS.nextDayAmount, description: 'Of other checks deposited in a day, this much is available the next business day. In cents.' },
-              largeDeposit: { type: 'integer', minimum: 0, default: BANKING_REGCC_DEFAULTS.largeDeposit, description: 'Check deposits above this in a day may get a large-deposit hold on the excess; also the new-account and repeated-overdraft figure. In cents.' },
-              cashWithdrawal: { type: 'integer', minimum: 0, default: BANKING_REGCC_DEFAULTS.cashWithdrawal, description: 'Released for cash withdrawal by 5 pm on the availability day. In cents.' },
-              newAccountDays: { type: 'integer', minimum: 0, default: BANKING_REGCC_DEFAULTS.newAccountDays, description: 'An account is new for this many calendar days.' },
-              depositCutoff: { type: 'string', pattern: '^[0-2][0-9]:[0-5][0-9]$', default: BANKING_REGCC_DEFAULTS.depositCutoff, description: 'Teller deposits after this time (bank time) count on the next banking day. Not before 14:00 (229.19(a)(5)).' },
-              newAccountHoldDays: { type: 'integer', minimum: 1, default: BANKING_REGCC_DEFAULTS.newAccountHoldDays, description: 'New account: checks past the first large-deposit amount are available by this business day after deposit (229.13(a)).' },
-              exceptionExtraDays: { type: 'integer', minimum: 0, default: BANKING_REGCC_DEFAULTS.exceptionExtraDays, description: 'Business days an exception hold adds to a check’s normal availability (229.13(h) safe harbor: 5).' },
-              onUsExtraDays: { type: 'integer', minimum: 0, default: BANKING_REGCC_DEFAULTS.onUsExtraDays, description: 'Business days an exception hold adds to an on-us check (safe harbor: 1).' },
-              overdraftDays: { type: 'integer', minimum: 1, default: BANKING_REGCC_DEFAULTS.overdraftDays, description: 'Repeated overdrafts: overdrawn on this many banking days in the look-back (229.13(d)).' },
-              overdraftLargeDays: { type: 'integer', minimum: 1, default: BANKING_REGCC_DEFAULTS.overdraftLargeDays, description: '…or on this many banking days by the large-deposit amount or more.' },
-              overdraftLookbackMonths: { type: 'integer', minimum: 1, default: BANKING_REGCC_DEFAULTS.overdraftLookbackMonths, description: 'Months looked back for repeated overdrafts.' },
+              effectiveFrom: {
+                type: 'string',
+                format: 'date',
+                default: BANKING_REGCC_DEFAULTS.effectiveFrom,
+              },
+              nextDayAmount: {
+                type: 'integer',
+                minimum: 0,
+                default: BANKING_REGCC_DEFAULTS.nextDayAmount,
+                description:
+                  'Of other checks deposited in a day, this much is available the next business day. In cents.',
+              },
+              largeDeposit: {
+                type: 'integer',
+                minimum: 0,
+                default: BANKING_REGCC_DEFAULTS.largeDeposit,
+                description:
+                  'Check deposits above this in a day may get a large-deposit hold on the excess; also the new-account and repeated-overdraft figure. In cents.',
+              },
+              cashWithdrawal: {
+                type: 'integer',
+                minimum: 0,
+                default: BANKING_REGCC_DEFAULTS.cashWithdrawal,
+                description:
+                  'Released for cash withdrawal by 5 pm on the availability day. In cents.',
+              },
+              newAccountDays: {
+                type: 'integer',
+                minimum: 0,
+                default: BANKING_REGCC_DEFAULTS.newAccountDays,
+                description: 'An account is new for this many calendar days.',
+              },
+              depositCutoff: {
+                type: 'string',
+                pattern: '^[0-2][0-9]:[0-5][0-9]$',
+                default: BANKING_REGCC_DEFAULTS.depositCutoff,
+                description:
+                  'Teller deposits after this time (bank time) count on the next banking day. Not before 14:00 (229.19(a)(5)).',
+              },
+              newAccountHoldDays: {
+                type: 'integer',
+                minimum: 1,
+                default: BANKING_REGCC_DEFAULTS.newAccountHoldDays,
+                description:
+                  'New account: checks past the first large-deposit amount are available by this business day after deposit (229.13(a)).',
+              },
+              exceptionExtraDays: {
+                type: 'integer',
+                minimum: 0,
+                default: BANKING_REGCC_DEFAULTS.exceptionExtraDays,
+                description:
+                  'Business days an exception hold adds to a check’s normal availability (229.13(h) safe harbor: 5).',
+              },
+              onUsExtraDays: {
+                type: 'integer',
+                minimum: 0,
+                default: BANKING_REGCC_DEFAULTS.onUsExtraDays,
+                description:
+                  'Business days an exception hold adds to an on-us check (safe harbor: 1).',
+              },
+              overdraftDays: {
+                type: 'integer',
+                minimum: 1,
+                default: BANKING_REGCC_DEFAULTS.overdraftDays,
+                description:
+                  'Repeated overdrafts: overdrawn on this many banking days in the look-back (229.13(d)).',
+              },
+              overdraftLargeDays: {
+                type: 'integer',
+                minimum: 1,
+                default: BANKING_REGCC_DEFAULTS.overdraftLargeDays,
+                description:
+                  '…or on this many banking days by the large-deposit amount or more.',
+              },
+              overdraftLookbackMonths: {
+                type: 'integer',
+                minimum: 1,
+                default: BANKING_REGCC_DEFAULTS.overdraftLookbackMonths,
+                description: 'Months looked back for repeated overdrafts.',
+              },
             },
           },
           lending: {
@@ -762,36 +1143,141 @@ export const SettingSchema = () => {
             title: 'Lending',
             collapsible: true,
             properties: {
-              lateFeeGraceDays: { type: 'integer', minimum: 0, default: BANKING_LENDING_DEFAULTS.lateFeeGraceDays, description: 'Days after a due date before a late fee, when the product sets none.' },
-              nonaccrualDays: { type: 'integer', minimum: 1, default: BANKING_LENDING_DEFAULTS.nonaccrualDays, description: 'Days past due when a loan stops accruing interest.' },
-              chargeOffDaysClosedEnd: { type: 'integer', minimum: 1, default: BANKING_LENDING_DEFAULTS.chargeOffDaysClosedEnd, description: 'Days past due when a closed-end loan is charged off (FFIEC retail policy).' },
-              chargeOffDaysOpenEnd: { type: 'integer', minimum: 1, default: BANKING_LENDING_DEFAULTS.chargeOffDaysOpenEnd, description: 'Days past due when a line of credit is charged off.' },
-              regBNoticeDays: { type: 'integer', minimum: 1, default: BANKING_LENDING_DEFAULTS.regBNoticeDays, description: 'Days from a complete application to the notice of action (Reg B 1002.9).' },
-              counterofferNoticeDays: { type: 'integer', minimum: 1, default: BANKING_LENDING_DEFAULTS.counterofferNoticeDays, description: 'Days after a counteroffer not taken to send the adverse-action notice.' },
-              capitalAndSurplus: { type: 'integer', minimum: 0, default: BANKING_LENDING_DEFAULTS.capitalAndSurplus, description: 'Capital and unimpaired surplus, from the latest Call Report. In cents (Reg O thresholds).' },
-              capitalAsOf: { type: 'string', format: 'date', description: 'The quarter-end the capital figure is from.' },
-              insiderBoardMinimum: { type: 'integer', minimum: 0, default: BANKING_LENDING_DEFAULTS.insiderBoardMinimum, description: 'Reg O 215.4(b): an insider’s credit above the greater of this and the share of capital below needs the board’s prior approval. In cents.' },
-              insiderBoardPercentBps: { type: 'integer', minimum: 0, default: BANKING_LENDING_DEFAULTS.insiderBoardPercentBps, description: 'Share of capital and surplus, in basis points (500 = 5%).' },
-              insiderBoardAlways: { type: 'integer', minimum: 0, default: BANKING_LENDING_DEFAULTS.insiderBoardAlways, description: 'Above this an insider’s credit always needs board approval. In cents.' },
+              lateFeeGraceDays: {
+                type: 'integer',
+                minimum: 0,
+                default: BANKING_LENDING_DEFAULTS.lateFeeGraceDays,
+                description:
+                  'Days after a due date before a late fee, when the product sets none.',
+              },
+              nonaccrualDays: {
+                type: 'integer',
+                minimum: 1,
+                default: BANKING_LENDING_DEFAULTS.nonaccrualDays,
+                description:
+                  'Days past due when a loan stops accruing interest.',
+              },
+              chargeOffDaysClosedEnd: {
+                type: 'integer',
+                minimum: 1,
+                default: BANKING_LENDING_DEFAULTS.chargeOffDaysClosedEnd,
+                description:
+                  'Days past due when a closed-end loan is charged off (FFIEC retail policy).',
+              },
+              chargeOffDaysOpenEnd: {
+                type: 'integer',
+                minimum: 1,
+                default: BANKING_LENDING_DEFAULTS.chargeOffDaysOpenEnd,
+                description:
+                  'Days past due when a line of credit is charged off.',
+              },
+              regBNoticeDays: {
+                type: 'integer',
+                minimum: 1,
+                default: BANKING_LENDING_DEFAULTS.regBNoticeDays,
+                description:
+                  'Days from a complete application to the notice of action (Reg B 1002.9).',
+              },
+              counterofferNoticeDays: {
+                type: 'integer',
+                minimum: 1,
+                default: BANKING_LENDING_DEFAULTS.counterofferNoticeDays,
+                description:
+                  'Days after a counteroffer not taken to send the adverse-action notice.',
+              },
+              capitalAndSurplus: {
+                type: 'integer',
+                minimum: 0,
+                default: BANKING_LENDING_DEFAULTS.capitalAndSurplus,
+                description:
+                  'Capital and unimpaired surplus, from the latest Call Report. In cents (Reg O thresholds).',
+              },
+              capitalAsOf: {
+                type: 'string',
+                format: 'date',
+                description: 'The quarter-end the capital figure is from.',
+              },
+              insiderBoardMinimum: {
+                type: 'integer',
+                minimum: 0,
+                default: BANKING_LENDING_DEFAULTS.insiderBoardMinimum,
+                description:
+                  'Reg O 215.4(b): an insider’s credit above the greater of this and the share of capital below needs the board’s prior approval. In cents.',
+              },
+              insiderBoardPercentBps: {
+                type: 'integer',
+                minimum: 0,
+                default: BANKING_LENDING_DEFAULTS.insiderBoardPercentBps,
+                description:
+                  'Share of capital and surplus, in basis points (500 = 5%).',
+              },
+              insiderBoardAlways: {
+                type: 'integer',
+                minimum: 0,
+                default: BANKING_LENDING_DEFAULTS.insiderBoardAlways,
+                description:
+                  'Above this an insider’s credit always needs board approval. In cents.',
+              },
               insiders: {
                 type: 'array',
                 title: 'Insiders (Reg O)',
-                description: 'Executive officers, directors and principal shareholders, and the companies they control. Reviewed at least yearly (215.8).',
+                description:
+                  'Executive officers, directors and principal shareholders, and the companies they control. Reviewed at least yearly (215.8).',
                 items: {
                   type: 'object',
                   properties: {
-                    customer: { type: 'string', 'x-control': ControlType.selectMany, dataSource: { source: 'collection', collection: DataType.customer, value: 'sk', label: 'email' } },
-                    kind: { type: 'string', enum: ['executive_officer', 'director', 'principal_shareholder', 'related_interest'] },
-                    relatedTo: { type: 'string', description: 'A related interest: the insider who controls it.' },
+                    customer: {
+                      type: 'string',
+                      'x-control': ControlType.selectMany,
+                      dataSource: {
+                        source: 'collection',
+                        collection: DataType.customer,
+                        value: 'sk',
+                        label: 'email',
+                      },
+                    },
+                    kind: {
+                      type: 'string',
+                      enum: [
+                        'executive_officer',
+                        'director',
+                        'principal_shareholder',
+                        'related_interest',
+                      ],
+                    },
+                    relatedTo: {
+                      type: 'string',
+                      description:
+                        'A related interest: the insider who controls it.',
+                    },
                     note: { type: 'string' },
                   },
                   required: ['customer', 'kind'],
                 },
               },
-              mlaMaprCapBps: { type: 'integer', minimum: 0, default: BANKING_LENDING_DEFAULTS.mlaMaprCapBps, description: 'Most MAPR to a covered borrower (Military Lending Act), in basis points.' },
-              scraRateCapBps: { type: 'integer', minimum: 0, default: BANKING_LENDING_DEFAULTS.scraRateCapBps, description: 'Most rate on a servicemember’s pre-service debt (SCRA), in basis points.' },
-              creditorAddress: { type: 'string', description: 'The bank’s address on adverse-action notices.' },
-              regulatorName: { type: 'string', description: 'The bank’s federal regulator, named on adverse-action notices (ECOA).' },
+              mlaMaprCapBps: {
+                type: 'integer',
+                minimum: 0,
+                default: BANKING_LENDING_DEFAULTS.mlaMaprCapBps,
+                description:
+                  'Most MAPR to a covered borrower (Military Lending Act), in basis points.',
+              },
+              scraRateCapBps: {
+                type: 'integer',
+                minimum: 0,
+                default: BANKING_LENDING_DEFAULTS.scraRateCapBps,
+                description:
+                  'Most rate on a servicemember’s pre-service debt (SCRA), in basis points.',
+              },
+              creditorAddress: {
+                type: 'string',
+                description: 'The bank’s address on adverse-action notices.',
+              },
+              regulatorName: {
+                type: 'string',
+                description:
+                  'The bank’s federal regulator, named on adverse-action notices (ECOA).',
+              },
               regulatorAddress: { type: 'string' },
             },
           },
@@ -800,96 +1286,32 @@ export const SettingSchema = () => {
             title: 'Collections',
             collapsible: true,
             properties: {
-              callsPer7Days: { type: 'integer', minimum: 1, default: BANKING_COLLECTIONS_DEFAULTS.callsPer7Days, description: 'Most call attempts per debt in 7 days (Reg F).' },
-              windowStart: { type: 'string', pattern: '^[0-2][0-9]:[0-5][0-9]$', default: BANKING_COLLECTIONS_DEFAULTS.windowStart, description: 'Earliest contact, in the borrower’s local time.' },
-              windowEnd: { type: 'string', pattern: '^[0-2][0-9]:[0-5][0-9]$', default: BANKING_COLLECTIONS_DEFAULTS.windowEnd, description: 'Latest contact, in the borrower’s local time.' },
-              conversationCooldownDays: { type: 'integer', minimum: 0, default: BANKING_COLLECTIONS_DEFAULTS.conversationCooldownDays, description: 'Days after a phone conversation about a debt before the next call (Reg F 1006.14(b)(2)).' },
+              callsPer7Days: {
+                type: 'integer',
+                minimum: 1,
+                default: BANKING_COLLECTIONS_DEFAULTS.callsPer7Days,
+                description: 'Most call attempts per debt in 7 days (Reg F).',
+              },
+              windowStart: {
+                type: 'string',
+                pattern: '^[0-2][0-9]:[0-5][0-9]$',
+                default: BANKING_COLLECTIONS_DEFAULTS.windowStart,
+                description: 'Earliest contact, in the borrower’s local time.',
+              },
+              windowEnd: {
+                type: 'string',
+                pattern: '^[0-2][0-9]:[0-5][0-9]$',
+                default: BANKING_COLLECTIONS_DEFAULTS.windowEnd,
+                description: 'Latest contact, in the borrower’s local time.',
+              },
+              conversationCooldownDays: {
+                type: 'integer',
+                minimum: 0,
+                default: BANKING_COLLECTIONS_DEFAULTS.conversationCooldownDays,
+                description:
+                  'Days after a phone conversation about a debt before the next call (Reg F 1006.14(b)(2)).',
+              },
             },
-          },
-        },
-      },
-      comments: {
-        // Business-wide comment settings (every site): who and what is blocked. Each site's own rules are site.comments.
-        type: 'object',
-        collapsible: 'close',
-        title: 'Comments',
-        properties: {
-          blockedWords: { type: 'array', items: { type: 'string' }, title: 'Blocked words' },
-          blockedWordsAction: {
-            type: 'string',
-            enum: ['review', 'reject'],
-            default: 'review',
-            title: 'A comment with a blocked word',
-            description: 'review: it waits for a person; reject: it is rejected as spam',
-          },
-          blockedPeople: {
-            type: 'array',
-            items: { type: 'string' },
-            title: 'Blocked people',
-            description: 'Emails, @domains or logins whose comments are rejected as spam on every site',
-          },
-        },
-      },
-      securitySettings: {
-        type: 'object',
-        collapsible: 'close',
-        properties: {
-          passcodeLogin: {
-            type: 'boolean',
-            group: 'passcodeLogin',
-            default: true,
-            description:
-              'Allow POS passcode login with the BusinessMade employee ID (typed or read from an NFC card)',
-          },
-          passcodeLoginMode: {
-            type: 'string',
-            enum: ['passcode', 'instant'],
-            default: 'passcode',
-            group: 'passcodeLogin',
-            description:
-              "'passcode' (recommended) = employee ID + 6-digit pin (two-factor). 'instant' = employee ID / card only, no pin (single factor, fastest).",
-          },
-          enableTwoFactorForUsers: {
-            type: 'boolean',
-            default: false,
-            description: 'Require 2FA for every user in this organisation',
-            notes: 'Off does not mean nobody has it — anyone can still turn 2FA on for their own account.',
-            group: '2fa',
-          },
-          enableTwoFactorForCustomers: {
-            type: 'boolean',
-            default: false,
-            description: 'Require 2FA for every customer in this organisation',
-            notes: 'Off does not mean nobody has it — a customer can still turn 2FA on for their own account.',
-            group: '2fa',
-          },
-          twoFactorMethods: {
-            type: 'array',
-            items: {
-              type: 'string',
-              enum: ['email', 'authenticator', 'sms'],
-            },
-            default: ['email', 'authenticator'],
-            description: 'Available 2FA methods. SMS incurs additional costs.',
-          },
-          enableNewDeviceAuthentication: {
-            type: 'boolean',
-            default: false,
-            description:
-              'Require verification when logging in from new device (password login only)',
-            group: 'newdevice',
-          },
-          alertOnNewDeviceLogin: {
-            type: 'boolean',
-            default: false,
-            description: 'Send email alert when login from new device',
-            group: 'newdevice',
-          },
-          deviceTrustDays: {
-            type: 'number',
-            default: 30,
-            description: 'Days to remember trusted devices',
-            group: 'newdevice',
           },
         },
       },

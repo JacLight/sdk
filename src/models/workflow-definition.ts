@@ -48,6 +48,13 @@ export const WorkflowDefinitionSchema = () => {
         },
         group: 'sla',
       },
+      remoteApproval: {
+        type: 'boolean',
+        default: false,
+        title: 'Approve from the email',
+        description: 'When on, the people an approval stage waits on get Approve and Decline buttons in their email. Each button opens a page that asks them to confirm; no sign-in. The link acts as that person only, once, and stops working after 7 days or once the approval is decided.',
+        group: 'sla',
+      },
       stages: {
         type: 'array',
         collapsible: true,
@@ -138,6 +145,8 @@ export const WorkflowStageSchema = () => {
         group: 'type',
       },
       notificationTemplate: {
+        title: 'Email template (optional)',
+        description: 'Leave empty: the people on this stage get the standard email ("Waiting on you" on an approval stage, "New task" otherwise). Pick a template only to send your own.',
         type: 'array',
         'x-control': ControlType.selectMany,
         'x-control-variant': 'chip',
